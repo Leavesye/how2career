@@ -80,6 +80,14 @@ div:focus {
   display: flex;
   justify-content: center;
 }
+.flex-hs {
+  display: flex;
+  justify-content: flex-start;
+}
+.flex-he {
+  display: flex;
+  justify-content: flex-end;
+}
 .flex-hvc {
   display: flex;
   justify-content: center;
@@ -103,3 +111,12 @@ div:focus {
   justify-content: space-around;
   align-items: center;
 }
+.flex-ve {
+  display: flex;
+  align-items: flex-end;
+}
+.flex-vc {
+  display: flex;
+  align-items: center;
+}
+

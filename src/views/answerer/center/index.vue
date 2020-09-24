@@ -42,7 +42,7 @@
         </div>
       </div>
       <!-- 表格 -->
-      <el-card>
+      <el-card class="order-card">
         <p class="title">即将开始的咨询</p>
         <ul class="list-item flex-hbc"
             v-for="(o, i) in list1"
@@ -63,7 +63,7 @@
         </ul>
         <p class="more">更多订单<i class="el-icon-arrow-right"></i></p>
       </el-card>
-      <el-card>
+      <el-card class="order-card">
         <p class="title">即将开始的咨询</p>
         <ul class="list-item flex-hbc"
             v-for="(o, i) in list1"
@@ -98,7 +98,7 @@ export default {
   },
   data () {
     return {
-      isCert: false,
+      isCert: true,
       isActive: false,
       curStep: 1,
       pannels: [
@@ -211,6 +211,9 @@ $color: #15479e;
   box-shadow: 0px 0px 4px 0px rgba(21, 71, 158, 0.5);
   border: 1px solid $color;
   color: $color;
+}
+.order-card {
+  margin-bottom: 20px;
 }
 .list-item {
   padding: 14px 0;

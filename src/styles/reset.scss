@@ -162,3 +162,25 @@ a:link,a:active,a:visited,a:hover {
 .fade-enter, .fade-leave-to {
     opacity: 0
 }
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track-piece {
+  background-color: transparent;
+  -webkit-border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:vertical {
+  height: 5px;
+  background-color: #e3e3e3;
+  -webkit-border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:horizontal {
+  width: 5px;
+  background-color: #e3e3e3;
+  -webkit-border-radius: 6px;
+}
