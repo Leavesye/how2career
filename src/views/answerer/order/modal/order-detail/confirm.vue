@@ -11,7 +11,7 @@
     </div>
     <p class="time">咨询备选时间 (北京时间)：</p>
     <ul class="flex-hb">
-      <li class="time-item" v-for="(o, i) in 3">2020-12-11 20:13:12</li>
+      <li class="time-item" v-for="(o, i) in 3" :ley="i">2020-12-11 20:13:12</li>
     </ul>
     <p class="select-other">选择其他时间<i class="el-icon-arrow-down"></i></p>
     <div class="flex info-box" v-if="true">

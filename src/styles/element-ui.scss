@@ -90,3 +90,24 @@
   border: 1px solid #EDEEEF;
   color: #15479E;
 }
+.el-button--primary.is-plain {
+  color: #15479E;
+  background: #fff;
+  border-color: #15479E;
+  border-radius: 20px;
+}
+.el-button--primary.is-plain:hover {
+  background: #15479E;
+  border-color: #15479E;
+  color: #fff;
+}
+.el-tabs__item.is-active {
+  color: #15479E;
+}
+.el-tabs__active-bar {
+  background-color: #15479E;
+}
+.el-tabs__item:hover {
+  color: #15479E;
+  cursor: pointer;
+}

@@ -78,19 +78,23 @@
       <el-button type="primary" size="mini">保存并提交审核</el-button>
       <el-button size="mini">保存</el-button>
     </div>
+    <submit-finish :isShow="isShow" @close="handleClose"></submit-finish>
   </section>
 </template>
 
 <script>
 import QuickForm from '@/components/QuickForm'
+import SubmitFinish from './modal/submit-finish'
 export default {
   name: 'fill-info',
   components: {
-    QuickForm
+    QuickForm,
+    SubmitFinish
   },
   data () {
     const r = this.$rules
     return {
+      isShow: true,
       labelWidth:  '140px',
       form1: {
         a: {
@@ -426,7 +430,9 @@ export default {
     }
   },
   methods: {
-    
+    handleClose() {
+      this.isShow = false
+    },
   }
 }
 </script>
