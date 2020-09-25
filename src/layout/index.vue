@@ -48,7 +48,6 @@ export default {
   flex: 1;
   background: #FDFDFD;
   border-radius: 8px;
-  padding: 30px;
   box-sizing: border-box;
 }
 </style>

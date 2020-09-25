@@ -64,3 +64,29 @@
   background: #15479E;
   border-color: #15479E;
 }
+.el-form-item__label {
+  color: #7C8EA5;
+  font-size: 14px;
+  font-weight: 500;
+}
+.el-checkbox__input.is-checked+.el-checkbox__label {
+  color: #15479E;
+}
+.el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
+  background-color: #15479E;
+  border-color: #15479E;
+}
+.el-badge__content {
+  height: 14px;
+  line-height: 14px;
+  padding: 0 2px;
+  font-size: 12px;
+  background-color: #7A7F84;
+}
+.el-badge > .el-button--small {
+  padding: 9px 32px;
+  background: #EDEEEF;
+  border-radius: 4px;
+  border: 1px solid #EDEEEF;
+  color: #15479E;
+}

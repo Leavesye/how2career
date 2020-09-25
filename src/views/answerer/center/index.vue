@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section style="padding: 30px">
     <!-- 未认证 -->
     <div v-if="!isCert">
       <div class="banner"></div>

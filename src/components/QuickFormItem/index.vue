@@ -1,9 +1,9 @@
 <template lang="html">
-  <ax-form-item v-if="model" :model="model" :prop="prop" :label-width=" model.labelWidth "  ref="form-item">
-    <div slot="label" :style="model.style">
+  <ax-form-item v-if="model" :style="model.style" :model="model" :prop="prop" :label-width=" model.labelWidth "  ref="form-item">
+    <!-- <div slot="label" :style="model.style">
       <i class="middle" :class="model.icon"></i>
       <span class="middle">{{model.label}}</span>
-    </div>
+    </div> -->
   </ax-form-item>
 </template>
 

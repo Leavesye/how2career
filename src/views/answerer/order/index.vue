@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section style="padding: 30px">
     <!-- 状态面板 -->
     <div class="pannel flex">
       <div class="p-item"

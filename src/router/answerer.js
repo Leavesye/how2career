@@ -1,7 +1,7 @@
 export default [
   {
     path : '/answerer',
-    redirect: '/answerer/cost',
+    redirect: '/answerer/fill',
   },
   {
     path: 'answerer/center',
@@ -17,5 +17,10 @@ export default [
     path: 'answerer/cost',
     name: 'answerer-cost',
     component: () => import('@/views/answerer/cost/index'),
+  },
+  {
+    path: 'answerer/fill',
+    name: 'answerer-fill',
+    component: () => import('@/views/answerer/fill/index'),
   },
 ]
