@@ -65,14 +65,14 @@
         >
       </el-pagination>
     </div>
-    <!-- <confirm-detail :isShow="isShow" @close="handleClose" /> -->
-    <finish-detail :isShow="isShow" @close="handleClose" />
+    <confirm-detail :isShow="isShow" @close="handleClose" />
+    <!-- <finish-detail :isShow="isShow" @close="handleClose" /> -->
   </section>
 </template>
 
 <script>
 import { ConfirmDetail, FinishDetail } from './modal/order-detail'
-import OrderItem from '../../components/OrderItem'
+import OrderItem from '@/components/OrderItem'
 
 export default {
   name: 'answerer',

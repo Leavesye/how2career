@@ -101,6 +101,17 @@
   border-color: #15479E;
   color: #fff;
 }
+.el-button--info.is-plain {
+  color: #36AE82;
+  background: #fff;
+  border-color: #36AE82;
+  border-radius: 20px;
+}
+.el-button--info.is-plain:hover {
+  background: #36AE82;
+  border-color: #36AE82;
+  color: #fff;
+}
 .el-tabs__item.is-active {
   color: #15479E;
 }

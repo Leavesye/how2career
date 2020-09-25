@@ -3,17 +3,8 @@
     <section class="flex">
       <el-card class="card-l">
         <div class="title" style="margin-bottom: 40px">咨询者</div>
-        <div class="head">
-          <el-image
-            class="avatar"
-            src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
-            :fit="fit"></el-image>
-          <p class="name">马里奥大叔</p>
-          <el-image
-            class="micro"
-            src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
-            :fit="fit"></el-image>
-        </div>
+        <!-- 头像 -->
+        <avatar></avatar>
       </el-card>
       <el-card class="card-c">
         <p class="title">咨询问题</p>
@@ -30,17 +21,12 @@
         <p>北京时间</p>
         <p>10月10日 20:00 ~ 21:00</p>
         <p class="ques-status">咨询中</p>
-        <div class="flex-cc" style="font-size: 18px">
-          <div class="countdown-item">00</div>
-          <div>:</div>
-          <div class="countdown-item">15</div>
-          <div>:</div>
-          <div class="countdown-item">00</div>
-        </div>
+        <!-- 计时器 -->
+        <count-down></count-down>
       </el-card>
     </section>
     <el-card class="detail-card">
-      <el-tabs v-model="activeName" @tab-click="handleClick">
+      <el-tabs v-model="activeName">
         <el-tab-pane label="基本信息" name="first">
           <div class="d-item">
             <section class="flex-hb" style="width: 300px">
@@ -85,21 +71,29 @@
             <p>中国清华大学 电子工程 硕士</p>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="社会实践" name="third">角色管理</el-tab-pane>
-        <el-tab-pane label="其他信息" name="fourth">定时任务补偿</el-tab-pane>
+        <el-tab-pane label="社会实践" name="third">社会实践</el-tab-pane>
+        <el-tab-pane label="其他信息" name="fourth">其他信息</el-tab-pane>
       </el-tabs>
     </el-card>
+    <room-status :isShow="isShow"></room-status>
   </div>
 </template>
 
 <script>
+import Avatar from '@/components/Avatar'
+import CountDown from '@/components/CountDown'
+import RoomStatus from './modal/room-status'
 
 export default {
   name: 'room',
   components: {
+    Avatar,
+    CountDown,
+    RoomStatus
   },
   data () {
     return {
+      isShow: false,
       activeName: 'first'
     }
   },
@@ -135,28 +129,6 @@ export default {
 .title {
   color: #15479E;
 }
-.head {
-  text-align: center;
-  position: relative;
-  color: #7C8EA5;
-}
-.head > .avatar {
-  width: 90px;
-  height: 90px;
-  background: #D8D8D8;
-  box-shadow: 0px 2px 8px 0px rgba(21, 71, 159, 0.4);
-  border: 6px solid #FFFFFF;
-  border-radius: 50%;
-  margin-bottom: 20px;
-}
-.micro {
-  position: absolute;
-  left: 30px;
-  bottom: 30px;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-}
 .question {
   padding: 14px 0;
   border-bottom: 1px solid #EDEEEF;
@@ -165,15 +137,6 @@ export default {
   font-size: 20px;
   margin-top: 45px;
   margin-bottom: 20px;
-}
-.countdown-item {
-  width: 35px;
-  height: 35px;
-  line-height: 35px;
-  text-align: center;
-  background: #15479E;
-  border-radius: 4px;
-  color: #fff;
 }
 
 .detail-card {

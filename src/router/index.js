@@ -63,10 +63,10 @@ export const constantRoutes = [
         meta: { title: 'register', icon: 'register' }
       },
       {
-        path: 'component',
-        name: 'component',
-        component: () => import('@/views/component/index'),
-        meta: { title: 'component', icon: 'component' }
+        path: 'demo',
+        name: 'demo',
+        component: () => import('@/views/demo/index'),
+        meta: { title: 'demo', icon: 'demo' }
       },
       ...answerer
     ]
