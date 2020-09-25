@@ -1,7 +1,7 @@
 <template>
   <section class="navbar">
     <section class="menu-container flex-hbc">
-      <div class="logo"></div>
+      <el-image class="logo" :src="logoImg"></el-image>
       <ul class="menu">
         <li v-for="(o, i) in menus" :key="i">{{o.name}}</li>
       </ul>
@@ -15,6 +15,7 @@ export default {
   name: 'navbar',
   data() {
     return {
+      logoImg: require('../../../assets/logo.png'),
       menus :[
         {name: '首页', path: ''},
         {name: '我们的服务', path: ''},
@@ -30,6 +31,9 @@ export default {
 
 <style lang="scss" scoped>
 .navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
   height: 60px;
   background: #292E3D;
   .menu-container {

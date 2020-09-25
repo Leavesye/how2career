@@ -47,7 +47,6 @@ export default {
   color: #fff;
   height: 150px;
   background: #292E3D;
-  display: none;
   .inner {
     width: 1180px;
     margin: 0 auto;

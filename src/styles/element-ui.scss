@@ -47,7 +47,7 @@
   box-sizing: content-box;
 }
 
-.el-footer {
+.el-footer, .el-header {
   padding: 0;
 }
 .el-menu {
@@ -58,7 +58,15 @@
   line-height: 50px;
 }
 .el-menu-item.is-active {
-  background: rgba(255, 255,255, .15);
+  background: rgba(255,255,255, .15);
+  color: #fff;
+}
+.el-menu-item:focus, .el-menu-item:hover,.el-submenu__title:hover {
+  background: rgba(255,255,255, .15);
+  color: #fff;
+}
+.el-menu.el-menu--inline {
+  background: #15479E;
 }
 .el-button--primary {
   background: #15479E;
