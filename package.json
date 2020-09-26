@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@syncfusion/ej2-vue-schedule": "^18.2.59",
+    "ant-design-vue": "^1.6.5",
     "axios": "0.18.1",
     "core-js": "3.6.5",
     "echarts": "^4.9.0",

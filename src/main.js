@@ -4,6 +4,8 @@ import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import { Calendar, ConfigProvider } from 'ant-design-vue'
+import 'ant-design-vue/dist/antd.css'
 
 import '@/styles/index.scss' // global css
 
@@ -12,7 +14,7 @@ import store from './store'
 import router from './router'
 
 import '@/icons' // icon
-import '@/permission' // permission control
+// import '@/permission' // permission control
 
 // echarts图表
 import echarts from 'echarts/lib/echarts'
@@ -27,6 +29,9 @@ import 'echarts/lib/component/title'
 import { axTable, axTableColumn } from './components/table'
 import { axForm, axFormItem } from './components/form'
 import rules from './utils/validate-rules'
+
+Vue.use(Calendar)
+Vue.use(ConfigProvider)
 Vue.use(axForm)
 Vue.use(axFormItem)
 Vue.use(axTable)
