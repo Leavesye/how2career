@@ -27,6 +27,12 @@
         <el-menu-item class="sub-item" index="2-3" @click="linkTo('/answerer/center')">服务时间</el-menu-item>
       </el-submenu>
     </el-menu>
+    <el-image class="room-btn" :src="roomBtn"></el-image>
+    <div class="flex-hbc bottom-links">
+      <p>在线客服</p>
+      <div>|</div>
+      <p>常见问题</p>
+    </div>
   </div>
 </template>
 
@@ -35,7 +41,7 @@ export default {
   name: 'sidebar',
   data () {
     return {
-      
+      roomBtn: require('../../../assets/enter-room-btn.png')
     }
   },
   methods: {
@@ -48,11 +54,13 @@ export default {
 
 <style lang="scss" scoped>
 .sider-bar {
+  position: relative;
   width: 250px;
   background: #15479E;
   padding-top: 28px;
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
+  min-height: 800px;
 }
 i{
   color: #fff;
@@ -63,5 +71,20 @@ span {
 }
 .sub-item {
   padding-left: 50px!important;
+}
+.room-btn {
+  width: 180px;
+  height: 50px;
+  margin-top: 200px;
+  margin-left: 30px;
+}
+.bottom-links {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 154px;
+  font-size: 14px;
+  color: #fff;
 }
 </style>

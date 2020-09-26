@@ -1,19 +1,4 @@
 <template>
-<!-- <div class="layout"> -->
-  <!-- 顶部导航 -->
-  <!-- <navbar></navbar> -->
-  <!-- 中间内容区 -->
-  <!-- <section class="app-main flex"> -->
-    <!-- 侧边栏 -->
-    <!-- <side-bar /> -->
-    <!-- 页面路由 -->
-    <!-- <transition name="fade-transform" mode="out-in">
-      <router-view class="router-view" />
-    </transition> -->
-  <!-- </section> -->
-  <!-- 底部导航 -->
-  <!-- <bottom-navbar></bottom-navbar> -->
-<!-- </div> -->
 <div class="layout">
   <navbar></navbar>
   <section class="app-main flex">
@@ -24,19 +9,19 @@
       <router-view class="router-view" />
     </transition>
   </section>
-  <bottom-navbar></bottom-navbar>
+  <foot-bar />
 </div>
 </template>
 
 <script>
-import { Navbar,SideBar,BottomNavbar } from './components'
+import { Navbar,SideBar,FootBar } from './components'
 
 export default {
   name: 'Layout',
   components: {
     Navbar,
     SideBar,
-    BottomNavbar
+    FootBar
   }
 }
 </script>

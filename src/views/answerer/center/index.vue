@@ -1,35 +1,44 @@
 <template>
   <section style="padding: 30px">
     <!-- 未认证 -->
-    <div v-if="!isCert">
-      <div class="banner"></div>
+    <div v-if="isCert">
+      <el-image class="banner" :src="bannerImg"></el-image>
       <p class="reg-success">你已经成功注册咨询师</p>
-      <p class="step-desc">只需再完成以下2个步骤即可开始接受咨询</p>
+      <p class="condition">只需再完成以下2个步骤即可开始接受咨询</p>
       <section class="flex-hb">
         <!-- 步骤1 -->
         <div class="step" :class="{active: curStep == 1}" @click="handleClickStep(1)">
-          <div class="step-num"></div>
-          <div class="status-img" v-if="false"></div>
-          <div class="step-desc">
+          <el-image class="step-num" :src="step1"></el-image>
+          <!-- 审核状态 -->
+          <el-image class="status-img" :src="certFinish"></el-image>
+          <div class="step-review" v-if="false">
             <p>审核中</p>
             <p>你也可以设置服务时间</p>
           </div>
-          <div class="step-btn" :class="{active: curStep == 1}">完善个人信息</div>
+          <div class="step-review" >
+            <p>审核完成</p>
+            <p>请设置服务时间</p>
+          </div>
+          <!-- 填写简历 -->
+          <div class="step-fill" v-if="false">
+            <p>成为咨询师需要认证简历信息</p>
+            <p>请先完成简历填写</p>
+          </div>
+          <div v-if="false" class="step-btn" :class="{active: curStep == 1}">完善个人信息</div>
         </div>
         <!-- 步骤2 -->
         <div class="step" :class="{active: curStep == 2}" @click="handleClickStep(2)">
-          <div class="step-num"></div>
-          <div class="status-img" v-if="false"></div>
-          <div class="step-desc">
-            <p>审核中</p>
-            <p>你也可以设置服务时间</p>
+          <el-image class="step-num" :src="step2"></el-image>
+          <div class="step-setting">
+            <p>你也可以设置您的服务时间</p>
+            <p>以便通过审核后立即开始接受订单</p>
           </div>
           <div class="step-btn" :class="{active: curStep == 2}">服务时间设置</div>
         </div>
       </section>
     </div>
     <!-- 已认证 -->
-    <div v-if="isCert">
+    <div v-if="!isCert">
       <!-- 状态面板 -->
       <div class="pannel flex-hb">
         <div class="p-item"
@@ -89,12 +98,10 @@
 </template>
 
 <script>
-import CommonTable from '@/components/CommonTable'
 
 export default {
-  name: 'answerer',
+  name: 'answerer-center',
   components: {
-    CommonTable,
   },
   data () {
     return {
@@ -114,6 +121,23 @@ export default {
       ]
     }
   },
+  computed: {
+    bannerImg: function() {
+      return require('../../../assets/cert-top.png')
+    },
+    step1: function() {
+      return require('../../../assets/step1.svg')
+    },
+    step2: function() {
+      return require('../../../assets/step2.svg')
+    },
+    certApply: function() {
+      return require('../../../assets/cert-apply.png')
+    },
+    certFinish: function() {
+      return require('../../../assets/cert-finish.png')
+    },
+  },
   methods: {
     handleClickPannel (item, i) {
       this.isActive = i
@@ -128,8 +152,7 @@ export default {
 <style lang="scss" scoped>
 $color: #15479e;
 .banner {
-  height:240px;
-  background: #ccc;
+  height:244px;
 }
 .step {
   width: 420px;
@@ -141,7 +164,6 @@ $color: #15479e;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
 }
 .step.active {
   border: 1px solid $color;
@@ -149,16 +171,24 @@ $color: #15479e;
 .step-num {
   width: 70px;
   height: 70px;
-  background: #ccc;
+  margin-top: 60px;
+  margin-bottom: 50px;
 }
 .status-img {
   width: 90px;
   height: 90px;
-  background: #ccc;
+  margin-bottom: 24px;
+  margin: 0 auto;
 }
-.step-desc {
-  color: $color;
+.step-review {
+  color: #15479E;
   font-size: 16px;
+  text-align: center;
+}
+.step-setting, .step-fill {
+  color: #7C8EA5;
+  font-size: 16px;
+  text-align: center;
 }
 .step-btn {
   width: 180px;
@@ -179,7 +209,7 @@ $color: #15479e;
   font-size:32px;
   color: $color;
 }
-.step-desc {
+.condition {
   text-align: center;
   color: #36AE82;
   font-size: 18px;
