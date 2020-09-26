@@ -1,5 +1,5 @@
 <template>
-  <div class="login-container">
+  <div class="home">
     注册
   </div>
 </template>
@@ -8,7 +8,16 @@
 
 export default {
   name: 'register',
-  
+  data () {
+    return {
+      
+    }
+  },
+  methods: {
+
+  },
+  mounted() {
+  }
 }
 </script>
 
