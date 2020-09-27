@@ -6,9 +6,13 @@ Vue.use(Router)
 /* Layout */
 import Layout from '@/layout'
 
-import answerer from './answerer'
+import consultant from './consultant'
 
 export const constantRoutes = [
+  {
+    path: '/',
+    redirect: '/home'
+  },
   {
     path: '/home',
     component: () => import('@/views/home/index'),
@@ -27,11 +31,11 @@ export const constantRoutes = [
     hidden: true
   },
   {
-    path: '/answerer',
+    path: '/consultant',
     component: Layout,
-    redirect: '/answerer/center',
+    redirect: '/consultant/center',
     children: [
-      ...answerer
+      ...consultant
     ]
   },
 

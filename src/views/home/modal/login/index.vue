@@ -7,7 +7,7 @@
   <section class="modal-main">
     <el-image class="logo" :src="logo"></el-image>
     <ul class="flex tabs">
-      <li class="tab" v-on="{ click: () => handleTabClick(i)}" :style="{color: curTab == i ? item.color : ''}" v-for="(item, i) in tabs" :key="i">
+      <li class="tab" @click="handleTabClick(i)" :style="{color: curTab == i ? item.color : ''}" v-for="(item, i) in tabs" :key="i">
         {{ item.name }}
       </li>
       <div class="tab-slide" :style="{ left: tabs[curTab].left, backgroundColor: tabs[curTab].color}"></div>
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { sendCode, checkUser } from '@/api/login'
+import { sendCode, checkUser } from '@/api/user'
 
 export default {
   name: 'login-modal',
@@ -66,9 +66,7 @@ export default {
   methods: {
     handleTabClick(index) {
       this.curTab = index
-    },
-    handleTabMouseover(index) {
-      this.curTab = index
+      this.$refs.form.resetFields()
     },
     // 发送验证码
     handleSendCode() {

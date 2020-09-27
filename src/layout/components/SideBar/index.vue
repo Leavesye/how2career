@@ -5,15 +5,15 @@
       text-color="#fff"
       style="background: #15479E"
       active-text-color="#fff">
-      <el-menu-item index="1" @click="linkTo('/answerer/center')">
+      <el-menu-item index="1" @click="linkTo('/consultant/center')">
         <i class="iconfont iconshouye-01"></i>
         <span slot="title">我的首页</span>
       </el-menu-item>
-      <el-menu-item index="2" @click="linkTo('/answerer/order')">
+      <el-menu-item index="2" @click="linkTo('/consultant/order')">
         <i class="iconfont icondingdan-01"></i>
         <span slot="title">订单管理</span>
       </el-menu-item>
-      <el-menu-item index="3" @click="linkTo('/answerer/cost')">
+      <el-menu-item index="3" @click="linkTo('/consultant/cost')">
         <i class="iconfont iconfeiyong-01"></i>
         <span slot="title">费用管理</span>
       </el-menu-item>
@@ -22,9 +22,9 @@
           <i class="iconfont icongerenzhongxin-01"></i>
           <span>个人中心</span>
         </template>
-        <el-menu-item class="sub-item" index="2-1" @click="linkTo('/answerer/center')">基本信息</el-menu-item>
-        <el-menu-item class="sub-item" index="2-2" @click="linkTo('/answerer/center')">资质信息</el-menu-item>
-        <el-menu-item class="sub-item" index="2-3" @click="linkTo('/answerer/center')">服务时间</el-menu-item>
+        <el-menu-item class="sub-item" index="2-1" @click="linkTo('/consultant/center')">基本信息</el-menu-item>
+        <el-menu-item class="sub-item" index="2-2" @click="linkTo('/consultant/center')">资质信息</el-menu-item>
+        <el-menu-item class="sub-item" index="2-3" @click="linkTo('/consultant/center')">服务时间</el-menu-item>
       </el-submenu>
     </el-menu>
     <el-image class="room-btn" :src="roomBtn"></el-image>
