@@ -27,7 +27,7 @@
         <el-menu-item class="sub-item" index="2-3" @click="linkTo('/consultant/center')">服务时间</el-menu-item>
       </el-submenu>
     </el-menu>
-    <el-image class="room-btn" :src="roomBtn"></el-image>
+    <el-image class="room-btn" :src="roomBtn" @click="linkTo('/consultant/room')"></el-image>
     <div class="flex-hbc bottom-links">
       <p>在线客服</p>
       <div>|</div>
@@ -41,7 +41,11 @@ export default {
   name: 'sidebar',
   data () {
     return {
-      roomBtn: require('../../../assets/enter-room-btn.png')
+    }
+  },
+  computed: {
+    roomBtn: function() {
+      return require('../../../assets/enter-room-btn.png')
     }
   },
   methods: {
