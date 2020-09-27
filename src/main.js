@@ -21,7 +21,7 @@ import 'echarts/lib/chart/bar'
 import 'echarts/lib/component/tooltip'
 import 'echarts/lib/component/title'
 
-// schedule 插件11
+// schedule 插件
 // https://ej2.syncfusion.com/vue/documentation/schedule/getting-started/
 
 
