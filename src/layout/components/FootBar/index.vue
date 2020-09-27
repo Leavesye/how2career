@@ -3,15 +3,18 @@
     <div class="inner">
       <section class="flex-hb links">
         <div class="flex-hbc left">
-          <el-image class="logo" :src="logoImg"></el-image>
+          <el-image @click="goHome" class="logo"
+                    :src="logoImg"></el-image>
           <ul class="flex-hb">
             <li v-for="(o,i) in links"
-                :key="i">{{o.name}}</li>
+                :key="i">
+              <el-link class="link" :underline="false">{{o.name}}</el-link>
+            </li>
           </ul>
         </div>
         <ul class="flex-hb right">
           <li v-for="(o,i) in icons"
-              :key="i"><i :class="[o.code]"></i></li>
+              :key="i"><el-link class="link" :underline="false"><i :class="[o.code]"></i></el-link></li>
         </ul>
       </section>
       <section class="copyright">Copyright © 2020 howto careers All rights reserved 好途职场有限公司 版权所有 沪ICP备11011234号-1 沪公网安备3100020000号</section>
@@ -24,7 +27,6 @@ export default {
   name: 'footbar',
   data () {
     return {
-      logoImg: require('../../../assets/logo.png'),
       links: [
         { name: '我们的服务', path: '' },
         { name: '关于我们', path: '' },
@@ -32,13 +34,21 @@ export default {
         { name: '在线客服', path: '' },
       ],
       icons: [
-        {  code: 'iconfont iconweixin' },
-        {  code: 'iconfont iconweibo' },
-        {  code: 'iconfont iconTwitter' },
+        { code: 'iconfont iconweixin' },
+        { code: 'iconfont iconweibo' },
+        { code: 'iconfont iconTwitter' },
       ],
     }
   },
+  computed: {
+    logoImg: function() {
+      return require('../../../assets/logo.png')
+    }
+  },
   methods: {
+    goHome() {
+      this.$router.push('/home')
+    }
   }
 };
 </script>
@@ -47,7 +57,7 @@ export default {
 .footer {
   color: #fff;
   height: 150px;
-  background: #292E3D;
+  background: #292e3d;
   .inner {
     width: 1180px;
     margin: 0 auto;
@@ -55,6 +65,7 @@ export default {
       width: 96px;
       height: 40px;
       background: #fff;
+      cursor: pointer;
     }
     .links {
       padding: 24px 0;
@@ -64,6 +75,7 @@ export default {
         font-size: 14px;
         ul {
           width: 322px;
+      
         }
       }
       .right > li {
@@ -75,5 +87,8 @@ export default {
       font-size: 12px;
     }
   }
+}
+.link {
+  color: #fff;
 }
 </style>

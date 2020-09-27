@@ -1,31 +1,16 @@
 <template>
   <section style="padding: 30px">
     <!-- 状态面板 -->
-    <div class="pannel flex">
-      <div class="p-item"
-          :class="{ active: isActive == i }"
-          v-for="(o, i) in pannels"
-          :key="i"
-          @click="handleClickPannel(item, i)">
-        <p>{{o.name}}</p>
-      </div>
-    </div>
+    <pannel @change="handlePannelChange" :pannels="pannels" :current="curPannel"></pannel>
     <el-card>
       <!-- 搜索条件 -->
       <section class="flex-hbc search">
-        <div class="flex-hbc">
-          <div class="order-status">我的订单</div>
-        </div>
-        <div class="flex-hb time-box">
-          <div>时间</div>
-          <div class="flex-hbc" style="width: 114px">
-            <div class="time-sel" @click="handleTimeClick(o, i)" :class="{active: curTime==i}" v-for="(o, i) in times" :key="i">{{o.name}}</div>
-          </div>
-        </div>
+        <el-link type="primary" :underline="false">订单状态</el-link>
+        <time-picker @change="handleTimeChange" :times='times' :curTime="curTime"></time-picker>
         <el-date-picker
           style="width: 230px"
           size="small"
-          v-model="v"
+          v-model="datetime"
           type="daterange"
           range-separator="至"
           start-placeholder="开始日期"
@@ -56,17 +41,22 @@
 
 <script>
 import QuickTable from '@/components/QuickTable'
+import Pannel from '@/components/Pannel'
+import TimePicker from '@/components/TimePicker'
 
 export default {
   name: 'cost',
   components: {
     QuickTable,
+    Pannel,
+    TimePicker
   },
   data () {
     return {
+      datetime: '',
       isShow: false,
-      isActive: false,
-      curTime: false,
+      curPannel: '',
+      curTime: '',
       pannels: [
         { name: '未提现订单', count: 5 },
         { name: '费用待发放订单', count: 5 },
@@ -151,19 +141,16 @@ export default {
     }
   },
   methods: {
-    test() {
-      alert(11)
-    },
     handleClose() {
       this.isShow = false
     },
     handleOpenDetail() {
       this.isShow = true
     },
-    handleClickPannel (item, i) {
-      this.isActive = i
+    handlePannelChange (item, i) {
+      this.curPannel = i
     },
-    handleTimeClick(v, i) {
+    handleTimeChange(v, i) {
       this.curTime = i
     },
     handlePageChange (pageIndex) {
@@ -179,29 +166,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-.pannel {
-  margin-bottom: 20px;
-}
-.p-item {
-  margin-right: 20px;
-  width: 205px;
-  height: 60px;
-  background: #FFFFFF;
-  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  color: #7C8EA5;
-}
-.p-item > p {
-  font-size: 14px;
-  margin-top: 20px;
-  margin-left: 20px;
-}
-.p-item.active {  
-  background: linear-gradient(123deg, #15479E 0%, #3271CD 100%);
-  border-radius: 8px;
-  color: #fff;
-}
 .search {
   padding-bottom: 12px;
   border-bottom: 1px solid #EDEEEF;
@@ -210,16 +174,6 @@ export default {
   margin-right: 10px;
   color: #15479E;
   font-size: 14px;
-}
-.time-box {
-  width: 160px;
-  font-size: 14px;
-}
-.time-sel {
-  color:#7C8FA5;
-}
-.time-sel.active {
-  color: #434D57;
 }
 .title {
   font-size: 14px;

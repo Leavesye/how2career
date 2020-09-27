@@ -29,9 +29,9 @@
     </el-menu>
     <el-image class="room-btn" :src="roomBtn" @click="linkTo('/consultant/room')"></el-image>
     <div class="flex-hbc bottom-links">
-      <p>在线客服</p>
+      <el-link :underline="false" style="color: #fff">在线客服</el-link>
       <div>|</div>
-      <p>常见问题</p>
+      <el-link :underline="false" style="color: #fff">常见问题</el-link>
     </div>
   </div>
 </template>
@@ -81,6 +81,7 @@ span {
   height: 50px;
   margin-top: 200px;
   margin-left: 30px;
+  cursor: pointer;
 }
 .bottom-links {
   position: absolute;

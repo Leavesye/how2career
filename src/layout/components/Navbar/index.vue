@@ -1,9 +1,9 @@
 <template>
   <section class="navbar">
     <section class="menu-container flex-hbc">
-      <el-image class="logo" :src="logoImg"></el-image>
+      <el-image  @click="goHome" class="logo" :src="logoImg"></el-image>
       <ul class="menu">
-        <li v-for="(o, i) in menus" :key="i">{{o.name}}</li>
+        <li v-for="(o, i) in menus" :key="i"><el-link class="link" :underline="false">{{o.name}}</el-link></li>
       </ul>
       <el-avatar size="small" icon="el-icon-user-solid"></el-avatar>
     </section>
@@ -24,7 +24,15 @@ export default {
       ]
     }
   },
+  computed: {
+    logoImg: function() {
+      return require('../../../assets/logo.png')
+    }
+  },
   methods: {
+    goHome() {
+      this.$router.push('/home')
+    }
   }
 };
 </script>
@@ -44,6 +52,7 @@ export default {
       width: 96px;
       height: 40px;
       background: #fff;
+      cursor: pointer;
     }
     .menu {
       width: 504px;
@@ -58,5 +67,8 @@ export default {
       }
     }
   }
+}
+.link {
+  color: #fff;
 }
 </style>

@@ -11,9 +11,12 @@
     </div>
     <p class="time">咨询备选时间 (北京时间)：</p>
     <ul class="flex-hb">
-      <li class="time-item" v-for="(o, i) in 3" :ley="i">2020-12-11 20:13:12</li>
+      <li class="time-item" v-for="(o, i) in 3" :key="i">2020-12-11 20:13:12</li>
     </ul>
-    <p class="select-other">选择其他时间<i class="el-icon-arrow-down"></i></p>
+    <p class="select-other" @click="handleSelectOtherTime">选择其他时间<i class="el-icon-arrow-down"></i></p>
+    <a-config-provider :locale="locale" v-if="isShowTimepicker">
+      <a-calendar @panelChange="onPanelChange" />
+    </a-config-provider>
     <div class="flex info-box" v-if="true">
       <div class="head">
         <div></div>
@@ -55,18 +58,27 @@
 </template>
 
 <script>
+import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN'
+
 export default {
   name: 'order-detail',
   props: ['isShow'],
   data () {
     return {
-      
+      isShowTimepicker: true,
+      locale: zhCN,
     }
   },
   methods: {
     handleConfirmTime() {
       this.$emit('close')
-    }
+    },
+    handleSelectOtherTime() {
+      this.isShowTimepicker = true
+    },
+    onPanelChange(value, mode) {
+      console.log(value, mode);
+    },
   }
 };
 </script>

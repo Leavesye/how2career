@@ -1,15 +1,7 @@
 <template>
   <section style="padding: 30px">
     <!-- 状态面板 -->
-    <div class="pannel flex">
-      <div class="p-item"
-          :class="{ active: isActive == i }"
-          v-for="(o, i) in pannels"
-          :key="i"
-          @click="handleClickPannel(item, i)">
-        <p>{{o.name}}</p>
-      </div>
-    </div>
+    <pannel @change="handlePannelChange" :pannels="pannels" :current="curPannel"></pannel>
     <el-card class="list-item-top">
       <p class="title">即将开始的咨询</p>
       <order-item :o="o" :noBorder="true" />
@@ -18,8 +10,8 @@
       <!-- 搜索条件 -->
       <section class="flex-hbc search">
         <div class="flex-hbc">
-          <div class="order-status">订单状态</div>
-          <el-select v-model="value" placeholder="" size="small" style="width: 140px">
+          <el-link type="primary" :underline="false">订单状态</el-link>
+          <el-select class="order-status" v-model="orderStuts" placeholder="" size="small">
             <el-option
               v-for="item in []"
               :key="item.value"
@@ -28,16 +20,11 @@
             </el-option>
           </el-select>
         </div>
-        <div class="flex-hb time-box">
-          <div>时间</div>
-          <div class="flex-hbc" style="width: 114px">
-            <div class="time-sel" @click="handleTimeClick(o, i)" :class="{active: curTime==i}" v-for="(o, i) in times" :key="i">{{o.name}}</div>
-          </div>
-        </div>
+        <time-picker @change="handleTimeChange" :times='times' :curTime="curTime"></time-picker>
         <el-date-picker
           style="width: 230px"
           size="small"
-          v-model="value1"
+          v-model="orderDate"
           type="daterange"
           range-separator="至"
           start-placeholder="开始日期"
@@ -73,19 +60,25 @@
 <script>
 import { ConfirmDetail, FinishDetail } from './modal/order-detail'
 import OrderItem from '@/components/OrderItem'
+import Pannel from '@/components/Pannel'
+import TimePicker from '@/components/TimePicker'
 
 export default {
   name: 'answerer',
   components: {
     OrderItem,
     ConfirmDetail,
-    FinishDetail
+    FinishDetail,
+    Pannel,
+    TimePicker
   },
   data () {
     return {
+      orderStuts: '',
+      orderDate: '',
       isShow: false,
-      isActive: false,
-      curTime: false,
+      curPannel: '',
+      curTime: '',
       pannels: [
         { name: '待确认订单', count: 5 },
         { name: '待服务订单', count: 5 },
@@ -121,10 +114,10 @@ export default {
     handleOpenDetail() {
       this.isShow = true
     },
-    handleClickPannel (item, i) {
-      this.isActive = i
+    handlePannelChange (item, i) {
+      this.curPannel = i
     },
-    handleTimeClick(v, i) {
+    handleTimeChange(v, i) {
       this.curTime = i
     },
     handlePageChange (pageIndex) {
@@ -141,47 +134,15 @@ export default {
 
 <style lang="scss" scoped>
 
-.pannel {
-  margin-bottom: 20px;
-}
-.p-item {
-  margin-right: 20px;
-  width: 205px;
-  height: 60px;
-  background: #FFFFFF;
-  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  color: #7C8EA5;
-}
-.p-item > p {
-  font-size: 14px;
-  margin-top: 20px;
-  margin-left: 20px;
-}
-.p-item.active {  
-  background: linear-gradient(123deg, #15479E 0%, #3271CD 100%);
-  border-radius: 8px;
-  color: #fff;
-}
 .search {
   padding-bottom: 12px;
   border-bottom: 1px solid #EDEEEF;
 }
 .order-status {
-  margin-right: 10px;
-  color: #15479E;
-  font-size: 14px;
+  width: 140px;
+  margin-left: 10px;
 }
-.time-box {
-  width: 160px;
-  font-size: 14px;
-}
-.time-sel {
-  color:#7C8FA5;
-}
-.time-sel.active {
-  color: #434D57;
-}
+
 .title {
   font-size: 14px;
   color: #15479E;

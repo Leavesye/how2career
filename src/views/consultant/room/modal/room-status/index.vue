@@ -28,7 +28,7 @@
     <!-- <el-button size="mini" type="primary" plain @click="handleConfirmTime">等待对方加入</el-button> -->
     <!-- <el-button size="mini" type="primary" plain @click="handleConfirmTime">我已经准备好</el-button> -->
     <!-- 咨询师 -->
-    <el-button size="mini" type="info" plain @click="confirm">等待对方加入</el-button>
+    <el-button size="mini" type="success" plain @click="confirm">等待对方加入</el-button>
   </span>
 </el-dialog>
 </template>

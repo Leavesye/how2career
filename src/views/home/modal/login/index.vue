@@ -26,9 +26,9 @@
       </el-form-item>
     </el-form>
     <div class="login-bottom">
-      <el-button :style="{ backgroundColor: tabs[curTab].color}" class="reg-btn" type="success" @click="handleReg">注册</el-button>
+      <el-button class="reg-btn" :type="curTab == 0? 'success' : 'primary'" @click="handleReg">注册</el-button>
       <p class="tips">未注册手机验证后自动登录，注册即同意注册协议</p>
-      <el-link :style="{ color: tabs[curTab].color }" class="to-login" type="success">登录已有账号</el-link>
+      <el-link class="to-login" :type="curTab == 0? 'success' : 'primary'">登录已有账号</el-link>
     </div>
   </section>
 </el-dialog>
@@ -144,7 +144,6 @@ export default {
   margin-top: 20px;
 }
 .to-login {
-  color: #36AE82;
   margin-top: 46px;
 }
 .login-bottom {
