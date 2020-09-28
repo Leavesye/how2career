@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  name: 'pannel',
+  name: 'pannels',
   props: ['pannels', 'current'],
   data () {
     return {

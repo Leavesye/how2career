@@ -1,5 +1,5 @@
 <template>
-  <div class="sider-bar">
+  <div class="sider-bar" :style="{minHeight}">
     <el-menu
       default-active="2"
       text-color="#fff"
@@ -41,6 +41,7 @@ export default {
   name: 'sidebar',
   data () {
     return {
+      minHeight: '700px'
     }
   },
   computed: {
@@ -52,19 +53,22 @@ export default {
     linkTo(path) {
       this.$router.push(path)
     },
-  }
+  },
+  mounted() {
+    this.minHeight = document.body.clientHeight - (150+60+20*2) + 'px'
+    console.log(document.body.clientHeight)
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 .sider-bar {
   position: relative;
-  width: 250px;
+  width: 240px;
   background: #15479E;
   padding-top: 28px;
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
-  min-height: 800px;
 }
 i{
   color: #fff;
@@ -79,8 +83,7 @@ span {
 .room-btn {
   width: 180px;
   height: 50px;
-  margin-top: 200px;
-  margin-left: 30px;
+  margin: 200px 0 50px 30px;
   cursor: pointer;
 }
 .bottom-links {

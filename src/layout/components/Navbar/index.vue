@@ -15,7 +15,6 @@ export default {
   name: 'navbar',
   data() {
     return {
-      logoImg: require('../../../assets/logo.png'),
       menus :[
         {name: '首页', path: ''},
         {name: '我们的服务', path: ''},

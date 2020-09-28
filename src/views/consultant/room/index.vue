@@ -75,7 +75,7 @@
         <el-tab-pane label="其他信息" name="fourth">其他信息</el-tab-pane>
       </el-tabs>
     </el-card>
-    <room-status :isShow="isShow"></room-status>
+    <room-status :isShow="isShow" @close="handleCloseModal"></room-status>
   </div>
 </template>
 
@@ -98,7 +98,12 @@ export default {
     }
   },
   methods: {
-    
+    handleCloseModal() {
+      this.isShow = false
+    }
+  },
+  mounted() {
+    setInterval(() => this.isShow = true, 30*1000)
   }
 }
 </script>

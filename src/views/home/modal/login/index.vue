@@ -21,7 +21,7 @@
       <el-form-item label="" prop="vCode">
         <div class="flex-hb">
           <el-input :maxlength="6" class="check-code" placeholder="请输入验证码" v-model="info.vCode"></el-input>
-          <el-button plain @click="handleSendCode">获取验证码</el-button>
+          <el-button class="send-code" plain @click="handleSendCode">{{ seconds > 0 ? seconds + 's' : '获取验证码'}}</el-button>
         </div>
       </el-form-item>
     </el-form>
@@ -43,6 +43,7 @@ export default {
   data () {
     const r = this.$rules
     return {
+      seconds: 0,
       curTab: 0,
       tabs: [
         {name: '注册咨询者', color: '#36AE82', left: 0},
@@ -70,10 +71,21 @@ export default {
     },
     // 发送验证码
     handleSendCode() {
+      if (this.seconds > 0) {
+        return false
+      }
       this.$refs.form.validateField('userName', (errMsg) => {
         if (!errMsg) {
           sendCode({ userName: this.info.userName }).then(res => {
             console.log(res)
+            this.seconds = 10
+            const sid = setInterval(() => {
+              if (this.seconds == 0) {
+                clearInterval(sid)
+                return
+              }
+              this.seconds--
+            }, 1000)
           })
         }
       })
@@ -133,7 +145,11 @@ export default {
   transition: .5s all;
 }
 .check-code {
+  width: 210px;
   margin-right: 10px;
+}
+.send-code {
+  width: 120px;
 }
 .reg-btn {
   width: 100%;

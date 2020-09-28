@@ -12,8 +12,8 @@ import App from './App'
 import store from './store'
 import router from './router'
 
-import '@/icons' // icon
 // import '@/permission' // permission control
+import TRTC from 'trtc-js-sdk'
 
 // echarts图表
 import echarts from 'echarts/lib/echarts'
@@ -37,6 +37,13 @@ Vue.use(axTable)
 Vue.use(axTableColumn)
 Vue.prototype.$rules = rules
 Vue.prototype.$echarts = echarts
+
+// const client = TRTC.createClient({
+//   mode: 'rtc',
+//   sdkAppId: '1400420577',
+//   userId: '123',
+//   userSig:'12333'
+// })
 
 /**
  * If you don't want to use mock-server

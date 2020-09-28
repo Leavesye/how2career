@@ -20,7 +20,7 @@
     </div>
     <div v-else class="progress-box">
       <el-progress :show-text="false" :width="250" color="#36AE82" style="position: relative" type="circle" :percentage="percent"></el-progress>
-      <div class="number">3</div>
+      <div class="number" :class="[o.ani]" v-for="(o, i) in nums" :key="i">{{o.v}}</div>
     </div>
   </section>
   <span slot="footer" class="dialog-footer">
@@ -28,7 +28,7 @@
     <!-- <el-button size="mini" type="primary" plain @click="handleConfirmTime">等待对方加入</el-button> -->
     <!-- <el-button size="mini" type="primary" plain @click="handleConfirmTime">我已经准备好</el-button> -->
     <!-- 咨询师 -->
-    <el-button size="mini" type="success" plain @click="confirm">等待对方加入</el-button>
+    <!-- <el-button size="mini" type="success" plain >等待对方加入</el-button> -->
   </span>
 </el-dialog>
 </template>
@@ -36,6 +36,7 @@
 <script>
 import Avatar from '@/components/Avatar'
 import CountDown from '@/components/CountDown'
+
 export default {
   name: 'room-status',
   components: {
@@ -47,20 +48,42 @@ export default {
     return {
       isWait: false,
       percent: 0,
+      nums: [
+        {v: '3', ani: ''},
+        {v: '2', ani: ''},
+        {v: '1', ani: ''},
+      ]
     }
   },
   methods: {
-    confirm() {
-      const sid = setInterval(() => {
-        if (this.percent == 100) {
-          clearInterval(sid)
-          this.percent = 0
-          return false
-        }
-        this.percent +=10
-      }, 300)
+    go() {
+      this.nums.forEach((o, i) => {
+        let j = i
+        setTimeout(() => {
+          o.ani="animate"
+          this.percent += 100/3
+          if (j==2) {
+            setTimeout(() => this.$emit('close'), 500)
+          }
+        }, 1000 * j)
+      })
     }
-  }
+  },
+  watch: {
+    'isShow': function(newV, oldV) {
+      console.log(newV, oldV)
+      if (newV) {
+        this.go()
+      } else {
+        this.nums =  [
+          {v: '3', ani: ''},
+          {v: '2', ani: ''},
+          {v: '1', ani: ''},
+        ]
+        this.percent = 0
+      }
+    }
+  },
 };
 </script>
 
@@ -86,7 +109,16 @@ export default {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  font-size: 200px;
+  font-size: 160px;
   color: #15479E;
+  opacity: 0;
+}
+@keyframes numChange {
+  0%   {font-size: 120px;opacity: .5}
+  50%  {font-size: 200px; opacity: 1;}
+  100% {font-size: 200px;opacity: 0;}
+}
+.animate {
+  animation: numChange 1.2s;
 }
 </style>

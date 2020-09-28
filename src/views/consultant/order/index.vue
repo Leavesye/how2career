@@ -112,6 +112,7 @@ export default {
       this.isShow = false
     },
     handleOpenDetail() {
+      console.log(111)
       this.isShow = true
     },
     handlePannelChange (item, i) {

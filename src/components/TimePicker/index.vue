@@ -3,12 +3,12 @@
     <div>时间</div>
     <div class="flex-hbc"
          style="width: 114px">
-      <el-link class="time-sel"
+      <div class="time-sel"
                :underline="false"
                @click="handleTimeClick(o, i)"
                :class="{active: curTime===i}"
                v-for="(o, i) in times"
-               :key="i">{{o.name}}</el-link>
+               :key="i">{{o.name}}</div>
     </div>
   </div>
 </template>
@@ -36,6 +36,7 @@ export default {
   font-size: 14px;
 }
 .time-sel {
+  cursor: pointer;
   color: #7c8fa5;
 }
 .time-sel.active {
