@@ -4,7 +4,6 @@ import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 
 import ElementUI from 'element-ui'
 import '../theme/index.css'
-import { Calendar, ConfigProvider } from 'ant-design-vue'
 
 import '@/styles/index.scss' // global css
 
@@ -29,8 +28,6 @@ import { axTable, axTableColumn } from './components/table'
 import { axForm, axFormItem } from './components/form'
 import rules from './utils/validate-rules'
 
-Vue.use(Calendar)
-Vue.use(ConfigProvider)
 Vue.use(axForm)
 Vue.use(axFormItem)
 Vue.use(axTable)

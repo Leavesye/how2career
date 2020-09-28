@@ -2,7 +2,7 @@
 <el-dialog
   title="订单详情"
   :visible.sync="isShow"
-  width="630px"
+  width="700px"
   center>
   <section class="modal-main">
     <div class="flex">
@@ -13,10 +13,8 @@
     <ul class="flex-hb">
       <li class="time-item" v-for="(o, i) in 3" :key="i">2020-12-11 20:13:12</li>
     </ul>
-    <p class="select-other" @click="handleSelectOtherTime">选择其他时间<i class="el-icon-arrow-down"></i></p>
-    <a-config-provider :locale="locale" v-if="isShowTimepicker">
-      <a-calendar @panelChange="onPanelChange" />
-    </a-config-provider>
+    <calendar :isShowCalendar="isShowCalendar"></calendar>
+    <p class="select-other" @click="handleSelectTime">选择其他时间<i :class="[isShowCalendar?'el-icon-arrow-up':'el-icon-arrow-down']"></i></p>
     <div class="flex info-box" v-if="true">
       <div class="head">
         <div></div>
@@ -58,26 +56,25 @@
 </template>
 
 <script>
-import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN'
+import Calendar from '@/components/Calendar'
 
 export default {
   name: 'order-detail',
   props: ['isShow'],
+  components: {
+    Calendar
+  },
   data () {
     return {
-      isShowTimepicker: true,
-      locale: zhCN,
+      isShowCalendar: false,
     }
   },
   methods: {
     handleConfirmTime() {
       this.$emit('close')
     },
-    handleSelectOtherTime() {
-      this.isShowTimepicker = true
-    },
-    onPanelChange(value, mode) {
-      console.log(value, mode);
+    handleSelectTime() {
+      this.isShowCalendar = !this.isShowCalendar
     },
   }
 };
@@ -96,7 +93,7 @@ export default {
   margin-bottom: 15px;
 }
 .time-item {
-  width: 180px;
+  width: 200px;
   height: 32px;
   line-height: 32px;
   text-align: center;
@@ -108,6 +105,7 @@ export default {
   height: 60px;
   line-height: 60px;
   color: #15479E;
+  cursor: pointer;
 }
 .info-box {
   padding-top: 30px;
