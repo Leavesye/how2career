@@ -30,7 +30,7 @@
           start-placeholder="开始日期"
           end-placeholder="结束日期">
         </el-date-picker>
-        <el-button size="mini">查询</el-button>
+        <el-button size="mini" @click="handleSearch">查询</el-button>
       </section>
       <!-- 订单列表 -->
       <section v-for="(o ,i) in list" :key="i">
@@ -108,6 +108,9 @@ export default {
     }
   },
   methods: {
+    handleSearch() {
+      
+    },
     handleClose() {
       this.isShow = false
     },

@@ -78,7 +78,7 @@ export default {
         if (!errMsg) {
           sendCode({ userName: this.info.userName }).then(res => {
             console.log(res)
-            this.seconds = 10
+            this.seconds = 60
             const sid = setInterval(() => {
               if (this.seconds == 0) {
                 clearInterval(sid)

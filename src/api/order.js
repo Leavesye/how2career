@@ -40,6 +40,22 @@ export function getConsumerOrders(params) {
     params
   })
 }
+// 查询咨询者订单数量统计
+export function getConsumerOrdersCount(params) {
+  return request({
+    url: '/consumer/orders/list/count',
+    method: 'get',
+    params
+  })
+}
+// 查询咨询师订单数量统计
+export function getConsultantOrdersCount(params) {
+  return request({
+    url: '/consultant/orders/list/count',
+    method: 'get',
+    params
+  })
+}
 // 查询咨询者订单详情
 export function getConsumerOrderById(params) {
   return request({

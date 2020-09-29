@@ -4,6 +4,7 @@ import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 
 import ElementUI from 'element-ui'
 import '../theme/index.css'
+import * as elementApi from './utils/element-api'
 
 import '@/styles/index.scss' // global css
 
@@ -28,12 +29,15 @@ import { axTable, axTableColumn } from './components/table'
 import { axForm, axFormItem } from './components/form'
 import rules from './utils/validate-rules'
 
+console.log(elementApi)
 Vue.use(axForm)
 Vue.use(axFormItem)
 Vue.use(axTable)
 Vue.use(axTableColumn)
 Vue.prototype.$rules = rules
 Vue.prototype.$echarts = echarts
+Vue.prototype.alert = elementApi.alert
+Vue.prototype.loading = elementApi.loading
 
 // const client = TRTC.createClient({
 //   mode: 'rtc',
