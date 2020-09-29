@@ -1,13 +1,13 @@
-import education from './education'
-import experience from './experience'
+import educations from './educations'
+import experiences from './experiences'
 import socialEcurity from './social-ecurity'
-import license from './license'
+import licenses from './licenses'
 import callup from './callup'
 
 export default {
-  education, // 学历
-  experience, // 工作经验
+  educations, // 学历
+  experiences, // 工作经验
   socialEcurity, // 社保证明
-  license, // 执照与证书
+  licenses, // 执照与证书
   callup, // 执照与证书
 }

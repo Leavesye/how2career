@@ -68,14 +68,12 @@ export default {
     label: '主要工作内容与业绩',
     value : '' ,
     props: { type: 'textarea', rows: "6" },
-    rules : [r.required()],
     events : {},
   },
   jgg: {
     label: '奖励和荣誉',
     value : '' ,
     props: { type: 'textarea', rows: "6" },
-    rules : [r.required()],
     events : {},
   },
   hf: {
@@ -85,15 +83,12 @@ export default {
     inputPlace: '团队人数',
     value : '' ,
     type : 'checkbox',
-    rules : [{ required : true , message : '必选项' }] ,
     events : {},
   },
   jg11: {
     label: '主要成果',
     value : '' ,
     props: { type: 'textarea', rows: "6" },
-    rules : [r.required()],
     events : {},
   },
-  
 }

@@ -7,7 +7,10 @@ export default {
     label: '拥有证书信息',
     value: '',
     rules: [r.required()],
-    layout: {sm : 10, md : 10, lg : 10}
+    layout: { sm: 10, md: 10, lg: 10 },
+    props: {
+      placeholder: '请输入证书名称'
+    }
   },
   f: {
     type: 'date',
@@ -15,14 +18,20 @@ export default {
     value: '',
     rules: [r.required()],
     layout: {sm : 7, md : 7, lg : 7},
-    labelWidth: '0'
+    labelWidth: '0',
+    props: {
+      placeholder: '有效日期'
+    }
   },
   g: {
     label: '',
     value: '',
     rules: [r.required()],
     layout: {sm : 7, md : 7, lg : 7},
-    labelWidth: '0'
+    labelWidth: '0',
+    props: {
+      placeholder: '请输入补充信息'
+    }
   },
   coverImg: {
     label: '',
