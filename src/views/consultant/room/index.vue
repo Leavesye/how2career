@@ -103,7 +103,7 @@ export default {
     }
   },
   mounted() {
-    setInterval(() => this.isShow = true, 30*1000)
+    // setInterval(() => this.isShow = true, 30*1000)
   }
 }
 </script>

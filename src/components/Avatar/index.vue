@@ -4,9 +4,7 @@
     class="avatar"
     src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"></el-image>
   <p class="name">马里奥大叔</p>
-  <el-image
-    class="micro"
-    src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"></el-image>
+  <div class="micro ani"><i class="iconfont iconhuatong"></i></div>
 </div>
 </template>
 
@@ -46,6 +44,18 @@ export default {
   bottom: 30px;
   width: 30px;
   height: 30px;
+  line-height: 30px;
   border-radius: 50%;
+  background: #36AE82;
+}
+.micro i {
+  color: #fff;
+}
+@keyframes flash {
+  from {background: #36AE82}
+  to {background: #15CA83}
+}
+.ani {
+  animation: flash 1s infinite;
 }
 </style>
