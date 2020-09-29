@@ -1,7 +1,7 @@
 <template>
   <div class="sider-bar" :style="{minHeight}">
     <el-menu
-      default-active="2"
+      :default-active="activeMenu"
       text-color="#fff"
       style="background: #15479E"
       active-text-color="#fff">
@@ -22,9 +22,9 @@
           <i class="iconfont icongerenzhongxin-01"></i>
           <span>个人中心</span>
         </template>
-        <el-menu-item class="sub-item" index="2-1" @click="linkTo('/consultant/center')">基本信息</el-menu-item>
-        <el-menu-item class="sub-item" index="2-2" @click="linkTo('/consultant/center')">资质信息</el-menu-item>
-        <el-menu-item class="sub-item" index="2-3" @click="linkTo('/consultant/center')">服务时间</el-menu-item>
+        <el-menu-item class="sub-item" index="3-1" @click="linkTo('/consultant/fill')">基本信息</el-menu-item>
+        <el-menu-item class="sub-item" index="3-2" @click="linkTo('/consultant/center')">资质信息</el-menu-item>
+        <el-menu-item class="sub-item" index="3-3" @click="linkTo('/consultant/setting')">服务时间</el-menu-item>
       </el-submenu>
     </el-menu>
     <el-image class="room-btn" :src="roomBtn" @click="linkTo('/consultant/room')"></el-image>
@@ -37,10 +37,18 @@
 </template>
 
 <script>
+const routes = {
+  '1': '/consultant/center',
+  '2': '/consultant/order',
+  '3': '/consultant/cost',
+  '3-1': '/consultant/fill',
+  '3-3': '/consultant/setting',
+}
 export default {
   name: 'sidebar',
   data () {
     return {
+      activeMenu: '1',
       minHeight: '700px'
     }
   },
@@ -56,7 +64,12 @@ export default {
   },
   mounted() {
     this.minHeight = document.body.clientHeight - (150+60+20*2) + 'px'
-    console.log(document.body.clientHeight)
+    // 侧边栏选中高亮处理
+    for(let key in routes) {
+      if (this.$route.path.includes(routes[key])) {
+        this.activeMenu = key
+      }
+    }
   },
 };
 </script>

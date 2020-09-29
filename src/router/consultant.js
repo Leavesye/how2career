@@ -19,4 +19,8 @@ export default [
     path: '/consultant/room',
     component: () => import('@/views/consultant/room/index'),
   },
+  {
+    path: '/consultant/setting',
+    component: () => import('@/views/consultant/time-setting/index'),
+  },
 ]
