@@ -47,11 +47,11 @@
       </el-row>
       <el-row>
         <el-col :offset="7" :span="17">
-          <div class="flex" style="margin-top:20px">
-            <el-badge type="info" style="margin-right: 16px;" v-for="(o,i) in 3" :key="i" value="X" >
-                <el-button size="small">英语</el-button>
-              </el-badge>
-          </div>
+          <ul class="flex item-select">
+            <li v-for="(o,i) in 3" :key="i">英语
+              <i class="el-icon-close"></i>
+            </li>
+          </ul>
         </el-col>
       </el-row>
     </section>
@@ -66,11 +66,11 @@
       </el-row>
       <el-row>
         <el-col :offset="7" :span="17">
-          <div class="flex" style="margin-top:20px">
-            <el-badge type="info" style="margin-right: 16px;" v-for="(o,i) in 3" :key="i" value="X" >
-                <el-button size="small">java</el-button>
-              </el-badge>
-          </div>
+          <ul class="flex item-select">
+            <li v-for="(o,i) in 3" :key="i">java
+              <i class="el-icon-close"></i>
+            </li>
+          </ul>
         </el-col>
       </el-row>
     </section>
@@ -94,7 +94,7 @@ export default {
   data () {
     const r = this.$rules
     return {
-      isShow: true,
+      isShow: false,
       labelWidth:  '140px',
       form1: {
         a: {
@@ -329,7 +329,7 @@ export default {
               <div class="flex-vc">
                 <div class="upload-btn">
                   <p style="margin-top: 12px; height: 22px;"><i class="el-icon-plus"></i></p>
-                  <div style="color: #9B9B9B;font-size: 14px">上传证数</div>
+                  <div style="color: #9B9B9B;font-size: 14px">上传证书</div>
                 </div>
                 <div style="margin-left: 10px;color: #9B9B9B;font-size: 14px">支持格式：pdf.jpg.jpeg.png.bmp,不大于2M</div>
               </div>
@@ -379,7 +379,7 @@ export default {
               <div class="flex-vc">
                 <div class="upload-btn">
                   <p style="margin-top: 12px; height: 22px;"><i class="el-icon-plus"></i></p>
-                  <div style="color: #9B9B9B;font-size: 14px">上传证数</div>
+                  <div style="color: #9B9B9B;font-size: 14px">上传证书</div>
                 </div>
                 <div style="margin-left: 10px;color: #9B9B9B;font-size: 14px">支持格式：pdf.jpg.jpeg.png.bmp,不大于2M</div>
               </div>
@@ -419,7 +419,7 @@ export default {
               <div class="flex-vc">
                 <div class="upload-btn">
                   <p style="margin-top: 12px; height: 22px;"><i class="el-icon-plus"></i></p>
-                  <div style="color: #9B9B9B;font-size: 14px">上传证数</div>
+                  <div style="color: #9B9B9B;font-size: 14px">上传证书</div>
                 </div>
                 <div style="margin-left: 10px;color: #9B9B9B;font-size: 14px">支持格式：pdf.jpg.jpeg.png.bmp,不大于2M</div>
               </div>
@@ -486,5 +486,30 @@ export default {
 }
 .upload-box {
   padding: 0 70px;
+}
+.item-select {
+  margin-top: 20px;
+}
+.item-select li {
+  position: relative;
+  width: 90px;
+  height: 32px;
+  line-height: 32px;
+  text-align: center;
+  background: #EDEEEF;
+  border-radius: 4px;
+  border: 1px solid #EDEEEF;
+  margin-right: 18px;
+}
+.item-select li > i {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  width: 14px;
+  height: 14px;
+  line-height: 14px;
+  border-radius: 50%;
+  background: #7A7F84;
+  color: #fff;
 }
 </style>

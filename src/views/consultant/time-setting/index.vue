@@ -13,11 +13,11 @@
           <div>04</div>
         </li>
         <li>
-          <p>当前Slot数</p>
+          <p>可用Slot数</p>
           <div>04</div>
         </li>
         <li>
-          <p>当前Slot数</p>
+          <p>停用Slot数</p>
           <div>04</div>
         </li>
       </ul>
@@ -29,18 +29,23 @@
       <!-- 日程表 -->
       <scheduler></scheduler>
     </el-card>
+    <change-slot :isShow="isShow"></change-slot>
   </div>
 </template>
 
 <script>
+import ChangeSlot from './modal/change-slot'
 import Scheduler from '@/components/Scheduler'
+
 export default {
   name: 'time-setting',
   components: {
-    Scheduler
+    Scheduler,
+    ChangeSlot
   },
   data () {
     return {
+      isShow: false,
       current: 0,
       btns: [
         {name: '调整Slot数量'},
@@ -51,6 +56,7 @@ export default {
   methods: {
     handleClickBtn(item, i) {
       this.current = i
+      this.isShow = true
     }
   },
   mounted() {
