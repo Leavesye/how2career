@@ -175,7 +175,7 @@ export default {
       this.educations.push(_.cloneDeep(eduForm))
     },
     handleDelEducation (i) {
-      if (this.education.length == 1) return false
+      if (this.educations.length == 1) return false
       this.educations.splice(i, 1)
     },
     handleAddExperience () {
