@@ -5,15 +5,15 @@
   width="430px"
   center>
   <section class="modal-main">
-    <div class="flex-hb item">
+    <div class="flex-hbc item">
       <label for="">当前Slot数:</label>
       <p class="num">06</p>
     </div>
-    <div class="flex-hb item">
+    <div class="flex-hbc item">
       <label for="">调整Slot数：</label>
       <el-input class="item-input" v-model="value" size="small"></el-input>
     </div>
-    <div class="flex-hb item">
+    <div class="flex-hbc item">
       <label for="">调整后，你还需支付：</label>
       <p class="num">¥1200.00</p>
     </div>
