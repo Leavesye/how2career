@@ -83,20 +83,22 @@
         <el-col :offset="7"
                 :span="16">
           <el-input style="width: 460px;margin-right:20px"
-                    v-model="input"
+                    v-model="lang"
                     placeholder="请输入信息"
                     size="small"></el-input>
           <el-button type="primary"
-                     size="mini">确认添加</el-button>
+                     size="mini"
+                     @click="handleAddLang">确认添加</el-button>
         </el-col>
       </el-row>
       <el-row>
         <el-col :offset="7"
                 :span="17">
           <ul class="flex item-select">
-            <li v-for="(o,i) in 3"
-                :key="i">英语
-              <i class="el-icon-close"></i>
+            <li v-for="(o,i) in langs"
+                :key="i">{{o}}
+              <i class="el-icon-close"
+                 @click="handleDelLang(i)"></i>
             </li>
           </ul>
         </el-col>
@@ -109,20 +111,22 @@
         <el-col :offset="7"
                 :span="16">
           <el-input style="width: 460px;margin-right:20px"
-                    v-model="input"
+                    v-model="skill"
                     placeholder="请输入信息"
                     size="small"></el-input>
           <el-button type="primary"
-                     size="mini">确认添加</el-button>
+                     size="mini"
+                     @click="handleAddSkill">确认添加</el-button>
         </el-col>
       </el-row>
       <el-row>
         <el-col :offset="7"
                 :span="17">
           <ul class="flex item-select">
-            <li v-for="(o,i) in 3"
-                :key="i">java
-              <i class="el-icon-close"></i>
+            <li v-for="(o,i) in skills"
+                :key="i">{{o}}
+              <i class="el-icon-close"
+                 @click="handleDelSkill(i)"></i>
             </li>
           </ul>
         </el-col>
@@ -148,8 +152,6 @@ import eduForm from './form/edu-form'
 import expForm from './form/exp-form'
 import licenseForm from './form/license-form'
 
-console.log(form, 88)
-
 export default {
   name: 'fill-info',
   components: {
@@ -159,7 +161,10 @@ export default {
   data () {
     const r = this.$rules
     return {
-      input: '',
+      lang: '',
+      langs: [],
+      skill: '',
+      skills: [],
       isShow: false,
       labelWidth: '140px',
       ...form,
@@ -167,7 +172,7 @@ export default {
   },
   methods: {
     handleAddEducation () {
-      this.educations.push( _.cloneDeep(eduForm))
+      this.educations.push(_.cloneDeep(eduForm))
     },
     handleDelEducation (i) {
       if (this.education.length == 1) return false
@@ -186,6 +191,20 @@ export default {
     handleDelLicense (i) {
       if (this.licenses.length == 1) return false
       this.licenses.splice(i, 1)
+    },
+    handleAddLang () {
+      this.langs.push(this.lang)
+      this.lang = ''
+    },
+    handleDelLang (i) {
+      this.langs.splice(i, 1)
+    },
+    handleAddSkill () {
+      this.skills.push(this.skill)
+      this.skill = ''
+    },
+    handleDelSkill (i) {
+      this.skills.splice(i, 1)
     },
     handleClose () {
       this.isShow = false
