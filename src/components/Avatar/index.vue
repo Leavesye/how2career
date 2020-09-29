@@ -50,6 +50,7 @@ export default {
 }
 .micro i {
   color: #fff;
+  font-size: 19px;
 }
 @keyframes flash {
   from {background: #36AE82}
