@@ -7,15 +7,15 @@
   <section class="modal-main">
     <div class="flex-hb item">
       <label for="">当前Slot数:</label>
-      <div>06</div>
+      <p class="num">06</p>
     </div>
     <div class="flex-hb item">
       <label for="">调整Slot数：</label>
-      <el-input v-model="value" size="small"></el-input>
+      <el-input class="item-input" v-model="value" size="small"></el-input>
     </div>
     <div class="flex-hb item">
       <label for="">调整后，你还需支付：</label>
-      <div>¥1200.00</div>
+      <p class="num">¥1200.00</p>
     </div>
   </section>
   <span slot="footer" class="flex-he">
@@ -61,7 +61,7 @@ export default {
   font-size: 14px;
   width: 200px;
 }
-.item div {
+.item > p {
   font-size: 26px;
 }
 </style>
