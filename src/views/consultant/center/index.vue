@@ -130,7 +130,16 @@ export default {
     if (res.result) {
       const o = res.msg
       this.realVerified = o.realVerified
-      const ret = await Promise.all([getConsultantOrders(), getConsultantOrdersCount()]).catch(e=> l.close())
+      const ret = await Promise.all([
+        getConsultantOrders({
+          "from": "",
+          "to": "",
+          "page": "1",
+          "limit": "100",
+          "condition": "status==1"
+        }),
+        getConsultantOrdersCount({ condition: "status==2:status==4:status==7:status==10" })
+      ]).catch(e => l.close())
     }
     l.close()
     this.alert('数据加载成功')
@@ -264,6 +273,7 @@ $color: #15479e;
   padding-left: 20px;
   box-sizing: border-box;
   color: #7c8ea5;
+  cursor: pointer;
 }
 .p-item > p {
   font-size: 14px;

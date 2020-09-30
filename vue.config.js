@@ -38,7 +38,7 @@ module.exports = {
     },
     proxy: {
       '/api': {
-        target: 'http://81.68.216.3:8083/platform',
+        target: 'http://intocareer.cn/api',
         changeOrigin: true,
         ws: true,
         pathRewrite: {

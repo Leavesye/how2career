@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 发送验证码
 export function sendCode(data) {
   return request({
-    url: '/mobile/vCode',
+    url: '/user/platform/mobile/vCode',
     method: 'post',
     data
   })
@@ -11,7 +11,7 @@ export function sendCode(data) {
 // 验证手机
 export function checkUser(data) {
   return request({
-    url: '/user/check',
+    url: '/user/platform/user/check',
     method: 'post',
     data
   })
@@ -19,7 +19,7 @@ export function checkUser(data) {
 // 登录
 export function login(data) {
   return request({
-    url: '/login',
+    url: '/user/platform/login',
     method: 'post',
     data
   })
@@ -27,7 +27,7 @@ export function login(data) {
 // 咨询者注册
 export function consumerReg(data) {
   return request({
-    url: '/consumer/user',
+    url: '/user/platform/consumer/user',
     method: 'post',
     data
   })
@@ -35,15 +35,23 @@ export function consumerReg(data) {
 // 咨询师注册
 export function consultantReg(data) {
   return request({
-    url: '/consultant/user',
+    url: '/user/platform/consultant/user',
     method: 'post',
     data
   })
 }
-// 实名认证
-export function realVerify(data) {
+// 咨询者实名认证
+export function consumerRealVerify(data) {
   return request({
-    url: '/consumer/realVerify',
+    url: '/order/platform/consumer/realVerify',
+    method: 'post',
+    data
+  })
+}
+// 咨询师实名认证
+export function consultantRealVerify(data) {
+  return request({
+    url: '/order/platform/consultant/realVerify',
     method: 'post',
     data
   })
@@ -51,7 +59,7 @@ export function realVerify(data) {
 // 查询咨询者用户信息
 export function getConsumer(params) {
   return request({
-    url: '/consumer/user',
+    url: '/user/platform/consumer/user',
     method: 'get',
     params
   })
@@ -59,7 +67,7 @@ export function getConsumer(params) {
 // 更新咨询者用户信息
 export function updateConsumer(data) {
   return request({
-    url: '/consumer/user',
+    url: '/user/platform/consumer/user',
     method: 'put',
     data
   })
@@ -67,7 +75,7 @@ export function updateConsumer(data) {
 // 查询咨询师用户信息
 export function getConsultant(params) {
   return request({
-    url: '/consultant/user',
+    url: '/user/platform/consultant/user',
     method: 'get',
     params
   })
@@ -75,7 +83,7 @@ export function getConsultant(params) {
 // 更新咨询师用户信息
 export function updateConsultant(data) {
   return request({
-    url: '/consultant/user',
+    url: '/user/platform/consultant/user',
     method: 'put',
     data
   })
@@ -84,7 +92,7 @@ export function updateConsultant(data) {
 // 查询咨询师公开信息
 export function getConsultantPublicjInfo(params) {
   return request({
-    url: '/consultant/user/publicInfo',
+    url: '/user/platform/consultant/user/publicInfo',
     method: 'get',
     params
   })

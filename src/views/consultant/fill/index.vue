@@ -93,7 +93,7 @@
       </el-row>
       <el-row>
         <el-col :offset="7"
-                :span="17">
+                :span="14">
           <ul class="flex item-select">
             <li v-for="(o,i) in langs"
                 :key="i">{{o}}
@@ -121,7 +121,7 @@
       </el-row>
       <el-row>
         <el-col :offset="7"
-                :span="17">
+                :span="14">
           <ul class="flex item-select">
             <li v-for="(o,i) in skills"
                 :key="i">{{o}}
@@ -193,14 +193,14 @@ export default {
       this.licenses.splice(i, 1)
     },
     handleAddLang () {
-      this.langs.push(this.lang)
+      this.lang && this.langs.push(this.lang)
       this.lang = ''
     },
     handleDelLang (i) {
       this.langs.splice(i, 1)
     },
     handleAddSkill () {
-      this.skills.push(this.skill)
+      this.skill && this.skills.push(this.skill)
       this.skill = ''
     },
     handleDelSkill (i) {
@@ -260,6 +260,7 @@ export default {
 }
 .item-select {
   margin-top: 20px;
+  flex-wrap: wrap;
 }
 .item-select li {
   position: relative;
@@ -271,6 +272,7 @@ export default {
   border-radius: 4px;
   border: 1px solid #edeeef;
   margin-right: 18px;
+  margin-bottom: 10px;
 }
 .item-select li > i {
   position: absolute;
