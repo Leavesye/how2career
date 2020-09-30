@@ -9,6 +9,11 @@
           <p style="margin-right: 30px">1378897887</p>
           <el-button size="small">修改手机号码</el-button>
         </div>
+        <div class="flex-vc form-name">
+          <label for="">密码</label>
+          <p style="margin-right: 30px">**********</p>
+          <el-button size="small">修改密码</el-button>
+        </div>
         <quick-form :model="baseInfo"
                     :labelWidth="labelWidth"
                     ref="baseInfo"></quick-form>
@@ -24,6 +29,10 @@
         <quick-form :model="realVerify"
                     :labelWidth="labelWidth"
                     ref="realVerify"></quick-form>
+        <div class="flex-vc form-name">
+          <label for=""></label>
+          <el-button plain type="primary" size="small">重新认证</el-button>
+        </div>
       </el-card>
     </section>
     <h1 class="title bottom">联系方式</h1>

@@ -34,6 +34,9 @@ export default {
     value : '' ,
     type : 'date',
     rules: [r.required()],
+    props: {
+      style: {width: '200px'}
+    }
   },
   coverImg: {
     label: '设置头像',
