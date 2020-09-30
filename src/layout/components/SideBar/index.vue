@@ -1,31 +1,23 @@
 <template>
-  <div class="sider-bar" :style="{minHeight}">
+  <div class="sider-bar" :style="{minHeight,background: type==1?'#36AE82':'#15479E'}">
     <el-menu
       :default-active="activeMenu"
       text-color="#fff"
-      style="background: #15479E"
+      :style="{background: type==1?'#36AE82':'#15479E'}"
       active-text-color="#fff">
-      <el-menu-item index="1" @click="linkTo('/consultant/index')">
-        <i class="iconfont iconshouye-01"></i>
-        <span slot="title">我的首页</span>
-      </el-menu-item>
-      <el-menu-item index="2" @click="linkTo('/consultant/order')">
-        <i class="iconfont icondingdan-01"></i>
-        <span slot="title">订单管理</span>
-      </el-menu-item>
-      <el-menu-item index="3" @click="linkTo('/consultant/cost')">
-        <i class="iconfont iconfeiyong-01"></i>
-        <span slot="title">费用管理</span>
-      </el-menu-item>
-      <el-submenu index="4">
-        <template slot="title">
-          <i class="iconfont icongerenzhongxin-01"></i>
-          <span>个人中心</span>
-        </template>
-        <el-menu-item class="sub-item" index="3-1" @click="linkTo('/consultant/fill')">基本信息</el-menu-item>
-        <el-menu-item class="sub-item" index="3-2" @click="linkTo('/consultant/index')">资质信息</el-menu-item>
-        <el-menu-item class="sub-item" index="3-3" @click="linkTo('/consultant/setting')">服务时间</el-menu-item>
-      </el-submenu>
+      <template v-for="(item, index) in menus">
+        <el-menu-item :key="index" v-if="!item.children" :index="(index+1) + ''" @click="linkTo(item.path)">
+          <i class="iconfont" :class="[item.icon]"></i>
+          <span slot="title">{{item.name}}</span>
+        </el-menu-item>
+        <el-submenu :key="index" v-else :index="(index+1) + ''">
+          <template slot="title">
+            <i class="iconfont" :class="[item.icon]"></i>
+            <span>{{item.name}}</span>
+          </template>
+          <el-menu-item v-for="(subItem, sindex) in item.children" :key="sindex" class="sub-item" :index="(index+1)+ '-'+ (sindex+1)" @click="linkTo(subItem.path)">{{subItem.name}}</el-menu-item>
+        </el-submenu>
+      </template>
     </el-menu>
     <el-image class="room-btn" :src="roomBtn" @click="linkTo('/consultant/room')"></el-image>
     <div class="flex-hbc bottom-links">
@@ -37,19 +29,13 @@
 </template>
 
 <script>
-const routes = {
-  '1': '/consultant/index',
-  '2': '/consultant/order',
-  '3': '/consultant/cost',
-  '3-1': '/consultant/fill',
-  '3-3': '/consultant/setting',
-}
 export default {
   name: 'sidebar',
+  props: ['menus', 'type'],
   data () {
     return {
       activeMenu: '1',
-      minHeight: '700px'
+      minHeight: '700px',
     }
   },
   computed: {
@@ -64,10 +50,18 @@ export default {
   },
   mounted() {
     this.minHeight = document.body.clientHeight - (150+60+20*2) + 'px'
-    // 侧边栏选中高亮处理
-    for(let key in routes) {
-      if (this.$route.path.includes(routes[key])) {
-        this.activeMenu = key
+    // 刷新页面处理菜单高亮
+    const path = this.$route.path
+    for (let i =0 ; i < this.menus.length; i++) {
+      const o = this.menus[i]
+      if (o.path && path.includes(o.path)) {
+        this.activeMenu = (i + 1).toString()
+        return false
+      } else {
+        if (o.children) {
+          const j = o.children.findIndex(c => path.includes(c.path))
+          j > -1 && (this.activeMenu = `${i+1}-${j+1}`)
+        }
       }
     }
   },
@@ -78,7 +72,6 @@ export default {
 .sider-bar {
   position: relative;
   width: 240px;
-  background: #15479E;
   padding-top: 28px;
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;

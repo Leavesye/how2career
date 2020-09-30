@@ -66,7 +66,11 @@
   color: #fff;
 }
 .el-menu.el-menu--inline {
-  background: #15479E;
+  background: rgba(255,255,255, 0);
+  color: #fff;
+}
+.el-submenu__icon-arrow.el-icon-arrow-down {
+  color: #fff;
 }
 .el-form-item__label {
   color: #7C8EA5;

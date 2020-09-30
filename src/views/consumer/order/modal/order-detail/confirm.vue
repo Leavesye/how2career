@@ -13,9 +13,7 @@
     <ul class="flex-hb">
       <li class="time-item" v-for="(o, i) in 3" :key="i">2020-12-11 20:13:12</li>
     </ul>
-    <div v-if="isShowCalendar">
-      <calendar></calendar>
-    </div>
+    <calendar :isShowCalendar="isShowCalendar"></calendar>
     <p class="select-other" @click="handleSelectTime">选择其他时间<i :class="[isShowCalendar?'el-icon-arrow-up':'el-icon-arrow-down']"></i></p>
     <div class="flex info-box" v-if="true">
       <div class="head">

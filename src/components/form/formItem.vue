@@ -160,19 +160,13 @@
       events : {},
     }
     -->
-    <!-- <div v-else-if="model.type == 'checkbox'" class="form-item-input">
+    <div v-else-if="model.type == 'checkbox'" class="form-item-input">
       <el-checkbox-group v-if="model.props.checkboxButton == true" v-model="model.value" v-bind="model.props" v-on="model.events" :ref="model.type">
         <el-checkbox-button v-for="o,i in (options||model.options)" :label="o[(model.props.props && model.props.props.value) || 'value']" :disabled="o.disabled" :key="i">{{ o[(model.props.props && model.props.props.label) || 'label'] }}</el-checkbox-button>
       </el-checkbox-group>
       <el-checkbox-group v-else v-model="model.value" v-bind="model.props" v-on="model.events" :ref="model.type">
         <el-checkbox v-for="o,i in (options||model.options)" :label="o[(model.props.props && model.props.props.value) || 'value']" :disabled="o.disabled" :key="i">{{ o[(model.props.props && model.props.props.label) || 'label'] }}</el-checkbox>
       </el-checkbox-group>
-    </div> -->
-    <div class="flex-vc" v-else-if="model.type == 'checkbox'">
-      <el-checkbox v-model="model.value">
-        {{model.text}}
-      </el-checkbox>
-      <el-input style="width: 200px; margin-left:20px" v-if="model.isShow" v-model="model.inputVal" :placeholder="model.inputPlace || ''"></el-input>
     </div>
     <!--
     switch 配置项参考

@@ -3,7 +3,6 @@
 @import './transition.scss';
 @import './element-ui.scss';
 @import './sidebar.scss';
-@import './reset.scss';
 
 @import './syncfusion/ej2-base/material.scss';
 @import './syncfusion/ej2-buttons/material.scss';
@@ -13,6 +12,8 @@
 @import './syncfusion/ej2-navigations/material.scss';
 @import './syncfusion/ej2-popups/material.scss';
 @import './syncfusion/ej2-vue-schedule/material.scss';
+
+@import './reset.scss';
 
 body {
   height: 100%;
@@ -29,6 +30,7 @@ label {
 html {
   height: 100%;
   box-sizing: border-box;
+  color: #7C8EA5;
 }
 
 
@@ -121,4 +123,5 @@ div:focus {
   display: flex;
   align-items: center;
 }
+
 

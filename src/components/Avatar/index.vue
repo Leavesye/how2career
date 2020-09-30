@@ -1,11 +1,8 @@
 <template>
-<div class="head">
-  <el-image
+<el-image
     class="avatar"
     src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"></el-image>
-  <p class="name">马里奥大叔</p>
-  <div class="micro ani"><i class="iconfont iconhuatong"></i></div>
-</div>
+    <!-- <div class="micro ani"><i class="iconfont iconhuatong"></i></div> -->
 </template>
 
 <script>
@@ -23,20 +20,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.head {
-  width: 150px;
-  text-align: center;
-  position: relative;
-  color: #7C8EA5;
-}
-.head > .avatar {
+.avatar {
   width: 90px;
   height: 90px;
   background: #D8D8D8;
   box-shadow: 0px 2px 8px 0px rgba(21, 71, 159, 0.4);
   border: 6px solid #FFFFFF;
   border-radius: 50%;
-  margin-bottom: 20px;
+  display: block;
+  margin: 0 auto;
 }
 .micro {
   position: absolute;

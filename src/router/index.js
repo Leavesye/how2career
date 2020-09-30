@@ -4,10 +4,12 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 /* Layout */
-import Layout from '@/layout'
+import LayoutConsultant from '@/layout/consultant'
+import LayoutConsumer from '@/layout/consumer'
 import RegLayout from '@/layout/reg'
 
 import consultant from './consultant'
+import consumer from './consumer'
 
 export const constantRoutes = [
   {
@@ -37,12 +39,22 @@ export const constantRoutes = [
       }
     ]
   },
+  // 咨询师
   {
     path: '/consultant',
-    component: Layout,
+    component: LayoutConsultant,
     redirect: '/consultant/index',
     children: [
       ...consultant
+    ]
+  },
+  // 咨询者
+  {
+    path: '/consumer',
+    component: LayoutConsumer,
+    redirect: '/consumer/index',
+    children: [
+      ...consumer
     ]
   },
 
