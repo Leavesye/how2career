@@ -11,21 +11,22 @@
   </li>
   <li>
     <p style="margin-bottom: 10px">创建时间：{{o.createTime}}</p>
-    <p>开始时间：{{o.createTime}}</p>
+    <div>开始时间：{{o.createTime}}</div>
   </li>
   <li class="flex-hbc" v-if="false">
     <p style="margin-right: 10px">评价</p>
     <el-rate v-model="value1"></el-rate>
   </li>
   <li v-if="true">
-    <p style="margin-top:30px">还有12小时30分开始</p>
+    <div style="margin-top:30px">还有12小时30分开始</div>
   </li>
   <li>{{o.rest}}</li>
   <li>
-    <p style="margin-bottom: 10px">订单金额：{{o.amount}}</p>
-    <p class="flex-he">
+    <div style="margin-bottom: 10px; text-align: right">订单金额：{{o.amount}}</div>
+    <div class="flex-he">
+      <el-button type="primary" size="mini" @click="handelClickDetail">进入房间</el-button> 
       <el-button size="mini" @click="handelClickDetail">订单详情</el-button> 
-    </p>
+    </div>
   </li>
 </ul>
 </template>
@@ -53,6 +54,7 @@ export default {
   border-bottom: 1px solid #edeeef;
   color: #7C8EA5;
   font-size: 14px;
+  margin-bottom: 0;
 }
 .avatar {
   margin-right: 10px;

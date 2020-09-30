@@ -2,7 +2,7 @@
   <section style="padding: 30px">
     <!-- 状态面板 -->
     <pannel @change="handlePannelChange" :pannels="pannels" :current="curPannel"></pannel>
-    <el-card class="list-item-top">
+    <el-card style="margin-bottom: 20px">
       <p class="title">即将开始的咨询</p>
       <order-item :o="o" :noBorder="true" />
     </el-card>
@@ -150,20 +150,5 @@ export default {
 .title {
   font-size: 14px;
   color: #15479E;
-}
-.list-item {
-  padding: 14px 0;
-  border-bottom: 1px solid #edeeef;
-  color: #7C8EA5;
-  font-size: 14px;
-}
-.list-item-top {
-  width: 880px;
-  height: 150px;
-  background: #FFFFFF;
-  box-shadow: 0px 0px 4px 0px rgba(21, 71, 158, 0.5);
-  border-radius: 8px;
-  border: 1px solid #15479E;
-  margin-bottom: 20px;
 }
 </style>
