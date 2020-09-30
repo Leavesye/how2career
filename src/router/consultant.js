@@ -1,7 +1,7 @@
 export default [
   {
-    path: '/consultant/center',
-    component: () => import('@/views/consultant/center/index'),
+    path: '/consultant/index',
+    component: () => import('@/views/consultant/index'),
   },
   {
     path: '/consultant/order',

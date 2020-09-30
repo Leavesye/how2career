@@ -18,7 +18,10 @@
           <template slot="prepend">+86</template>
         </el-input>
       </el-form-item>
-      <el-form-item label="" prop="vCode">
+      <el-form-item v-if="pageType==2" label="" prop="passWord">
+        <el-input :maxlength="11" class="phone" placeholder="请输入密码" v-model="info.passWord"></el-input>
+      </el-form-item>
+      <el-form-item v-if="pageType==1" label="" prop="vCode">
         <div class="flex-hb">
           <el-input :maxlength="6" class="check-code" placeholder="请输入验证码" v-model="info.vCode"></el-input>
           <el-button class="send-code" plain @click="handleSendCode">{{ seconds > 0 ? seconds + 's' : '获取验证码'}}</el-button>
@@ -26,9 +29,9 @@
       </el-form-item>
     </el-form>
     <div class="login-bottom">
-      <el-button class="reg-btn" :type="curTab == 0? 'success' : 'primary'" @click="handleReg">注册</el-button>
-      <p class="tips">未注册手机验证后自动登录，注册即同意注册协议</p>
-      <el-link class="to-login" :type="curTab == 0? 'success' : 'primary'">登录已有账号</el-link>
+      <el-button class="reg-btn" :type="curTab == 0? 'success' : 'primary'" @click="handleReg">{{pageType==1? '注册': '登录'}}</el-button>
+      <p class="tips" v-if="pageType==1">未注册手机验证后自动登录，注册即同意注册协议</p>
+      <el-link class="to-login" :type="curTab == 0? 'success' : 'primary'" @click="handleLink">{{pageType==1? '登录已有账号': '注册'}}</el-link>
     </div>
   </section>
 </el-dialog>
@@ -43,6 +46,7 @@ export default {
   data () {
     const r = this.$rules
     return {
+      pageType: 1, // 1 验证手机  2. 登录
       seconds: 0,
       curTab: 0,
       tabs: [
@@ -51,6 +55,7 @@ export default {
       ],
       info: {
         userName: '',
+        passWord: '',
         vCode: ''
       },
       rules: {
@@ -65,6 +70,17 @@ export default {
     }
   },
   methods: {
+    handleLink() {
+      if (this.pageType==1) {
+        this.tabs = [
+          {name: '登录咨询者', color: '#36AE82', left: 0},
+          {name: '登录咨询师', color: '#15479E', left: '130px'},
+        ]
+        this.pageType = 2
+      } else {
+        this.$router.push('/register/consultant')
+      }
+    },
     handleTabClick(index) {
       this.curTab = index
       this.$refs.form.resetFields()

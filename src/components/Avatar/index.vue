@@ -40,7 +40,7 @@ export default {
 }
 .micro {
   position: absolute;
-  left: 60px;
+  left: 62px;
   bottom: 30px;
   width: 30px;
   height: 30px;

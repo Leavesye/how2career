@@ -5,7 +5,7 @@
       text-color="#fff"
       style="background: #15479E"
       active-text-color="#fff">
-      <el-menu-item index="1" @click="linkTo('/consultant/center')">
+      <el-menu-item index="1" @click="linkTo('/consultant/index')">
         <i class="iconfont iconshouye-01"></i>
         <span slot="title">我的首页</span>
       </el-menu-item>
@@ -23,7 +23,7 @@
           <span>个人中心</span>
         </template>
         <el-menu-item class="sub-item" index="3-1" @click="linkTo('/consultant/fill')">基本信息</el-menu-item>
-        <el-menu-item class="sub-item" index="3-2" @click="linkTo('/consultant/center')">资质信息</el-menu-item>
+        <el-menu-item class="sub-item" index="3-2" @click="linkTo('/consultant/index')">资质信息</el-menu-item>
         <el-menu-item class="sub-item" index="3-3" @click="linkTo('/consultant/setting')">服务时间</el-menu-item>
       </el-submenu>
     </el-menu>
@@ -38,7 +38,7 @@
 
 <script>
 const routes = {
-  '1': '/consultant/center',
+  '1': '/consultant/index',
   '2': '/consultant/order',
   '3': '/consultant/cost',
   '3-1': '/consultant/fill',

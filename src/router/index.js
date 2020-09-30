@@ -5,6 +5,7 @@ Vue.use(Router)
 
 /* Layout */
 import Layout from '@/layout'
+import RegLayout from '@/layout/reg'
 
 import consultant from './consultant'
 
@@ -18,10 +19,6 @@ export const constantRoutes = [
     component: () => import('@/views/home/index'),
   },
   {
-    path: '/register',
-    component: () => import('@/views/register/index'),
-  },
-  {
     path: '/demo',
     component: () => import('@/views/demo/index'),
   },
@@ -31,9 +28,19 @@ export const constantRoutes = [
     hidden: true
   },
   {
+    path: '/register',
+    component: RegLayout,
+    children: [
+      {
+        path: '/register/consultant',
+        component: () => import('@/views/register/consultant')
+      }
+    ]
+  },
+  {
     path: '/consultant',
     component: Layout,
-    redirect: '/consultant/center',
+    redirect: '/consultant/index',
     children: [
       ...consultant
     ]
