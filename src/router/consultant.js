@@ -12,8 +12,12 @@ export default [
     component: () => import('@/views/consultant/cost/index'),
   },
   {
-    path: '/consultant/fill',
-    component: () => import('@/views/consultant/fill/index'),
+    path: '/consultant/baseinfo',
+    component: () => import('@/views/register/consultant'),
+  },
+  {
+    path: '/consultant/qualification',
+    component: () => import('@/views/consultant/qualification/index'),
   },
   {
     path: '/consultant/room',

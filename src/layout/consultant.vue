@@ -32,8 +32,8 @@ export default {
         { name: '费用管理', icon: 'iconfeiyong-01', path: '/consultant/cost' },
         {
           name: '个人中心', icon: 'icongerenzhongxin-01', children: [
-            { name: '基本信息', path: '/consultant/fill' },
-            { name: '资质信息', path: '/consultant/fill' },
+            { name: '基本信息', path: '/consultant/baseinfo' },
+            { name: '资质信息', path: '/consultant/qualification' },
             { name: '服务时间', path: '/consultant/setting' },
           ]
         },
