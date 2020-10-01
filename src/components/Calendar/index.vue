@@ -19,7 +19,7 @@
         </div>
         <el-button style="appintment-btn"
                    size="small"
-                   type="success">预约单生成</el-button>
+                   type="success" @click="handleCreateOrder">预约单生成</el-button>
       </div>
     </el-col>
     <!-- 选时段 -->
@@ -77,6 +77,9 @@ export default {
     }
   },
   methods: {
+    handleCreateOrder() {
+      this.$emit('create-order')
+    },
     handleSelectTime (i) {
       this.currentTimeIndex = i
     },
