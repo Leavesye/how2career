@@ -1,7 +1,7 @@
 <template>
   <section style="padding: 30px">
     <!-- 已认证 -->
-    <div v-if="realVerified">
+    <div>
       <!-- 状态面板 -->
       <div class="pannel flex-hb">
         <div class="p-item"
@@ -68,7 +68,6 @@ export default {
     const res = await getConsultant().catch(e => l.close())
     if (res.result) {
       const o = res.msg
-      this.realVerified = o.realVerified
       // const ret = await Promise.all([
       //   getConsultantOrders({
       //     "from": "0",
@@ -85,7 +84,6 @@ export default {
   },
   data () {
     return {
-      realVerified: true,
       isActive: false,
       rate: 4,
       pannels: [

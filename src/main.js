@@ -6,6 +6,8 @@ import ElementUI from 'element-ui'
 import '../theme/index.css'
 import * as elementApi from './utils/element-api'
 
+import { Calendar, ConfigProvider } from 'ant-design-vue'
+
 import '@/styles/index.scss' // global css
 
 import App from './App'
@@ -29,7 +31,8 @@ import { axTable, axTableColumn } from './components/table'
 import { axForm, axFormItem } from './components/form'
 import rules from './utils/validate-rules'
 
-console.log(elementApi)
+Vue.use(Calendar)
+Vue.use(ConfigProvider)
 Vue.use(axForm)
 Vue.use(axFormItem)
 Vue.use(axTable)

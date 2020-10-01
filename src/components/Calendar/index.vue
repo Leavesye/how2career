@@ -47,12 +47,7 @@
 </template>
 
 <script>
-import Vue from 'vue'
 import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN'
-import { Calendar, ConfigProvider } from 'ant-design-vue'
-
-Vue.use(Calendar)
-Vue.use(ConfigProvider)
 
 export default {
   name: 'calendar',
@@ -134,6 +129,7 @@ export default {
   border: 1px solid #e0e0e0;
   text-align: center;
   font-size: 12px;
+  cursor: pointer;
 }
 .sel-btn.isActive {
   background: #15479e;
