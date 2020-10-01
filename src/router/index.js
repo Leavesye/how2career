@@ -34,9 +34,13 @@ export const constantRoutes = [
     component: RegLayout,
     children: [
       {
+        path: '/register/consumer',
+        component: () => import('@/views/register/consumer')
+      },
+      {
         path: '/register/consultant',
         component: () => import('@/views/register/consultant')
-      }
+      },
     ]
   },
   // 咨询师

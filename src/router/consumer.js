@@ -5,22 +5,26 @@ export default [
   },
   {
     path: '/consumer/order',
-    component: () => import('@/views/consumer/order/index'),
+    component: () => import('@/views/consumer/order'),
   },
   {
     path: '/consumer/search',
-    component: () => import('@/views/consumer/search/index'),
+    component: () => import('@/views/consumer/search'),
   },
   {
     path: '/consumer/consultant-detail/:id',
-    component: () => import('@/views/consumer/consultant-detail/index'),
+    component: () => import('@/views/consumer/consultant-detail'),
   },
   {
     path: '/consumer/recommend',
-    component: () => import('@/views/consumer/recommend/index'),
+    component: () => import('@/views/consumer/recommend'),
   },
   {
     path: '/consumer/room',
-    component: () => import('@/views/consumer/room/index'),
-  }
+    component: () => import('@/views/consumer/room'),
+  },
+  {
+    path: '/consumer/baseinfo',
+    component: () => import('@/views/consumer/baseinfo'),
+  },
 ]

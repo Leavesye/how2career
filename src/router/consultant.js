@@ -5,26 +5,26 @@ export default [
   },
   {
     path: '/consultant/order',
-    component: () => import('@/views/consultant/order/index'),
+    component: () => import('@/views/consultant/order'),
   },
   {
     path: '/consultant/cost',
-    component: () => import('@/views/consultant/cost/index'),
+    component: () => import('@/views/consultant/cost'),
   },
   {
     path: '/consultant/baseinfo',
-    component: () => import('@/views/register/consultant'),
+    component: () => import('@/views/consultant/baseinfo'),
   },
   {
     path: '/consultant/qualification',
-    component: () => import('@/views/consultant/qualification/index'),
+    component: () => import('@/views/consultant/qualification'),
   },
   {
     path: '/consultant/room',
-    component: () => import('@/views/consultant/room/index'),
+    component: () => import('@/views/consultant/room'),
   },
   {
     path: '/consultant/setting',
-    component: () => import('@/views/consultant/time-setting/index'),
+    component: () => import('@/views/consultant/time-setting'),
   },
 ]
