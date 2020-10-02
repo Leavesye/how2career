@@ -128,7 +128,7 @@ export default {
     return {
       validator (r, v, c) {
         v += ''
-        v.length > max ? c(new Error(`字符长度不可超过`, { number: max })) : c()
+        v.length > max ? c(new Error(`字符长度不可超过${max}`, { number: max })) : c()
       }
     }
   },
@@ -137,7 +137,7 @@ export default {
     return {
       validator (r, v, c) {
         v += '';
-        (v.length < min || v.length > max) ? c(new Error(`字符区间`, { min: min, max: max })) : c()
+        (v.length < min || v.length > max) ? c(new Error(`字符长度应该在${min}-${max}`, { min: min, max: max })) : c()
       }
     }
   },

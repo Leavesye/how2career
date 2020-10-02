@@ -20,7 +20,7 @@
     <div class="flex-he"
          style="margin: 60px 60px 70px 0">
       <el-button type="primary"
-                 size="mini">确认修改</el-button>
+                 size="mini" @click="handleSave">确认修改</el-button>
     </div>
   </section>
 </template>
@@ -28,23 +28,68 @@
 <script>
 import QuickForm from '@/components/QuickForm'
 import form from './form'
+import mixin from '@/mixins'
+import * as adapter from './adapter'
+import { consumerReg } from '@/api/user'
+import defaultImg from '@/assets/avatar-upload.png'
 
 export default {
   name: 'consumer-baseinfo',
+  mixins: [mixin],
   components: {
     QuickForm,
   },
   data () {
-    const r = this.$rules
     return {
       labelWidth: '140px',
       ...form,
     }
   },
   methods: {
-
+    async handleSave() {
+      const keys = Object.keys(form)
+      // 校验所有表单
+      let isValid = true
+      const res =  await Promise.all(keys.map(key => this.$refs[key].validate())).catch(e => {
+        console.log(e, 'error')
+        isValid = false
+      })
+      console.log(res, 333)
+      if (isValid) {
+        const l = this.loading()
+        const formData = { 
+          ...this.$refs.baseInfo.getFormData(),
+          ...this.$refs.education.getFormData()
+        }
+        console.log(formData, 'formdata')
+        const p = adapter.boxing(formData)
+        console.log(p, '参数')
+        let ret = await consumerReg(p).catch(e => l.close())
+        if (ret.result) {
+          this.alert('注册成功')
+        }
+        l.close()
+      }
+    },
+    renderUpload(h) {
+      let avatarImg = ''
+      if (this.baseInfo.avatarImage.value) {
+        avatarImg = process.env.VUE_APP_HOST_NAME + this.baseInfo.avatarImage.value
+      }
+      return (
+        <el-Image style="border-radius: 50%;width: 90px; height: 90px;overflow: hidden" src={avatarImg || defaultImg}></el-Image>
+      )
+    },
+    uploadCb(v) {
+      this.baseInfo.avatarImage.value = v
+    }
   },
   mounted () {
+    // 给上传组件绑定回调
+    const avatar = this.baseInfo.avatarImage
+    avatar.props["before-upload"] = (file) => this.uploadBefore(file)
+    avatar.props["on-success"] = (res, file) => this.uploadSuccess(res, file, this.uploadCb)
+    avatar.render = this.renderUpload // 上传组件渲染函数
   }
 }
 </script>

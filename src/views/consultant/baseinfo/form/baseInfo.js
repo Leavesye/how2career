@@ -1,61 +1,68 @@
 import Vue from 'vue'
-import { upload } from './upload'
+import moment from 'moment'
 
 const r = Vue.prototype.$rules
 export default {
-  b: {
+  passWord: {
     value: '',
     label: '密码',
-    rules: [r.required()],
+    props: {
+      type: 'password'
+    },
+    rules: [r.required(), r.length(6, 12)],
   },
-  bc: {
+  name: {
     value: '',
     label: '姓名',
-    rules: [r.required()],
+    rules: [r.required(), r.maxLength(20), r.account()],
   },
-  bcc: {
+  nickName: {
     value: '',
     label: '昵称',
-    rules: [r.required()],
+    rules: [r.required(), r.maxLength(10)],
   },
-  bccc: {
+  gender: {
     label : '性别' ,
     value : '' ,
     type : 'radio',
     props: {label: 'label', value: 'value' },
     options: [
-      {label: '男', value: '1'},
-      {label: '女', value: '2'},
+      {label: '男', value: 'm'},
+      {label: '女', value: 'f'},
     ],
     rules : [r.required()] ,
   },
-  i: {
+  birthday: {
     label : '出生年月' ,
-    value : '' ,
+    value : moment().subtract(18, 'year').format('YYYY-MM-DD') ,
     type : 'date',
     rules: [r.required()],
     props: {
-      style: {width: '200px'}
+      style: { width: '200px' },
+      // 出生日期咨询师控制大于18岁
+      'picker-options': {
+        disabledDate(time) {
+          return time.getTime() > moment().subtract(18, 'year').valueOf()
+        }
+      }
     }
   },
-  coverImg: {
+  avatarImage: {
     label: '设置头像',
     rules: [r.required()],
     type: "upload",
     value: '',
     props: {
-      accept: ".pdf.jpg.jpeg.png.bmp",
-      action: '',
+      action: process.env.VUE_APP_BASE_API + "/user/platform/consultant/upload",
+      accept: '.jpg,.png,.gif',
+      name: 'UploadFiles',
       limit: 1,
       disabled: false,
-      "list-type": "picture",
-      "file-list":  [],
+      "show-file-list": false,
       "auto-upload": true,
-      "before-upload": (file) => this.uploadBefore(file, true),
-      "on-success": (res, file) => this.uploadSuccess(res, file, 'img'),
+      "before-upload": null,
+      "on-success": null,
     },
-    render: (h) => {
-      return upload(h)
-    }
+    render: null
   },
 }

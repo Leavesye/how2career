@@ -1,12 +1,12 @@
 <template>
   <div class="home">
     <el-button type="info"
-               @click="login">登录</el-button>
+               @click="action(1)">登录</el-button>
     <el-button type="info"
-               @click="reg">注册</el-button>
+               @click="action(2)">注册</el-button>
     <el-button type="info"
                @click="create">创建订单</el-button>
-    <login :isShow="true"></login>
+    <login @close="handleCloseLogin" :isShow="isShow" :type="type"></login>
   </div>
 </template>
 
@@ -23,20 +23,17 @@ export default {
   },
   data () {
     return {
-
+      isShow: false,
+      type: 1
     }
   },
   methods: {
-    async login () {
-      const res = await login({
-        "userName":"18602113265",
-        "passWord":"123"
-      })
-      // token存到cookie
-      if (res.result) {
-        setToken(res.msg.token)
-        this.$router.push('/consultant')
-      }
+    handleCloseLogin() {
+      this.isShow = false
+    },
+    async action (type) {
+      this.isShow = true
+      this.type = type
     },
     async reg () {
       const res = await consultantReg({

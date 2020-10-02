@@ -251,7 +251,9 @@
       render () { return <div></div> }
     }
     -->
-    <el-upload v-else-if="model.type == 'upload'" v-bind="model.props" v-on="model.events" class="form-item-input" :ref="model.type">
+    <el-checkbox-group v-if="model.type == 'upload'" v-model="model.value" :ref="model.type">
+    </el-checkbox-group>
+    <el-upload v-if="model.type == 'upload'" v-model="model.value" v-bind="model.props" v-on="model.events" class="form-item-input" :ref="model.type">
       <ax-template :template="model.render"></ax-template>
     </el-upload>
 

@@ -1,6 +1,7 @@
 <template>
 <el-dialog
   :show-close="false"
+  :before-close="handleClose"
   :visible.sync="isShow"
   width="400px"
   center>
@@ -18,10 +19,10 @@
           <template slot="prepend">+86</template>
         </el-input>
       </el-form-item>
-      <el-form-item v-if="pageType==2" label="" prop="passWord">
+      <el-form-item v-if="pageType==1" label="" prop="passWord">
         <el-input type="password" :maxlength="10" class="phone" placeholder="请输入密码" v-model="info.passWord"></el-input>
       </el-form-item>
-      <el-form-item v-if="pageType==1" label="" prop="vCode">
+      <el-form-item v-if="pageType==2" label="" prop="vCode">
         <div class="flex-hb">
           <el-input :maxlength="6" class="check-code" placeholder="请输入验证码" v-model="info.vCode"></el-input>
           <el-button class="send-code" plain @click="handleSendCode">{{ seconds > 0 ? seconds + 's' : '获取验证码'}}</el-button>
@@ -29,9 +30,9 @@
       </el-form-item>
     </el-form>
     <div class="login-bottom">
-      <el-button class="reg-btn" :loading="isLoading" :type="curTab == 0? 'success' : 'primary'" @click="handleRegOrLogin">{{pageType==1? '注册': '登录'}}</el-button>
-      <p class="tips" v-if="pageType==1">未注册手机验证后自动登录，注册即同意注册协议</p>
-      <el-link class="to-login" :type="curTab == 0? 'success' : 'primary'" @click="handleLink">{{pageType==1? '登录已有账号': '注册'}}</el-link>
+      <el-button class="reg-btn" :loading="isLoading" :type="curTab == 0? 'success' : 'primary'" @click="handleRegOrLogin">{{pageType==2? '注册': '登录'}}</el-button>
+      <p class="tips" v-if="pageType==2">未注册手机验证后自动登录，注册即同意注册协议</p>
+      <el-link class="to-login" :type="curTab == 0? 'success' : 'primary'" @click="handleLink">{{pageType==2? '登录已有账号': '注册'}}</el-link>
     </div>
   </section>
 </el-dialog>
@@ -41,21 +42,28 @@
 import { sendCode, checkUser, login } from '@/api/user'
 import { setToken } from '@/utils/auth'
 
+const tabsCfg = {
+  '1':  [
+    {name: '登录咨询者', color: '#36AE82', left: 0},
+    {name: '登录咨询师', color: '#15479E', left: '130px'},
+  ],
+  '2':  [
+    {name: '注册咨询者', color: '#36AE82', left: 0},
+    {name: '注册咨询师',color: '#15479E', left: '130px'},
+  ],
+}
 export default {
   name: 'login-modal',
-  props: ['isShow'],
+  props: ['isShow', 'type'],
   data () {
     const r = this.$rules
     this.role = 'consumer'
     return {
       isLoading: false,
-      pageType: 1, // 1 验证手机  2. 登录
+      pageType: 1, // 1 登入  2. 验证手机注册
       seconds: 0,
       curTab: 0,
-      tabs: [
-        {name: '注册咨询者', color: '#36AE82', left: 0},
-        {name: '注册咨询师',color: '#15479E', left: '130px'},
-      ],
+      tabs: tabsCfg['1'],
       info: {
         userName: '',
         passWord: '',
@@ -63,7 +71,7 @@ export default {
       },
       rules: {
         userName: [r.required(), r.mobile()],
-        password: [r.required()],
+        passWord: [r.required()],
         vCode: [r.required()],
       }
     }
@@ -73,17 +81,20 @@ export default {
       return require('../../../../assets/logo.png')
     }
   },
+  watch: {
+    'type': function(newV,oldV) {
+      console.log(newV, oldV)
+      this.pageType = newV
+      this.tabs = tabsCfg[this.pageType]
+    }
+  },
   methods: {
+    handleClose() {
+      this.$emit('close')
+    },
     handleLink() { 
-      if (this.pageType==1) {
-        this.tabs = [
-          {name: '登录咨询者', color: '#36AE82', left: 0},
-          {name: '登录咨询师', color: '#15479E', left: '130px'},
-        ]
-        this.pageType = 2
-      } else {
-        this.$router.push(this.role=='consumer' ? '/register/consumer' : '/register/consultant')
-      }
+      this.pageType = this.pageType == 1 ? 2: 1
+      this.tabs = tabsCfg[this.pageType]
     },
     handleTabClick(item, index) {
       this.curTab = index
@@ -111,12 +122,13 @@ export default {
         }
       })
     },
+    // 验证手机号
     async checkUserFn() {
       if (this.isLoading) return false
       this.isLoading = true
       const res = await checkUser(this.info)
       if (res.result) {
-        this.$store.dispatch('user/setRole', this.role)
+        this.$store.dispatch('user/setUser', { role: this.role, mobile: this.info.userName })
         const path = this.role == 'consultant' ? '/register/consultant' : '/register/consumer'
         this.$router.push(path)
       }
@@ -128,7 +140,7 @@ export default {
         if (valid) {
           this.checkUserFn()
         } else {
-          this.alert('请填写正确的信息', 'error')
+          // this.alert('请填写正确的信息', 'error')
         }
       })
     },
@@ -140,23 +152,24 @@ export default {
           login(this.info).then(res => {
             if (res.result) {
               setToken(res.msg.token)
-              this.$store.dispatch('setRole', this.role)
+              this.$store.dispatch('user/setUser', { role: this.role, mobile: this.info.userName })
               const path = this.role == 'consultant' ? '/consultant/index' : '/consumer/index'
               this.$router.push(path)
             }
             this.isLoading = false
           }).catch(e => this.isLoading = false)
         } else {
-          this.alert('请填写正确的信息', 'error')
+          // this.alert('请填写正确的信息', 'error')
+          this.isLoading = false
         }
       })
     },
     handleRegOrLogin() {
-      // 跳转注册
+      // 登录
       if (this.pageType == 1) {
-        this.checkMobile()
-      } else { // 登录
         this.loginFn()
+      } else { //跳转注册
+        this.checkMobile()
       }
     }
   },

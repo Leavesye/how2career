@@ -10,9 +10,7 @@ function getValue(model) {
         data[i][j] = getValue(o);
       });
     } else {
-      if (model[i].type != "upload") {
-        data[i] = model[i].value;
-      }
+      data[i] = model[i].value;
     }
   }
   return data;

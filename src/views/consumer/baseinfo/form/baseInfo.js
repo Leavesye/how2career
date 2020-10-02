@@ -1,40 +1,39 @@
 import Vue from 'vue'
-import { upload } from './upload'
 
 const r = Vue.prototype.$rules
 export default {
-  b: {
+  userName: {
     value: '',
     label: '手机号码/邮箱地址',
     rules: [r.required()],
   },
-  baa: {
+  passWord: {
     value: '',
     label: '密码',
     rules: [r.required()],
   },
-  bc: {
+  name: {
     value: '',
     label: '姓名',
     rules: [r.required()],
   },
-  bcc: {
+  nickName: {
     value: '',
     label: '昵称',
     rules: [r.required()],
   },
-  bccc: {
+  gender: {
     label : '性别' ,
     value : '' ,
     type : 'radio',
     props: {label: 'label', value: 'value' },
     options: [
-      {label: '男', value: '1'},
-      {label: '女', value: '2'},
+      {label: '男', value: 'm'},
+      {label: '女', value: 'f'},
     ],
     rules : [r.required()] ,
   },
-  i: {
+  birthday: {
     label : '出生年月' ,
     value : '' ,
     type : 'date',
@@ -43,24 +42,22 @@ export default {
       style: {width: '200px'}
     }
   },
-  coverImg: {
+  avatarImage: {
     label: '设置头像',
     rules: [r.required()],
     type: "upload",
     value: '',
     props: {
-      accept: ".pdf.jpg.jpeg.png.bmp",
-      action: '',
+      action: process.env.VUE_APP_BASE_API + "/user/platform/consumer/upload",
+      accept: '',
+      name: 'UploadFiles',
       limit: 1,
       disabled: false,
-      "list-type": "picture",
-      "file-list":  [],
+      "show-file-list": false,
       "auto-upload": true,
-      "before-upload": (file) => this.uploadBefore(file, true),
-      "on-success": (res, file) => this.uploadSuccess(res, file, 'img'),
+      "before-upload": null,
+      "on-success": null,
     },
-    render: (h) => {
-      return upload(h)
-    }
+    render: null
   },
 }

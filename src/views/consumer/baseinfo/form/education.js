@@ -2,47 +2,61 @@ import Vue from 'vue'
 
 const r = Vue.prototype.$rules
 export default {
-  gg: {
+  country: {
     type: 'select',
     value: '',
     label: '国家',
     rules: [r.required()],
     props: { props: { label: 'text', value: 'value' } },
-    options: []
+    options: [
+      {text:'中国', value: '1'},
+      {text:'美国', value: '2'},
+    ]
   },
-  ggg: {
+  school: {
     type: 'select',
     value: '',
     label: '学校',
     rules: [r.required()],
     props: { props: { label: 'text', value: 'value' } },
-    options: []
+    options: [
+      {text:'北大', value: '1'},
+      {text:'清华', value: '2'},
+    ]
   },
-  g1: {
+  discipline: {
     type: 'select',
     value: '',
     label: '专业',
     rules: [r.required()],
     props: { props: { label: 'text', value: 'value' } },
-    options: []
+    options: [
+      {text:'计算机', value: '1'},
+      {text:'工商管理', value: '2'},
+    ]
   },
-  g12: {
+  GPA: {
     type: 'select',
     value: '',
     label: 'GPA',
-    rules: [r.required()],
     props: { props: { label: 'text', value: 'value' } },
-    options: []
+    options: [
+      {text:'70分', value: '1'},
+      {text:'80分', value: '2'},
+    ]
   },
-  g123: {
+  degree: {
     type: 'select',
     value: '',
     label: '学位',
     rules: [r.required()],
     props: { props: { label: 'text', value: 'value' } },
-    options: []
+    options: [
+      {text:'学士', value: '1'},
+      {text:'硕士', value: '2'},
+    ]
   },
-  i: {
+  graduationTime: {
     label : '毕业时间' ,
     value : '' ,
     type : 'date',
@@ -51,12 +65,11 @@ export default {
       style: {width: '200px'}
     }
   },
-  bcc11: {
+  selfIntroduction: {
     value: '',
     label: '自我介绍',
-    rules: [r.required()],
   },
-  bcc121: {
+  detailedIntroduction: {
     value: '',
     label: '详细介绍',
     props: {
@@ -64,6 +77,5 @@ export default {
       rows: 6,
       placeholder: '请输入详细内容'
     },
-    rules: [r.required()],
   },
 }

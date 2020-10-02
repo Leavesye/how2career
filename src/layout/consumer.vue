@@ -32,7 +32,7 @@ export default {
         { name: '好友推荐', icon: 'iconfeiyong-01', path: '/consumer/recommend' },
         {
           name: '个人中心', icon: 'icongerenzhongxin-01', children: [
-            { name: '账户信息', path: '/consumer/search' },
+            { name: '账户信息', path: '/consumer/baseinfo' },
             { name: '实名认证', path: '/consumer/search' },
             { name: '补充信息', path: '/consumer/search' },
             { name: '我的收藏', path: '/consumer/search' },

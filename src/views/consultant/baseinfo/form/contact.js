@@ -2,29 +2,33 @@ import Vue from 'vue'
 
 const r = Vue.prototype.$rules
 export default {
-  fd: {
+  phone: {
     value: '',
     label: '手机号码',
-    rules: [r.required()],
+    rules: [r.required(), r.mobile()],
   },
-  d: {
+  wechat: {
     value: '',
     label: '微信号',
+    rules: [r.maxLength(50)]
   },
-  g: {
+  email: {
     value: '',
     label: '私人邮箱',
+    rules: [r.maxLength(100), r.eMail()]
   },
-  h: {
+  selfIntroduction: {
     value: '',
     label: '自我介绍',
     props: { type: 'textarea', rows: "3" },
-    events : {},
+    events: {},
+    rules: [r.maxLength(300)]
   },
-  o: {
+  detailedIntroduction: {
     label: '奖励和荣誉',
     value : '' ,
     props: { type: 'textarea', rows: "6" },
-    events : {},
+    events: {},
+    rules: [r.maxLength(300)]
   }
 }

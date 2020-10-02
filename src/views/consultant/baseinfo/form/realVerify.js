@@ -2,22 +2,19 @@ import Vue from 'vue'
 
 const r = Vue.prototype.$rules
 export default {
-  bc: {
+  phone: {
     value: '',
     label: '手机号码',
-    rules: [r.required()],
+    rules: [r.required(), r.mobile()],
   },
-  bcc: {
+  idCard: {
     value: '',
     label: '身份证号',
-    rules: [r.required()], 
+    rules: [r.required(), r.idCard()], 
   },
-  g: {
-    type: 'select',
+  bankCard: {
     value: '',
     label: '银行卡信息',
-    rules: [r.required()],
-    props: { props: { label: 'text', value: 'value' } },
-    options: []
+    rules: [r.required(), r.length(13, 19)],
   },
 }

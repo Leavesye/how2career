@@ -35,11 +35,11 @@ export const constantRoutes = [
     children: [
       {
         path: '/register/consumer',
-        component: () => import('@/views/register/consumer')
+        component: () => import('@/views/consumer/baseinfo')
       },
       {
         path: '/register/consultant',
-        component: () => import('@/views/register/consultant')
+        component: () => import('@/views/consultant/baseinfo')
       },
     ]
   },
