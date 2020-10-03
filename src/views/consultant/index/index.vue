@@ -1,7 +1,7 @@
 <template>
   <section style="padding: 30px">
-    <!-- 未认证 -->
-    <div v-if="!realVerified">
+    <!-- 未认证简历或者没有填写服务时间 -->
+    <div v-if="!isSettingTime">
       <el-image class="banner"
                 :src="bannerImg"></el-image>
       <p class="reg-success">你已经成功注册咨询师</p>
@@ -9,36 +9,40 @@
       <section class="flex-hb">
         <!-- 步骤1 -->
         <div class="step"
-             :class="{active: curStep == 1}"
-             @click="handleClickStep(1)">
+             :class="{active: !isFinishReview }">
           <el-image class="step-num"
                     :src="step1"></el-image>
-          <!-- 审核状态 -->
-          <el-image class="status-img"
-                    :src="certFinish"></el-image>
+          <!-- 审核中 -->
+          <el-image v-if="isFillResume && !isFinishReview"
+                    class="status-img"
+                    :src="certApply"></el-image>
           <div class="step-review"
-               v-if="false">
+               v-if="isFillResume && !isFinishReview">
             <p>审核中</p>
             <p>你也可以设置服务时间</p>
           </div>
-          <div class="step-review">
+          <!-- 审核完成 -->
+          <el-image v-if="isFinishReview"
+                    class="status-img"
+                    :src="certFinish"></el-image>
+          <div class="step-review"
+               v-if="isFinishReview">
             <p>审核完成</p>
             <p>请设置服务时间</p>
           </div>
           <!-- 填写简历 -->
           <div class="step-fill"
-               v-if="false">
+               v-if="!isFillResume">
             <p>成为咨询师需要认证简历信息</p>
             <p>请先完成简历填写</p>
           </div>
-          <div v-if="false"
+          <div v-if="!isFillResume"
                class="step-btn"
-               :class="{active: curStep == 1}"
-               @click="linkTo('/consultant/fill')">完善个人信息</div>
+               @click="linkTo('/consultant/resume')">完善个人信息</div>
         </div>
         <!-- 步骤2 -->
         <div class="step"
-             :class="{active: curStep == 2}"
+             :class="{active: isFinishReview}"
              @click="handleClickStep(2)">
           <el-image class="step-num"
                     :src="step2"></el-image>
@@ -47,13 +51,12 @@
             <p>以便通过审核后立即开始接受订单</p>
           </div>
           <div class="step-btn"
-               :class="{active: curStep == 2}"
                @click="linkTo('/consultant/setting')">服务时间设置</div>
         </div>
       </section>
     </div>
     <!-- 已认证 -->
-    <div v-if="realVerified">
+    <div v-if="isSettingTime">
       <!-- 状态面板 -->
       <div class="pannel flex-hb">
         <div class="p-item"
@@ -117,36 +120,44 @@
 </template>
 
 <script>
-import { getConsultant } from '@/api/user'
 import { getConsultantOrders, getConsultantOrdersCount } from '@/api/order'
 
 export default {
   name: 'answerer-center',
-  components: {
-  },
   async created () {
     const l = this.loading()
-    const res = await getConsultant().catch(e => l.close())
+    const res = await this.$store.dispatch('user/getUserInfo').catch(e => l.close())
     if (res.result) {
+      // 无resume  就是未填写
+      // backgroundVerifyStatus= 0  未审核
+      // backgroundVerifyStatus= 1  待审核
+      // backgroundVerifyStatus= 2  资料待修正
+      // backgroundVerifyStatus= 3  已审核
       const o = res.msg
-      this.realVerified = o.realVerified
-      const ret = await Promise.all([
-        getConsultantOrders({
-          "from": "0",
-          "to": "2601444690",
-          "page": "1",
-          "limit": "100",
-          "condition": "status==1"
-        }),
-        getConsultantOrdersCount({ condition: "status==2:status==4:status==7:status==10" })
-      ]).catch(e => l.close())
+      // 是否填写过简历
+      this.isFillResume = !!o.publicInfo.resume
+      // 是否审核完成
+      this.isFinishReview = o.backgroundVerifyStatus == 3
+      // 是否设置过服务时间
+      this.isSettingTime = !!o.publicInfo.availableTime
+      // const ret = await Promise.all([
+      //   getConsultantOrders({
+      //     "from": "0",
+      //     "to": "2601444690",
+      //     "page": "1",
+      //     "limit": "100",
+      //     "condition": "status==1"
+      //   }),
+      //   getConsultantOrdersCount({ condition: "status==2:status==4:status==7:status==10" })
+      // ]).catch(e => l.close())
     }
     l.close()
-    this.alert('数据加载成功')
   },
   data () {
     return {
-      realVerified: true,
+      isFillResume: false,
+      isFinishReview: false,
+      isSettingTime: false,
       isActive: false,
       curStep: 1,
       pannels: [
@@ -183,12 +194,12 @@ export default {
     handleClickPannel (item, i) {
       this.isActive = i
     },
-    handleClickStep (i) {
-      this.curStep = i
-    },
     linkTo (path) {
       this.$router.push(path)
     },
+  },
+  mounted () {
+
   }
 }
 </script>
@@ -244,8 +255,9 @@ $color: #15479e;
   line-height: 46px;
   text-align: center;
   color: $color;
+  cursor: pointer;
 }
-.step-btn.active {
+.step-btn:hover {
   background: linear-gradient(123deg, #15479e 0%, #3271cd 100%);
   color: #fff;
 }

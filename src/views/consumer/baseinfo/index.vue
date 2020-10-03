@@ -4,8 +4,17 @@
     <section class="form-box"
              style="margin-top: 30px">
       <el-card class="form-card">
+        <div class="flex-vc form-name">
+          <label for="">手机号</label>
+          <p>{{user.userName}}</p>
+        </div>
+        <div class="flex-vc form-name" v-if="!isReg">
+          <label for="">密码</label>
+          <p style="margin-right: 30px">**********</p>
+          <el-button size="small" @click="handleClickChangePwd">修改密码</el-button>
+        </div>
         <quick-form :model="baseInfo"
-                    :labelWidth="labelWidth"
+                    labelWidth="140px"
                     ref="baseInfo"></quick-form>
       </el-card>
     </section>
@@ -13,7 +22,7 @@
     <section class="form-box">
       <el-card class="form-card">
         <quick-form :model="education"
-                    :labelWidth="labelWidth"
+                    labelWidth="140px"
                     ref="education"></quick-form>
       </el-card>
     </section>
@@ -26,12 +35,14 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import QuickForm from '@/components/QuickForm'
 import form from './form'
 import mixin from '@/mixins'
 import * as adapter from './adapter'
-import { consumerReg } from '@/api/user'
+import { register } from '@/api/user'
 import defaultImg from '@/assets/avatar-upload.png'
+import { setToken } from '@/utils/auth'
 
 export default {
   name: 'consumer-baseinfo',
@@ -41,9 +52,13 @@ export default {
   },
   data () {
     return {
-      labelWidth: '140px',
       ...form,
     }
+  },
+  computed: {
+    ...mapGetters([
+      'user'
+    ])
   },
   methods: {
     async handleSave() {
@@ -64,9 +79,13 @@ export default {
         console.log(formData, 'formdata')
         const p = adapter.boxing(formData)
         console.log(p, '参数')
-        let ret = await consumerReg(p).catch(e => l.close())
+        let ret = await register(p).catch(e => l.close())
         if (ret.result) {
           this.alert('注册成功')
+          // 缓存token
+          setToken(ret.msg.token)
+          // 跳转个人首页
+          this.$router.replace('/consumer/index')
         }
         l.close()
       }
@@ -85,6 +104,9 @@ export default {
     }
   },
   mounted () {
+    // 是否是注册页进来
+    this.isReg = this.$route.path.includes('/register/consumer')
+    this.isReg && (this.baseInfo.passWord.hide = false)
     // 给上传组件绑定回调
     const avatar = this.baseInfo.avatarImage
     avatar.props["before-upload"] = (file) => this.uploadBefore(file)

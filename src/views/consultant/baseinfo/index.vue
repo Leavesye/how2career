@@ -6,7 +6,7 @@
       <el-card class="form-card">
         <div class="flex-vc form-name">
           <label for="">手机号/邮箱地址</label>
-          <p>{{user.mobile}}</p>
+          <p>{{user.userName}}</p>
         </div>
         <div class="flex-vc form-name" v-if="!isReg">
           <label for="">密码</label>
@@ -57,8 +57,9 @@ import QuickForm from '@/components/QuickForm'
 import form from './form'
 import mixin from '@/mixins'
 import * as adapter from './adapter'
-import { consultantReg, consultantRealVerify } from '@/api/user'
+import { register, realVerify } from '@/api/user'
 import defaultImg from '@/assets/avatar-upload.png'
+import { setToken } from '@/utils/auth'
 
 export default {
   name: 'consultant-baseinfo',
@@ -92,7 +93,7 @@ export default {
       const bFormdata = this.$refs.baseInfo.getFormData()
       const rFormdata = this.$refs.realVerify.getFormData()
       const l = this.loading()
-      const res = await consultantRealVerify({ name: bFormdata.name, ...rFormdata }).catch(e=> l.close())
+      const res = await realVerify({ name: bFormdata.name, ...rFormdata }).catch(e=> l.close())
       l.close()
     },
     async handleSave() {
@@ -107,7 +108,7 @@ export default {
       if (isValid) {
         const l = this.loading()
         const formData = { 
-          userName: this.user.mobile,
+          userName: this.user.userName,
           ...this.$refs.baseInfo.getFormData(),
           ...this.$refs.realVerify.getFormData(),
           ...this.$refs.contact.getFormData(),
@@ -115,9 +116,13 @@ export default {
         console.log(formData, 'formdata')
         const p = adapter.boxing(formData)
         console.log(p, '参数')
-        let ret = await consultantReg(p).catch(e => l.close())
+        let ret = await register(p).catch(e => l.close())
         if (ret.result) {
           this.alert('注册成功')
+          // 缓存token
+          setToken(ret.msg.token)
+          // 跳转个人首页
+          this.$router.replace('/consultant/index')
         }
         l.close()
       }
@@ -148,6 +153,7 @@ export default {
     }
   },
   mounted () {
+    // 是否是注册页进来
     this.isReg = this.$route.path.includes('/register/consultant')
     this.isReg && (this.baseInfo.passWord.hide = false)
     // 给上传组件绑定回调

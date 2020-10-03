@@ -16,8 +16,8 @@ export default [
     component: () => import('@/views/consultant/baseinfo'),
   },
   {
-    path: '/consultant/qualification',
-    component: () => import('@/views/consultant/qualification'),
+    path: '/consultant/resume',
+    component: () => import('@/views/consultant/resume'),
   },
   {
     path: '/consultant/room',

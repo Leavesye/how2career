@@ -5,16 +5,31 @@
       <ul class="menu">
         <li v-for="(o, i) in menus" :key="i"><el-link class="link" :underline="false">{{o.name}}</el-link></li>
       </ul>
-      <el-avatar size="small" icon="el-icon-user-solid"></el-avatar>
+      <el-dropdown style="margin-top: 7px">
+        <el-image class="avatar-img el-dropdown-link" :src="user.avatar || defaultAvatar"></el-image>
+        <el-dropdown-menu slot="dropdown">
+          <div class="user-info">
+            <div class="flex-hbc nick-name">
+              <span>{{user.nickName}}</span>
+              <span @click="loginOut" style="cursor: pointer">退出</span>
+            </div>
+            <p class="info-percent">信息完成度</p>
+            <el-progress :percentage="60" color="#FF5F5E" style="width: 170px"></el-progress>
+          </div>
+        </el-dropdown-menu>
+      </el-dropdown>
     </section>
   </section>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'navbar',
   data() {
     return {
+      isShow: false,
       menus :[
         {name: '首页', path: ''},
         {name: '我们的服务', path: ''},
@@ -26,14 +41,29 @@ export default {
   computed: {
     logoImg: function() {
       return require('../../../assets/logo.png')
-    }
+    },
+    defaultAvatar: function() {
+      return require('../../../assets/default-avatar.png')
+    },
+    ...mapGetters([
+      'user'
+    ])
   },
   methods: {
+    handleShowDetail() {
+      this.isShow = true
+    },
+    loginOut() {
+      this.$store.dispatch('user/loginout')
+    },
     goHome() {
       this.$router.push('/home')
     }
+  },
+  mounted() {
+    console.log(this.user, 'user')
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -69,5 +99,26 @@ export default {
 }
 .link {
   color: #fff;
+}
+.avatar-img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+.user-info {
+  padding: 0 15px;
+  width: 200px;
+  height: 70px;
+  background: #FFFFFF;
+
+}
+.nick-name {
+  font-size: 14px;
+  color: #292E3D;
+}
+.info-percent {
+  color: #7A7F84;
+  font-size: 14px;
+  margin-top: 14px;
 }
 </style>

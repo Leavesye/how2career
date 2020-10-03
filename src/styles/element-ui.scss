@@ -116,3 +116,12 @@
 .el-link {
   vertical-align: baseline;
 }
+.el-upload.el-upload--picture-card {
+  width: 80px;
+  height: 80px;
+  position: relative;
+}
+.el-upload-list__item.is-success {
+  width: 80px;
+  height: 80px;
+}

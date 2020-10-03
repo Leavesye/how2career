@@ -3,50 +3,50 @@ import { upload } from './upload'
 
 const r = Vue.prototype.$rules
 export default {
-  d: {
+  name: {
     label: '拥有证书信息',
     value: '',
-    rules: [r.required()],
-    layout: { sm: 10, md: 10, lg: 10 },
+    layout: { span: 10 },
+    rules: [r.maxLength(20)],
     props: {
       placeholder: '请输入证书名称'
     }
   },
-  f: {
+  expireDate: {
     type: 'date',
     label: '',
     value: '',
-    rules: [r.required()],
-    layout: {sm : 7, md : 7, lg : 7},
+    layout: { span: 7 },
     labelWidth: '0',
     props: {
       placeholder: '有效日期'
     }
   },
-  g: {
+  comments: {
     label: '',
     value: '',
-    rules: [r.required()],
-    layout: {sm : 7, md : 7, lg : 7},
+    layout: { span: 7 },
     labelWidth: '0',
+    rules: [r.maxLength(100)],
     props: {
       placeholder: '请输入补充信息'
     }
   },
-  coverImg: {
+  certificateImage: {
     label: '',
     type: "upload",
     value: '',
     props: {
-      accept: ".pdf.jpg.jpeg.png.bmp",
-      action: '',
+      action: process.env.VUE_APP_BASE_API + "/user/platform/consultant/upload",
+      accept: '.jpg,.png,.gif',
+      name: 'UploadFiles',
       limit: 1,
       disabled: false,
-      "list-type": "picture",
-      "file-list":  [],
+      "list-type":"picture-card",
+      "show-file-list": true,
       "auto-upload": true,
-      "before-upload": (file) => this.uploadBefore(file, true),
-      "on-success": (res, file) => this.uploadSuccess(res, file, 'img'),
+      "before-upload": function (index, file) { this.uploadBefore(file, index) },
+      "on-success": function (index, res, file) { this.uploadSuccess(res, file, index, ['licenses', 'certificateImage']) },
     },
     render: (h) => {
       return upload(h)

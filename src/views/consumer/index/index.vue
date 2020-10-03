@@ -55,7 +55,7 @@
 
 <script>
 import CardList from '@/components/CardList'
-import { getConsultant } from '@/api/user'
+import { getUserInfo } from '@/api/user'
 import { getConsultantOrders, getConsultantOrdersCount } from '@/api/order'
 
 export default {
@@ -65,7 +65,7 @@ export default {
   },
   async created () {
     const l = this.loading()
-    const res = await getConsultant().catch(e => l.close())
+    const res = await getUserInfo().catch(e => l.close())
     if (res.result) {
       const o = res.msg
       // const ret = await Promise.all([

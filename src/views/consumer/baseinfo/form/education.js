@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import moment from 'moment'
 
 const r = Vue.prototype.$rules
 export default {
@@ -62,16 +63,24 @@ export default {
     type : 'date',
     rules: [r.required()],
     props: {
-      style: {width: '200px'}
+      style: { width: '200px' },
+      // 毕业时间需小于当前时间
+      'picker-options': {
+        disabledDate(time) {
+          return time.getTime() > moment().valueOf()
+        }
+      }
     }
   },
   selfIntroduction: {
     value: '',
     label: '自我介绍',
+    rules: [r.maxLength(300)]
   },
   detailedIntroduction: {
     value: '',
     label: '详细介绍',
+    rules: [r.maxLength(300)],
     props: {
       type: 'textarea',
       rows: 6,

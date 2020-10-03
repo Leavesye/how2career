@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import store from '@/store'
 
 // 发送验证码
 export function sendCode(data) {
@@ -24,66 +25,34 @@ export function login(data) {
     data
   })
 }
-// 咨询者注册
-export function consumerReg(data) {
+// 咨询者/ 咨询师 注册
+export function register(data) {
   return request({
-    url: '/user/platform/consumer/user',
+    url: `/user/platform/${store.state.user.role}/user`,
     method: 'post',
     data
   })
 }
-// 咨询师注册
-export function consultantReg(data) {
+// 咨询者/咨询师 实名认证
+export function realVerify(data) {
   return request({
-    url: '/user/platform/consultant/user',
+    url: `/order/platform/${store.state.user.role}/realVerify`,
     method: 'post',
     data
   })
 }
-// 咨询者实名认证
-export function consumerRealVerify(data) {
+// 查询 咨询者/咨询师 用户信息
+export function getUserInfo (params) {
   return request({
-    url: '/order/platform/consumer/realVerify',
-    method: 'post',
-    data
-  })
-}
-// 咨询师实名认证
-export function consultantRealVerify(data) {
-  return request({
-    url: '/order/platform/consultant/realVerify',
-    method: 'post',
-    data
-  })
-}
-// 查询咨询者用户信息
-export function getConsumer(params) {
-  return request({
-    url: '/user/platform/consumer/user',
+    url: `/user/platform/consultant/user`,
     method: 'get',
     params
   })
 }
-// 更新咨询者用户信息
-export function updateConsumer(data) {
+// 更新 咨询者/咨询师 用户信息
+export function updateUserInfo(data) {
   return request({
-    url: '/user/platform/consumer/user',
-    method: 'put',
-    data
-  })
-}
-// 查询咨询师用户信息
-export function getConsultant(params) {
-  return request({
-    url: '/user/platform/consultant/user',
-    method: 'get',
-    params
-  })
-}
-// 更新咨询师用户信息
-export function updateConsultant(data) {
-  return request({
-    url: '/user/platform/consultant/user',
+    url: `/user/platform/${store.state.user.role}/user`,
     method: 'put',
     data
   })

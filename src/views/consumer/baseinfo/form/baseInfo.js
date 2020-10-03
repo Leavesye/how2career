@@ -1,26 +1,22 @@
 import Vue from 'vue'
+import moment from 'moment'
 
 const r = Vue.prototype.$rules
 export default {
-  userName: {
-    value: '',
-    label: '手机号码/邮箱地址',
-    rules: [r.required()],
-  },
   passWord: {
     value: '',
     label: '密码',
-    rules: [r.required()],
+    rules: [r.required(), r.length(6, 12)],
   },
   name: {
     value: '',
     label: '姓名',
-    rules: [r.required()],
+    rules: [r.required(), r.maxLength(20), r.account()],
   },
   nickName: {
     value: '',
     label: '昵称',
-    rules: [r.required()],
+    rules: [r.required(), r.maxLength(10)],
   },
   gender: {
     label : '性别' ,
@@ -39,7 +35,13 @@ export default {
     type : 'date',
     rules: [r.required()],
     props: {
-      style: {width: '200px'}
+      style: { width: '200px' },
+      // 出生日期>0
+      'picker-options': {
+        disabledDate(time) {
+          return time.getTime() > moment().valueOf()
+        }
+      }
     }
   },
   avatarImage: {
@@ -49,7 +51,7 @@ export default {
     value: '',
     props: {
       action: process.env.VUE_APP_BASE_API + "/user/platform/consumer/upload",
-      accept: '',
+      accept: '.jpg,.png,.gif',
       name: 'UploadFiles',
       limit: 1,
       disabled: false,
