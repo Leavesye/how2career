@@ -37,7 +37,7 @@ export default {
         dataSource: data,
         fields: {
           id: 'Id',
-          subject: { default: '咨询可预约时间', isReadonly: 'true' },
+          subject: { name: 'EventName',default: '咨询可预约时间', isReadonly: 'true' },
           isAllDay: { name: 'IsAllDay' },
           startTime: { name: 'StartTime' },
           endTime: { name: 'EndTime' }
@@ -48,12 +48,12 @@ export default {
   methods: {
     // 新增 编辑 删除监听
     handleActionBegin(e) {
-      
+      console.log(e)
     },
     onPopupOpen(e) {
       console.log(e)
       if (e.type == 'QuickInfo') {
-        document.querySelector('.e-subject.e-field.e-input').disabled ='disabled'
+        // document.querySelector('.e-subject.e-field.e-input').disabled ='disabled'
       } else if (e.type == 'Editor') {
         document.querySelector('.e-subject.e-field').disabled ='disabled'
       }

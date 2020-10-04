@@ -90,7 +90,8 @@
                     v-model="lang"
                     placeholder="请输入信息"
                     size="small"
-                    :maxlength="10"></el-input>
+                    :maxlength="10"
+                    @keyup.enter.native="handleAddLang"></el-input>
           <el-button type="primary"
                      size="mini"
                      @click="handleAddLang">确认添加</el-button>
@@ -119,7 +120,8 @@
                     v-model="skill"
                     placeholder="请输入信息"
                     size="small"
-                    :maxlength="20"></el-input>
+                    :maxlength="20"
+                    @keyup.enter.native="handleAddSkill"></el-input>
           <el-button type="primary"
                      size="mini"
                      @click="handleAddSkill">确认添加</el-button>
@@ -274,7 +276,7 @@ export default {
     // 学历操作
     handleAddEducation () {
       if (this.education.length == 10) return false
-      console.log(_.cloneDeep(eduForm),9090)
+      console.log(_.cloneDeep(eduForm), 9090)
       this.education.push(this.bindThis(_.cloneDeep(eduForm), this.education.length))
     },
     handleDelEducation (i) {
@@ -333,7 +335,7 @@ export default {
           current.props['on-success'] = current.props['on-success'].bind(this, index)
           current.props['on-remove'] = current.props['on-remove'].bind(this, index)
           if (current.value) {
-            current.props['file-list']= [{ url: process.env.VUE_APP_HOST_NAME + current.value }]
+            current.props['file-list'] = [{ url: process.env.VUE_APP_HOST_NAME + current.value }]
           }
         }
       })
