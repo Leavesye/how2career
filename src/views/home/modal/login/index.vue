@@ -192,6 +192,7 @@ export default {
                 this.$alert('该账号为咨询师账号,是否直接登录咨询师', '登录角色错误', {
                   confirmButtonText: '确定',
                   callback: action => {
+                    this.$store.dispatch('user/setRole', 'consultant')
                     action == 'confirm' && this.$router.replace('/consultant/index')
                   }
                 })
@@ -201,6 +202,7 @@ export default {
                 this.$alert('该账号为咨询者账号,是否直接登录咨询者', '登录角色错误', {
                   confirmButtonText: '确定',
                   callback: action => {
+                    this.$store.dispatch('user/setRole', 'consumer')
                     action == 'confirm' && this.$router.replace('/consumer/index')
                   }
                 })

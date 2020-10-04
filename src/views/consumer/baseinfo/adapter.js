@@ -25,32 +25,24 @@ export function boxing (from) {
     }
   }
 }
-export function unBoxing (source) {
-  return {
-    "userName": "18602113265",
-    "passWord": "123",
-    "basic": {
-      "birthday": "出生年月",
-      "name": "姓名",
-      "gender": "f/m",
-      "nickName": "昵称",
-      "avatarImage": "头像url",
-      "selfIntroduction": "自我简介",
-      "detailedIntroduction": "详细介绍",
-      "highestEducation": {
-        "country": "国家",
-        "school": "毕业学校",
-        "discipline": "专业",
-        "degree": "学位",
-        "graduationTime": "毕业时间",
-        "GPA": "GPA成绩"
-      }
-    },
-    "realVerify": {
-      "phone": "手机号码",
-      "idCard": "身份证"
-    },
-    "refer": "上游用户的id",
-    "referType": "MGM"
-  }
+export function unBoxing (from, to) {
+  const { account, basic, publicInfo, realVerify } = from
+  const b = to.baseInfo
+  b.userName.value = account.userName
+  b.passWord.value = account.passWord
+  b.name.value = basic.name
+  b.nickName.value = publicInfo.nickName
+  b.gender.value = basic.gender
+  b.avatarImage.value = publicInfo.avatarImage
+  const r = to.realVerify
+  r.phone.value = realVerify.phone
+  r.idCard.value = realVerify.idCard
+  r.bankCard.value = realVerify.bankCard
+  const c = to.contact
+  c.phone.value = basic.phone
+  c.wechat.value = basic.wechat
+  c.email.value = basic.email
+  c.selfIntroduction.value = publicInfo.selfIntroduction
+  c.detailedIntroduction.value = basic.detailedIntroduction
+
 }

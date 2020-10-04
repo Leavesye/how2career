@@ -43,6 +43,7 @@ import * as adapter from './adapter'
 import { register } from '@/api/user'
 import defaultImg from '@/assets/avatar-upload.png'
 import { setToken } from '@/utils/auth'
+import { getUserInfo }  from '@/api/user'
 
 export default {
   name: 'consumer-baseinfo',
@@ -60,12 +61,20 @@ export default {
       'user'
     ])
   },
+  async created() {
+    const l = this.loading()
+    let res = await getUserInfo().catch( e=> l.close())
+    if (res.result) {
+      adapter.unBoxing(res.msg, this._data)
+    }
+    l.close()
+  },
   methods: {
     async handleSave() {
       const keys = Object.keys(form)
       // 校验所有表单
       let isValid = true
-      const res =  await Promise.all(keys.map(key => this.$refs[key].validate())).catch(e => {
+      const res = await Promise.all(keys.map(key => this.$refs[key].validate())).catch(e => {
         console.log(e, 'error')
         isValid = false
       })

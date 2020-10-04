@@ -1,13 +1,14 @@
 import { login, getUserInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
+import Cookies from 'js-cookie'
 // import user from 'mock/user'
 
 const state = {
   token: getToken(),
-  userName: '',
-  nickName: '',
-  avatar: '',
-  role: ''
+  userName: Cookies.get('userName'),
+  nickName: Cookies.get('nickName'),
+  avatar: Cookies.get('avatar'),
+  role: Cookies.get('role')
 }
 
 const mutations = {
@@ -16,15 +17,19 @@ const mutations = {
   },
   SET_USERNAME: (state, userName) => {
     state.userName = userName
+    Cookies.set('userName', userName)
   },
   SET_NICKNAME: (state, nickName) => {
     state.nickName = nickName
+    Cookies.set('nickName', nickName)
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
+    Cookies.set('avatar', avatar)
   },
   SET_ROLE: (state, role) => {
     state.role = role
+    Cookies.set('role', role)
   }
 }
 
@@ -69,13 +74,16 @@ const actions = {
     })
   },
   // user logout
-  loginout({ commit, state, dispatch }) {
+  loginout({ commit }) {
     commit('SET_TOKEN', '')
     commit('SET_ROLE', '')
     commit('SET_USERNAME', '')
     commit('SET_NICKNAME', '')
     commit('SET_AVATAR', '')
     removeToken()
+    ['token', 'userName', 'nickName', 'avatar', 'role'].forEach(key => { 
+      Cookies.remove(key)
+    })
     location.href = '/'
   },
   // remove token
@@ -85,7 +93,14 @@ const actions = {
       removeToken()
       resolve()
     })
-  }
+  },
+  setRole({ commit }, role) {
+    commit('SET_ROLE', role)
+  },
+  setUser({ commit }, info) {
+    commit('SET_NICKNAME', info.nickName)
+    commit('SET_AVATAR', process.env.VUE_APP_HOST_NAME + info.avatar)
+  },
 }
 
 export default {

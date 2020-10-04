@@ -1,5 +1,3 @@
-import { divide } from "lodash"
-
 export function upload (h) {
   return (
     <div>

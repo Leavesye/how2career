@@ -15,7 +15,8 @@
         <el-button class="del-btn"
                    size="small"
                    plain
-                   @click="handleDelEducation(i)">删除</el-button>
+                   @click="handleDelEducation(i)"
+                   v-if="education.length > 1">删除</el-button>
       </el-card>
       <section class="flex-he">
         <el-button class="add-btn"
@@ -37,7 +38,8 @@
         <el-button class="del-btn"
                    size="small"
                    @click="handleDelExperience(i)"
-                   plain>删除</el-button>
+                   plain
+                   v-if="workExperience.length > 1">删除</el-button>
       </el-card>
       <section class="flex-he">
         <el-button class="add-btn"
@@ -63,6 +65,7 @@
         <el-button class="del-btn"
                    size="small"
                    @click="handleDelLicense(i)"
+                   v-if="otherCertificates.length > 1"
                    plain>删除</el-button>
       </el-card>
       <section class="flex-he">
@@ -138,8 +141,10 @@
     <div class="flex-he"
          style="margin: 60px 60px 70px 0">
       <el-button type="primary"
-                 size="mini" @click="handleSave(1)">保存并提交审核</el-button>
-      <el-button size="mini" @click="handleSave(2)">保存</el-button>
+                 size="mini"
+                 @click="handleSave(1)">保存并提交审核</el-button>
+      <el-button size="mini"
+                 @click="handleSave(2)">保存</el-button>
     </div>
     <submit-finish :isShow="isShow"
                    @close="handleClose"></submit-finish>
@@ -154,7 +159,6 @@ import form from './form'
 import eduForm from './form/edu-form'
 import expForm from './form/exp-form'
 import licenseForm from './form/license-form'
-import adapter from './adapter'
 import { getUserInfo, updateUserInfo } from '@/api/user'
 import mixin from '@/mixins'
 
@@ -162,6 +166,14 @@ const cfg = {
   'education': eduForm,
   'workExperience': expForm,
   'otherCertificates': licenseForm,
+}
+// 联动表单配置
+const fieldCfg = {
+  studentOrganization: 1,
+  getRewarded: 2,
+  projectArticle: 3,
+  teamManagement: 4,
+  gallupCertified: 5,
 }
 export default {
   name: 'fill-info',
@@ -181,62 +193,88 @@ export default {
       ...form,
     }
   },
-  async created() {
+  async created () {
     const l = this.loading()
-    let res = await getUserInfo().catch(e=>l.close())
+    let res = await getUserInfo().catch(e => l.close())
     if (res.result) {
-      this.id = res.msg._id
+      // 简历信息
       const resume = res.msg.publicInfo.resume
+      this.initPublicInfo = res.msg.publicInfo || {}
       if (resume) {
         const { socialInsuranceImage, gallupCertified, gallupCertifiedImage, language, skills } = resume
         Object.keys(resume).forEach(key => {
           if (['education', 'workExperience', 'otherCertificates'].includes(key)) {
             const form = resume[key]
             this[key] = []
-            form.forEach(o => {
+            form.forEach((o, i) => {
               let copy = _.cloneDeep(cfg[key])
+              this[key].push(copy)
               Object.keys(copy).forEach(k => {
+                // 联动设置
+                if (k in fieldCfg) {
+                  this.handleCheckboxChange(fieldCfg[k], i, o[k])
+                }
                 copy[k].value = o[k]
               })
-              this[key].push(copy)
+              // form表单事件绑定this upload处理
+              this.bindThis(copy, i)
             })
           }
         })
         this.language = language
         this.skills = skills
         this.socialEcurity.socialInsuranceImage.value = socialInsuranceImage
+        this.bindThis(this.socialEcurity)
         this.callup.gallupCertified.value = gallupCertified
         this.callup.gallupCertifiedImage.value = gallupCertifiedImage
+        this.bindThis(this.callup)
+        this.handleCheckboxChange(5, '', gallupCertified)
+      } else {
+        // 绑定form表单事件方法this到组件实例 便于后续调用实例方法
+        this.education[0] = this.bindThis(this.education[0], 0)
+        this.workExperience[0] = this.bindThis(this.workExperience[0], 0)
+        this.otherCertificates[0] = this.bindThis(this.otherCertificates[0], 0)
+        this.callup = this.bindThis(this.callup)
+        this.socialEcurity = this.bindThis(this.socialEcurity)
       }
     }
     l.close()
   },
   methods: {
     // 表单联动操作
-    handleCheckboxChange(type, index, v) {
+    handleCheckboxChange (type, index, v) {
+      console.log(type, index, v)
       const o = this.education[index]
       const exp = this.workExperience[index]
       if (type == 1) {
         o.organizationTitle.hide = !v
-        o.studentOrganization.layout.span = v ? 5: 24
+        !v && (o.organizationTitle.value = '')
+        o.studentOrganization.layout.span = v ? 5 : 24
       }
       if (type == 2) {
         o.rewardDescription.hide = !v
-        o.getRewarded.layout.span = v ? 5: 24
+        !v && (o.rewardDescription.value = '')
+        o.getRewarded.layout.span = v ? 5 : 24
       }
-      if (type == 3) o.projectArticleDescription.hide = !v
+      if (type == 3) {
+        !v && (o.projectArticleDescription.value = '')
+        o.projectArticleDescription.hide = !v
+      }
       if (type == 4) {
         exp.teamMember.hide = !v
-        exp.teamManagement.layout.span = v ? 8: 24
+        !v && (exp.teamMember.value = '')
+        exp.teamManagement.layout.span = v ? 8 : 24
       }
       if (type == 5) {
         this.callup.gallupCertifiedImage.hide = !v
-        this.callup.gallupCertified.layout.span = v ? 6: 24
+        // !v && (this.callup.gallupCertifiedImage.value = '')
+        this.callup.gallupCertified.layout.span = v ? 6 : 24
       }
     },
     // 学历操作
     handleAddEducation () {
       if (this.education.length == 10) return false
+      console.log(_.cloneDeep(eduForm),9090)
       this.education.push(this.bindThis(_.cloneDeep(eduForm), this.education.length))
     },
     handleDelEducation (i) {
@@ -255,7 +293,7 @@ export default {
     // 执照与证书操作
     handleAddLicense () {
       if (this.otherCertificates.length == 10) return false
-      this.otherCertificates.push(this.bindThis(_.cloneDeep(licenseForm),this.otherCertificates.length))
+      this.otherCertificates.push(this.bindThis(_.cloneDeep(licenseForm), this.otherCertificates.length))
     },
     handleDelLicense (i) {
       if (this.otherCertificates.length == 1) return false
@@ -283,22 +321,27 @@ export default {
     handleClose () {
       this.isShow = false
     },
-    bindThis(o, index) {
+    bindThis (o, index) {
       Object.keys(o).forEach(key => {
         let current = o[key]
         current.events && Object.keys(current.events).forEach(event => {
-          current.events[event] = current.events[event].bind(this, index)
+          // 绑定this 及  数组索引
+          current.events[event] = index != undefined ? current.events[event].bind(this, index) : current.events[event].bind(this)
         })
-        if (current.type =='upload') {
+        if (current.type == 'upload') {
           current.props['before-upload'] = current.props['before-upload'].bind(this, index)
           current.props['on-success'] = current.props['on-success'].bind(this, index)
+          current.props['on-remove'] = current.props['on-remove'].bind(this, index)
+          if (current.value) {
+            current.props['file-list']= [{ url: process.env.VUE_APP_HOST_NAME + current.value }]
+          }
         }
       })
       return o
     },
     // 上传文件相关
-    checkFile(file) {
-       if (file.size > 2 * 1024 * 1024) {
+    checkFile (file) {
+      if (file.size > 2 * 1024 * 1024) {
         this.alert("上传图片不能超过2M")
         return false
       }
@@ -308,7 +351,7 @@ export default {
       }
       return true
     },
-    afterUpload(fileUrl, index, attrs) {
+    afterUpload (fileUrl, index, attrs) {
       console.log(fileUrl, index, attrs)
       if (typeof index == 'number') {
         this[attrs[0]][index][attrs[1]].value = fileUrl
@@ -316,7 +359,14 @@ export default {
         this[attrs[0]][attrs[1]].value = fileUrl
       }
     },
-    async handleSave(type) {
+    onRemoveFile (index, attrs) {
+      if (typeof index == 'number') {
+        this[attrs[0]][index][attrs[1]].value = ''
+      } else {
+        this[attrs[0]][attrs[1]].value = ''
+      }
+    },
+    async handleSave (type) {
       console.log(this.$refs)
       // 表单校验
       let isValid = true
@@ -329,8 +379,8 @@ export default {
       ]).catch(e => isValid = false)
       if (isValid) {
         const l = this.loading()
-        const formData = { 
-          _id: this.id,
+        // 组装数据
+        const formData = {
           education: this.education.map((o, i) => this.$refs['education' + i][0].getFormData()),
           workExperience: this.workExperience.map((o, i) => this.$refs['experience' + i][0].getFormData()),
           otherCertificates: this.otherCertificates.map((o, i) => this.$refs['license' + i][0].getFormData()),
@@ -339,25 +389,25 @@ export default {
           language: this.language,
           skills: this.skills
         }
-        // 保存并提交审核 更新  backgroundVerifyStatus= 1 ,保存不更新这个字段
-        type ==1 && (formData.backgroundVerifyStatus = 1)
         console.log(formData, 'formdata')
-        const ret = await updateUserInfo(formData)
+        this.initPublicInfo.resume = formData
+        const p = {
+          publicInfo: this.initPublicInfo
+        }
+        // 保存并提交审核 更新  backgroundVerifyStatus= 1 ,保存不更新这个字段
+        type == 1 && (p.backgroundVerifyStatus = 1)
+        const ret = await updateUserInfo(p).catch(e => l.close())
         if (ret.result) {
-          this.alert('操作成功')
+          this.alert(type == 1 ? '保存并提交审核成功' : '保存成功')
         }
         l.close()
+      } else {
+        this.alert('表单验证失败', 'warning')
       }
     }
   },
   mounted () {
-    console.log(this._data, 111)
-    // 绑定form表单事件方法this到组件实例 便于后续调用实例方法
-    this.education[0] = this.bindThis(this.education[0], 0)
-    this.workExperience[0] = this.bindThis(this.workExperience[0], 0)
-    this.otherCertificates[0] = this.bindThis(this.otherCertificates[0], 0)
-    this.callup = this.bindThis(this.callup)
-    this.socialEcurity = this.bindThis(this.socialEcurity)
+
   }
 }
 </script>

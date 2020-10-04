@@ -10,8 +10,8 @@ export default {
     layout: { span:24 },
     labelWidth: '70px',
     events: {
-      change: function (i, v) {
-        this.handleCheckboxChange(5, i, v)
+      change: function (v) {
+        this.handleCheckboxChange(5, '', v)
       }
     }
   },
@@ -27,12 +27,13 @@ export default {
       accept: '.jpg,.png,.gif',
       name: 'UploadFiles',
       limit: 1,
-      disabled: false,
+      "file-list": [],
       "list-type":"picture-card",
       "show-file-list": true,
       "auto-upload": true,
       "before-upload": function (index, file) { this.uploadBefore(file, index) },
       "on-success": function (index, res, file) { this.uploadSuccess(res, file, index, ['callup', 'gallupCertifiedImage']) },
+      "on-remove": function (index, file, fileList) { this.uploadRemove(file, fileList, index, ['callup', 'gallupCertifiedImage']) },
     },
     render: (h) => {
       return upload(h)

@@ -57,7 +57,7 @@ import QuickForm from '@/components/QuickForm'
 import form from './form'
 import mixin from '@/mixins'
 import * as adapter from './adapter'
-import { register, realVerify } from '@/api/user'
+import { register, realVerify, getUserInfo, updateUserInfo } from '@/api/user'
 import defaultImg from '@/assets/avatar-upload.png'
 import { setToken } from '@/utils/auth'
 
@@ -78,6 +78,17 @@ export default {
       'user'
     ])
   },
+  async created() {
+    if (!this.isReg) {
+      const l = this.loading()
+      let res = await getUserInfo().catch( e=> l.close())
+      if (res.result) {
+        this.initData = res.msg
+        adapter.unBoxing(res.msg, this._data)
+      }
+      l.close()
+    }
+  },
   methods: {
     handleClickChangePwd() {
       
@@ -94,6 +105,9 @@ export default {
       const rFormdata = this.$refs.realVerify.getFormData()
       const l = this.loading()
       const res = await realVerify({ name: bFormdata.name, ...rFormdata }).catch(e=> l.close())
+      if (res.result) {
+        this.alert('认证成功')
+      }
       l.close()
     },
     async handleSave() {
@@ -113,16 +127,28 @@ export default {
           ...this.$refs.realVerify.getFormData(),
           ...this.$refs.contact.getFormData(),
         }
-        console.log(formData, 'formdata')
-        const p = adapter.boxing(formData)
+        const { _id, ...p } = adapter.boxing(formData, this.initData)
         console.log(p, '参数')
-        let ret = await register(p).catch(e => l.close())
+        let ret = null
+        if (this.isReg) {
+          ret = await register(p).catch(e => l.close())
+        } else {
+          ret = await updateUserInfo(p).catch(e => l.close())
+        }
         if (ret.result) {
-          this.alert('注册成功')
-          // 缓存token
-          setToken(ret.msg.token)
-          // 跳转个人首页
-          this.$router.replace('/consultant/index')
+          this.alert(this.isReg ? '注册成功' : '保存成功')
+          if (this.isReg ) {
+            // 缓存token
+            setToken(ret.msg.token)
+            // 跳转个人首页
+            this.$router.replace('/consultant/index')
+          } else {
+            // 更新缓存
+            this.$store.dispatch('user/setUser', { 
+              nickName: formData.nickName,
+              avatar: formData.avatarImage,
+            })
+          }
         }
         l.close()
       }
@@ -155,7 +181,7 @@ export default {
   mounted () {
     // 是否是注册页进来
     this.isReg = this.$route.path.includes('/register/consultant')
-    this.isReg && (this.baseInfo.passWord.hide = false)
+    this.baseInfo.passWord.hide = !this.isReg
     // 给上传组件绑定回调
     const avatar = this.baseInfo.avatarImage
     avatar.props["before-upload"] = (file) => this.uploadBefore(file)

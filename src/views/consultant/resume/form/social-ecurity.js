@@ -13,12 +13,13 @@ export default {
       accept: '.jpg,.png,.gif',
       name: 'UploadFiles',
       limit: 1,
-      disabled: false,
+      "file-list": [],
       "list-type":"picture-card",
       "show-file-list": true,
       "auto-upload": true,
       "before-upload": function (index, file) { this.uploadBefore(file, index) },
       "on-success": function (index, res, file) { this.uploadSuccess(res, file, index, ['socialEcurity', 'socialInsuranceImage']) },
+      "on-remove": function (index, file, fileList) { this.uploadRemove(file, fileList, index, ['socialEcurity', 'socialInsuranceImage']) },
     },
     render: (h) => {
       return upload(h)

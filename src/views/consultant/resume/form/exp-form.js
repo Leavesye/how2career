@@ -15,6 +15,7 @@ export default {
     ]
   },
   company: {
+    type: 'input',
     value: '',
     label: '企业',
     rules: [r.required(), r.maxLength(100)],
@@ -30,6 +31,7 @@ export default {
     ]
   },
   department: {
+    type: 'input',
     value: '',
     label: '部门',
     rules: [r.required(), r.maxLength(20)],
@@ -68,6 +70,7 @@ export default {
     rules: [r.required()],
     layout: { span: 12 },
     props: {
+      "value-format": 'timestamp',
       // 入职时间不能大于当前时间
       'picker-options': {
         disabledDate(time) {
@@ -83,6 +86,7 @@ export default {
     rules: [r.required()],
     layout: { span: 12 },
     props: {
+      "value-format": 'timestamp',
       // 离职时间不能大于当前时间
       'picker-options': {
         disabledDate(time) {
@@ -92,12 +96,14 @@ export default {
     }
   },
   duty: {
+    type: 'input',
     label: '主要工作内容与业绩',
     value : '' ,
     props: { type: 'textarea', rows: "6" },
     rules: [r.maxLength(300)]
   },
   reward: {
+    type: 'input',
     label: '奖励和荣誉',
     value : '' ,
     props: { type: 'textarea', rows: "6" },
@@ -115,6 +121,7 @@ export default {
     }
   },
   teamMember: {
+    type: 'input',
     layout: { span: 14 },
     label: '团队人数',
     props: {
@@ -125,6 +132,7 @@ export default {
     hide: true
   },
   teamAchievement: {
+    type: 'input',
     label: '主要成果',
     value : '' ,
     props: { type: 'textarea', rows: "6" },

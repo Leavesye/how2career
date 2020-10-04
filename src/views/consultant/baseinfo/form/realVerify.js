@@ -2,7 +2,7 @@ import Vue from 'vue'
 
 const r = Vue.prototype.$rules
 export default {
-  phone: {
+  phoneNumber: {
     value: '',
     label: '手机号码',
     rules: [r.required(), r.mobile()],

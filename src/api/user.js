@@ -44,13 +44,14 @@ export function realVerify(data) {
 // 查询 咨询者/咨询师 用户信息
 export function getUserInfo (params) {
   return request({
-    url: `/user/platform/consultant/user`,
+    url: `/user/platform/${store.state.user.role}/user`,
     method: 'get',
     params
   })
 }
 // 更新 咨询者/咨询师 用户信息
-export function updateUserInfo(data) {
+export function updateUserInfo (data) {
+  console.log()
   return request({
     url: `/user/platform/${store.state.user.role}/user`,
     method: 'put',

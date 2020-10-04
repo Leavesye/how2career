@@ -10,6 +10,7 @@ export default {
       type: 'password'
     },
     rules: [r.required(), r.length(6, 12)],
+    hide: false,
   },
   name: {
     value: '',
@@ -56,7 +57,7 @@ export default {
       action: process.env.VUE_APP_BASE_API + "/user/platform/consultant/upload",
       accept: '.jpg,.png,.gif',
       name: 'UploadFiles',
-      limit: 1,
+      // limit: 1,
       disabled: false,
       "show-file-list": false,
       "auto-upload": true,

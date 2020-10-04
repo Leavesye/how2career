@@ -1,6 +1,6 @@
 export default {
   methods: {
-    uploadBefore (file, index) { 
+    uploadBefore (file) { 
       console.log(file, 2222)
       if (!this.checkFile(file)) return false
     },
@@ -9,6 +9,9 @@ export default {
         // 回传链接地址到页面
         this.afterUpload(res.msg, index, attrs)
       }
+    },
+    uploadRemove (file, fileList, index, attrs) {
+      this.onRemoveFile(index, attrs)
     },
   }
 }

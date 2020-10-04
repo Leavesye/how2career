@@ -70,6 +70,7 @@ export default {
     label: '毕业时间',
     rules: [r.required()],
     props: {
+      "value-format": 'timestamp',
       style: { width: '300px' },
       // 毕业时间不能大于当前时间
       'picker-options': {
@@ -91,6 +92,7 @@ export default {
     }
   },
   organizationTitle: {
+    type: 'input',
     layout: { span: 19 },
     label: '',
     props: {
@@ -113,6 +115,7 @@ export default {
     }
   },
   rewardDescription: {
+    type: 'input',
     layout: { span: 19 },
     label: '',
     props: {
@@ -134,6 +137,7 @@ export default {
     }
   },
   projectArticleDescription: {
+    type: 'input',
     label: '',
     value: '',
     props: { type: 'textarea', rows: "6", placeholder: '请输入内容描述（必填）' },
@@ -150,12 +154,13 @@ export default {
       accept: '.jpg,.png,.gif',
       name: 'UploadFiles',
       limit: 1,
-      disabled: false,
+      "file-list": [],
       "list-type":"picture-card",
       "show-file-list": true,
       "auto-upload": true,
       "before-upload": function (index, file) { this.uploadBefore(file, index) },
-      "on-success": function (index, res, file) { this.uploadSuccess(res, file, index, ['educations', 'degreeCertificate']) },
+      "on-success": function (index, res, file) { this.uploadSuccess(res, file, index, ['education', 'degreeCertificate']) },
+      "on-remove": function (index, file, fileList) { this.uploadRemove(file, fileList, index, ['education', 'degreeCertificate']) },
     },
     render: (h) => {
       return upload(h)
