@@ -53,7 +53,7 @@ export default {
     onPopupOpen(e) {
       console.log(e)
       if (e.type == 'QuickInfo') {
-        // document.querySelector('.e-subject.e-field.e-input').disabled ='disabled'
+        //document.querySelector('.e-subject.e-field.e-input').disabled ='disabled'
       } else if (e.type == 'Editor') {
         document.querySelector('.e-subject.e-field').disabled ='disabled'
       }
