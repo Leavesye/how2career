@@ -5,7 +5,7 @@
              style="margin-top: 30px">
       <el-card class="form-card">
         <div class="flex-vc form-name">
-          <label for="">手机号/邮箱地址</label>
+          <label for="">手机号</label>
           <p>{{user.userName}}</p>
         </div>
         <div class="flex-vc form-name" v-if="!isReg">
@@ -18,7 +18,7 @@
                     ref="baseInfo"></quick-form>
       </el-card>
     </section>
-    <h1 class="title bottom">实名认证（未认证）</h1>
+    <h1 class="title bottom">实名认证（{{realVerified? '已认证' : '未认证' }}）</h1>
     <section class="form-box">
       <el-card class="form-card">
         <div class="flex form-name" v-if="!isReg">
@@ -69,6 +69,7 @@ export default {
   mixins: [mixin],
   data () {
     return {
+      realVerified: false,
       isReg: false, // 是否注册页面
       ...form, // 表单配置
     }
@@ -84,6 +85,7 @@ export default {
       let res = await getUserInfo().catch( e=> l.close())
       if (res.result) {
         this.initData = res.msg
+        this.realVerified = res.msg.realVerified
         adapter.unBoxing(res.msg, this._data)
       }
       l.close()

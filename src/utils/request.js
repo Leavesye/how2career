@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import axios from 'axios'
 import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
@@ -79,5 +80,5 @@ service.interceptors.response.use(
     return Promise.reject(error)
   }
 )
-
+Vue.prototype.$request = service
 export default service
