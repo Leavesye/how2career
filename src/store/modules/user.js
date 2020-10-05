@@ -8,7 +8,8 @@ const state = {
   userName: Cookies.get('userName'),
   nickName: Cookies.get('nickName'),
   avatar: Cookies.get('avatar'),
-  role: Cookies.get('role')
+  role: Cookies.get('role'),
+  userId: Cookies.get('userId')
 }
 
 const mutations = {
@@ -30,6 +31,10 @@ const mutations = {
   SET_ROLE: (state, role) => {
     state.role = role
     Cookies.set('role', role)
+  },
+  SET_USERID: (state, userId) => {
+    state.userId = userId
+    Cookies.set('userId', userId)
   }
 }
 
@@ -49,6 +54,7 @@ const actions = {
           setToken(data.token)
           commit('SET_ROLE', role)
           commit('SET_USERNAME', userName)
+          commit('SET_USERID', data.id)
         }
         resolve(res)
       }).catch(error => {
@@ -80,8 +86,9 @@ const actions = {
     commit('SET_USERNAME', '')
     commit('SET_NICKNAME', '')
     commit('SET_AVATAR', '')
+    commit('SET_USERID', '')
     removeToken()
-    ['token', 'userName', 'nickName', 'avatar', 'role'].forEach(key => { 
+    ['token', 'userName', 'nickName', 'avatar', 'role', 'userId'].forEach(key => { 
       Cookies.remove(key)
     })
     location.href = '/'

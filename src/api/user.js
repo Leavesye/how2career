@@ -1,5 +1,6 @@
 import request from '@/utils/request'
 import store from '@/store'
+import { getToken } from '@/utils/auth'
 
 // 发送验证码
 export function sendCode(data) {
@@ -60,11 +61,27 @@ export function updateUserInfo (data) {
 }
 
 // 查询咨询师公开信息
-export function getConsultantPublicjInfo(params) {
+export function getPublicInfo(params) {
   return request({
     url: '/user/platform/consultant/user/publicInfo',
     method: 'get',
     params
   })
 }
+// 查询咨询师未来7-14天已被预约的时间
+export function getAppointmentedTimes(params) {
+  return request({
+    url: '/user/platform/consultant/appointment',
+    method: 'get',
+    params
+  })
+}
 
+export function getUserInfoSync () { 
+  const xhr = new XMLHttpRequest()
+  xhr.open('GET', process.env.VUE_APP_BASE_API + '/user/platform/consultant/user', false)
+  xhr.setRequestHeader("Authorization", getToken())  //设置请求头
+  xhr.send()
+  const res = xhr.responseText ? JSON.parse(xhr.responseText) : null
+  return res
+}

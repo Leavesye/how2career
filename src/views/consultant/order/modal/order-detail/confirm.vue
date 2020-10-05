@@ -1,7 +1,8 @@
 <template>
 <el-dialog
   title="订单详情"
-  :visible.sync="isShow"
+  :visible.sync="isShowDetail"
+  :before-close="handleClose"
   width="700px"
   center>
   <section class="modal-main">
@@ -10,13 +11,13 @@
       <div>创建时间: 2020-12-11 20:13:12</div>
     </div>
     <p class="time">咨询备选时间 (北京时间)：</p>
-    <ul class="flex-hb">
+    <ul class="flex-hb" style="margin-bottom: 20px">
       <li class="time-item" v-for="(o, i) in 3" :key="i">2020-12-11 20:13:12</li>
     </ul>
     <div v-if="isShowCalendar">
       <calendar></calendar>
     </div>
-    <p class="select-other" @click="handleSelectTime">选择其他时间<i :class="[isShowCalendar?'el-icon-arrow-up':'el-icon-arrow-down']"></i></p>
+    <p class="select-other" @click="toggleTimePicker">选择其他时间<i :class="[isShowCalendar?'el-icon-arrow-up':'el-icon-arrow-down']"></i></p>
     <div class="flex info-box" v-if="true">
       <div class="head">
         <div></div>
@@ -62,7 +63,7 @@ import Calendar from '@/components/Calendar'
 
 export default {
   name: 'order-detail',
-  props: ['isShow'],
+  props: ['isShowDetail'],
   components: {
     Calendar
   },
@@ -72,10 +73,13 @@ export default {
     }
   },
   methods: {
+    handleClose() {
+      this.$emit('close')
+    },
     handleConfirmTime() {
       this.$emit('close')
     },
-    handleSelectTime() {
+    toggleTimePicker() {
       this.isShowCalendar = !this.isShowCalendar
     },
   }

@@ -1,25 +1,24 @@
 <template>
   <el-row>
     <el-col :span="16">
-      <a-config-provider :locale="locale">
-        <a-calendar :locale="locale.calendar"
-                    class="calender"
-                    @select="onSelect"
-                    @panelChange="onPanelChange">
-        </a-calendar>
-      </a-config-provider>
+      <scheduler @open-timepicker="openTimepicker"
+                 mode="view"></scheduler>
     </el-col>
     <el-col :span="8">
       <div class="time-list">
         <div>
           <h1>当前已选择时间</h1>
-          <p v-for="(item, i) in currentTimeList"
-             :key="i">{{item}}<i style="color: #15479E;cursor: pointer"
-               class="iconfont iconB_jian-01" /></p>
+          <p v-for="(item, i) in selList"
+             :key="i">
+            {{item.selText}}
+            <i @click="handleDelSelect(i, item)" style="color: #15479E;cursor: pointer"
+               class="iconfont iconB_jian-01" />
+          </p>
         </div>
-        <el-button style="appintment-btn"
+        <el-button class="appintment-btn"
                    size="small"
-                   type="success" @click="handleCreateOrder">预约单生成</el-button>
+                   type="success"
+                   @click="handleCreateOrder">预约单生成</el-button>
       </div>
     </el-col>
     <!-- 选时段 -->
@@ -33,12 +32,12 @@
       </h1>
       <ul>
         <li class="flex-hb time-item"
-            v-for="(item, i) in canSelectTimes"
+            v-for="(item, i) in usables"
             :key="i"
-            @click="handleSelectTime(i)">
-          <div>{{item.v}}</div>
+            @click="handleSelectTime(i, item)">
+          <div>{{item.text}}</div>
           <div class="sel-btn"
-               :class="{isActive: currentTimeIndex === i}">选择</div>
+               :class="{isActive: item.isActive}">选择</div>
           <!-- <div class="sel-btn apointment">已预约</div> -->
         </li>
       </ul>
@@ -47,52 +46,49 @@
 </template>
 
 <script>
-import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN'
+import Scheduler from '@/components/Scheduler'
 
 export default {
   name: 'calendar',
+  components: {
+    Scheduler
+  },
   data () {
     return {
       selectTime: '',
-      currentTimeIndex: '',
       isShow: false,
-      locale: zhCN,
-      canSelectTimes: [
-        { v: '18:30-19:30' },
-        { v: '18:30-19:30' },
-        { v: '18:30-19:30' },
-        { v: '18:30-19:30' },
-      ],
-      currentTimeList: [
-        '2020-10-23 18:30-19:30',
-        '2020-10-23 17:30-18:30',
-        '2020-10-23 17:30-18:30',
-        '2020-10-23 17:30-18:30',
-        '2020-10-23 17:30-18:30',
-        '2020-10-23 17:30-18:30',
-        '2020-10-23 17:30-18:30',
-        '2020-10-23 17:30-18:30',
-        '2020-10-23 17:30-18:30',
-      ]
+      usables: [],
+      selList: []
     }
   },
   methods: {
-    handleCreateOrder() {
+    openTimepicker (list, selectDate) {
+      this.isShow = true
+      console.log(list)
+      this.usables = list
+      this.selectTime = selectDate
+    },
+    handleCreateOrder () {
       this.$emit('create-order')
     },
-    handleSelectTime (i) {
-      this.currentTimeIndex = i
+    handleSelectTime (i, item) {
+      item.isActive = !item.isActive
+      if (item.isActive) {
+        this.selList.push(item)
+      } else {
+        this.selList.splice(i, 1)
+      }
+    },
+    handleDelSelect(i, item){
+      this.selList.splice(i, 1)
+      this.usables.forEach(o => {
+        if (o.value == item.value) {
+          o.isActive = false
+        }
+      })
     },
     handleCloseTime () {
       this.isShow = false
-    },
-    onSelect (value) {
-      console.log(value.format('YYYY-MM-DD'))
-      this.selectTime = value.format('YYYY年MM月DD日')
-      this.isShow = true
-    },
-    onPanelChange (value, mode) {
-      console.log(value, mode)
     },
   }
 };
@@ -151,7 +147,7 @@ export default {
   padding: 20px 15px;
   flex: 1;
   overflow: auto;
-  height: 500px;
+  height: 427px;
   background: #f6f6f6;
 }
 .time-list > h1 {

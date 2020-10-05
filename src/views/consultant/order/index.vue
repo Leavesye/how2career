@@ -52,7 +52,7 @@
         >
       </el-pagination>
     </div>
-    <confirm-detail :isShow="isShow" @close="handleClose" />
+    <confirm-detail :isShowDetail="isShowDetail" @close="handleClose" />
     <!-- <finish-detail :isShow="isShow" @close="handleClose" /> -->
   </section>
 </template>
@@ -62,7 +62,6 @@ import { ConfirmDetail, FinishDetail } from './modal/order-detail'
 import OrderItem from '@/components/OrderItem'
 import Pannel from '@/components/Pannel'
 import TimePicker from '@/components/TimePicker'
-
 export default {
   name: 'answerer',
   components: {
@@ -72,11 +71,14 @@ export default {
     Pannel,
     TimePicker
   },
+  created() {
+
+  },
   data () {
     return {
       orderStuts: '',
       orderDate: '',
-      isShow: false,
+      isShowDetail: false,
       curPannel: '',
       curTime: '',
       pannels: [
@@ -112,11 +114,11 @@ export default {
       
     },
     handleClose() {
-      this.isShow = false
+      this.isShowDetail = false
     },
     handleOpenDetail() {
       console.log(111)
-      this.isShow = true
+      this.isShowDetail = true
     },
     handlePannelChange (item, i) {
       this.curPannel = i
