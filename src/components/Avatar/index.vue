@@ -1,16 +1,22 @@
 <template>
 <el-image
     class="avatar"
-    src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"></el-image>
+    :src="url"></el-image>
     <!-- <div class="micro ani"><i class="iconfont iconhuatong"></i></div> -->
 </template>
 
 <script>
 export default {
   name: 'avatar',
+  props: ['imgUrl'],
   data () {
     return {
       
+    }
+  },
+  computed: {
+    url: function() {
+      return process.env.VUE_APP_HOST_NAME + this.imgUrl
     }
   },
   methods: {

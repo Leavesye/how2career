@@ -31,7 +31,7 @@
           <li class="flex-hb">
             <el-button type="success"
                        size="mini"
-                       @click="linkTo('/consultant/room')">进入房间</el-button>
+                       @click="linkTo('/consumer/room')">进入房间</el-button>
             <el-button size="mini" plain type="success">订单详情</el-button>
           </li>
         </ul>

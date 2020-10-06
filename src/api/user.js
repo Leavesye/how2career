@@ -22,7 +22,7 @@ export function checkUser(data) {
 // 登录
 export function login(data) {
   return request({
-    url: '/user/platform/login',
+    url: `/user/platform/${store.state.user.role}/login`,
     method: 'post',
     data
   })

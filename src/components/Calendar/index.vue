@@ -7,17 +7,18 @@
     <el-col :span="8">
       <div class="time-list">
         <div>
-          <h1>当前已选择时间</h1>
+          <h1 style="margin-bottom: 10px">当前已选择时间</h1>
           <p v-for="(item, i) in selList"
              :key="i">
             {{item.selText}}
-            <i @click="handleDelSelect(i, item)" style="color: #15479E;cursor: pointer"
+            <i @click="handleDelSelect(i, item)" :style="{color: user.role=='consumer'? '#36AE82':'15479E',cursor: 'pointer'}"
                class="iconfont iconB_jian-01" />
           </p>
         </div>
         <el-button class="appintment-btn"
                    size="small"
-                   type="success"
+                   :type="user.role=='consumer'? 'success': 'primary'"
+                   v-if="selList.length"
                    @click="handleCreateOrder">预约单生成</el-button>
       </div>
     </el-col>
@@ -30,14 +31,14 @@
            class="el-icon-close"
            style="font-size: 22px;"></i>
       </h1>
-      <ul>
+      <ul class="time-box">
         <li class="flex-hb time-item"
             v-for="(item, i) in usables"
             :key="i"
             @click="handleSelectTime(i, item)">
           <div>{{item.text}}</div>
           <div class="sel-btn"
-               :class="{isActive: item.isActive}">选择</div>
+               :class="[ user.role, {isActive: item.isActive}]">选择</div>
           <!-- <div class="sel-btn apointment">已预约</div> -->
         </li>
       </ul>
@@ -46,6 +47,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import Scheduler from '@/components/Scheduler'
 
 export default {
@@ -61,6 +63,11 @@ export default {
       selList: []
     }
   },
+  computed: {
+    ...mapGetters([
+      'user'
+    ])
+  },
   methods: {
     openTimepicker (list, selectDate) {
       this.isShow = true
@@ -69,7 +76,7 @@ export default {
       this.selectTime = selectDate
     },
     handleCreateOrder () {
-      this.$emit('create-order')
+      this.$emit('create-order', this.selList)
     },
     handleSelectTime (i, item) {
       item.isActive = !item.isActive
@@ -119,8 +126,14 @@ export default {
   line-height: 50px;
   background: #f6f6f6;
 }
+.time-box {
+  padding: 15px;
+}
 .time-item {
-  padding: 5px 15px;
+  margin-bottom: 15px;
+}
+.time-item:last-child {
+  margin-bottom: 0;
 }
 .sel-btn {
   width: 60px;
@@ -130,9 +143,15 @@ export default {
   font-size: 12px;
   cursor: pointer;
 }
-.sel-btn.isActive {
+.sel-btn.consultant.isActive {
   background: #15479e;
   border: 1px solid #15479e;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
+  color: #fff;
+}
+.sel-btn.consumer.isActive {
+  background: #36AE82;
+  border: 1px solid #36AE82;
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
   color: #fff;
 }

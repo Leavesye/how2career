@@ -55,6 +55,8 @@ const actions = {
           commit('SET_ROLE', role)
           commit('SET_USERNAME', userName)
           commit('SET_USERID', data.id)
+          commit('SET_AVATAR', `${process.env.VUE_APP_HOST_NAME}${data.avatarImage}`)
+          commit('SET_NICKNAME', data.nickName)
           
         }
         resolve(res)

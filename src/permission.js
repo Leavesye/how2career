@@ -5,6 +5,8 @@ import { getToken } from '@/utils/auth' // get token from cookie
 import getPageTitle from '@/utils/get-page-title'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
+// 没登录态链接访问
+// 登录咨询师跳咨询者链接处理
 
 // 跳转白名单
 const whiteList = ['/home', '/register']
