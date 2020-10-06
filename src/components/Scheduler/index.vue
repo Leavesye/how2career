@@ -17,7 +17,8 @@ import moment from 'moment'
 import zh from './zh.json'
 import { L10n, setCulture, loadCldr } from '@syncfusion/ej2-base'
 import { SchedulePlugin, Day, Week, WorkWeek, Month, Agenda } from '@syncfusion/ej2-vue-schedule'
-import { getUserInfoSync, updateUserInfo, getAppointmentedTimes } from '@/api/user'
+import { getUserInfoSync, getAppointmentedTimes } from '@/api/user'
+import { updateAvailableTime } from '@/api/consultant'
 
 Vue.use(SchedulePlugin)
 setCulture('zh')
@@ -28,22 +29,11 @@ loadCldr(
   require('cldr-data/main/zh/numbers.json'),
   require('cldr-data/main/zh/timeZoneNames.json')
 )
-// var data = [{
-//     Id: 1,
-//     Subject: 'Explosion of Betelgeuse Star',
-//     StartTime: new Date(2018, 1, 15, 9, 30),
-//     EndTime: new Date(2018, 1, 15, 11, 0),
-//     RecurrenceRule: 'FREQ=DAILY;INTERVAL=1;COUNT=5',
-//     IsReadonly : true,
-//     IsAllDay: false,
-// }]
 let events = []
+// 必须同步方式或许数据 否则无法回显
 const res = getUserInfoSync()
-let publicinfo = {}
 if (res.result) {
-  publicinfo = res.msg.publicInfo || {}
-  publicinfo.availableTime =  publicinfo.availableTime || []
-  events = publicinfo.availableTime
+  events =  (res.msg.publicInfo && res.msg.publicInfo.availableTime) || []
 }
 export default {
   name: 'scheduler',
@@ -142,16 +132,15 @@ export default {
     },
     async saveEvent(p) {
       const l = this.loading()
-      const res = await updateUserInfo(p).catch(e => l.close())
+      const res = await updateAvailableTime({ availableTime: p }).catch(e => l.close())
       if (res.result) {
         this.alert('保存成功')
       }
       l.close()
     },
     createEvent (event) {
-      publicinfo.availableTime.push(event)
-      const p = { publicInfo: publicinfo }
-      this.saveEvent(p)
+      events.push(event)
+      this.saveEvent(events)
     },
     // 重复发生的事件
     // 在这种情况下，修改后的数据应包含一个附加字段，即RecurrenceID映射到其父定期事件的Id值。
@@ -162,7 +151,7 @@ export default {
     // 在修改单个事件的情况下，还必须RecurrenceException与事件编辑一起更新父事件的字段。
     // 要了解有关如何设置RecurrenceException值的更多信息，请参阅重复事件主题。
     updateEvent (e) {
-      let list = publicinfo.availableTime
+      let list = events
       // 编辑重复发生事件中的单事件
       // 1.插入此单事件RecurrenceID关联到父  2.父事件加入RecurrenceException字段关联子
       const changeEvent = e.changedRecords[0]
@@ -198,12 +187,11 @@ export default {
           return o
         })
       }
-      publicinfo.availableTime = list
-      const p = { publicInfo: publicinfo }
-      this.saveEvent(p)
+      events = list
+      this.saveEvent(events)
     },
     deleteEvent (e) {
-      let list = publicinfo.availableTime
+      let list = events
       const delRecords = e.deletedRecords
       let change = e.changedRecords[0]
       // 删除普通事件
@@ -235,9 +223,8 @@ export default {
           list = list.filter(o => o.RecurrenceID != change.Id)
         }
       }
-      publicinfo.availableTime = list
-      const p = { publicInfo: publicinfo }
-      this.saveEvent(p)
+      events = list
+      this.saveEvent(events)
     },
   },
   mounted () {

@@ -1,0 +1,29 @@
+{
+  "account": {
+    "userName": "18566070441",
+    "passWord": "123456"
+  },
+  "basic": {
+    "birthday": "1990-02-08",
+    "name": "ys",
+    "gender": "m",
+    "nickName": "咨询师",
+    "avatarImage": "头像url",
+    "selfIntroduction": "自我简介",
+    "detailedIntroduction": "详细介绍",
+    "highestEducation": {
+      "country": "1",
+      "school": "1",
+      "discipline": "1",
+      "degree": "1",
+      "graduationTime": "1990-02-08",
+      "GPA": "1"
+    }
+  },
+  "realVerify": {
+    "phone": "手机号码",
+    "idCard": "身份证"
+  },
+  "refer": "上游用户的id",
+  "referType": "MGM"
+}

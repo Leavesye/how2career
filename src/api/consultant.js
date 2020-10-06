@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 更新咨询师可用时间
 export function updateAvailableTime(data) {
   return request({
-    url: '/consultant/timeAvailable',
+    url: '/consultant/platform/consultant/timeAvailable',
     method: 'put',
     data
   })

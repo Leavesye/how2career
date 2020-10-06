@@ -1,0 +1,76 @@
+{
+  "_id": "订单id",
+  "cTime": "创建时间",
+  "uTime": "更新时间",
+  "consumer": "咨询者_id",
+  "slotId": "占用的slotId",
+  "consultant": {
+    "_id": "咨询师_id",
+    "name": "姓名",
+    "avatar": "头像url",
+    "readme": "100字简介",
+    "education": {
+      "school": "毕业学校",
+      "discipline": "专业",
+      "degree": "学位",
+      "graduationTime": "毕业时间"
+    },
+    "work": {
+      "industry": "行业",
+      "company": "公司",
+      "position": "职位",
+      "workingYears": "工作年限",
+      "duty": "工作内容",
+      "skills": "工作技能"
+    }
+  },
+  "question": ["q1", "q2"],
+  "startTime": "确认的开始时间",
+  "actualStartTime": "实际开始时间",
+  "consultantEnterTime": "第一次咨询师进入时间,检测迟到",
+  "consumerEnterTime": "第一次咨询者进入时间",
+  "consumerTime": ["2020-10-12 22:00", "2020-10-12 22:00", "2020-10-12 22:00"],
+  "consultantTime": [
+    "2020-10-12 22:00",
+    "2020-10-12 22:00",
+    "2020-10-12 22:00"
+  ],
+  "consumerChangeFrequency": 0,
+  "consultantChangeFrequency": 0,
+  "selectOtherConsultantFrequency": 0,
+  "consultantChanged": "是否已经改了咨询师,如果是则再次修改不会让老咨询师罚款",
+  "status": "0:已取消 1:待付款 2:待咨询师确认 3:待咨询者确认,可改咨询师 4:待服务 5:服务中 6:待评价 7:已完成 8:投诉 9:未提现 10:待发放 11:已结算 12:待选择咨询师,不可改时间,因为是时间确认超时踢回",
+  "price": "显示开列价金额",
+  "discount": "折扣1就是不打折,应该付的价格就是rprice=price*discount",
+  "rPrice": "应付价格",
+  "consumerCancelPrice": "咨询者退单到手价格",
+  "consultantCancelPrice": "咨询师退单扣除的",
+
+  "history": [
+    { "_id": "用户id", "name": "昵称", "action": "行为", "time": "行为时间" },
+    { "_id": "用户id", "name": "昵称", "action": "行为", "time": "行为时间" }
+  ],
+  "evaluation": {
+    "point": "1,2,4,5分",
+    "content": "评价说明",
+    "consultantReply": "咨询师反馈"
+  },
+  "complaint": {
+    "title": "投诉标题类型",
+    "content": "投诉说明",
+    "consultantReply": "咨询师反馈",
+    "platformReply": "平台反馈结果"
+  },
+  "roomId": "13123123123",
+  "statusRollBackByWho": "退回待服务状态发起人员",
+  "statusRollBackByWhoType": "是咨询者还是咨询师",
+  "abnormalRule": { "consumer": "0", "consultant": "0", "platform": "0" },
+  "rollBackCost": "退回到未成单支付的价格,便于未来再次取消后惩罚计算",
+  "rollBackTime": "退回时间,以便在之后退单的时候最追溯时间用.",
+
+  "paymentPlatform": "咨询费支付平台 alipay/wechat/paypal 退单用",
+  "serialNumber": "咨询费支付平台 流水号 退单用",
+  "compensation": "给咨询者的补偿",
+  "consultantChangeCost": "如果咨询师调整时间后,咨询者换咨询师,咨询师的罚款费用",
+  "afterPaymentJump": "normal/consultantSelection"
+}

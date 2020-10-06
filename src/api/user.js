@@ -1,6 +1,7 @@
 import request from '@/utils/request'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
+import { isJSON } from '@/utils'
 
 // 发送验证码
 export function sendCode(data) {
@@ -82,6 +83,7 @@ export function getUserInfoSync () {
   xhr.open('GET', process.env.VUE_APP_BASE_API + '/user/platform/consultant/user', false)
   xhr.setRequestHeader("Authorization", getToken())  //设置请求头
   xhr.send()
-  const res = xhr.responseText ? JSON.parse(xhr.responseText) : null
+  console.log(xhr, 'xhr')
+  const res = isJSON(xhr.responseText) ? JSON.parse(xhr.responseText) : {}
   return res
 }

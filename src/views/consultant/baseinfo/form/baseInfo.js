@@ -15,7 +15,7 @@ export default {
   name: {
     value: '',
     label: '姓名',
-    rules: [r.required(), r.maxLength(20), r.account()],
+    rules: [r.required(), r.maxLength(20)],
   },
   nickName: {
     value: '',

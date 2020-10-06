@@ -23,9 +23,7 @@ import 'echarts/lib/chart/bar'
 import 'echarts/lib/component/tooltip'
 import 'echarts/lib/component/title'
 
-// schedule 插件1122
-// https://ej2.syncfusion.com/vue/documentation/schedule/getting-started/
-
+import '@/utils/register-global'
 
 import { axTable, axTableColumn } from './components/table'
 import { axForm, axFormItem } from './components/form'
@@ -57,7 +55,7 @@ Vue.prototype.loading = elementApi.loading
  * Currently MockJs will be used in the production environment,
  * please remove it before going online ! ! !
  */
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV !== 'production') {
   const { mockXHR } = require('../mock')
   mockXHR()
 }

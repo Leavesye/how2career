@@ -55,6 +55,7 @@ const actions = {
           commit('SET_ROLE', role)
           commit('SET_USERNAME', userName)
           commit('SET_USERID', data.id)
+          
         }
         resolve(res)
       }).catch(error => {
@@ -88,9 +89,12 @@ const actions = {
     commit('SET_AVATAR', '')
     commit('SET_USERID', '')
     removeToken()
-    ['token', 'userName', 'nickName', 'avatar', 'role', 'userId'].forEach(key => { 
-      Cookies.remove(key)
-    })
+    Cookies.remove('token')
+    Cookies.remove('userName')
+    Cookies.remove('nickName')
+    Cookies.remove('avatar')
+    Cookies.remove('role')
+    Cookies.remove('userId')
     location.href = '/'
   },
   // remove token
@@ -105,8 +109,10 @@ const actions = {
     commit('SET_ROLE', role)
   },
   setUser({ commit }, info) {
-    commit('SET_NICKNAME', info.nickName)
-    commit('SET_AVATAR', process.env.VUE_APP_HOST_NAME + info.avatar)
+    info.nickName && commit('SET_NICKNAME', info.nickName)
+    info.avatar && commit('SET_AVATAR', process.env.VUE_APP_HOST_NAME + info.avatar)
+    info.userName && commit('SET_USERNAME', info.userName)
+    info.role && commit('SET_ROLE', info.role)
   },
 }
 

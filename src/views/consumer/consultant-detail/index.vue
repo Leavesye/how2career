@@ -119,6 +119,7 @@ import Avatar from '@/components/Avatar'
 import Calendar from '@/components/Calendar'
 import RateList from './modal/rate-list'
 import Pay from '@/components/Pay'
+import { getPublicInfo } from '@/api/user'
 
 export default {
   name: 'consultant-detail',
@@ -136,6 +137,11 @@ export default {
       isConfirm: false,
       isShowPay: false,
     }
+  },
+  async created() {
+    const l = this.loading()
+    const res = await getPublicInfo({ userId: this.$route.params.id }).catch(e => l.close())
+    l.close()
   },
   methods: {
     handleClickPay() {

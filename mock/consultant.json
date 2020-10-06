@@ -1,0 +1,107 @@
+{
+  "_id": "咨询师id 等同于platformUser _id",
+  "cTime": "创建时间",
+  "uTime": "更新时间",
+  "active": "账号是否可接单",
+  "suspendUntil": "冻结账号到什么时候,每次登录检查,修改active状态",
+  "realVerified": true,
+  "backgroundVerified": true,
+  "basic": {
+    "firstName": "名",
+    "lastName": "姓",
+    "gender": "f/m",
+    "birthday": "出生年月",
+    "phone": "联系信息-手机号码",
+    "wechat": "联系信息-微信号",
+    "email": "联系信息-私人邮箱",
+    "detailedIntroduction": "详细介绍"
+  },
+  "realVerify": {
+    "phone": "手机号码",
+    "idCard": "身份证",
+    "bankCard": "银行卡"
+  },
+  "publicInfo": {
+    "nickName": "昵称",
+    "level": 1,
+    "avatarImage": "头像url",
+    "selfIntroduction": "100字简介",
+    "resume": {
+      "education": [
+        {
+          "country": "国家",
+          "school": "毕业学校",
+          "discipline": "专业",
+          "degree": "学位",
+          "graduationTime": "毕业时间",
+          "GPA": "GPA成绩",
+          "studentOrganization": true,
+          "organizationTitle": "职位",
+          "getRewarded": true,
+          "rewardDescription": "奖项描述",
+          "projectArticle": true,
+          "projectArticleDescription": "项目文章经历描述",
+          "degreeCertificate": "学位证"
+        }
+      ],
+      "workExperience": [
+        {
+          "industry": "行业",
+          "company": "公司",
+          "companySize": "公司规模",
+          "department": "部门",
+          "position": "职位",
+          "level": "级别",
+          "onBoard": true,
+          "entryTime": "2020-10",
+          "resignationTime": "2023-01",
+          "duty": "工作内容",
+          "reward": "奖励和荣誉",
+          "teamManagement": true,
+          "teamMember": 10,
+          "teamAchievement": "团队成果"
+        }
+      ],
+      "socialInsuranceImage": "社保图片",
+      "gallupCertified": true,
+      "gallupCertifiedImage": "gallup图片",
+      "otherCertificates": [
+        {
+          "name": "证书名称",
+          "expireDate": "有效日期",
+          "comments": "备注",
+          "certificateImage": "证书图片"
+        }
+      ],
+      "language": [
+        "english",
+        "french"
+      ],
+      "skills": [
+        "java",
+        "golang"
+      ]
+    },
+    "availableTime": [
+      {
+        "time": "2020-10-10 20:00",
+        "repeat": true,
+        "period": "day"
+      },
+      {
+        "time": "2020-10-10 18:00",
+        "repeat": true,
+        "period": "week"
+      }
+    ],
+    "slots": [
+      {
+        "_id": "slot id",
+        "cost": 123,
+        "costLeft": 123,
+        "expireTime": "过期时间时间戳",
+        "active": "true/false slot是否被有效,可能因为扣款被取消有效性"
+       }
+    ]
+  }
+}

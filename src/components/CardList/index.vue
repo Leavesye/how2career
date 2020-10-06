@@ -1,6 +1,6 @@
 <template>
 <ul class="my-favorites">
-  <li v-for="(item, i) in list" :key="i" @click="linkTo">
+  <li v-for="(item, i) in list" :key="i" @click="linkTo(item)">
     <avatar></avatar>
     <h1 class="user-name">{{item.name}}</h1>
     <el-rate class="user-rate" disabled v-model="item.rate"></el-rate>
@@ -29,8 +29,8 @@ export default {
     }
   },
   methods: {
-    linkTo() {
-      this.$router.push('/consumer/consultant-detail/1')
+    linkTo(item) {
+      this.$router.push(`/consumer/consultant-detail/${item.id}`)
     },
     handleClick(cb) {
       cb && cb()

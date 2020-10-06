@@ -29,7 +29,7 @@
     <div class="flex-he"
          style="margin: 60px 60px 70px 0">
       <el-button type="primary"
-                 size="mini" @click="handleSave">确认修改</el-button>
+                 size="mini" @click="handleSave">确定</el-button>
     </div>
   </section>
 </template>
@@ -43,7 +43,7 @@ import * as adapter from './adapter'
 import { register } from '@/api/user'
 import defaultImg from '@/assets/avatar-upload.png'
 import { setToken } from '@/utils/auth'
-import { getUserInfo }  from '@/api/user'
+import { getUserInfo, updateUserInfo }  from '@/api/user'
 
 export default {
   name: 'consumer-baseinfo',
@@ -53,6 +53,7 @@ export default {
   },
   data () {
     return {
+      isReg: false,
       ...form,
     }
   },
@@ -62,14 +63,25 @@ export default {
     ])
   },
   async created() {
-    const l = this.loading()
-    let res = await getUserInfo().catch( e=> l.close())
-    if (res.result) {
-      adapter.unBoxing(res.msg, this._data)
+    // 是否是注册页进来
+    this.isReg = this.$route.path.includes('/register/consumer')
+    this.isReg && (this.baseInfo.passWord.hide = false)
+    // 给上传组件绑定回调
+    const avatar = this.baseInfo.avatarImage
+    avatar.props["before-upload"] = (file) => this.uploadBefore(file)
+    avatar.props["on-success"] = (res, file) => this.uploadSuccess(res, file, this.uploadCb)
+    avatar.render = this.renderUpload
+    if (!this.isReg) {
+      const l = this.loading()
+      let res = await getUserInfo().catch( e=> l.close())
+      if (res.result) {
+        adapter.unBoxing(res.msg, this._data)
+      }
+      l.close()
     }
-    l.close()
   },
   methods: {
+    handleClickChangePwd() {},
     async handleSave() {
       const keys = Object.keys(form)
       // 校验所有表单
@@ -80,21 +92,35 @@ export default {
       })
       console.log(res, 333)
       if (isValid) {
-        const l = this.loading()
         const formData = { 
+          userName: this.user.userName,
           ...this.$refs.baseInfo.getFormData(),
           ...this.$refs.education.getFormData()
         }
         console.log(formData, 'formdata')
         const p = adapter.boxing(formData)
         console.log(p, '参数')
-        let ret = await register(p).catch(e => l.close())
+        const l = this.loading()
+        let ret = null
+        if (this.isReg) {
+          ret = await register(p).catch(e => l.close())
+        } else {
+          ret = await updateUserInfo(p).catch(e => l.close())
+        }
         if (ret.result) {
-          this.alert('注册成功')
-          // 缓存token
-          setToken(ret.msg.token)
-          // 跳转个人首页
-          this.$router.replace('/consumer/index')
+          this.alert(this.isReg ? '注册成功' : '保存成功')
+          if (this.isReg ) {
+            // 缓存token
+            setToken(ret.msg.token)
+            // 跳转个人首页
+            this.$router.replace('/consumer/index')
+          } else {
+            // 更新缓存
+            this.$store.dispatch('user/setUser', { 
+              nickName: formData.nickName,
+              avatar: formData.avatarImage,
+            })
+          }
         }
         l.close()
       }
@@ -104,23 +130,25 @@ export default {
       if (this.baseInfo.avatarImage.value) {
         avatarImg = process.env.VUE_APP_HOST_NAME + this.baseInfo.avatarImage.value
       }
+      console.log(avatarImg)
       return (
         <el-Image style="border-radius: 50%;width: 90px; height: 90px;overflow: hidden" src={avatarImg || defaultImg}></el-Image>
       )
     },
-    uploadCb(v) {
+    checkFile(file) {
+       if (file.size > 2 * 1024 * 1024) {
+        this.alert("上传图片不能超过2M")
+        return false
+      }
+      if (!['image/png', 'image/jpeg', 'image/gif'].includes(file.type)) {
+        this.alert("请上传PNG、JPG、GIF类型文件")
+        return false
+      }
+      return true
+    },
+    afterUpload(v) {
       this.baseInfo.avatarImage.value = v
     }
-  },
-  mounted () {
-    // 是否是注册页进来
-    this.isReg = this.$route.path.includes('/register/consumer')
-    this.isReg && (this.baseInfo.passWord.hide = false)
-    // 给上传组件绑定回调
-    const avatar = this.baseInfo.avatarImage
-    avatar.props["before-upload"] = (file) => this.uploadBefore(file)
-    avatar.props["on-success"] = (res, file) => this.uploadSuccess(res, file, this.uploadCb)
-    avatar.render = this.renderUpload // 上传组件渲染函数
   }
 }
 </script>

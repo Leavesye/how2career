@@ -5,7 +5,7 @@
       <ul class="menu">
         <li v-for="(o, i) in menus" :key="i"><el-link class="link" :underline="false">{{o.name}}</el-link></li>
       </ul>
-      <el-dropdown style="margin-top: 7px">
+      <el-dropdown style="margin-top: 7px" v-if="user.avatar">
         <el-image class="avatar-img el-dropdown-link" :src="user.avatar || defaultAvatar"></el-image>
         <el-dropdown-menu slot="dropdown">
           <div class="user-info">

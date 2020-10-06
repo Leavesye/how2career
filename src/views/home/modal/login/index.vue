@@ -97,8 +97,8 @@ export default {
       curTab: 0,
       tabs: tabsCfg['1'],
       info: {
-        userName: '',
-        passWord: '',
+        userName: '18566070441',
+        passWord: '123456',
         vCode: ''
       },
       rules: {
@@ -183,6 +183,7 @@ export default {
           this.isLoading = true
           const info = { ...this.info, role: this.role }
           this.$store.dispatch('user/login', info).then(res => {
+            console.log(res, 888)
             this.isLoading = false
             if (res.result) {
               const roles = res.msg.types

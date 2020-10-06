@@ -7,11 +7,14 @@ export default {
     value: '',
     label: '密码',
     rules: [r.required(), r.length(6, 12)],
+    props: {
+      type: 'password'
+    }
   },
   name: {
     value: '',
     label: '姓名',
-    rules: [r.required(), r.maxLength(20), r.account()],
+    rules: [r.required(), r.maxLength(20)],
   },
   nickName: {
     value: '',
@@ -53,7 +56,6 @@ export default {
       action: process.env.VUE_APP_BASE_API + "/user/platform/consumer/upload",
       accept: '.jpg,.png,.gif',
       name: 'UploadFiles',
-      limit: 1,
       disabled: false,
       "show-file-list": false,
       "auto-upload": true,
