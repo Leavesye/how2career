@@ -1,9 +1,13 @@
 <template>
   <div class="sider-bar" :style="{minHeight,background: type==1?'#36AE82':'#15479E'}">
+    <div v-if="isCollapse"><i :class="[isCollapse ? 'el-icon-s-unfold': 'el-icon-s-fold']"></i></div>
     <el-menu
+      :collapse="isCollapse"
+      @open="handleOpen"
+      @close="handleClose"
       :default-active="activeMenu"
       text-color="#fff"
-      :style="{background: type==1?'#36AE82':'#15479E'}"
+      :style="{background: type==1?'#36AE82':'#15479E', width: isCollapse? '': '240px'}"
       active-text-color="#fff">
       <template v-for="(item, index) in menus">
         <el-menu-item :key="index" v-if="!item.children" :index="(index+1) + ''" @click="linkTo(item.path)">
@@ -19,8 +23,8 @@
         </el-submenu>
       </template>
     </el-menu>
-    <el-image class="room-btn" :src="roomBtn" @click="linkTo('/consultant/room')"></el-image>
-    <div class="flex-hbc bottom-links">
+    <el-image v-if="!isCollapse" class="room-btn" :src="roomBtn" @click="linkTo('/consultant/room')"></el-image>
+    <div class="flex-hbc bottom-links" v-if="!isCollapse">
       <el-link :underline="false" style="color: #fff">在线客服</el-link>
       <div>|</div>
       <el-link :underline="false" style="color: #fff">常见问题</el-link>
@@ -36,6 +40,7 @@ export default {
     return {
       activeMenu: '1',
       minHeight: '700px',
+      isCollapse: false
     }
   },
   computed: {
@@ -47,6 +52,12 @@ export default {
     linkTo(path) {
       this.$router.push(path)
     },
+    handleOpen() {
+
+    },
+    handleClose() {
+
+    }
   },
   mounted() {
     this.minHeight = document.body.clientHeight - (150+60+20*2) + 'px'
@@ -71,7 +82,6 @@ export default {
 <style lang="scss" scoped>
 .sider-bar {
   position: relative;
-  width: 240px;
   padding-top: 28px;
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;

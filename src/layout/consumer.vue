@@ -1,7 +1,7 @@
 <template>
 <div class="layout">
   <navbar></navbar>
-  <section class="app-main flex">
+  <section class="app-main flex-hc">
     <!-- 侧边栏 -->
     <side-bar :menus="menus" :type="1"/>
     <!-- 页面路由 -->
@@ -47,8 +47,7 @@ export default {
 
 <style lang="scss" scoped>
 .app-main {
-  width: 1180px;
-  margin: 20px auto;
+  margin: 20px 0;
   overflow: hidden;
 }
 
