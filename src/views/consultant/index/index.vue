@@ -75,9 +75,8 @@
             v-for="(o, i) in list1"
             :key="i">
           <li class="flex-hbc">
-            <el-avatar class="avatar"
-                       size="small"
-                       icon="el-icon-user-solid"></el-avatar>
+            <el-image class="avatar"
+                       :src="defaultAvatar"></el-image>
             <div>{{o.name}}</div>
           </li>
           <li>开始时间: {{o.start}}</li>
@@ -98,9 +97,8 @@
             v-for="(o, i) in list1"
             :key="i">
           <li class="flex-hbc">
-            <el-avatar class="avatar"
-                       size="small"
-                       icon="el-icon-user-solid"></el-avatar>
+            <el-image class="avatar"
+                       :src="defaultAvatar"></el-image>
             <div>{{o.name}}</div>
           </li>
           <li>开始时间: {{o.start}}</li>
@@ -189,6 +187,9 @@ export default {
     certFinish: function () {
       return require('../../../assets/cert-finish.png')
     },
+    defaultAvatar: function() {
+      return require('@/assets/default-avatar.png')
+    }
   },
   methods: {
     handleClickPannel (item, i) {
@@ -314,6 +315,8 @@ $color: #15479e;
 }
 .avatar {
   margin-right: 10px;
+  width: 30px;
+  height: 30px;
 }
 .more {
   text-align: center;

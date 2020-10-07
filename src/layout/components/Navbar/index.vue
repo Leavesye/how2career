@@ -5,7 +5,7 @@
       <ul class="menu">
         <li v-for="(o, i) in menus" :key="i"><el-link class="link" :underline="false">{{o.name}}</el-link></li>
       </ul>
-      <el-dropdown style="margin-top: 7px" v-if="user.avatar">
+      <el-dropdown trigger="click" style="margin-top: 7px" v-if="user.avatar">
         <el-image class="avatar-img el-dropdown-link" :src="user.avatar || defaultAvatar"></el-image>
         <el-dropdown-menu slot="dropdown">
           <div class="user-info">
@@ -13,8 +13,11 @@
               <span>{{user.nickName}}</span>
               <span @click="loginOut" style="cursor: pointer">退出</span>
             </div>
-            <p class="info-percent">信息完成度</p>
-            <el-progress :percentage="60" color="#FF5F5E" style="width: 170px"></el-progress>
+            <!-- 咨询者才有 -->
+            <div v-if="user.role == 'consumer'">
+              <p class="info-percent">信息完成度</p>
+              <el-progress :percentage="user.completion" color="#FF5F5E" style="width: 170px"></el-progress>
+            </div>
           </div>
         </el-dropdown-menu>
       </el-dropdown>
@@ -108,7 +111,6 @@ export default {
 .user-info {
   padding: 0 15px;
   width: 200px;
-  height: 70px;
   background: #FFFFFF;
 
 }

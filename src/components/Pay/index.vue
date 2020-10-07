@@ -13,7 +13,7 @@
     </ul>
   </section>
   <span slot="footer" class="dialog-footer">
-     <el-button @click="handleConfirm" style="width: 180px" type="primary" plain round>确认</el-button>
+     <el-button @click="handleConfirm" style="width: 180px" type="success" plain round>确认</el-button>
   </span>
 </el-dialog>
 </template>

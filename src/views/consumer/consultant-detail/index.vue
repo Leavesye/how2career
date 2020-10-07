@@ -1,14 +1,13 @@
 <template>
   <div>
     <h1 class="page-title flex-hbc">
-      <span>{{isConfirm?'订单确认':'咨询师详情'}}</span>
+      <span>咨询师详情</span>
       <el-button plain
                  size="mini"
                  icon="el-icon-arrow-left"
                  @click="goBack">返回</el-button>
     </h1>
-    <section v-show="!isConfirm"
-             class="card-box">
+    <section class="card-box">
       <div class="flex-hb">
         <el-card class="left">
           <avatar :imgUrl="info.avatarImage"></avatar>
@@ -65,56 +64,8 @@
         <calendar @create-order="handleCreateOrder"></calendar>
       </el-card>
     </section>
-    <section v-if="isConfirm"
-             class="card-box">
-      <el-card>
-        <div class="flex-hb conform-info">
-          <div class="content-l">
-            <avatar :imgUrl="info.avatarImage"></avatar>
-            <p class="name">{{info.nickName}}</p>
-            <el-rate class="user-rate"
-                     disabled
-                     v-model="rate"></el-rate>
-          </div>
-          <div class="content-r">
-            <div class="flex base-info">
-              <span>所属行业: {{info.industry}}</span>
-              <span>公司名称: {{info.company}}</span>
-              <span>职位: {{info.position}}</span>
-            </div>
-            <h1 class="time-title">候选预约时间</h1>
-            <ul class="book-times flex-hb">
-              <li v-for="(item, i) in info.times"
-                  :key="i">
-                {{item.selText}}
-                <i class="el-icon-error"></i>
-              </li>
-            </ul>
-            <p class="degree">你的个人信息完整度是60%,建议完善个人信息让咨询师提供更为针对性的建议 <el-link type="success">完善信息</el-link>
-            </p>
-          </div>
-        </div>
-        <div class="flex-hec cost-box">
-          <span class="cost-item"
-                style="margin-right: 20px">咨询费用</span>
-          <div class="confirm-num">{{info.price}}</div>
-          <div class="unit">RMB</div>
-        </div>
-        <div class="flex-hec terms">
-          <el-checkbox class="check-box"
-                       v-model="checked">我已阅读条款 点击 <el-link type="success">了解规则</el-link>
-          </el-checkbox>
-          <el-button type="success"
-                     size="small"
-                     @click="handleClickPay">确认付款</el-button>
-        </div>
-      </el-card>
-    </section>
     <rate-list :isShow="isShow"
                @close="handleClose"></rate-list>
-    <pay :isShow="isShowPay"
-         @close="handleClosePay"
-         @confirm="handleConfirmPay"></pay>
   </div>
 </template>
 
@@ -122,7 +73,6 @@
 import Avatar from '@/components/Avatar'
 import Calendar from '@/components/Calendar'
 import RateList from './modal/rate-list'
-import Pay from '@/components/Pay'
 import { getPublicInfo } from '@/api/user'
 import { createOrder } from '@/api/order'
 import moment from 'moment'
@@ -134,7 +84,6 @@ export default {
     Avatar,
     Calendar,
     RateList,
-    Pay
   },
   data () {
     return {
@@ -143,7 +92,6 @@ export default {
       isShow: false,
       checked: false,
       isConfirm: false,
-      isShowPay: false,
     }
   },
   computed: {
@@ -175,14 +123,11 @@ export default {
     l.close()
   },
   methods: {
-    handleClickPay () {
-      this.isShowPay = true
-    },
     async handleCreateOrder (times) {
       this.info.times = times
       // 参数处理
-      const { 
-        nickName,avatarImage, selfIntroduction, 
+      const {
+        nickName, avatarImage, selfIntroduction,
         industry, company, position, duty, workingYears, skills
       } = this.info
       let { school, discipline, degree, graduationTime } = this.publicInfo.resume.education[0]
@@ -203,7 +148,7 @@ export default {
       const res = await createOrder(p).catch(e => l.close())
       if (res.result) {
         this.alert('订单已生成')
-        this.isConfirm = true
+        this.$router.push(`/consumer/order-confirm?info=${JSON.stringify(this.info)}`)
       }
       l.close()
     },
@@ -213,18 +158,8 @@ export default {
     handleClose () {
       this.isShow = false
     },
-    handleClosePay () {
-      this.isShowPay = false
-    },
-    handleConfirmPay () {
-      this.isShowPay = false
-    },
     goBack () {
-      if (this.isConfirm) {
-        this.isConfirm = false
-      } else {
-        this.$router.go(-1)
-      }
+      this.$router.go(-1)
     }
   },
   mounted () {

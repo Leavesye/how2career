@@ -7,6 +7,7 @@ const state = {
   token: getToken(),
   userName: Cookies.get('userName'),
   nickName: Cookies.get('nickName'),
+  completion: Cookies.get('completion'),
   avatar: Cookies.get('avatar'),
   role: Cookies.get('role'),
   userId: Cookies.get('userId')
@@ -23,6 +24,10 @@ const mutations = {
   SET_NICKNAME: (state, nickName) => {
     state.nickName = nickName
     Cookies.set('nickName', nickName)
+  },
+  SET_COMPLETION: (state, completion) => {
+    state.completion = completion
+    Cookies.set('completion', completion)
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
@@ -47,16 +52,17 @@ const actions = {
   login({ commit }, userInfo) {
     return new Promise((resolve, reject) => {
       const { userName, passWord, role } = userInfo
+      commit('SET_ROLE', role)
       login({ userName, passWord }).then(res => {
         if (res.result) { 
           const data = res.msg
           commit('SET_TOKEN', data.token)
           setToken(data.token)
-          commit('SET_ROLE', role)
           commit('SET_USERNAME', userName)
           commit('SET_USERID', data.id)
           commit('SET_AVATAR', `${process.env.VUE_APP_HOST_NAME}${data.avatarImage}`)
           commit('SET_NICKNAME', data.nickName)
+          commit('SET_COMPLETION', data.completion)
           
         }
         resolve(res)
@@ -88,6 +94,7 @@ const actions = {
     commit('SET_ROLE', '')
     commit('SET_USERNAME', '')
     commit('SET_NICKNAME', '')
+    commit('SET_COMPLETION', '')
     commit('SET_AVATAR', '')
     commit('SET_USERID', '')
     removeToken()
@@ -97,6 +104,7 @@ const actions = {
     Cookies.remove('avatar')
     Cookies.remove('role')
     Cookies.remove('userId')
+    Cookies.remove('completion')
     location.href = '/'
   },
   // remove token

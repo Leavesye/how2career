@@ -6,35 +6,38 @@
   "suspendUntil": "冻结账号到什么时候,每次登录检查,修改active状态",
   "realVerified": true,
   "backgroundVerified": true,
+  "account": {
+    "userName": "18566070441",
+    "passWord": "123456"
+  },
   "basic": {
-    "firstName": "名",
-    "lastName": "姓",
-    "gender": "f/m",
-    "birthday": "出生年月",
-    "phone": "联系信息-手机号码",
-    "wechat": "联系信息-微信号",
-    "email": "联系信息-私人邮箱",
+    "gender": "m",
+    "birthday": "1990-02-08",
+    "phone": "18566070441",
+    "wechat": "hdkhfd",
+    "email": "47587@qq.com",
     "detailedIntroduction": "详细介绍"
   },
   "realVerify": {
-    "phone": "手机号码",
-    "idCard": "身份证",
-    "bankCard": "银行卡"
+    "phone": "18566070441",
+    "idCard": "362233198907860028",
+    "bankCard": "647836437643434"
   },
   "publicInfo": {
-    "nickName": "昵称",
+    "name": "ys",
+    "nickName": "leaves",
     "level": 1,
     "avatarImage": "头像url",
     "selfIntroduction": "100字简介",
     "resume": {
       "education": [
         {
-          "country": "国家",
-          "school": "毕业学校",
-          "discipline": "专业",
-          "degree": "学位",
-          "graduationTime": "毕业时间",
-          "GPA": "GPA成绩",
+          "country": "1",
+          "school": "1",
+          "discipline": "1",
+          "degree": "1",
+          "graduationTime": "2010-01-03",
+          "GPA": "1",
           "studentOrganization": true,
           "organizationTitle": "职位",
           "getRewarded": true,
@@ -46,15 +49,15 @@
       ],
       "workExperience": [
         {
-          "industry": "行业",
-          "company": "公司",
-          "companySize": "公司规模",
+          "industry": "1",
+          "company": "2",
+          "companySize": "1",
           "department": "部门",
-          "position": "职位",
-          "level": "级别",
+          "position": "1",
+          "level": "1",
           "onBoard": true,
-          "entryTime": "2020-10",
-          "resignationTime": "2023-01",
+          "entryTime": "2020-10-10",
+          "resignationTime": "2023-01-11",
           "duty": "工作内容",
           "reward": "奖励和荣誉",
           "teamManagement": true,
@@ -68,7 +71,7 @@
       "otherCertificates": [
         {
           "name": "证书名称",
-          "expireDate": "有效日期",
+          "expireDate": "2025-10-11",
           "comments": "备注",
           "certificateImage": "证书图片"
         }
@@ -83,16 +86,7 @@
       ]
     },
     "availableTime": [
-      {
-        "time": "2020-10-10 20:00",
-        "repeat": true,
-        "period": "day"
-      },
-      {
-        "time": "2020-10-10 18:00",
-        "repeat": true,
-        "period": "week"
-      }
+      
     ],
     "slots": [
       {

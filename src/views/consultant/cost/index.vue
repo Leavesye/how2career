@@ -1,7 +1,7 @@
 <template>
   <section style="padding: 30px">
     <!-- 状态面板 -->
-    <pannel @change="handlePannelChange" :pannels="pannels" :current="curPannel"></pannel>
+    <pannel @change="handlePannelChange" :pannels="pannels" :selPannel="selPannel"></pannel>
     <el-card>
       <!-- 搜索条件 -->
       <section class="flex-hbc search">
@@ -55,12 +55,12 @@ export default {
     return {
       datetime: '',
       isShow: false,
-      curPannel: '',
+      selPannel: '',
       curTime: '',
       pannels: [
-        { name: '未提现订单', count: 5 },
-        { name: '费用待发放订单', count: 5 },
-        { name: '已结算订单', count: 5 },
+        { name: '未提现订单', status: 9 },
+        { name: '费用待发放订单', status: 10 },
+        { name: '已结算订单', status: 11 },
       ],
       times: [
         {name: '7天'},
@@ -147,8 +147,8 @@ export default {
     handleOpenDetail() {
       this.isShow = true
     },
-    handlePannelChange (item, i) {
-      this.curPannel = i
+    handlePannelChange (item) {
+      this.selPannel = item
     },
     handleTimeChange(v, i) {
       this.curTime = i
