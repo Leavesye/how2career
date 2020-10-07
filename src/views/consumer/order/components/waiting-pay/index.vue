@@ -2,26 +2,25 @@
 <el-card>
   <ul v-for="(o, i) in list" :key="i" class="list-item flex-hbc" :style="{borderBottom: noBorder? 'none': '1px solid #edeeef'}">
     <li>
-      <p style="margin-bottom: 10px">订单号：{{o.orderno}}</p>
+      <p style="margin-bottom: 10px">订单号：{{o.orderId}}</p>
       <div class="flex-vc">
-        <el-avatar class="avatar"
-                  size="small"
-                  icon="el-icon-user-solid"></el-avatar>
+        <el-image class="avatar"
+                  :src="o.avatar || defaultAvatar"></el-image>
         <div>{{o.name}}</div>
       </div>
     </li>
     <li>
-      <p style="margin-bottom: 10px">创建时间：{{o.createTime}}</p>
+      <p style="margin-bottom: 10px">创建时间：{{o.cTime}}</p>
       <div>
-        咨询时间(北京时间){{o.createTime}}
+        咨询时间(北京时间){{o.consumerTime}}
         <el-link type="success">时间调整</el-link>
       </div>
     </li>
     <li>
-      <div class="order-amount">订单金额：{{o.amount}}</div>
+      <div class="order-amount">订单金额：{{o.price}}</div>
       <div class="flex-he">
-        <el-button type="success" plain size="small" @click="handelOrderCancel">订单取消</el-button> 
-        <el-button type="success" plain size="small" @click="handelPayOrder">订单支付</el-button> 
+        <el-button type="success" plain size="small" @click="handelOrderCancel(o.orderId)">订单取消</el-button> 
+        <el-button type="success" plain size="small" @click="handelPayOrder(o.orderId)">订单支付</el-button> 
       </div>
     </li>
   </ul>
@@ -64,6 +63,11 @@ export default {
       },
     }
   },
+  computed: {
+    defaultAvatar: function () {
+      return require('@/assets/default-avatar.png')
+    }
+  },
   methods: {
     handlePageChange (pageIndex) {
       this.pagination.pageIndex = pageIndex
@@ -93,11 +97,14 @@ export default {
   font-size: 14px;
   margin-bottom: 0;
 }
-.avatar {
-  margin-right: 10px;
-}
 .order-amount {
   margin-bottom: 10px;
   text-align: right
+}
+.avatar {
+  margin-right: 10px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
 }
 </style>

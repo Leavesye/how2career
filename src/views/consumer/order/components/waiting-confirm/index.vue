@@ -5,9 +5,8 @@
       <li>
         <p style="margin-bottom: 10px">订单号：{{o.orderno}}</p>
         <div class="flex-vc">
-          <el-avatar class="avatar"
-                    size="small"
-                    icon="el-icon-user-solid"></el-avatar>
+          <el-image class="avatar"
+                  :src="o.avatar || defaultAvatar"></el-image>
           <div>{{o.name}}</div>
         </div>
       </li>
@@ -70,6 +69,11 @@ export default {
       },
     }
   },
+  computed: {
+    defaultAvatar: function () {
+      return require('@/assets/default-avatar.png')
+    }
+  },
   methods: {
     handlePageChange (pageIndex) {
       this.pagination.pageIndex = pageIndex
@@ -107,6 +111,9 @@ export default {
 }
 .avatar {
   margin-right: 10px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
 }
 .order-amount {
   margin-bottom: 10px;

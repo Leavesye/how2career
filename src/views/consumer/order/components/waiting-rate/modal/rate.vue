@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { rateOrderByConsumer } from '@/api/order'
+import { rateOrder } from '@/api/order'
 
 export default {
   props: ['isShow', 'orderId'],

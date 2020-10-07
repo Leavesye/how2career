@@ -140,7 +140,7 @@ $color: #36AE82;
 .p-item > h1 {
   margin: 40px;
 }
-.p-item.active {
+.p-item:hover, .p-item.active {
   box-shadow: 0px 0px 4px 0px rgba(21, 71, 158, 0.5);
   border: 1px solid $color;
   color: $color;

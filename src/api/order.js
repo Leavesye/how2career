@@ -1,5 +1,7 @@
 import request from '@/utils/request'
+import store from '@/store'
 
+const role = store.state.user.role
 // 创建订单
 export function createOrder(data) {
   return request({
@@ -8,70 +10,40 @@ export function createOrder(data) {
     data
   })
 }
-// 咨询者订单点击时间确认
-export function consumerTimeConfirm(data) {
+// 咨询者/咨询师 订单点击时间确认
+export function timeConfirm(data) {
   return request({
-    url: '/order/platform/consumer/orders/time/confirm',
+    url: `/order/platform/${role}/orders/time/confirm`,
     method: 'put',
     data
   })
 }
-// 咨询师订单点击时间确认
-export function consultantTimeConfirm(data) {
+
+// 查询咨询师/咨询者订单列表
+export function getOrders(params) {
   return request({
-    url: '/order/platform/consultant/orders/time/confirm',
-    method: 'put',
-    data
-  })
-}
-// 查询咨询师订单列表
-export function getConsultantOrders(params) {
-  return request({
-    url: '/order/platform/consultant/orders/list/query',
+    url: `/order/platform/${role}/orders/list/query`,
     method: 'get',
     params
   })
 }
-// 查询咨询者订单列表
-export function getConsumerOrders(params) {
+// 查询咨询者/咨询师订单数量统计
+export function getOrdersCount(params) {
   return request({
-    url: '/order/platform/consumer/orders/list/query',
+    url: `/order/platform/${role}/orders/list/count`,
     method: 'get',
     params
   })
 }
-// 查询咨询者订单数量统计
-export function getConsumerOrdersCount(params) {
+// 查询咨询者/咨询师订单详情
+export function getOrderById(params) {
   return request({
-    url: '/order/platform/consumer/orders/list/count',
+    url: `/order/platform/${order}/orders/single/query`,
     method: 'get',
     params
   })
 }
-// 查询咨询师订单数量统计
-export function getConsultantOrdersCount(params) {
-  return request({
-    url: '/order/platform/consultant/orders/list/count',
-    method: 'get',
-    params
-  })
-}
-// 查询咨询者订单详情
-export function getConsumerOrderById(params) {
-  return request({
-    url: '/order/platform/consumer/orders/single/query',
-    method: 'get',
-    params
-  })
-}
-// 查询咨询师订单详情
-export function getConsultantOrderById(params) {
-  return request({
-    url: '/order/platform/consultant/orders/single/query',
-    method: 'get',
-    params
-  })
-}
+
 // 订单更换咨询师
 export function changeConsultant(data) {
   return request({
@@ -80,38 +52,24 @@ export function changeConsultant(data) {
     data
   })
 }
-// 咨询者更新订单预约时间
-export function updateAppointmentTimeByConsumer(data) {
+// 咨询者/咨询师更新订单预约时间
+export function updateTime(data) {
   return request({
-    url: '/order/platform/consumer/orders/time',
+    url: `/order/platform/${role}/orders/time`,
     method: 'put',
     data
   })
 }
-// 咨询师更新订单预约时间
-export function updateAppointmentTimeByConsultant(data) {
-  return request({
-    url: '/order/platform/consultant/orders/time',
-    method: 'put',
-    data
-  })
-}
+
 // 咨询者订单评论
-export function rateOrderByConsumer(data) {
+export function rateOrder(data) {
   return request({
-    url: '/order/platform/consumer/orders/evaluation',
+    url: `/order/platform/${role}/orders/evaluation`,
     method: 'post',
     data
   })
 }
-// 咨询师订单评论
-export function rateOrderByConsultant(data) {
-  return request({
-    url: '/order/platform/consultant/orders/evaluation',
-    method: 'post',
-    data
-  })
-}
+
 // 咨询者订单投诉
 export function complaintByConsumer(data) {
   return request({

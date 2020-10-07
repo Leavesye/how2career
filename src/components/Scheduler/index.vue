@@ -31,10 +31,10 @@ loadCldr(
 )
 let events = []
 // 必须同步方式获取数据 否则无法回显
-// const res = getUserInfoSync()
-// if (res.result) {
-//   events =  (res.msg.publicInfo && res.msg.publicInfo.availableTime) || []
-// }
+const res = getUserInfoSync()
+if (res.result) {
+  events =  (res.msg.publicInfo && res.msg.publicInfo.availableTime) || []
+}
 export default {
   name: 'scheduler',
   props: ['mode'],

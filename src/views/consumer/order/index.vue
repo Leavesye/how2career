@@ -25,6 +25,8 @@ import WaitingRate from './components/waiting-rate'
 import FinishOrder from './components/finish-order'
 import Pannel from '@/components/Pannel'
 import CareerList from '@/components/CareerList'
+import { getOrders } from '@/api/order'
+import moment from 'moment'
 
 export default {
   name: 'consumer-order',
@@ -51,12 +53,31 @@ export default {
         { name: '待评价订单', status: 6, component: 'waiting-rate' },
         { name: '已完成订单', status: 7, component: 'finish-order' },
       ],
-      list: [
-        { orderno: 'fdfdfdfdf', createTime: '2020-12-11', startTime: '2020-12-11', amount: 110, name: "Tom", cb: this.handleOpenDetail },
-        { orderno: 'fdfdfdfdf', createTime: '2020-12-11', startTime: '2020-12-11', amount: 110, name: "Tom" },
-        { orderno: 'fdfdfdfdf', createTime: '2020-12-11', startTime: '2020-12-11', amount: 110, name: "Tom" },
-      ],
+      list: [],
     }
+  },
+  async created() {
+    const l = this.loading()
+    const res = await getOrders({
+      "from":"0",
+      "to":"2601444690",
+      "page":"0",
+      "limit":"10",
+      "condition":"status==1"
+    }).catch(e=> l.close())
+    if (res.result && res.msg) {
+      this.list = res.msg.map(o => {
+        return {
+          orderId: o._id,
+          avatar: process.env.VUE_APP_HOST_NAME + o.consultant.avatar,
+          name: o.consultant.name,
+          cTime: moment(o.cTime).format('YYYY-MM-DD HH:mm:ss'),
+          consumerTime: moment(o.consumerTime[0]).format('YYYY-MM-DD HH:mm:ss'),
+          price: o.price
+        }
+      })
+    }
+    l.close()
   },
   methods: {
     handleSearch () {
@@ -106,4 +127,5 @@ export default {
   margin: 20px 0;
   font-weight: 600;
 }
+
 </style>

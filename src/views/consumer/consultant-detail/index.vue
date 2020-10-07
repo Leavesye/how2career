@@ -44,7 +44,7 @@
                 <p>公司名称: {{info.company}}</p>
               </div>
               <div>职位: {{info.position}}</div>
-              <div>工作年限: 5年</div>
+              <div>工作年限: {{info.workingYears}}年</div>
               <el-button size="mini"
                          plain>更多</el-button>
             </li>
@@ -107,16 +107,26 @@ export default {
       const o = res.msg.publicInfo
       let { school, discipline, degree, graduationTime } = o.resume.education[0]
       const { industry, company, position, duty } = o.resume.workExperience[0]
+      // 评分
+      let rate = o.evaluationPoint > 0 ? o.evaluationPoint / o.evaluationCount : 0
+      // 工作年限
+      let works = o.resume.workExperience
+      let lastTime = works[0].resignationTime
+      lastTime = lastTime ? moment(lastTime).valueOf() : moment().valueOf()
+      let workingYears = Math.ceil((lastTime - moment(works[works.length-1].entryTime).valueOf()) / (365*24*60*60*1000))
       this.info = {
         price: res.msg.price,
         nickName: o.nickName,
         avatarImage: o.avatarImage,
         selfIntroduction: o.selfIntroduction,
+        rateCount: o.evaluationCount,
+        rate,
         highEdu: `${school} ${discipline} ${degree} ${moment(graduationTime).format('YYYY年毕业')}`,
         industry,
         company,
         position,
         duty,
+        workingYears,
         skills: o.resume.skills.toString()
       }
     }
@@ -132,7 +142,6 @@ export default {
       } = this.info
       let { school, discipline, degree, graduationTime } = this.publicInfo.resume.education[0]
       const p = {
-        consumer: this.user.userId,
         consultant: {
           _id: this.$route.params.id,
           name: nickName,

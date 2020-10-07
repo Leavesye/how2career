@@ -57,6 +57,11 @@ export default {
       ],
     }
   },
+  methods: {
+    handleClickBtn(i) {
+      this.current = i
+    }
+  },
   mounted () {
     
   },
