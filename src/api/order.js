@@ -38,7 +38,7 @@ export function getOrdersCount(params) {
 // 查询咨询者/咨询师订单详情
 export function getOrderById(params) {
   return request({
-    url: `/order/platform/${order}/orders/single/query`,
+    url: `/order/platform/${role}/orders/single/query`,
     method: 'get',
     params
   })
@@ -86,10 +86,10 @@ export function feedbackByConsultant(data) {
     data
   })
 }
-// 订单取消
+// 咨询师/咨询者 订单取消
 export function cancelOrder(data) {
   return request({
-    url: '/order/platform/consultant/orders/cancel',
+    url: `/order/platform/${role}/orders/cancel`,
     method: 'put',
     data
   })

@@ -3,34 +3,34 @@
     <el-card class="order-item"
              v-for="(o, i) in list"
              :key="i">
-      <ul class="list-item flex-hb">
+      <ul class="list-item flex-hb" :style="{paddingBottom: o.status=='7' ? '10px': 0}">
         <li>
-          <p style="margin-bottom: 10px">订单号：{{o.orderno}}</p>
+          <p style="margin-bottom: 10px">订单号:{{o.orderId}}</p>
           <div class="flex-vc">
-            <el-image class="avatar"
-                  :src="o.avatar || defaultAvatar"></el-image>
+            <small-avatar :imgUrl="o.avatar"></small-avatar>
             <div>{{o.name}}</div>
           </div>
         </li>
         <li>
-          <p style="margin-bottom: 10px">创建时间：{{o.createTime}}</p>
+          <p style="margin-bottom: 10px">创建时间:{{o.cTime}}</p>
           <p>咨询时间(北京时间)2020-09-10</p>
         </li>
         <li>
-          <div class="order-amount">订单金额：{{o.amount}}RMB</div>
-          <p class="flex">
+          <div class="order-amount">订单金额:{{o.price}} RMB</div>
+          <p class="flex" v-if="o.status=='7'">
             <span>评价：</span>
-            <el-rate v-model="rate" disabled></el-rate></p>
+            <el-rate v-model="o.rate" disabled></el-rate></p>
+           <p v-else class="order-cancel">已取消</p>
         </li>
       </ul>
-      <div class="flex-he btns">
+      <div class="flex-he btns" v-if="o.status=='7'">
         <el-button size="small" plain type="success">获取补偿金</el-button>
         <el-button size="small" plain type="success">咨询问题</el-button>
       </div>
     </el-card>
     <!-- 分页 -->
     <div class="flex-he"
-         style="margin-top: 20px">
+         style="margin-top: 20px" v-if="list.length">
       <el-pagination id="pagin"
                      :page-sizes="pagination.pageSizes || [10, 20, 30, 40]"
                      :total="pagination.total"
@@ -48,38 +48,19 @@
 </template>
 
 <script>
+import SmallAvatar from '@/components/SmallAvatar'
+
 export default {
   name: 'finish-order',
-  props: ['list'],
+  props: ['list', 'pagination'],
   data () {
     return {
-      rate: 4,
-      pagination: {
-        total: 1000,
-        pageIndex: 1,
-        pageSize: 10,
-        events: {
-          'current-change': this.handlePageChange,
-          'size-change': this.handlePageSizeChange,
-        },
-        props: {},
-      },
     }
   },
-  computed: {
-    defaultAvatar: function () {
-      return require('@/assets/default-avatar.png')
-    }
+  components: {
+    SmallAvatar
   },
   methods: {
-    handlePageChange (pageIndex) {
-      this.pagination.pageIndex = pageIndex
-      this.query()
-    },
-    handlePageSizeChange (pageSize) {
-      this.pagination.pageSize = pageSize
-      this.query()
-    },
     handelOrderCancel () {
 
     },
@@ -97,14 +78,6 @@ export default {
 .list-item {
   color: #7c8ea5;
   font-size: 14px;
-  border-bottom: 1px solid #EDEEEF;
-  padding-bottom: 10px;
-}
-.avatar {
-  margin-right: 10px;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
 }
 .order-amount {
   margin-bottom: 10px;
@@ -136,5 +109,9 @@ export default {
 }
 .btns {
   padding-top: 20px;
+  border-top: 1px solid #EDEEEF;
+}
+.order-cancel {
+  text-align:right;
 }
 </style>

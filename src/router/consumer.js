@@ -11,7 +11,7 @@ export default [
   },
   // 订单确认
   {
-    path: '/consumer/order-confirm',
+    path: '/consumer/order-confirm/:id',
     component: () => import('@/views/consumer/order/confirm'),
   },
   // 咨询师搜索
@@ -31,7 +31,7 @@ export default [
   },
   // 咨询房间
   {
-    path: '/consumer/room',
+    path: '/consumer/room/:id',
     component: () => import('@/views/consumer/room'),
   },
   // 个人中心-基本信息

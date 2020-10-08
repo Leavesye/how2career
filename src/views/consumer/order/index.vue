@@ -5,7 +5,16 @@
             :pannels="pannels"
             :selPannel="selPannel"></pannel>
     <!-- 订单列表 -->
-    <component v-bind:is="selPannel.component" :list="list" />
+    <component v-if="list.length"
+               v-bind:is="selPannel.component"
+               :list="list"
+               :query="query"
+               :pagination="pagination" />
+    <!-- 无订单数据 -->
+    <el-card v-if="list.length==0"
+             class="no-order">
+      <p>暂无订单数据</p>
+    </el-card>
     <!-- 职业选择 -->
     <p class="title">更多职业选择</p>
     <career-list></career-list>
@@ -54,34 +63,61 @@ export default {
         { name: '已完成订单', status: 7, component: 'finish-order' },
       ],
       list: [],
+      pagination: {
+        total: 0,
+        pageIndex: 0,
+        pageSize: 10,
+        events: {
+          'current-change': this.handlePageChange,
+          'size-change': this.handlePageSizeChange,
+        },
+        props: {},
+      },
     }
   },
-  async created() {
-    const l = this.loading()
-    const res = await getOrders({
-      "from":"0",
-      "to":"2601444690",
-      "page":"0",
-      "limit":"10",
-      "condition":"status==1"
-    }).catch(e=> l.close())
-    if (res.result && res.msg) {
-      this.list = res.msg.map(o => {
-        return {
-          orderId: o._id,
-          avatar: process.env.VUE_APP_HOST_NAME + o.consultant.avatar,
-          name: o.consultant.name,
-          cTime: moment(o.cTime).format('YYYY-MM-DD HH:mm:ss'),
-          consumerTime: moment(o.consumerTime[0]).format('YYYY-MM-DD HH:mm:ss'),
-          price: o.price
-        }
-      })
-    }
-    l.close()
+  async created () {
+    this.query()
   },
   methods: {
-    handleSearch () {
-
+    // 查询订单列表
+    async query () {
+      const l = this.loading()
+      const { pageIndex, pageSize } = this.pagination
+      const { status } = this.selPannel
+      let condition = status == 7 ? `status==${status}:status==0`: `status==${status}`
+      const res = await getOrders({
+        from: "0",
+        to: "2601444690",
+        page: pageIndex || 0,
+        limit: pageSize || 10,
+        condition
+      }).catch(e => l.close())
+      if (res.result && res.msg) {
+        this.pagination.total = res.msg.count
+        this.list = res.msg.list.map(o => {
+          return {
+            orderId: o._id,
+            avatar: process.env.VUE_APP_HOST_NAME + o.consultant.avatar,
+            name: o.consultant.name,
+            cTime: moment(o.cTime).format('YYYY-MM-DD HH:mm:ss'),
+            times: o.consumerTime.map(v => `${moment(v).format('YYYY-MM-DD')} ${moment(v).format('HH:mm:ss')}~${moment(v).subtract(-90, 'minutes').format('HH:mm:ss')}`),
+            price: o.price,
+            status: o.status,
+            rate: o.evaluation ? o.evaluation.point : 0
+          }
+        })
+      }
+      l.close()
+    },
+    // 监听分页页码变化
+    handlePageChange (pageIndex) {
+      this.pagination.pageIndex = pageIndex
+      this.query()
+    },
+    // 监听分页数量变化
+    handlePageSizeChange (pageSize) {
+      this.pagination.pageSize = pageSize
+      this.query()
     },
     handleClose () {
       this.isShow = false
@@ -91,7 +127,13 @@ export default {
       this.isShow = true
     },
     handlePannelChange (item) {
+      if (item.status == this.selPannel.status) return false
       this.selPannel = item
+      this.list = []
+      this.pagination.total = 0
+      this.pagination.pageIndex = 0
+      this.pagination.pageSize = 10
+      this.query()
     },
     handlePageChange (pageIndex) {
       this.pagination.pageIndex = pageIndex
@@ -123,9 +165,17 @@ export default {
 }
 .title {
   font-size: 16px;
-  color: #36AE82;
+  color: #36ae82;
   margin: 20px 0;
   font-weight: 600;
 }
-
+.no-order {
+  height: 100px;
+}
+.no-order p {
+  text-align: center;
+  margin-top: 20px;
+  color: #7c8ea5;
+  font-size: 16px;
+}
 </style>

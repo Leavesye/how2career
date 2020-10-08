@@ -7,7 +7,7 @@ const state = {
   token: getToken(),
   userName: Cookies.get('userName'),
   nickName: Cookies.get('nickName'),
-  completion: Cookies.get('completion'),
+  completion: +Cookies.get('completion'),
   avatar: Cookies.get('avatar'),
   role: Cookies.get('role'),
   userId: Cookies.get('userId')

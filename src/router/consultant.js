@@ -20,7 +20,7 @@ export default [
     component: () => import('@/views/consultant/resume'),
   },
   {
-    path: '/consultant/room',
+    path: '/consultant/room/:id',
     component: () => import('@/views/consultant/room'),
   },
   {

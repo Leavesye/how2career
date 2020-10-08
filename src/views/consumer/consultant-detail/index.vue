@@ -120,6 +120,7 @@ export default {
         avatarImage: o.avatarImage,
         selfIntroduction: o.selfIntroduction,
         rateCount: o.evaluationCount,
+        totalRate: o.evaluationPoint,
         rate,
         highEdu: `${school} ${discipline} ${degree} ${moment(graduationTime).format('YYYY年毕业')}`,
         industry,
@@ -137,8 +138,8 @@ export default {
       this.info.times = times
       // 参数处理
       const {
-        nickName, avatarImage, selfIntroduction,
-        industry, company, position, duty, workingYears, skills
+        nickName, avatarImage, selfIntroduction, industry, company, 
+        position, duty, workingYears, skills, totalRate, rateCount
       } = this.info
       let { school, discipline, degree, graduationTime } = this.publicInfo.resume.education[0]
       const p = {
@@ -148,7 +149,9 @@ export default {
           avatar: avatarImage,
           readme: selfIntroduction,
           education: { school, discipline, degree, graduationTime },
-          work: { industry, company, position, workingYears, duty, skills }
+          work: { industry, company, position, workingYears, duty, skills },
+          evaluationCount: rateCount,
+          evaluationPoint: totalRate,
         },
         consumerTime: times.map(o => o.value)
       }
@@ -157,7 +160,7 @@ export default {
       const res = await createOrder(p).catch(e => l.close())
       if (res.result) {
         this.alert('订单已生成')
-        this.$router.push(`/consumer/order-confirm?info=${JSON.stringify(this.info)}`)
+        this.$router.push(`/consumer/order-confirm/${res.msg}`)
       }
       l.close()
     },

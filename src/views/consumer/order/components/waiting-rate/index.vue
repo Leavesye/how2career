@@ -7,8 +7,7 @@
         <li>
           <p style="margin-bottom: 10px">订单号：{{o.orderno}}</p>
           <div class="flex-vc">
-            <el-image class="avatar"
-                  :src="o.avatar || defaultAvatar"></el-image>
+            <small-avatar :imgUrl="o.avatar"></small-avatar>
             <div>{{o.name}}</div>
           </div>
         </li>
@@ -34,7 +33,7 @@
     </el-card>
     <!-- 分页 -->
     <div class="flex-he"
-         style="margin-top: 20px">
+         style="margin-top: 20px" v-if="list.length">
       <el-pagination id="pagin"
                      :page-sizes="pagination.pageSizes || [10, 20, 30, 40]"
                      :total="pagination.total"
@@ -58,44 +57,25 @@
 <script>
 import RateModal from './modal/rate'
 import ComplaintModal from './modal/complaint'
-import { rateOrderByConsumer } from '@/api/order'
+import SmallAvatar from '@/components/SmallAvatar'
+import { rateOrder } from '@/api/order'
 
 export default {
   name: 'waiting-rate',
-  props: ['list'],
+  props: ['list', 'pagination'],
   components: {
     RateModal,
-    ComplaintModal
+    ComplaintModal,
+    SmallAvatar
   },
   data () {
     return {
       orderId: '',
       isShowComplaint: false,
       isShowRate: false,
-      pagination: {
-        total: 1000,
-        pageIndex: 1,
-        pageSize: 10,
-        events: {
-          'current-change': this.handlePageChange,
-          'size-change': this.handlePageSizeChange,
-        },
-        props: {},
-      },
-    }
-  },
-  computed: {
-    defaultAvatar: function () {
-      return require('@/assets/default-avatar.png')
     }
   },
   methods: {
-    handlePageChange (pageIndex) {
-
-    },
-    handlePageSizeChange (pageSize) {
-
-    },
     handleOpenComplaint (item) {
       this.isShowComplaint = true
       this.orderId = item.id
@@ -128,12 +108,6 @@ export default {
   color: #7c8ea5;
   font-size: 14px;
   margin-bottom: 20px;
-}
-.avatar {
-  margin-right: 10px;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
 }
 .order-amount {
   margin-bottom: 10px;

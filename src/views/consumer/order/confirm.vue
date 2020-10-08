@@ -15,7 +15,7 @@
             <p class="name">{{info.nickName}}</p>
             <el-rate class="user-rate"
                      disabled
-                     v-model="rate"></el-rate>
+                     v-model="info.rate"></el-rate>
           </div>
           <div class="content-r">
             <div class="flex base-info">
@@ -27,11 +27,13 @@
             <ul class="book-times flex-hb">
               <li v-for="(item, i) in info.times"
                   :key="i">
-                {{item.selText}}
-                <i class="el-icon-error"></i>
+                {{item}}
+                <i class="el-icon-error" @click="handleDelTime"></i>
               </li>
             </ul>
-            <p class="degree">你的个人信息完整度是60%,建议完善个人信息让咨询师提供更为针对性的建议 <el-link type="success">完善信息</el-link>
+            <p class="degree"
+               v-if="user.completion < 100">你的个人信息完整度是{{user.completion}}%,建议完善个人信息让咨询师提供更为针对性的建议 <el-link type="success"
+                       @click="toPerfect">完善信息</el-link>
             </p>
           </div>
         </div>
@@ -62,6 +64,7 @@ import Avatar from '@/components/Avatar'
 import Pay from '@/components/Pay'
 import moment from 'moment'
 import { mapGetters } from 'vuex'
+import { getOrderById } from '@/api/order'
 
 export default {
   components: {
@@ -71,7 +74,6 @@ export default {
   data () {
     return {
       info: {},
-      rate: 4,
       isShow: false,
       checked: false,
       isShowPay: false,
@@ -83,10 +85,31 @@ export default {
     ])
   },
   async created () {
-    // this.info = JSON.parse(this.$route.query.info)
+    const l = this.loading()
+    const res = await getOrderById({ orderId: this.$route.params.id }).catch(e => l.close())
+    if (res.result) {
+      const c = res.msg.consultant
+      const { avatar, name } = c
+      const { industry, company, position } = c.work
+      let rate = c.evaluationPoint > 0 ? c.evaluationPoint / c.evaluationCount : 0
+      this.info = {
+        avatarImage: avatar, nickName: name, rate, industry, company, position,
+        times: res.msg.consumerTime.map(o => `${moment(o).format('YYYY-MM-DD')} ${moment(o).format('HH:mm:ss')}-${moment(o).subtract(-90, 'minutes').format('HH:mm:ss')}`),
+        price: res.msg.price,
+      }
+    }
+    l.close()
   },
   methods: {
+    handleDelTime(i) {
+      if (this.info.times.length == 1) return false
+      this.info.times.splice(i, 1)
+    },
     handleClickPay () {
+      if (!this.checked) {
+        this.alert('请先阅读条款', 'warning')
+        return false
+      }
       this.isShowPay = true
     },
     handleClosePay () {
@@ -97,6 +120,9 @@ export default {
     },
     goBack () {
       this.$router.go(-1)
+    },
+    toPerfect () {
+      this.$router.push('/consumer/perfect')
     }
   },
   mounted () {
@@ -204,10 +230,11 @@ export default {
   color: #36ae82;
   margin-top: 20px;
   margin-bottom: 20px;
+  font-weight: 600;
 }
 .book-times li {
   position: relative;
-  width: 196px;
+  padding: 0 10px;
   height: 32px;
   line-height: 32px;
   text-align: center;
@@ -221,8 +248,9 @@ export default {
 }
 .degree {
   margin-top: 30px;
-  text-align: right;
-  padding-right: 50px;
+  padding: 5px 9px;
+  background: #f6f6f6;
+  border-radius: 3px;
 }
 .cost-box {
   padding-bottom: 18px;

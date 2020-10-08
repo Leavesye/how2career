@@ -7,8 +7,7 @@
         <li>
           <p style="margin-bottom: 10px">订单号：{{o.orderno}}</p>
           <div class="flex-vc">
-             <el-image class="avatar"
-                  :src="o.avatar || defaultAvatar"></el-image>
+            <small-avatar :imgUrl="o.avatar"></small-avatar>
             <div>{{o.name}}</div>
           </div>
         </li>
@@ -34,13 +33,13 @@
       </ul>
       <el-button type="success" plain size="small">+添加问题</el-button>
       <div class="flex-he btns">
-        <el-button size="small" plain type="success">订单取消</el-button>
-        <el-button size="small" plain type="success">进入房间</el-button>
+        <el-button size="small" plain type="success" @click="handleOpenCancel(o.orderId)">订单取消</el-button>
+        <el-button size="small" plain type="success" @click="handleEnterRoom(o.roomId)">进入房间</el-button>
       </div>
     </el-card>
     <!-- 分页 -->
     <div class="flex-he"
-         style="margin-top: 20px">
+         style="margin-top: 20px" v-if="list.length">
       <el-pagination id="pagin"
                      :page-sizes="pagination.pageSizes || [10, 20, 30, 40]"
                      :total="pagination.total"
@@ -54,46 +53,38 @@
                      ref="pagination">
       </el-pagination>
     </div>
+    <!-- 取消订单弹框 -->
+    <cancel-modal :isShow="isShow" @close="handleClose" :orderId="orderId"></cancel-modal>
   </div>
 </template>
 
 <script>
+import SmallAvatar from '@/components/SmallAvatar'
+import CancelModal from './modal/cancel-order'
+
 export default {
   name: 'waiting-service',
-  props: ['list'],
+  props: ['list', 'pagination'],
+  components: {
+    SmallAvatar,
+    CancelModal
+  },
   data () {
     return {
-      pagination: {
-        total: 1000,
-        pageIndex: 1,
-        pageSize: 10,
-        events: {
-          'current-change': this.handlePageChange,
-          'size-change': this.handlePageSizeChange,
-        },
-        props: {},
-      },
-    }
-  },
-  computed: {
-    defaultAvatar: function () {
-      return require('@/assets/default-avatar.png')
+      isShow: false,
+      orderId: ''
     }
   },
   methods: {
-    handlePageChange (pageIndex) {
-      this.pagination.pageIndex = pageIndex
-      this.query()
+    handleOpenCancel(orderId) {
+      this.isShow = true
+      this.orderId = orderId
     },
-    handlePageSizeChange (pageSize) {
-      this.pagination.pageSize = pageSize
-      this.query()
+    handleClose () {
+      this.isShow = false
     },
-    handelOrderCancel () {
-
-    },
-    handelOrderDetail () {
-
+    handleEnterRoom (roomId) {
+      this.$router.push(`/consumer/room/${roomId}`)
     },
   }
 };
@@ -107,12 +98,6 @@ export default {
   color: #7c8ea5;
   font-size: 14px;
   margin-bottom: 20px;
-}
-.avatar {
-  margin-right: 10px;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
 }
 .order-amount {
   margin-bottom: 10px;

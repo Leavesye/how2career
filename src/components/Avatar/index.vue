@@ -16,7 +16,7 @@ export default {
   },
   computed: {
     url: function() {
-      return process.env.VUE_APP_HOST_NAME + this.imgUrl
+      return this.imgUrl ? process.env.VUE_APP_HOST_NAME + this.imgUrl : require('@/assets/default-avatar.png')
     }
   },
   methods: {

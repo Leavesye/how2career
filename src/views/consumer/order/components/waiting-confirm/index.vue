@@ -1,12 +1,11 @@
 <template>
 <div>
   <el-card class="order-item" v-for="(o, i) in list" :key="i">
-    <ul class="list-item flex-hb" :style="{borderBottom: noBorder? 'none': '1px solid #edeeef'}">
+    <ul class="list-item flex-hb">
       <li>
         <p style="margin-bottom: 10px">订单号：{{o.orderno}}</p>
         <div class="flex-vc">
-          <el-image class="avatar"
-                  :src="o.avatar || defaultAvatar"></el-image>
+          <small-avatar :imgUrl="o.avatar"></small-avatar>
           <div>{{o.name}}</div>
         </div>
       </li>
@@ -33,7 +32,7 @@
   </el-card>
   <!-- 分页 -->
   <div class="flex-he"
-      style="margin-top: 20px">
+      style="margin-top: 20px" v-if="list.length">
     <el-pagination id="pagin"
                   :page-sizes="pagination.pageSizes || [10, 20, 30, 40]"
                   :total="pagination.total"
@@ -51,38 +50,19 @@
 </template>
 
 <script>
+import SmallAvatar from '@/components/SmallAvatar'
+
 export default {
-  name: 'waiting-confirm',
-  props: ['list', 'noBorder'],
+  props: ['list', 'pagination'],
   data () {
     return {
       radio: 1,
-      pagination: {
-        total: 1000,
-        pageIndex: 1,
-        pageSize: 10,
-        events: {
-          'current-change': this.handlePageChange,
-          'size-change': this.handlePageSizeChange,
-        },
-        props: {},
-      },
     }
   },
-  computed: {
-    defaultAvatar: function () {
-      return require('@/assets/default-avatar.png')
-    }
+  components: {
+    SmallAvatar,
   },
   methods: {
-    handlePageChange (pageIndex) {
-      this.pagination.pageIndex = pageIndex
-      this.query()
-    },
-    handlePageSizeChange (pageSize) {
-      this.pagination.pageSize = pageSize
-      this.query()
-    },
     handelOrderCancel() {
       
     },
@@ -108,12 +88,6 @@ export default {
   font-size: 14px;
   padding-bottom: 20px;
   margin-bottom: 20px;
-}
-.avatar {
-  margin-right: 10px;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
 }
 .order-amount {
   margin-bottom: 10px;
