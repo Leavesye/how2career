@@ -88,6 +88,8 @@ export default {
 .order-item {
   font-size: 14px;
   color: #7C8EA5;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #EDEEEF;
 }
 .order-no {
   margin-right: 20px;

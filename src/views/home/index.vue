@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { login, getUserInfo } from '@/api/user'
+
 import { createOrder } from '@/api/order'
 import { setToken } from '@/utils/auth'
 import Login from './modal/login'

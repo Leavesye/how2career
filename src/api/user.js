@@ -38,7 +38,7 @@ export function register(data) {
 // 咨询者/咨询师 实名认证
 export function realVerify(data) {
   return request({
-    url: `/order/platform/${store.state.user.role}/realVerify`,
+    url: `/user/platform/${store.state.user.role}/realVerify`,
     method: 'post',
     data
   })
@@ -86,4 +86,12 @@ export function getUserInfoSync () {
   console.log(xhr, 'xhr')
   const res = isJSON(xhr.responseText) ? JSON.parse(xhr.responseText) : {}
   return res
+}
+// 查询咨询师消息
+export function getMessage (params) {
+  return request({
+    url: `/user/platform/${store.state.user.role}/message/list/query`,
+    method: 'get',
+    params
+  })
 }

@@ -8,7 +8,10 @@ export default {
     value: '',
     label: '行业选择',
     props: { props: { label: 'text', value: 'value' } },
-    options: []
+    options: [
+      {text:'行业1', value: '1'},
+      {text:'行业2', value: '2'},
+    ]
   },
   b: {
     layout: { span: 10 },
@@ -16,7 +19,10 @@ export default {
     value: '',
     label: '职位选择',
     props: { props: { label: 'text', value: 'value' } },
-    options: []
+    options: [
+      {text:'职位1', value: '1'},
+      {text:'职位2', value: '2'},
+    ]
   },
   f: {
     label : '目标公司选择' ,

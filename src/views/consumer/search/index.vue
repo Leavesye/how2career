@@ -3,7 +3,7 @@
     <!-- 状态面板 -->
     <pannel @change="handlePannelChange"
             :pannels="pannels"
-            :current="curPannel"></pannel>
+            :selPannel="selPannel"></pannel>
     <el-card>
       <quick-form :model="form"
                   labelWidth="140px"
@@ -35,12 +35,11 @@ export default {
       form,
       datetime: '',
       isShow: false,
-      curPannel: '',
+      selPannel: '',
       curTime: '',
       pannels: [
-        { name: '未提现订单', count: 5 },
-        { name: '费用待发放订单', count: 5 },
-        { name: '已结算订单', count: 5 },
+        { name: '向专业对象咨询', status: 1 },
+        { name: '向人事咨询', status: 2 },
       ],
       list: [
         { img: '', name: '马里奥', rate: 3, role: '高级专家', rateCount: '234', btn: { name: '订单详情', cb: this.handleOpenDetail }, desc: '高桥於1994年创立了自己的品牌Undercover，而当时Nigo…' },
@@ -54,8 +53,8 @@ export default {
     handleOpenDetail () {
       this.alert('订单详情 ')
     },
-    handlePannelChange (item, i) {
-      this.curPannel = i
+    handlePannelChange (item) {
+      this.selPannel = item
     },
   }
 }

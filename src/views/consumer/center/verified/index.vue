@@ -1,12 +1,12 @@
 <template>
   <section>
-    <h1 class="page-title">实名认证（未认证）</h1>
+    <h1 class="page-title">实名认证（{{realVerified?'已认证':'未认证'}}）</h1>
     <div class="container">
       <quick-form :model="form"
                   labelWidth="140px"
                   ref="form"></quick-form>
-      <div class="flex-he">
-        <el-button style="width: 90px" type="success" size="small">认证</el-button>
+      <div class="flex-he" v-if="!realVerified">
+        <el-button :loading="isLoading" style="width: 90px" type="success" size="small" @click="handleVerified">认证</el-button>
       </div>
     </div>
   </section>
@@ -14,6 +14,7 @@
 
 <script>
 import QuickForm from '@/components/QuickForm'
+import { realVerify, getUserInfo } from '@/api/user'
 
 export default {
   components: {
@@ -22,18 +23,23 @@ export default {
   data () {
     const r = this.$rules
     return {
+      isLoading: false,
+      realVerified: false,
       form: {
-        passWord: {
+        name: {
           value: '',
           label: '姓名',
-          rules: [r.required(), r.length(20)],
+          rules: [r.required(), r.maxLength(20)],
+          props: {
+            disabled: true
+          }
         },
-        name: {
+        phone: {
           value: '',
           label: '手机号码',
           rules: [r.required(), r.mobile()],
         },
-        nickName: {
+        idCard: {
           value: '',
           label: '身份证号码',
           rules: [r.required(), r.idCard()], 
@@ -41,8 +47,40 @@ export default {
       }
     }
   },
+  async created() {
+    const l = this.loading()
+    const res = await getUserInfo().catch(e=> l.close())
+    if (res.result) {
+      this.realVerified = res.msg.realVerified
+      const o = res.msg.realVerify
+      this.form.name.value = res.msg.basic.name
+      this.form.phone.value = o.phone
+      this.form.idCard.value = o.idCard
+      if (this.realVerified) {
+        this.form.phone.props.disabled =true
+        this.form.idCard.props.disabled =true
+      }
+    }
+    l.close()
+  },
   methods: {
-
+    handleVerified() {
+      if (this.isLoading) return false
+      const formData = this.$refs.form.getFormData()
+      console.log(formData)
+      this.$refs.form.validate((valid) => {
+        if (valid) {
+          this.isLoading = true
+          realVerify(formData).then(res => {
+            if (res.result) {
+              this.realVerified = true
+              this.alert('认证成功')
+            }
+            this.isLoading = false
+          }).catch(e=>this.isLoading = false)
+        }
+      })
+    }
   }
 }
 </script>

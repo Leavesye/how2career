@@ -36,7 +36,7 @@ export default {
       const res = await cancelOrder({ orderId: this.orderId }).catch(e=>this.isLoading=false)
       if (res.result) {
         this.alert('订单取消成功')
-        this.$emit('close')
+        this.$emit('close', true)
       }
       this.isLoading=false
     }

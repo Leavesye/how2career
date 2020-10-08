@@ -99,8 +99,8 @@ export default {
             orderId: o._id,
             avatar: process.env.VUE_APP_HOST_NAME + o.consultant.avatar,
             name: o.consultant.name,
-            cTime: moment(o.cTime).format('YYYY-MM-DD HH:mm:ss'),
-            times: o.consumerTime.map(v => `${moment(v).format('YYYY-MM-DD')} ${moment(v).format('HH:mm:ss')}~${moment(v).subtract(-90, 'minutes').format('HH:mm:ss')}`),
+            cTime: moment(o.cTime*1000).format('YYYY-MM-DD HH:mm:ss'),
+            times: o.consumerTime.map(v => `${moment(v*1000).format('YYYY-MM-DD')} ${moment(v*1000).format('HH:mm:ss')}~${moment(v).subtract(-90, 'minutes').format('HH:mm:ss')}`),
             price: o.price,
             status: o.status,
             rate: o.evaluation ? o.evaluation.point : 0

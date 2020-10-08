@@ -82,6 +82,10 @@ export default {
     },
     handleClose () {
       this.isShow = false
+      if (isCancel) {
+        // 刷新数据
+        this.query()
+      }
     },
     handleEnterRoom (roomId) {
       this.$router.push(`/consumer/room/${roomId}`)

@@ -21,18 +21,24 @@
         </el-pagination>
       </div>
     </div>
+    <detail-modal :isShow="isShow" @close="handleClose" ></detail-modal>
   </section>
 </template>
 
 <script>
 import QuickTable from '@/components/QuickTable'
+import DetailModal from './modal/detail'
+import { getMessage } from '@/api/user'
 
 export default {
   components: {
     QuickTable,
+    DetailModal
   },
   data () {
+    const openDetail = this.handleOpen
     return {
+      isShow: false,
       table: {
         data: [{ a: 'fhfhfhfhfhf', b: '2400 RMB', c: '2020-11-12 20:13:12', d: '2020-11-12 20:13:12' }],
         columns: [
@@ -50,9 +56,10 @@ export default {
           {
             label: '操作',
             prop: 'e',
-            render () {
+            render (h, scope) {
+              console.log(h, scope.row.a, 8888)
               return (
-                <el-button size="mini">详情</el-button>
+                <el-button size="mini" onClick={() => openDetail(scope.row)}>详情</el-button>
               )
             }
           },
@@ -82,6 +89,11 @@ export default {
       },
     }
   },
+  async created() {
+    const l = this.loading()
+    const res = await getMessage().catch(e => l.close)
+    l.close()
+  },
   methods: {
     handlePageChange (pageIndex) {
       this.pagination.pageIndex = pageIndex
@@ -91,6 +103,12 @@ export default {
       this.pagination.pageSize = pageSize
       this.query()
     },
+    handleClose() {
+      this.isShow = false
+    },
+    handleOpen() {
+      this.isShow = true
+    }
   }
 }
 </script>

@@ -155,7 +155,7 @@ $color: #36AE82;
 .title {
   font-size: 16px;
   color: $color;
-  margin: 20px 0;
+  margin-bottom: 20px;
   font-weight: 600;
 }
 
