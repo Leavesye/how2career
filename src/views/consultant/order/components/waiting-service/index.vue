@@ -6,9 +6,7 @@
         <li>
           <p style="margin-bottom: 10px">订单号：{{firstOrder.orderno}}</p>
           <div class="flex-vc">
-            <el-image class="avatar"
-                       size="small"
-                       :src="defaultAvatar"></el-image>
+            <small-avatar :imgUrl="firstOrder.avatar"></small-avatar>
             <div class="user-name">{{firstOrder.name}}</div>
           </div>
         </li>
@@ -38,23 +36,22 @@
                :key="i">
         <ul class="order-item flex-hbc">
           <li>
-            <p style="margin-bottom: 10px">订单号：{{o.orderno}}</p>
+            <p style="margin-bottom: 10px">订单号：{{o.orderId}}</p>
             <div class="flex-vc">
-              <el-image class="avatar"
-                         :src="defaultAvatar"></el-image>
+              <small-avatar :imgUrl="o.avatar"></small-avatar>
               <div class="user-name">{{o.name}}</div>
             </div>
           </li>
           <li>
-            <p style="margin-bottom: 10px">创建时间：{{o.createTime}}</p>
-            <div>开始时间：{{o.createTime}}</div>
+            <p style="margin-bottom: 10px">创建时间：{{o.cTime}}</p>
+            <div>开始时间：{{o.startTime}}</div>
           </li>
           <li>
             <div style="margin-top:30px">还有12小时30分开始</div>
           </li>
           <li>{{o.rest}}</li>
           <li>
-            <div style="margin-bottom: 10px; text-align: right">订单金额:{{o.amount}} RMB</div>
+            <div style="margin-bottom: 10px; text-align: right">订单金额:{{o.price}} RMB</div>
             <div class="flex-he">
               <el-button size="mini"
                          @click="handleOpenDetail">订单详情</el-button>
@@ -88,47 +85,22 @@
 
 <script>
 import DetailModal from './modal/detail'
+import SmallAvatar from '@/components/SmallAvatar'
 
 export default {
   name: 'waiting-service',
+  props: ['list', 'pagination'],
   components: {
-    DetailModal
+    DetailModal,
+    SmallAvatar
   },
   data () {
     return {
       isShowDetail: false,
       firstOrder: { orderno: 'fdfdfdfdf', rate: 3, createTime: '2020-12-11', startTime: '2020-12-11', amount: 110, name: "Tom" },
-      list: [
-        { orderno: 'fdfdfdfdf', rate: 1, createTime: '2020-12-11', startTime: '2020-12-11', amount: 110, name: "Tom" },
-        { orderno: 'fdfdfdfdf', rate: 2, createTime: '2020-12-11', startTime: '2020-12-11', amount: 110, name: "Tom" },
-        { orderno: 'fdfdfdfdf', rate: 3, createTime: '2020-12-11', startTime: '2020-12-11', amount: 110, name: "Tom" },
-      ],
-      pagination: {
-        total: 1000,
-        pageIndex: 1,
-        pageSize: 10,
-        events: {
-          'current-change': this.handlePageChange,
-          'size-change': this.handlePageSizeChange,
-        },
-        props: {},
-      },
-    }
-  },
-  computed: {
-    defaultAvatar: function() {
-      return require('@/assets/default-avatar.png')
     }
   },
   methods: {
-    handlePageChange (pageIndex) {
-      this.pagination.pageIndex = pageIndex
-      this.query()
-    },
-    handlePageSizeChange (pageSize) {
-      this.pagination.pageSize = pageSize
-      this.query()
-    },
     handleEnterRoom () {
       this.$router.push('/consultant/room')
     },
@@ -164,11 +136,6 @@ export default {
   margin-bottom: 20px;
   font-size: 14px;
   color: #7C8FA5;
-}
-.avatar {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
 }
 .user-name {
   margin-left: 10px;

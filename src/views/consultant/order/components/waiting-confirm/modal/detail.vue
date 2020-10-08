@@ -7,22 +7,22 @@
   center>
   <section class="modal-main">
     <div class="flex">
-      <p class="order-no">订单号: 121212121</p>
-      <div>创建时间: 2020-12-11 20:13:12</div>
+      <p class="order-no">订单号: {{order.orderId}}</p>
+      <div>创建时间: {{order.cTime}}</div>
     </div>
     <p class="time">咨询备选时间 (北京时间)：</p>
     <ul class="flex-hb" style="margin-bottom: 20px">
-      <li class="time-item" v-for="(o, i) in 3" :key="i">2020-12-11 20:13:12</li>
+      <li class="time-item" v-for="(o, i) in order.times" :key="i">{{o}}</li>
     </ul>
     <div v-if="isShowCalendar">
       <calendar></calendar>
     </div>
     <p class="select-other" @click="toggleTimePicker">选择其他时间<i :class="[isShowCalendar?'el-icon-arrow-up':'el-icon-arrow-down']"></i></p>
-    <div class="flex info-box" v-if="true">
+    <div class="flex info-box">
       <div class="head">
         <div></div>
         <p class="role">咨询者</p>
-        <p class="name">马里奥大叔</p>
+        <p class="name">{{}}</p>
       </div>
       <div class="info">
         <div class="info-item">
@@ -64,7 +64,7 @@
 import Calendar from '@/components/Calendar'
 
 export default {
-  props: ['isShow'],
+  props: ['isShow', 'order'],
   components: {
     Calendar
   },

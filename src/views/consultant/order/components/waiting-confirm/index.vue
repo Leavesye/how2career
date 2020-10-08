@@ -3,32 +3,21 @@
     <el-card>
       <!-- 订单列表 -->
       <section v-for="(o ,i) in list"
-               :key="i">
-        <ul class="order-item flex-hbc">
-          <li>
-            <p style="margin-bottom: 10px">订单号：{{o.orderno}}</p>
-            <div class="flex-vc">
-              <el-image class="avatar"
-                         :src="defaultAvatar"></el-image>
-              <div class="user-name">{{o.name}}</div>
-            </div>
-          </li>
-          <li>
-            <p style="margin-bottom: 10px">创建时间：{{o.createTime}}</p>
-            <div>开始时间：{{o.createTime}}</div>
-          </li>
-          <li>
-            <div style="margin-top:30px">还有12小时30分开始</div>
-          </li>
-          <li>{{o.rest}}</li>
-          <li>
-            <div style="margin-bottom: 10px; text-align: right">订单金额:{{o.amount}} RMB</div>
-            <div class="flex-he">
-              <el-button size="mini"
-                         @click="handleOpenDetail">订单详情</el-button>
-            </div>
-          </li>
-        </ul>
+               :key="i" class="order-item">
+        <div class="flex-hb row">
+          <span>订单号：{{o.orderId}}</span>
+          <span>创建时间:{{o.cTime}}</span>
+          <span>订单金额:{{o.price}} RMB</span>
+        </div>
+        <div class="flex-hb">
+          <div class="flex-vc">
+            <small-avatar :imgUrl="o.avatar"></small-avatar>
+            <div class="user-name">{{o.name}}</div>
+          </div>
+          <div>还有12小时30分开始</div>
+          <el-button size="mini"
+                     @click="handleOpenDetail(o)">订单详情</el-button>
+        </div>
       </section>
     </el-card>
     <!-- 分页 -->
@@ -47,61 +36,42 @@
                      ref="pagination">
       </el-pagination>
     </div>
-    <detail :isShow="isShow" @close="handleCloseDetail" @confrim="handleConfirmTime"></detail>
+    <detail :isShow="isShow"
+            :order="order"
+            @close="handleCloseDetail"
+            @confrim="handleConfirmTime"></detail>
   </div>
 </template>
 
 <script>
 import Detail from './modal/detail'
+import SmallAvatar from '@/components/SmallAvatar'
 
 export default {
   name: 'waiting-confirm',
+  props: ['list', 'pagination'],
   components: {
-    Detail
+    Detail,
+    SmallAvatar
   },
   data () {
     return {
       isShow: false,
-      firstOrder: { orderno: 'fdfdfdfdf', rate: 3, createTime: '2020-12-11', startTime: '2020-12-11', amount: 110, name: "Tom" },
-      list: [
-        { orderno: 'fdfdfdfdf', rate: 1, createTime: '2020-12-11', startTime: '2020-12-11', amount: 110, name: "Tom", cb: this.handleOpenDetail },
-        { orderno: 'fdfdfdfdf', rate: 2, createTime: '2020-12-11', startTime: '2020-12-11', amount: 110, name: "Tom" },
-        { orderno: 'fdfdfdfdf', rate: 3, createTime: '2020-12-11', startTime: '2020-12-11', amount: 110, name: "Tom" },
-      ],
-      pagination: {
-        total: 1000,
-        pageIndex: 1,
-        pageSize: 10,
-        events: {
-          'current-change': this.handlePageChange,
-          'size-change': this.handlePageSizeChange,
-        },
-        props: {},
-      },
-    }
-  },
-  computed: {
-    defaultAvatar: function() {
-      return require('@/assets/default-avatar.png')
+      order: {}
     }
   },
   methods: {
-    handlePageChange (pageIndex) {
-
-    },
-    handlePageSizeChange (pageSize) {
-
-    },
     handleEnterRoom () {
       this.$router.push('/consultant/room')
     },
-    handleOpenDetail () {
+    handleOpenDetail (order) {
       this.isShow = true
+      this.order = order
     },
-    handleCloseDetail() {
+    handleCloseDetail () {
       this.isShow = false
     },
-    handleConfirmTime() {
+    handleConfirmTime () {
       this.isShow = false
     }
   }
@@ -110,16 +80,14 @@ export default {
 
 <style lang="scss" scoped>
 .order-item {
-  padding-bottom: 20px;
-  border-bottom: 1px solid #EDEEEF;
-  margin-bottom: 20px;
   font-size: 14px;
-  color: #7C8FA5;
+  color: #7C8EA5;
+  padding-bottom: 17px;
+  border-bottom: 1px solid #EDEEEF;
+  margin-bottom: 14px;
 }
-.avatar {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
+.row {
+  margin-bottom: 14px;
 }
 .user-name {
   margin-left: 10px;

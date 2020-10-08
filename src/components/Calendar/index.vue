@@ -11,7 +11,7 @@
           <p v-for="(item, i) in selList"
              :key="i">
             {{item.selText}}
-            <i @click="handleDelSelect(i, item)" :style="{color: user.role=='consumer'? '#36AE82':'15479E',cursor: 'pointer'}"
+            <i @click="handleDelSelect(i, item)" :style="{color: user.role=='consumer'? '#36AE82':'#15479E',cursor: 'pointer'}"
                class="iconfont iconB_jian-01" />
           </p>
         </div>

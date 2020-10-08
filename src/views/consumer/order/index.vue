@@ -52,15 +52,15 @@ export default {
   },
   data () {
     return {
-      selPannel: { name: '待付款订单', status: 1, component: 'waiting-pay' },
+      selPannel: { name: '待付款订单', status: '1', component: 'waiting-pay' },
       orderDate: '',
       isShow: false,
       pannels: [
-        { name: '待付款订单', status: 1, component: 'waiting-pay' },
-        { name: '待确认订单', status: 2, component: 'waiting-confirm' },
-        { name: '待服务订单', status: 4, component: 'waiting-service' },
-        { name: '待评价订单', status: 6, component: 'waiting-rate' },
-        { name: '已完成订单', status: 7, component: 'finish-order' },
+        { name: '待付款订单', status: '1', component: 'waiting-pay' },
+        { name: '待确认订单', status: '2,3', component: 'waiting-confirm' },
+        { name: '待服务订单', status: '4', component: 'waiting-service' },
+        { name: '待评价订单', status: '6', component: 'waiting-rate' },
+        { name: '已完成订单', status: '0,7', component: 'finish-order' },
       ],
       list: [],
       pagination: {
@@ -84,7 +84,15 @@ export default {
       const l = this.loading()
       const { pageIndex, pageSize } = this.pagination
       const { status } = this.selPannel
-      let condition = status == 7 ? `status==${status}:status==0`: `status==${status}`
+      const arr = status.split(',')
+      let condition = ''
+      arr.forEach((o, i) => {
+        if (i == arr.length-1) {
+          condition+=`status==${o}`
+        } else {
+          condition+=`status==${o}:`
+        }
+      })
       const res = await getOrders({
         from: "0",
         to: "2601444690",
@@ -100,7 +108,7 @@ export default {
             avatar: process.env.VUE_APP_HOST_NAME + o.consultant.avatar,
             name: o.consultant.name,
             cTime: moment(o.cTime*1000).format('YYYY-MM-DD HH:mm:ss'),
-            times: o.consumerTime.map(v => `${moment(v*1000).format('YYYY-MM-DD')} ${moment(v*1000).format('HH:mm:ss')}~${moment(v).subtract(-90, 'minutes').format('HH:mm:ss')}`),
+            times: o.consumerTime.map(v => `${moment(v).format('YYYY-MM-DD')} ${moment(v).format('HH:mm:ss')}~${moment(v).subtract(-90, 'minutes').format('HH:mm:ss')}`),
             price: o.price,
             status: o.status,
             rate: o.evaluation ? o.evaluation.point : 0

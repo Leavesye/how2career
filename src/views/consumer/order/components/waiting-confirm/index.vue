@@ -3,29 +3,32 @@
   <el-card class="order-item" v-for="(o, i) in list" :key="i">
     <ul class="list-item flex-hb">
       <li>
-        <p style="margin-bottom: 10px">订单号：{{o.orderno}}</p>
+        <p style="margin-bottom: 10px">订单号：{{o.orderId}}</p>
         <div class="flex-vc">
           <small-avatar :imgUrl="o.avatar"></small-avatar>
           <div>{{o.name}}</div>
         </div>
       </li>
       <li>
-        <p style="margin-bottom: 30px">创建时间：{{o.createTime}}</p>
+        <p style="margin-bottom: 30px">创建时间：{{o.cTime}}</p>
       </li>
       <li>
-        <div class="order-amount">订单金额：{{o.amount}}RMB</div>
+        <div class="order-amount">订单金额：{{o.price}}RMB</div>
         <div class="flex-he">
-          <el-link type="success">待咨询师确认</el-link> 
+          <el-link type="success" :underline="false">{{o.status =='2' ? '待咨询师确认': '待咨询者确认'}}</el-link> 
         </div>
       </li>
     </ul>
     <h-title>待确认时间(北京时间)</h-title>
     <ul class="flex confirm-time">
-      <li v-for="(item, j) in 3" :key="j">
-        <el-radio v-model="radio" :label="j">2020-09-10 20:00 ~ 21:00</el-radio></li>
+      <li v-for="(item, j) in o.times" :key="j">
+        <el-radio v-if="status=='3'" v-model="radio" :label="j">{{item}}</el-radio>
+        <span v-else>{{item}}</span>
+      </li>
     </ul>
-    <div class="flex-he btns">
-      <el-button size="small" type="success" plain>获取补偿金</el-button>
+    <div class="flex-he btns" v-if="o.status=='3'">
+      <!-- 后台自动赔偿  暂时不用 -->
+      <!-- <el-button size="small" type="success" plain>获取补偿金</el-button> -->
       <el-button size="small" type="success" plain>更换咨询师</el-button>
       <el-button size="small" type="success" plain>接受时间调整</el-button>
     </div>

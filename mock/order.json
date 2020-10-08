@@ -25,8 +25,8 @@
     }
   },
   "question": ["q1", "q2"],
-  "startTime": "确认的开始时间",
-  "actualStartTime": "实际开始时间",
+  "startTime": "双方确认的开始时间",
+  "actualStartTime": "实际开始时间(双方进入房间的实际时间)",
   "consultantEnterTime": "第一次咨询师进入时间,检测迟到",
   "consumerEnterTime": "第一次咨询者进入时间",
   "consumerTime": ["2020-10-12 22:00", "2020-10-12 22:00", "2020-10-12 22:00"],
