@@ -61,7 +61,12 @@
       </div>
       <el-card class="calendar-card">
         <h1>可预约时间表(北京时间)</h1>
-        <calendar @create-order="handleCreateOrder"></calendar>
+        <calendar @set-time="handleSetTime">
+          <el-button v-if="times.length" class="appintment-btn"
+                   size="small"
+                   :type="user.role=='consumer'? 'success': 'primary'"
+                   @click="handleCreateOrder">预约单生成</el-button>
+        </calendar>
       </el-card>
     </section>
     <rate-list :isShow="isShow"
@@ -88,6 +93,7 @@ export default {
   data () {
     return {
       info: {},
+      times: [],
       rate: 4,
       isShow: false,
       checked: false,
@@ -134,8 +140,10 @@ export default {
     l.close()
   },
   methods: {
-    async handleCreateOrder (times) {
-      this.info.times = times
+    handleSetTime(times) {
+      this.times = times
+    },
+    async handleCreateOrder () {
       // 参数处理
       const {
         nickName, avatarImage, selfIntroduction, industry, company, 
@@ -153,7 +161,7 @@ export default {
           evaluationCount: rateCount,
           evaluationPoint: totalRate,
         },
-        consumerTime: times.map(o => o.value)
+        consumerTime: this.times.map(o => Math.ceil(o.value/1000))
       }
       console.log(p, '参数')
       const l = this.loading()
@@ -308,5 +316,8 @@ export default {
 }
 .check-box {
   margin-right: 30px;
+}
+.appintment-btn {
+  margin-top: 40px;
 }
 </style>

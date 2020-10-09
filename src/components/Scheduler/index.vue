@@ -63,6 +63,7 @@ export default {
         dataSource: events,
          fields: {
             subject: { name: 'Subject', default: '咨询可预约时间' },
+            isAllDay: { name: 'IsAllDay', default: null },
         },
       },
     }

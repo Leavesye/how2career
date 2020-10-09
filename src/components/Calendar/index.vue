@@ -1,5 +1,5 @@
 <template>
-  <el-row>
+  <el-row style="margin-top: 20px">
     <el-col :span="16">
       <scheduler @open-timepicker="openTimepicker"
                  mode="view"></scheduler>
@@ -15,11 +15,8 @@
                class="iconfont iconB_jian-01" />
           </p>
         </div>
-        <el-button class="appintment-btn"
-                   size="small"
-                   :type="user.role=='consumer'? 'success': 'primary'"
-                   v-if="selList.length"
-                   @click="handleCreateOrder">预约单生成</el-button>
+        <!-- 预约生成订单按钮插槽 -->
+        <slot></slot>
       </div>
     </el-col>
     <!-- 选时段 -->
@@ -79,12 +76,17 @@ export default {
       this.$emit('create-order', this.selList)
     },
     handleSelectTime (i, item) {
+      if (this.selList.length == 3) {
+        this.alert('最多只能选择三个时间')
+        return false
+      }
       item.isActive = !item.isActive
       if (item.isActive) {
         this.selList.push(item)
       } else {
         this.selList.splice(i, 1)
       }
+      this.$emit('set-time', this.selList)
     },
     handleDelSelect(i, item){
       this.selList.splice(i, 1)
@@ -93,6 +95,7 @@ export default {
           o.isActive = false
         }
       })
+      this.$emit('set-time', this.selList)
     },
     handleCloseTime () {
       this.isShow = false
@@ -174,8 +177,5 @@ export default {
 }
 .time-list > p {
   margin-bottom: 15px;
-}
-.appintment-btn {
-  margin-top: 40px;
 }
 </style>

@@ -11,7 +11,7 @@
     <div class="flex-hb row">
       <div class="flex">
         <p class="order-times">咨询时间(北京时间):</p>
-        <div v-for="(item, j) in o.times" :key="j">{{item}}</div>
+        <div v-for="(item, j) in o.consumerTime" :key="j">{{item.text}}</div>
       </div>
       <el-link type="success">时间调整</el-link>
     </div>

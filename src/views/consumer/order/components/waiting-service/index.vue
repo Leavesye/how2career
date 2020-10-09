@@ -1,37 +1,37 @@
 <template>
   <div>
     <el-card class="order-item"
-             v-for="(o, i) in list"
+             v-for="(o, i) in orderList"
              :key="i">
       <ul class="list-item flex-hb">
         <li>
-          <p style="margin-bottom: 10px">订单号：{{o.orderno}}</p>
+          <p style="margin-bottom: 10px">订单号：{{o.orderId}}</p>
           <div class="flex-vc">
             <small-avatar :imgUrl="o.avatar"></small-avatar>
             <div>{{o.name}}</div>
           </div>
         </li>
         <li>
-          <p style="margin-bottom: 10px">创建时间：{{o.createTime}}</p>
-          <p>咨询时间(北京时间)2020-09-10</p>
+          <p style="margin-bottom: 16px">创建时间：{{o.cTime}}</p>
+          <p>咨询时间(北京时间){{o.startTime}}</p>
         </li>
         <li>
-          <div class="order-amount">订单金额：{{o.amount}}RMB</div>
+          <div class="order-amount">订单金额：{{o.price}}RMB</div>
           <div class="flex-he">
-            <el-button size="small">时间调整</el-button>
+            <el-button size="small" plain type="success" @click="handleOpenChange(o)">时间调整</el-button>
           </div>
         </li>
       </ul>
       <div class="desc">职业：高级人力资源最多十字简介：高桥於1994年创立了自己的品牌U</div>
       <h-title>咨询的问题</h-title>
       <ul class="question-list">
-        <li class="flex-vc" v-for="(item, index) in 2" :key="index">
-          <el-input class="question-input" size="medium"></el-input>
-          <el-button class="op-btn" size="small">编辑</el-button>
-          <el-button class="op-btn" size="small">删除</el-button>
+        <li class="flex-vc" v-for="(item, index) in o.question" :key="index">
+          <el-input class="question-input" size="medium" v-model="item.v"></el-input>
+          <el-button class="op-btn" size="small" @click="handleRemoveQuestion(i, index)">删除</el-button>
         </li>
       </ul>
-      <el-button type="success" plain size="small">+添加问题</el-button>
+      <el-button type="success" plain size="small" @click="handleAddQuestion(i)">+添加问题</el-button>
+      <el-button :loading="isLoading" type="success" plain size="small" v-if="o.question.length" @click="handleSaveQuestion(o)">保存</el-button>
       <div class="flex-he btns">
         <el-button size="small" plain type="success" @click="handleOpenCancel(o.orderId)">订单取消</el-button>
         <el-button size="small" plain type="success" @click="handleEnterRoom(o.roomId)">进入房间</el-button>
@@ -55,27 +55,54 @@
     </div>
     <!-- 取消订单弹框 -->
     <cancel-modal :isShow="isShow" @close="handleClose" :orderId="orderId"></cancel-modal>
+    <!-- 时间调整弹框 -->
+    <change-modal :isShow="isShowTime" @close="handleCloseTime" :order="order"></change-modal>
   </div>
 </template>
 
 <script>
 import SmallAvatar from '@/components/SmallAvatar'
 import CancelModal from './modal/cancel-order'
+import ChangeModal from './modal/change-time'
+import { orderAddQuestion } from '@/api/order'
 
 export default {
   name: 'waiting-service',
   props: ['list', 'pagination'],
   components: {
     SmallAvatar,
-    CancelModal
+    CancelModal,
+    ChangeModal
   },
   data () {
     return {
+      isShowTime: false,
       isShow: false,
-      orderId: ''
+      orderId: '',
+      order: {},
+      orderList: this.list,
+      isLoading: false,
     }
   },
   methods: {
+    async handleSaveQuestion(o) {
+      if (this.isLoading) return false
+      this.isLoading = true
+      const res = await orderAddQuestion({
+        orderId: o.orderId,
+        question: o.question.map(q=> q.v)
+      }).catch(e=>this.isLoading= false)
+      if (res.result) {
+        this.alert('保存成功')
+      }
+      this.isLoading= false
+    },
+    handleRemoveQuestion(i, j) {
+      this.orderList[i].question.splice(j, 1)
+    },
+    handleAddQuestion(i) {
+      this.orderList[i].question.push({v:''})
+    },
     handleOpenCancel(orderId) {
       this.isShow = true
       this.orderId = orderId
@@ -83,7 +110,18 @@ export default {
     handleClose () {
       this.isShow = false
       if (isCancel) {
-        // 刷新数据
+        // 刷新列表
+        this.query()
+      }
+    },
+    handleOpenChange(order) {
+      this.isShowTime = true
+      this.order = order
+    },
+    handleCloseTime(isConfirm) {
+      this.isShowTime = false
+      if (isConfirm) {
+        // 刷新列表
         this.query()
       }
     },

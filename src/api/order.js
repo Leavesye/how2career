@@ -1,7 +1,6 @@
 import request from '@/utils/request'
 import store from '@/store'
 
-const role = store.state.user.role
 // 创建订单
 export function createOrder(data) {
   return request({
@@ -13,7 +12,7 @@ export function createOrder(data) {
 // 咨询者/咨询师 订单点击时间确认
 export function timeConfirm(data) {
   return request({
-    url: `/order/platform/${role}/orders/time/confirm`,
+    url: `/order/platform/${store.state.user.role}/orders/time/confirm`,
     method: 'put',
     data
   })
@@ -22,7 +21,7 @@ export function timeConfirm(data) {
 // 查询咨询师/咨询者订单列表
 export function getOrders(params) {
   return request({
-    url: `/order/platform/${role}/orders/list/query`,
+    url: `/order/platform/${store.state.user.role}/orders/list/query`,
     method: 'get',
     params
   })
@@ -30,7 +29,7 @@ export function getOrders(params) {
 // 查询咨询者/咨询师订单数量统计
 export function getOrdersCount(params) {
   return request({
-    url: `/order/platform/${role}/orders/list/count`,
+    url: `/order/platform/${store.state.user.role}/orders/list/count`,
     method: 'get',
     params
   })
@@ -38,7 +37,7 @@ export function getOrdersCount(params) {
 // 查询咨询者/咨询师订单详情
 export function getOrderById(params) {
   return request({
-    url: `/order/platform/${role}/orders/single/query`,
+    url: `/order/platform/${store.state.user.role}/orders/single/query`,
     method: 'get',
     params
   })
@@ -55,8 +54,16 @@ export function changeConsultant(data) {
 // 咨询者/咨询师更新订单预约时间
 export function updateTime(data) {
   return request({
-    url: `/order/platform/${role}/orders/time`,
+    url: `/order/platform/${store.state.user.role}/orders/time`,
     method: 'put',
+    data
+  })
+}
+// 订单添加咨询者问题
+export function orderAddQuestion(data) {
+  return request({
+    url: `/order/platform/consumer/orders/question`,
+    method: 'post',
     data
   })
 }
@@ -64,7 +71,7 @@ export function updateTime(data) {
 // 咨询者订单评论
 export function rateOrder(data) {
   return request({
-    url: `/order/platform/${role}/orders/evaluation`,
+    url: `/order/platform/${store.state.user.role}/orders/evaluation`,
     method: 'post',
     data
   })
@@ -89,7 +96,7 @@ export function feedbackByConsultant(data) {
 // 咨询师/咨询者 订单取消
 export function cancelOrder(data) {
   return request({
-    url: `/order/platform/${role}/orders/cancel`,
+    url: `/order/platform/${store.state.user.role}/orders/cancel`,
     method: 'put',
     data
   })

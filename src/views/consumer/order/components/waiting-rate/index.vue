@@ -5,18 +5,18 @@
              :key="i">
       <ul class="list-item flex-hb">
         <li>
-          <p style="margin-bottom: 10px">订单号：{{o.orderno}}</p>
+          <p style="margin-bottom: 10px">订单号：{{o.orderId}}</p>
           <div class="flex-vc">
             <small-avatar :imgUrl="o.avatar"></small-avatar>
             <div>{{o.name}}</div>
           </div>
         </li>
         <li>
-          <p style="margin-bottom: 10px">创建时间：{{o.createTime}}</p>
-          <p>咨询时间(北京时间)2020-09-10</p>
+          <p style="margin-bottom: 10px">创建时间：{{o.cTime}}</p>
+          <p>咨询时间(北京时间){{o.startTime}}</p>
         </li>
         <li>
-          <div class="order-amount">订单金额：{{o.amount}}RMB</div>
+          <div class="order-amount">订单金额：{{o.price}}RMB</div>
         </li>
       </ul>
       <div class="desc">职业：高级人力资源最多十字简介：高桥於1994年创立了自己的品牌U</div>

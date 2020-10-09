@@ -49,6 +49,10 @@ export default {
       ]
     }
   },
+  created() {
+    this.orderId = this.$route.query.orderId
+    console.log(this.orderId)
+  },
   methods: {
     handleOpenDetail () {
       this.alert('订单详情 ')

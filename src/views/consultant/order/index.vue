@@ -7,6 +7,7 @@
     <!-- 订单列表 -->
     <component v-bind:is="selPannel.component"
               :pagination="pagination"
+              :query="query"
               v-if="list.length"
                :list="list" />
     <!-- 无订单数据 -->
@@ -37,9 +38,9 @@ export default {
   },
   data () {
     return {
-      selPannel: { name: '待确认订单', status: '2,3', component: 'waiting-confirm' },
+      selPannel: { name: '待确认订单', status: '2', component: 'waiting-confirm' },
       pannels: [
-        { name: '待确认订单', status: '2,3', component: 'waiting-confirm' },
+        { name: '待确认订单', status: '2', component: 'waiting-confirm' },
         { name: '待服务订单', status: '4', component: 'waiting-service' },
         { name: '已完成订单', status: '0,7', component: 'finish-order' },
       ],
@@ -82,6 +83,19 @@ export default {
         this.pagination.total = res.msg.count
         this.list = res.msg.list.map(o => {
           const { avatar, name, readme } =  o.consultant
+          let rest = ''
+          // 倒计时时间计算
+          if (o.confirmTimeout) {
+             const countdown = o.confirmTimeout*1000 - moment().valueOf()
+             if (countdown > 0) {
+               let times = countdown/(3600*1000)
+               let hours = Math.floor(times)
+               let mintus = Math.ceil((times - hours)*60)
+               rest = `还有${hours}小时${mintus}分开始`
+             } else {
+               rest = '已过期'
+             }
+          }
           return {
             orderId: o._id,
             avatar: process.env.VUE_APP_HOST_NAME + avatar,
@@ -90,8 +104,24 @@ export default {
             ...o.consultant.education,
             ...o.consultant.work,
             cTime: moment(o.cTime * 1000).format('YYYY-MM-DD HH:mm:ss'),
+            rest,
             startTime: o.startTime ? moment(o.startTime * 1000).format('YYYY-MM-DD HH:mm:ss'): '',
-            times: o.consumerTime.map(v => `${moment(v).format('YYYY-MM-DD')} ${moment(v).format('HH:mm:ss')}~${moment(v).subtract(-90, 'minutes').format('HH:mm:ss')}`),
+            consumerTime: o.consumerTime ? o.consumerTime.map(v => {
+              // 秒转毫秒
+              let ms = v*1000
+              return {
+                text: `${moment(ms).format('YYYY-MM-DD')} ${moment(ms).format('HH:mm:ss')}~${moment(ms).subtract(-90, 'minutes').format('HH:mm:ss')}`,
+                value: v
+              }
+            }) : [],
+            consultantTime: o.consultantTime ? o.consultantTime.map(v => {
+               // 秒转毫秒
+              let ms = v*1000
+              return {
+                text: `${moment(ms).format('YYYY-MM-DD')} ${moment(ms).format('HH:mm:ss')}~${moment(ms).subtract(-90, 'minutes').format('HH:mm:ss')}`,
+                value: v
+              }
+            }) : [],
             price: o.price,
             status: o.status,
             rate: o.evaluation ? o.evaluation.point : 0

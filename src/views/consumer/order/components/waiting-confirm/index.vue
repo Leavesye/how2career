@@ -21,16 +21,18 @@
     </ul>
     <h-title>待确认时间(北京时间)</h-title>
     <ul class="flex confirm-time">
-      <li v-for="(item, j) in o.times" :key="j">
-        <el-radio v-if="status=='3'" v-model="radio" :label="j">{{item}}</el-radio>
-        <span v-else>{{item}}</span>
+      <li>
+        <template v-if="o.status=='3'">
+          <el-radio v-for="(item, j) in o.consultantTime" :key="j" v-model="radio" :label="j">{{item.text}}</el-radio>
+        </template>
+        <span v-else v-for="(item, j) in o.consumerTime" :key="j">{{item.text}}</span>
       </li>
     </ul>
     <div class="flex-he btns" v-if="o.status=='3'">
       <!-- 后台自动赔偿  暂时不用 -->
       <!-- <el-button size="small" type="success" plain>获取补偿金</el-button> -->
-      <el-button size="small" type="success" plain>更换咨询师</el-button>
-      <el-button size="small" type="success" plain>接受时间调整</el-button>
+      <el-button :loading="isLoading" size="small" type="success" plain @click="handleChangeConsultant(o.orderId)">更换咨询师</el-button>
+      <el-button :loading="isLoading" size="small" type="success" plain @click="handleConfirmTime(o)">接受时间调整</el-button>
     </div>
   </el-card>
   <!-- 分页 -->
@@ -54,23 +56,40 @@
 
 <script>
 import SmallAvatar from '@/components/SmallAvatar'
+import { timeConfirm } from '@/api/order'
 
 export default {
   props: ['list', 'pagination'],
   data () {
     return {
-      radio: 1,
+      radio: -1,
+      isLoading: false
     }
   },
   components: {
     SmallAvatar,
   },
   methods: {
-    handelOrderCancel() {
-      
+    handleChangeConsultant(orderId) {
+      this.$router.push(`/consumer/search?orderId=${orderId}`)
     },
-    handelOrderDetail() {
-      
+    // 确认时间
+    async handleConfirmTime(order) {
+      if (this.radio < 0) {
+        this.alert('请选择一个咨询时间')
+        return false
+      }
+      if (this.isLoading) return false
+      this.isLoading = true
+      const res = await timeConfirm({
+        orderId: order.orderId,
+        startTime: order.consultantTime[this.radio].value
+      }).catch(e=> this.isLoading = false)
+      if (res.result) {
+        this.alert('更新服务时间成功')
+        this.$emit('close', true)
+      }
+      this.isLoading = false
     },
   }
 };

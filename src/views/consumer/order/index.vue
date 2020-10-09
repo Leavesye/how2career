@@ -87,10 +87,10 @@ export default {
       const arr = status.split(',')
       let condition = ''
       arr.forEach((o, i) => {
-        if (i == arr.length-1) {
-          condition+=`status==${o}`
+        if (i == arr.length - 1) {
+          condition += `status==${o}`
         } else {
-          condition+=`status==${o}:`
+          condition += `status==${o}:`
         }
       })
       const res = await getOrders({
@@ -107,11 +107,34 @@ export default {
             orderId: o._id,
             avatar: process.env.VUE_APP_HOST_NAME + o.consultant.avatar,
             name: o.consultant.name,
-            cTime: moment(o.cTime*1000).format('YYYY-MM-DD HH:mm:ss'),
-            times: o.consumerTime.map(v => `${moment(v).format('YYYY-MM-DD')} ${moment(v).format('HH:mm:ss')}~${moment(v).subtract(-90, 'minutes').format('HH:mm:ss')}`),
+            startTime: moment(o.startTime * 1000).format('YYYY-MM-DD HH:mm:ss'),
+            cTime: moment(o.cTime * 1000).format('YYYY-MM-DD HH:mm:ss'),
+            consumerTime: o.consumerTime ? o.consumerTime.map(v => {
+              // 秒转毫秒
+              let ms = v*1000
+              return {
+                text: `${moment(ms).format('YYYY-MM-DD')} ${moment(ms).format('HH:mm:ss')}~${moment(ms).subtract(-90, 'minutes').format('HH:mm:ss')}`,
+                value: v
+              }
+            }) : [],
+            consultantTime: o.consultantTime ? o.consultantTime.map(v => {
+               // 秒转毫秒
+              let ms = v*1000
+              return {
+                text: `${moment(ms).format('YYYY-MM-DD')} ${moment(ms).format('HH:mm:ss')}~${moment(ms).subtract(-90, 'minutes').format('HH:mm:ss')}`,
+                value: v
+              }
+            }) : [],
             price: o.price,
             status: o.status,
-            rate: o.evaluation ? o.evaluation.point : 0
+            rate: o.evaluation ? o.evaluation.point : 0,
+            consumerChangeFrequency: o.consumerChangeFrequency,
+            consultantChangeFrequency: o.consultantChangeFrequency,
+              question: o.question?o.question.map(v=> {
+                return {
+                  v,
+              }
+              }) : []
           }
         })
       }

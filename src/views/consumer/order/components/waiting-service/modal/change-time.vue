@@ -10,19 +10,9 @@
       <p class="order-no">订单号: {{order.orderId}}</p>
       <div>创建时间: {{order.cTime}}</div>
     </div>
-    <p class="time">咨询备选时间 (北京时间)：</p>
-    <ul class="flex-hb">
-      <li class="time-item">
-        <template v-if="!order.consultantTime">
-          <el-radio v-for="(o, i) in order.consumerTime" :key="i" v-model="radio" :label="i">{{o.text}}</el-radio>
-        </template>
-        <span v-else v-for="(o, i) in order.consumerTime" :key="i">{{o.text}}</span>
-      </li>
-    </ul>
-    <div v-if="isShowCalendar">
-      <calendar @set-time="handleSetTime"></calendar>
-    </div>
-    <p v-if="!order.consultantTime" class="select-other" @click="toggleTimePicker">选择其他时间<i :class="[isShowCalendar?'el-icon-arrow-up':'el-icon-arrow-down']"></i></p>
+    <p class="time">咨询时间(北京时间){{order.startTime}}</p>
+    <p class="time">调整时间会产生XXXRMB的费用 <el-link type="success">点击了解更多规则</el-link></p>
+    <calendar @set-time="handleSetTime"></calendar>
     <div class="flex info-box">
       <div class="head">
         <div></div>
@@ -57,16 +47,15 @@
       </div>
     </div>
   </section>
-  <span slot="footer" class="dialog-footer" v-if="!order.consultantTime">
-    <el-button :loading="isLoading" size="small" type="primary" v-if="times.length" @click="handleUpdateTime">提交等待咨询者确认</el-button>
-    <el-button :loading="isLoading" size="small" type="primary" v-else @click="handleConfirmTime">确认时间</el-button>
+  <span slot="footer" class="dialog-footer">
+    <el-button :loading="isLoading" size="small" type="primary" @click="handleConfirmTime">确认调整</el-button>
   </span>
 </el-dialog>
 </template>
 
 <script>
 import Calendar from '@/components/Calendar'
-import { timeConfirm, updateTime } from '@/api/order'
+import { updateTime } from '@/api/order'
 import moment from 'moment'
 
 export default {
@@ -78,8 +67,6 @@ export default {
     return {
       isLoading: false,
       times: [] , // 选择的其他服务时间列表
-      radio: -1,
-      isShowCalendar: false,
     }
   },
   methods: {
@@ -89,40 +76,19 @@ export default {
     handleClose() {
       this.$emit('close')
     },
-    // 更换服务时间给咨询者确认
-    async handleUpdateTime() {
+    // 更换服务时间给咨询师确认
+    async handleConfirmTime() {
       if (this.isLoading) return false
       this.isLoading = true
       const res = await updateTime({
         orderId: this.order.orderId,
-        consultantTime: this.times.map(o => Math.ceil(o.value / 1000))
+        consumerTime: this.times.map(o => Math.ceil(o.value / 1000))
       }).catch(e=> this.isLoading = false)
       if (res.result) {
-        this.alert('更新服务时间成功')
+        this.alert('更新时间成功')
         this.$emit('close', true)
       }
       this.isLoading = false
-    },
-    // 确认时间
-    async handleConfirmTime() {
-      if (this.radio < 0) {
-        this.alert('请选择一个咨询备选时间')
-        return false
-      }
-      if (this.isLoading) return false
-      this.isLoading = true
-      const res = await timeConfirm({
-        orderId: this.order.orderId,
-        startTime: this.order.consumerTime[this.radio].value
-      }).catch(e=> this.isLoading = false)
-      if (res.result) {
-        this.alert('更新服务时间成功')
-        this.$emit('close', true)
-      }
-      this.isLoading = false
-    },
-    toggleTimePicker() {
-      this.isShowCalendar = !this.isShowCalendar
     },
   }
 };
@@ -152,7 +118,7 @@ export default {
   text-align: center;
   height: 60px;
   line-height: 60px;
-  color: #15479E;
+  color: #36AE82;
   cursor: pointer;
 }
 .info-box {
@@ -187,6 +153,6 @@ export default {
   margin-bottom: 10px;
 }
 .title {
-  color: #15479E;
+  color: #36AE82;
 }
 </style>

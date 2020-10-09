@@ -13,7 +13,7 @@
         </li>
         <li>
           <p style="margin-bottom: 10px">创建时间:{{o.cTime}}</p>
-          <p>咨询时间(北京时间)2020-09-10</p>
+          <p>咨询时间(北京时间){{o.startTime}}</p>
         </li>
         <li>
           <div class="order-amount">订单金额:{{o.price}} RMB</div>

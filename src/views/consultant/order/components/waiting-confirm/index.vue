@@ -14,7 +14,7 @@
             <small-avatar :imgUrl="o.avatar"></small-avatar>
             <div class="user-name">{{o.name}}</div>
           </div>
-          <div>还有12小时30分开始</div>
+          <div>{{o.rest}}</div>
           <el-button size="mini"
                      @click="handleOpenDetail(o)">订单详情</el-button>
         </div>
@@ -38,8 +38,7 @@
     </div>
     <detail :isShow="isShow"
             :order="order"
-            @close="handleCloseDetail"
-            @confrim="handleConfirmTime"></detail>
+            @close="handleCloseDetail"></detail>
   </div>
 </template>
 
@@ -49,7 +48,7 @@ import SmallAvatar from '@/components/SmallAvatar'
 
 export default {
   name: 'waiting-confirm',
-  props: ['list', 'pagination'],
+  props: ['list', 'pagination', 'query'],
   components: {
     Detail,
     SmallAvatar
@@ -68,10 +67,13 @@ export default {
       this.isShow = true
       this.order = order
     },
-    handleCloseDetail () {
+    handleCloseDetail (isConfirm) {
       this.isShow = false
+      if (isConfirm) {
+        this.query()
+      }
     },
-    handleConfirmTime () {
+    handleConfirmTime (times) {
       this.isShow = false
     }
   }

@@ -47,7 +47,7 @@
             <div>开始时间：{{o.startTime}}</div>
           </li>
           <li>
-            <div style="margin-top:30px">还有12小时30分开始</div>
+            <div style="margin-top:30px">{{o.rest}}</div>
           </li>
           <li>{{o.rest}}</li>
           <li>
