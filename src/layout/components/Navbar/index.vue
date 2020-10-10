@@ -6,7 +6,7 @@
         <li v-for="(o, i) in menus" :key="i"><el-link class="link" :underline="false">{{o.name}}</el-link></li>
       </ul>
       <el-dropdown style="margin-top: 7px;cursor: pointer" v-if="user.avatar">
-        <el-image class="avatar-img el-dropdown-link" :src="user.avatar || defaultAvatar"></el-image>
+        <el-image class="avatar-img el-dropdown-link" :src="avatar"></el-image>
         <el-dropdown-menu slot="dropdown">
           <div class="user-info">
             <div class="flex-hbc nick-name">
@@ -45,8 +45,8 @@ export default {
     logoImg: function() {
       return require('../../../assets/logo.png')
     },
-    defaultAvatar: function() {
-      return require('../../../assets/default-avatar.png')
+    avatar: function() {
+      return process.env.VUE_APP_HOST_NAME + this.user.avatar || require('../../../assets/default-avatar.png')
     },
     ...mapGetters([
       'user'
@@ -73,7 +73,7 @@ export default {
 .navbar {
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 1000;
   height: 60px;
   background: #292E3D;
   .menu-container {

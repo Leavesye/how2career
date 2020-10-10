@@ -14,8 +14,8 @@ import App from './App'
 import store from './store'
 import router from './router'
 
-// import '@/permission' // permission control
-import TRTC from 'trtc-js-sdk'
+import '@/permission' // permission control
+// import TRTC from 'trtc-js-sdk'
 
 // echarts图表
 import echarts from 'echarts/lib/echarts'

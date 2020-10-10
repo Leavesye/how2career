@@ -10,20 +10,21 @@
                      v-model="search.status"
                      placeholder=""
                      size="small">
-            <el-option v-for="item in []"
+            <el-option v-for="item in orderStates"
                        :key="item.value"
-                       :label="item.label"
+                       :label="item.text"
                        :value="item.value">
             </el-option>
           </el-select>
         </div>
         <time-picker @change="handleTimeChange"
                      :times='times'
-                     :curTime="search.curTime"></time-picker>
+                     :curTime="search.curIndex"></time-picker>
         <el-date-picker style="width: 230px"
                         size="small"
                         v-model="search.orderDate"
                         type="daterange"
+                        @change="handleDateChange"
                         range-separator="至"
                         start-placeholder="开始日期"
                         end-placeholder="结束日期">
@@ -62,7 +63,7 @@
               <el-button size="small"
                          plain
                          type="primary"
-                         @click="handleOpenDetail">订单详情</el-button>
+                         @click="handleOpenDetail(o)">订单详情</el-button>
             </div>
           </li>
         </ul>
@@ -84,33 +85,36 @@
                      ref="pagination">
       </el-pagination>
     </div>
-    <!-- 评价 -->
+    <!-- 评价反馈 -->
     <rate-modal :isShowRate="isShowRate"
                 @close="handleCloseRate"
-                @feedback="handleFeedback"></rate-modal>
+                :order="order"></rate-modal>
     <!-- 申请仲裁 -->
     <arbitration-modal :isShowApply="isShowApply"
-                @close="handleCloseApply"
-                @apply="handleApplyArbitration"></arbitration-modal>
+                @close="handleCloseApply" 
+                :order="order"></arbitration-modal>
     <!-- 订单详情 -->
     <detail-modal :isShowDetail="isShowDetail"
+                  :order="order"
                   @close="handleCloseDetail"
                   @apply="handleShowArbitration"
-                  @feedback="handleShowFeedback"
-                  @confirm="handleConfirm"></detail-modal>
+                  @feedback="handleShowFeedback"></detail-modal>
   </div>
 </template>
 
 <script>
+import moment from 'moment'
 import TimePicker from '@/components/TimePicker'
 import RateModal from './modal/rate'
 import ArbitrationModal from './modal/arbitration'
 import DetailModal from './modal/detail'
 import SmallAvatar from '@/components/SmallAvatar'
+import { ORDER_STATUS } from '@/utils/enums'
+import { queryConsumerByOrderId } from '@/api/order'
 
 export default {
   name: 'finish-order',
-  props: ['list', 'pagination'],
+  props: ['list', 'pagination', 'query'],
   components: {
     TimePicker,
     RateModal,
@@ -119,62 +123,84 @@ export default {
     SmallAvatar
   },
   data () {
+    const day7 = moment().subtract(7, 'day').startOf('day')
+    const day15 = moment().subtract(15, 'day').startOf('day')
+    const day30 = moment().subtract(30, 'day').startOf('day')
+    const now = moment()
     return {
+      order: {},
       isShowRate: false,
       isShowApply: false,
       isShowDetail: false,
       search: {
         status: '',
-        curTime: '',
+        curIndex: '',
         orderDate: '',
       },
       times: [
-        { name: '7天' },
-        { name: '15天' },
-        { name: '30天' },
+        { name: '7天', v: [day7, now]},
+        { name: '15天', v: [day15, now]},
+        { name: '30天', v: [day30, now] },
       ],
     }
   },
+  computed: {
+    orderStates: function() {
+      return ORDER_STATUS.filter(o => o.tag == 7)
+    }
+  },
   methods: {
-    handlePageChange (pageIndex) {
-      this.pagination.pageIndex = pageIndex
-      this.query()
+    handleTimeChange (value, i) { 
+      this.search.orderDate = [...value.v]
+      this.search.curIndex = i
     },
-    handlePageSizeChange (pageSize) {
-      this.pagination.pageSize = pageSize
-      this.query()
+    handleDateChange(v) {
+      this.search.curIndex = -1
     },
-    handleTimeChange () { },
-    handleCloseRate () {
-      this.isShowRate = false
-    },
-    handleFeedback () {
-      this.isShowRate = false
-    },
-    handleOpenDetail () {
+    async handleOpenDetail(order) {
       this.isShowDetail = true
+      const l = this.loading()
+      const res = await queryConsumerByOrderId({ orderId: order.orderId }).catch(e => l.close())
+      if (res.result) {
+        const { complaint, evaluation, ...restOrder } = order
+        const { highestEducation, ...restBasic }  = res.msg.basic
+        this.order = { complaintTitle: complaint.title, complaintContent: complaint.content,
+            ...evaluation,...restOrder,...restBasic, ...highestEducation }
+      }
+      l.close()
     },
     handleCloseDetail () {
       this.isShowDetail = false
-    },
-    handleConfirm () {
-      this.handleCloseDetail()
     },
     handleShowArbitration() {
       this.handleCloseDetail()
       this.isShowApply = true
     },
-    handleApplyArbitration() {
-      this.handleCloseApply()
-    },
     handleShowFeedback() {
       this.handleCloseDetail()
       this.isShowRate = true
     },
-    handleCloseApply() {
-      this.isShowApply = false
+    handleCloseRate (isConfirm) {
+      this.isShowRate = false
+      if (isConfirm) {
+        this.query()
+      }
     },
-    handleSearch () { }
+    handleCloseApply(isConfirm) {
+      this.isShowApply = false
+      if (isConfirm) {
+        this.query()
+      }
+    },
+    handleSearch () { 
+      const { orderDate, status } = this.search
+      const params = {
+        from: orderDate[0] ? orderDate[0].valueOf()/1000 : 0,
+        to: orderDate[1] ? Math.ceil(orderDate[1].valueOf()/1000) : 2601444690,
+        condition: status ? `status==${status}` : 'status==0:status==7:status==8'
+      }
+      this.$emit('condition-query', params)
+    }
   }
 };
 </script>

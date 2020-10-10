@@ -45,6 +45,7 @@
 <script>
 import Detail from './modal/detail'
 import SmallAvatar from '@/components/SmallAvatar'
+import { queryConsumerByOrderId } from '@/api/order'
 
 export default {
   name: 'waiting-confirm',
@@ -63,9 +64,12 @@ export default {
     handleEnterRoom () {
       this.$router.push('/consultant/room')
     },
-    handleOpenDetail (order) {
+    async handleOpenDetail (order) {
       this.isShow = true
+      const l = this.loading()
+      const res = await queryConsumerByOrderId({orderId: order.orderId}).catch(e=> l.close())
       this.order = order
+      l.close()
     },
     handleCloseDetail (isConfirm) {
       this.isShow = false

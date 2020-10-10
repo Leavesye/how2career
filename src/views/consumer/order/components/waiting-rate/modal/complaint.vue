@@ -49,7 +49,8 @@ export default {
       }).catch(e=> this.isLoading = false)
       this.isLoading = false
       if (res.result) {
-        this.$emit('complaint')
+        this.alert('投诉成功')
+        this.$emit('close', true)
       }
     }
   }

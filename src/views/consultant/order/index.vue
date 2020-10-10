@@ -8,8 +8,10 @@
     <component v-bind:is="selPannel.component"
               :pagination="pagination"
               :query="query"
+              :immediatelyOrder="immediatelyOrder"
+              @condition-query="handleQueryByCondition"
               v-if="list.length"
-               :list="list" />
+              :list="list" />
     <!-- 无订单数据 -->
     <el-card v-if="list.length==0"
              class="no-order">
@@ -24,7 +26,8 @@ import WaitingConfirm from './components/waiting-confirm'
 import WaitingService from './components/waiting-service'
 import FinishOrder from './components/finish-order'
 import { getOrders } from '@/api/order'
-import moment from 'moment'
+import tool from '@/utils/tool'
+
 export default {
   name: 'consultant-order',
   components: {
@@ -33,7 +36,15 @@ export default {
     WaitingService,
     FinishOrder,
   },
-  async created () {
+  mounted () {
+    let condition = 'status==2'
+    // 处理带参跳转
+    let status = this.$route.query.status
+    if (status) {
+      condition = this.getCondition(status)
+      this.selPannel = this.pannels.find(o => o.status == status)
+    }
+    this.params = { from: 0, to: 2601444690, condition }
     this.query()
   },
   data () {
@@ -41,10 +52,11 @@ export default {
       selPannel: { name: '待确认订单', status: '2', component: 'waiting-confirm' },
       pannels: [
         { name: '待确认订单', status: '2', component: 'waiting-confirm' },
-        { name: '待服务订单', status: '4', component: 'waiting-service' },
-        { name: '已完成订单', status: '0,7', component: 'finish-order' },
+        { name: '待服务订单', status: '4,5', component: 'waiting-service' },
+        { name: '已完成订单', status: '0,7,8', component: 'finish-order' },
       ],
       list: [],
+      immediatelyOrder: {}, // 服务中订单
       pagination: {
         total: 0,
         pageIndex: 0,
@@ -53,7 +65,6 @@ export default {
           'current-change': this.handlePageChange,
           'size-change': this.handlePageSizeChange,
         },
-        props: {},
       },
     }
   },
@@ -62,73 +73,33 @@ export default {
     async query () {
       const l = this.loading()
       const { pageIndex, pageSize } = this.pagination
-      const { status } = this.selPannel
-      const arr = status.split(',')
-      let condition = ''
-      arr.forEach((o, i) => {
-        if (i == arr.length - 1) {
-          condition += `status==${o}`
-        } else {
-          condition += `status==${o}:`
-        }
-      })
+      const { from, to, condition } = this.params
       const res = await getOrders({
-        from: "0",
-        to: "2601444690",
+        from: from || 0,
+        to: to || 2601444690,
         page: pageIndex || 0,
         limit: pageSize || 10,
-        condition
+        condition: condition || ''
       }).catch(e => l.close())
       if (res.result && res.msg) {
         this.pagination.total = res.msg.count
-        this.list = res.msg.list.map(o => {
-          const { avatar, name, readme } =  o.consultant
-          let rest = ''
-          // 倒计时时间计算
-          if (o.confirmTimeout) {
-             const countdown = o.confirmTimeout*1000 - moment().valueOf()
-             if (countdown > 0) {
-               let times = countdown/(3600*1000)
-               let hours = Math.floor(times)
-               let mintus = Math.ceil((times - hours)*60)
-               rest = `还有${hours}小时${mintus}分开始`
-             } else {
-               rest = '已过期'
-             }
-          }
-          return {
-            orderId: o._id,
-            avatar: process.env.VUE_APP_HOST_NAME + avatar,
-            name,
-            readme,
-            ...o.consultant.education,
-            ...o.consultant.work,
-            cTime: moment(o.cTime * 1000).format('YYYY-MM-DD HH:mm:ss'),
-            rest,
-            startTime: o.startTime ? moment(o.startTime * 1000).format('YYYY-MM-DD HH:mm:ss'): '',
-            consumerTime: o.consumerTime ? o.consumerTime.map(v => {
-              // 秒转毫秒
-              let ms = v*1000
-              return {
-                text: `${moment(ms).format('YYYY-MM-DD')} ${moment(ms).format('HH:mm:ss')}~${moment(ms).subtract(-90, 'minutes').format('HH:mm:ss')}`,
-                value: v
-              }
-            }) : [],
-            consultantTime: o.consultantTime ? o.consultantTime.map(v => {
-               // 秒转毫秒
-              let ms = v*1000
-              return {
-                text: `${moment(ms).format('YYYY-MM-DD')} ${moment(ms).format('HH:mm:ss')}~${moment(ms).subtract(-90, 'minutes').format('HH:mm:ss')}`,
-                value: v
-              }
-            }) : [],
-            price: o.price,
-            status: o.status,
-            rate: o.evaluation ? o.evaluation.point : 0
-          }
-        })
+        const l = res.msg.list
+        if (status == '4,5') {
+          this.list = l.filter(o => o.status == '4')
+          // 马上开始的
+          this.immediatelyOrder = l.filter(o => o.status == '5')
+          // 
+        } else {
+          this.list = l
+        }
+        this.list = tool.formatConsultantOrder(this.list)
       }
       l.close()
+    },
+    // 已完成订单条件查询
+    handleQueryByCondition(params) {
+      this.params = params
+      this.query()
     },
     // 监听分页页码变化
     handlePageChange (pageIndex) {
@@ -143,13 +114,30 @@ export default {
     handleClose () {
       this.isShowDetail = false
     },
-     handlePannelChange (item) {
-      if (item.status == this.selPannel.status) return false
+    getCondition(status) {
+      const arr = status.split(',')
+      let condition = ''
+      arr.forEach((o, i) => {
+        if (i == arr.length - 1) {
+          condition += `status==${o}`
+        } else {
+          condition += `status==${o}:`
+        }
+      })
+      return condition
+    },
+    handlePannelChange (item) {
+      const { status } = this.selPannel
+      if (item.status == status) return false
       this.selPannel = item
+      // 参数重置
       this.list = []
       this.pagination.total = 0
       this.pagination.pageIndex = 0
       this.pagination.pageSize = 10
+      this.params.from = 0
+      this.params.to = 2601444690
+      this.params.condition = this.getCondition(item.status)
       this.query()
     },
   }

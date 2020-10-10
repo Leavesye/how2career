@@ -12,44 +12,10 @@
     </div>
     <p class="time">咨询时间(北京时间){{order.startTime}}</p>
     <p class="time">调整时间会产生XXXRMB的费用 <el-link type="success">点击了解更多规则</el-link></p>
-    <calendar @set-time="handleSetTime"></calendar>
-    <div class="flex info-box">
-      <div class="head">
-        <div></div>
-        <p class="role">咨询者</p>
-        <p class="name"></p>
-      </div>
-      <div class="info">
-        <div class="info-item">
-          <div class="title">最高学历</div>
-          <p class="desc">电子工程</p>
-        </div>
-        <div class="info-item">
-          <div class="title">最高学历</div>
-          <p class="desc">电子工程</p>
-        </div>
-        <div class="info-item">
-          <div class="title">最高学历</div>
-          <p class="desc">电子工程</p>
-        </div>
-        <div class="info-item">
-          <div class="title">最高学历</div>
-          <p class="desc">电子工程</p>
-        </div>
-        <div class="info-item">
-          <div class="title">最高学历</div>
-          <p class="desc">电子工程</p>
-        </div>
-        <div class="info-item">
-          <div class="title">最高学历</div>
-          <p class="desc">电子工程</p>
-        </div>
-      </div>
-    </div>
+    <calendar @set-time="handleSetTime" :change="isShow">
+      <el-button style="margin-top:40px" :loading="isLoading" size="small" type="success" @click="handleConfirmTime">确认调整</el-button>
+    </calendar>
   </section>
-  <span slot="footer" class="dialog-footer">
-    <el-button :loading="isLoading" size="small" type="primary" @click="handleConfirmTime">确认调整</el-button>
-  </span>
 </el-dialog>
 </template>
 
@@ -78,6 +44,10 @@ export default {
     },
     // 更换服务时间给咨询师确认
     async handleConfirmTime() {
+      if (!this.times.length) {
+        this.alert('请选择时间', 'warning')
+        return false
+      }
       if (this.isLoading) return false
       this.isLoading = true
       const res = await updateTime({
@@ -93,7 +63,11 @@ export default {
   }
 };
 </script>
-
+<style>
+.e-appointment {
+  background: #36AE82!important;
+}
+</style>
 <style lang="scss" scoped>
 .modal-main  {
   font-size: 14px;

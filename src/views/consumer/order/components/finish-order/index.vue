@@ -23,8 +23,7 @@
            <p v-else class="order-cancel">已取消</p>
         </li>
       </ul>
-      <div class="flex-he btns" v-if="o.status=='7'">
-        <el-button size="small" plain type="success">获取补偿金</el-button>
+      <div class="flex-he btns" v-if="o.status=='7' && o.question && o.question.length">
         <el-button size="small" plain type="success">咨询问题</el-button>
       </div>
     </el-card>

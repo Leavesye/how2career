@@ -60,7 +60,7 @@ const actions = {
           setToken(data.token)
           commit('SET_USERNAME', userName)
           commit('SET_USERID', data.id)
-          commit('SET_AVATAR', `${process.env.VUE_APP_HOST_NAME}${data.avatarImage}`)
+          commit('SET_AVATAR', data.avatarImage)
           commit('SET_NICKNAME', data.nickName)
           commit('SET_COMPLETION', data.completion)
           
@@ -80,7 +80,7 @@ const actions = {
           const { publicInfo } = res.msg
           const { nickName, avatarImage }  = publicInfo
           commit('SET_NICKNAME', nickName)
-          commit('SET_AVATAR', `${process.env.VUE_APP_HOST_NAME}${avatarImage}`)
+          commit('SET_AVATAR', data.avatarImage)
         }
         resolve(res)
       }).catch(error => {

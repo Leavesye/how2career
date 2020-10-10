@@ -97,8 +97,16 @@ export default {
           args.cancel = true
           // 选值 弹自定义弹框
           if (args.data.Id || args.data.date) { // 单选/点击更多
-            // 选择的日期
-            const selectDate = moment(args.data.StartTime || args.data.date).format('YYYY-MM-DD')
+            const currentDate = args.data.StartTime || args.data.date
+            const start = moment().subtract(-7, 'day').startOf('day').valueOf()
+            const end = moment().subtract(-14, 'day').endOf('day').valueOf()
+            const current = moment(currentDate).valueOf()
+            // 只能预约未来7-14天的服务
+            if (current < start || current > end) {
+              this.alert('只能预约未来7-14天的服务', 'warning')
+              return false
+            }
+            const selectDate = moment(currentDate).format('YYYY-MM-DD')
             // 咨询师 or 咨询者打开 取userId
             let id = this.user.role == 'consultant' ? this.user.userId : '搜索到的咨询师userId'
             // 获取咨询师该天已经被预约的时间列表

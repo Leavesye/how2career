@@ -3,7 +3,7 @@
   title="订单详情"
   :visible.sync="isShow"
   :before-close="handleClose"
-  width="700px"
+  width="800px"
   center>
   <section class="modal-main">
     <div class="flex">
@@ -11,18 +11,15 @@
       <div>创建时间: {{order.cTime}}</div>
     </div>
     <p class="time">咨询备选时间 (北京时间)：</p>
-    <ul class="flex-hb">
-      <li class="time-item">
-        <template v-if="!order.consultantTime">
-          <el-radio v-for="(o, i) in order.consumerTime" :key="i" v-model="radio" :label="i">{{o.text}}</el-radio>
-        </template>
-        <span v-else v-for="(o, i) in order.consumerTime" :key="i">{{o.text}}</span>
+    <ul class="flex">
+      <li class="time-item" v-for="(o, i) in order.consumerTime" :key="i">
+        <el-radio v-model="radio" :label="i">{{o.text}}</el-radio>
       </li>
     </ul>
     <div v-if="isShowCalendar">
       <calendar @set-time="handleSetTime"></calendar>
     </div>
-    <p v-if="!order.consultantTime" class="select-other" @click="toggleTimePicker">选择其他时间<i :class="[isShowCalendar?'el-icon-arrow-up':'el-icon-arrow-down']"></i></p>
+    <p class="select-other" @click="toggleTimePicker">选择其他时间<i :class="[isShowCalendar?'el-icon-arrow-up':'el-icon-arrow-down']"></i></p>
     <div class="flex info-box">
       <div class="head">
         <div></div>
@@ -57,7 +54,7 @@
       </div>
     </div>
   </section>
-  <span slot="footer" class="dialog-footer" v-if="!order.consultantTime">
+  <span slot="footer" class="dialog-footer">
     <el-button :loading="isLoading" size="small" type="primary" v-if="times.length" @click="handleUpdateTime">提交等待咨询者确认</el-button>
     <el-button :loading="isLoading" size="small" type="primary" v-else @click="handleConfirmTime">确认时间</el-button>
   </span>
@@ -147,6 +144,7 @@ export default {
   text-align: center;
   border-radius: 4px;
   border: 1px solid #E0E0E0;
+  margin-right: 10px;
 }
 .select-other {
   text-align: center;
@@ -156,7 +154,6 @@ export default {
   cursor: pointer;
 }
 .info-box {
-  margin-top: 20px;
   padding-top: 30px;
   border-top: 1px solid #EDEEEF;
 }

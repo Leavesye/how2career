@@ -49,6 +49,7 @@ import Scheduler from '@/components/Scheduler'
 
 export default {
   name: 'calendar',
+  props: ['change'],
   components: {
     Scheduler
   },
@@ -65,26 +66,45 @@ export default {
       'user'
     ])
   },
+  watch: {
+    'change': function(n, o) {
+      // 关闭弹窗清空状态
+      if (!n) {
+        this.isShow = false
+        this.selList = []
+        this.usables = []
+        this.selectTime = ''
+      }
+    }
+  },
   methods: {
     openTimepicker (list, selectDate) {
       this.isShow = true
-      console.log(list)
-      this.usables = list
+      this.usables = list.map(o => {
+        this.selList.find(v=>v.value==o.value) && (o.isActive = true)
+        return o
+      })
       this.selectTime = selectDate
     },
     handleCreateOrder () {
       this.$emit('create-order', this.selList)
     },
     handleSelectTime (i, item) {
-      if (this.selList.length == 3) {
+      if (this.usables.filter(o=>o.isActive).length==3 && !item.isActive) {
         this.alert('最多只能选择三个时间')
         return false
       }
       item.isActive = !item.isActive
+      this.usables = this.usables.map(o => {
+        if (item.value==o.value) {
+          o = item
+        }
+        return o
+      })
       if (item.isActive) {
         this.selList.push(item)
       } else {
-        this.selList.splice(i, 1)
+        this.selList = this.selList.filter(o => o.value != item.value)
       }
       this.$emit('set-time', this.selList)
     },

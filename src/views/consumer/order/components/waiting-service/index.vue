@@ -18,28 +18,52 @@
         <li>
           <div class="order-amount">订单金额：{{o.price}}RMB</div>
           <div class="flex-he">
-            <el-button size="small" plain type="success" @click="handleOpenChange(o)">时间调整</el-button>
+            <el-button size="small"
+                       plain
+                       type="success"
+                       @click="handleOpenChange(o)">时间调整</el-button>
           </div>
         </li>
       </ul>
-      <div class="desc">职业：高级人力资源最多十字简介：高桥於1994年创立了自己的品牌U</div>
+      <div class="desc">职业：{{o.industry}} 简介：{{o.readme}}</div>
       <h-title>咨询的问题</h-title>
       <ul class="question-list">
-        <li class="flex-vc" v-for="(item, index) in o.question" :key="index">
-          <el-input class="question-input" size="medium" v-model="item.v"></el-input>
-          <el-button class="op-btn" size="small" @click="handleRemoveQuestion(i, index)">删除</el-button>
+        <li class="flex-vc"
+            v-for="(item, index) in o.question"
+            :key="index">
+          <el-input class="question-input"
+                    size="medium"
+                    v-model="item.v" :maxLength="100"></el-input>
+          <el-button class="op-btn"
+                     size="small"
+                     @click="handleRemoveQuestion(i, index)">删除</el-button>
         </li>
       </ul>
-      <el-button type="success" plain size="small" @click="handleAddQuestion(i)">+添加问题</el-button>
-      <el-button :loading="isLoading" type="success" plain size="small" v-if="o.question.length" @click="handleSaveQuestion(o)">保存</el-button>
+      <el-button type="success"
+                 plain
+                 size="small"
+                 @click="handleAddQuestion(i)">+添加问题</el-button>
+      <el-button :loading="isLoading"
+                 type="success"
+                 plain
+                 size="small"
+                 v-if="o.question.length"
+                 @click="handleSaveQuestion(o)">保存</el-button>
       <div class="flex-he btns">
-        <el-button size="small" plain type="success" @click="handleOpenCancel(o.orderId)">订单取消</el-button>
-        <el-button size="small" plain type="success" @click="handleEnterRoom(o.roomId)">进入房间</el-button>
+        <el-button size="small"
+                   plain
+                   type="success"
+                   @click="handleOpenCancel(o)">订单取消</el-button>
+        <el-button size="small"
+                   plain
+                   type="success"
+                   @click="handleEnterRoom(o.orderId)">进入房间</el-button>
       </div>
     </el-card>
     <!-- 分页 -->
     <div class="flex-he"
-         style="margin-top: 20px" v-if="list.length">
+         style="margin-top: 20px"
+         v-if="list.length">
       <el-pagination id="pagin"
                      :page-sizes="pagination.pageSizes || [10, 20, 30, 40]"
                      :total="pagination.total"
@@ -54,9 +78,13 @@
       </el-pagination>
     </div>
     <!-- 取消订单弹框 -->
-    <cancel-modal :isShow="isShow" @close="handleClose" :orderId="orderId"></cancel-modal>
+    <cancel-modal :isShow="isShow"
+                  @close="handleClose"
+                  :order="order"></cancel-modal>
     <!-- 时间调整弹框 -->
-    <change-modal :isShow="isShowTime" @close="handleCloseTime" :order="order"></change-modal>
+    <change-modal :isShow="isShowTime"
+                  @close="handleCloseTime"
+                  :order="order"></change-modal>
   </div>
 </template>
 
@@ -68,7 +96,7 @@ import { orderAddQuestion } from '@/api/order'
 
 export default {
   name: 'waiting-service',
-  props: ['list', 'pagination'],
+  props: ['list', 'pagination', 'query'],
   components: {
     SmallAvatar,
     CancelModal,
@@ -78,55 +106,60 @@ export default {
     return {
       isShowTime: false,
       isShow: false,
-      orderId: '',
       order: {},
       orderList: this.list,
       isLoading: false,
     }
   },
   methods: {
-    async handleSaveQuestion(o) {
+    async handleSaveQuestion (o) {
       if (this.isLoading) return false
       this.isLoading = true
       const res = await orderAddQuestion({
         orderId: o.orderId,
-        question: o.question.map(q=> q.v)
-      }).catch(e=>this.isLoading= false)
+        question: o.question ? o.question.map(q => q.v): []
+      }).catch(e => this.isLoading = false)
       if (res.result) {
         this.alert('保存成功')
       }
-      this.isLoading= false
+      this.isLoading = false
     },
-    handleRemoveQuestion(i, j) {
+    handleRemoveQuestion (i, j) {
       this.orderList[i].question.splice(j, 1)
+      // 如果是最后一个 触发保存
+      if (!this.orderList[i].question.length) {
+        this.handleSaveQuestion(this.orderList[i])
+      }
     },
-    handleAddQuestion(i) {
-      this.orderList[i].question.push({v:''})
+    handleAddQuestion (i) {
+      // 0-20个问题
+      if (this.orderList[i].question.length == 20) return false
+      this.orderList[i].question.push({ v: '' })
     },
-    handleOpenCancel(orderId) {
+    handleOpenCancel (order) {
       this.isShow = true
-      this.orderId = orderId
+      this.order = order
     },
-    handleClose () {
+    handleClose (isCancel) {
       this.isShow = false
       if (isCancel) {
         // 刷新列表
         this.query()
       }
     },
-    handleOpenChange(order) {
+    handleOpenChange (order) {
       this.isShowTime = true
       this.order = order
     },
-    handleCloseTime(isConfirm) {
+    handleCloseTime (isConfirm) {
       this.isShowTime = false
       if (isConfirm) {
         // 刷新列表
         this.query()
       }
     },
-    handleEnterRoom (roomId) {
-      this.$router.push(`/consumer/room/${roomId}`)
+    handleEnterRoom (orderId) {
+      this.$router.push(`/consumer/room/${orderId}`)
     },
   }
 };
@@ -150,7 +183,7 @@ export default {
   line-height: 50px;
   background: #f6f6f6;
   border-radius: 4px;
-  color: #7C8EA5;
+  color: #7c8ea5;
   font-size: 14px;
   padding: 0 20px;
   margin-bottom: 20px;

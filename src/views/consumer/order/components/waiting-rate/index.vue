@@ -19,11 +19,11 @@
           <div class="order-amount">订单金额：{{o.price}}RMB</div>
         </li>
       </ul>
-      <div class="desc">职业：高级人力资源最多十字简介：高桥於1994年创立了自己的品牌U</div>
+      <div class="desc">职业：{{o.industry}} 简介：{{o.readme}}</div>
       <h-title>咨询的问题</h-title>
       <ul class="question-list">
-        <li class="flex-vc" v-for="(item, index) in 2" :key="index">
-          问题一的内容问题一的内容问题一的内容问题
+        <li class="flex-vc" v-for="(item, index) in o.question" :key="index">
+          {{item}}
         </li>
       </ul>
       <div class="flex-he btns">
@@ -62,7 +62,7 @@ import { rateOrder } from '@/api/order'
 
 export default {
   name: 'waiting-rate',
-  props: ['list', 'pagination'],
+  props: ['list', 'pagination', 'query'],
   components: {
     RateModal,
     ComplaintModal,
@@ -78,20 +78,26 @@ export default {
   methods: {
     handleOpenComplaint (item) {
       this.isShowComplaint = true
-      this.orderId = item.id
+      this.orderId = item.orderId
     },
-    handleCloseComplaint() {
+    handleCloseComplaint(isConfirm) {
       this.isShowComplaint = false
+      if (isConfirm) {
+        this.query()
+      }
     },
     handleComplaint() {
       this.isShowComplaint = false
     },
     handleOpenRate (item) {
-      this.orderId = item.id
+      this.orderId = item.orderId
       this.isShowRate = true
     },
-    handleCloseRate() {
+    handleCloseRate(isConfirm) {
       this.isShowRate = false
+      if (isConfirm) {
+        this.query()
+      }
     },
     async handleRate() {
       this.isShowRate = false

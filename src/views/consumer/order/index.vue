@@ -18,15 +18,10 @@
     <!-- 职业选择 -->
     <p class="title">更多职业选择</p>
     <career-list></career-list>
-    <!-- 对话框 -->
-    <confirm-detail :isShow="isShow"
-                    @close="handleClose" />
-    <!-- <finish-detail :isShow="isShow" @close="handleClose" /> -->
   </section>
 </template>
 
 <script>
-import { ConfirmDetail, FinishDetail } from './modal/order-detail'
 import WaitingPay from './components/waiting-pay'
 import WaitingConfirm from './components/waiting-confirm'
 import WaitingService from './components/waiting-service'
@@ -35,7 +30,7 @@ import FinishOrder from './components/finish-order'
 import Pannel from '@/components/Pannel'
 import CareerList from '@/components/CareerList'
 import { getOrders } from '@/api/order'
-import moment from 'moment'
+import tool from '@/utils/tool'
 
 export default {
   name: 'consumer-order',
@@ -45,22 +40,18 @@ export default {
     WaitingService,
     WaitingRate,
     FinishOrder,
-    ConfirmDetail,
-    FinishDetail,
     Pannel,
     CareerList
   },
   data () {
     return {
       selPannel: { name: '待付款订单', status: '1', component: 'waiting-pay' },
-      orderDate: '',
-      isShow: false,
       pannels: [
         { name: '待付款订单', status: '1', component: 'waiting-pay' },
-        { name: '待确认订单', status: '2,3', component: 'waiting-confirm' },
-        { name: '待服务订单', status: '4', component: 'waiting-service' },
+        { name: '待确认订单', status: '2,3', component: 'waiting-confirm' },//2：待咨询师确认 3：待咨询者确认
+        { name: '待服务订单', status: '4,5', component: 'waiting-service' }, // 待服务/服务中
         { name: '待评价订单', status: '6', component: 'waiting-rate' },
-        { name: '已完成订单', status: '0,7', component: 'finish-order' },
+        { name: '已完成订单', status: '0,7,8', component: 'finish-order' },// 0已取消 7已完成 8投诉
       ],
       list: [],
       pagination: {
@@ -71,11 +62,18 @@ export default {
           'current-change': this.handlePageChange,
           'size-change': this.handlePageSizeChange,
         },
-        props: {},
       },
     }
   },
   async created () {
+    let condition = 'status==1'
+    // 处理带参跳转
+    let status = this.$route.query.status
+    if (status) {
+      condition = tool.formatStatus(status)
+      this.selPannel = this.pannels.find(o => o.status == status)
+    }
+    this.params = { from: 0, to: 2601444690, condition }
     this.query()
   },
   methods: {
@@ -83,60 +81,17 @@ export default {
     async query () {
       const l = this.loading()
       const { pageIndex, pageSize } = this.pagination
-      const { status } = this.selPannel
-      const arr = status.split(',')
-      let condition = ''
-      arr.forEach((o, i) => {
-        if (i == arr.length - 1) {
-          condition += `status==${o}`
-        } else {
-          condition += `status==${o}:`
-        }
-      })
+      const { from, to, condition } = this.params
       const res = await getOrders({
-        from: "0",
-        to: "2601444690",
+        from: from || 0,
+        to: to || 2601444690,
         page: pageIndex || 0,
         limit: pageSize || 10,
-        condition
+        condition: condition || ''
       }).catch(e => l.close())
       if (res.result && res.msg) {
         this.pagination.total = res.msg.count
-        this.list = res.msg.list.map(o => {
-          return {
-            orderId: o._id,
-            avatar: process.env.VUE_APP_HOST_NAME + o.consultant.avatar,
-            name: o.consultant.name,
-            startTime: moment(o.startTime * 1000).format('YYYY-MM-DD HH:mm:ss'),
-            cTime: moment(o.cTime * 1000).format('YYYY-MM-DD HH:mm:ss'),
-            consumerTime: o.consumerTime ? o.consumerTime.map(v => {
-              // 秒转毫秒
-              let ms = v*1000
-              return {
-                text: `${moment(ms).format('YYYY-MM-DD')} ${moment(ms).format('HH:mm:ss')}~${moment(ms).subtract(-90, 'minutes').format('HH:mm:ss')}`,
-                value: v
-              }
-            }) : [],
-            consultantTime: o.consultantTime ? o.consultantTime.map(v => {
-               // 秒转毫秒
-              let ms = v*1000
-              return {
-                text: `${moment(ms).format('YYYY-MM-DD')} ${moment(ms).format('HH:mm:ss')}~${moment(ms).subtract(-90, 'minutes').format('HH:mm:ss')}`,
-                value: v
-              }
-            }) : [],
-            price: o.price,
-            status: o.status,
-            rate: o.evaluation ? o.evaluation.point : 0,
-            consumerChangeFrequency: o.consumerChangeFrequency,
-            consultantChangeFrequency: o.consultantChangeFrequency,
-              question: o.question?o.question.map(v=> {
-                return {
-                  v,
-              }
-              }) : []
-          }
-        })
+        this.list = tool.formatConsumerOrder(res.msg.list)
       }
       l.close()
     },
@@ -150,20 +105,18 @@ export default {
       this.pagination.pageSize = pageSize
       this.query()
     },
-    handleClose () {
-      this.isShow = false
-    },
-    handleOpenDetail () {
-      console.log(111)
-      this.isShow = true
-    },
     handlePannelChange (item) {
-      if (item.status == this.selPannel.status) return false
+      const { status } = this.selPannel
+      if (item.status == status) return false
       this.selPannel = item
+      // 参数重置
       this.list = []
       this.pagination.total = 0
       this.pagination.pageIndex = 0
       this.pagination.pageSize = 10
+      this.params.from = 0
+      this.params.to = 2601444690
+      this.params.condition = tool.formatStatus(item.status)
       this.query()
     },
     handlePageChange (pageIndex) {

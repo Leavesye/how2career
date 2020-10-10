@@ -1,31 +1,31 @@
 <template>
   <div>
-    <el-card class="top-item">
+    <el-card class="top-item" v-if="immediatelyOrder.orderId">
       <h-title>即将开始的咨询</h-title>
       <ul class="flex-hbc">
         <li>
-          <p style="margin-bottom: 10px">订单号：{{firstOrder.orderno}}</p>
+          <p style="margin-bottom: 10px">订单号：{{immediatelyOrder.orderId}}</p>
           <div class="flex-vc">
-            <small-avatar :imgUrl="firstOrder.avatar"></small-avatar>
-            <div class="user-name">{{firstOrder.name}}</div>
+            <small-avatar :imgUrl="immediatelyOrder.avatar"></small-avatar>
+            <div class="user-name">{{immediatelyOrder.name}}</div>
           </div>
         </li>
         <li>
-          <p style="margin-bottom: 10px">创建时间：{{firstOrder.createTime}}</p>
-          <div>开始时间：{{firstOrder.createTime}}</div>
+          <p style="margin-bottom: 10px">创建时间：{{immediatelyOrder.cTime}}</p>
+          <div>开始时间：{{immediatelyOrder.startTime}}</div>
         </li>
         <li>
-          <div style="margin-top:30px">还有12小时30分开始</div>
+          <div style="margin-top:30px">{{immediatelyOrder.rest}}</div>
         </li>
-        <li>{{firstOrder.rest}}</li>
+        <li>{{immediatelyOrder.rest}}</li>
         <li>
-          <div style="margin-bottom: 10px; text-align: right">订单金额:{{firstOrder.amount}} RMB</div>
+          <div style="margin-bottom: 10px; text-align: right">订单金额:{{immediatelyOrder.price}} RMB</div>
           <div class="flex-he">
             <el-button type="primary"
                        size="small"
-                       @click="handleEnterRoom">进入房间</el-button>
+                       @click="handleEnterRoom(immediatelyOrder.orderId)">进入房间</el-button>
             <el-button size="small"
-                       @click="handleOpenDetail">订单详情</el-button>
+                       @click="handleOpenDetail(immediatelyOrder)">订单详情</el-button>
           </div>
         </li>
       </ul>
@@ -54,7 +54,7 @@
             <div style="margin-bottom: 10px; text-align: right">订单金额:{{o.price}} RMB</div>
             <div class="flex-he">
               <el-button size="mini"
-                         @click="handleOpenDetail">订单详情</el-button>
+                         @click="handleOpenDetail(o)">订单详情</el-button>
             </div>
           </li>
         </ul>
@@ -77,9 +77,9 @@
       </el-pagination>
     </div>
     <!-- 订单详情 -->
-    <detail-modal :isShowDetail="isShowDetail"
-                  @close="handleCloseDetail"
-                  @confirm="handleConfirm"></detail-modal>
+    <detail-modal :isShow="isShow"
+                  :order="order"
+                  @close="handleCloseDetail"></detail-modal>
   </div>
 </template>
 
@@ -89,29 +89,30 @@ import SmallAvatar from '@/components/SmallAvatar'
 
 export default {
   name: 'waiting-service',
-  props: ['list', 'pagination'],
+  props: ['list', 'pagination', 'immediatelyOrder', 'query'],
   components: {
     DetailModal,
     SmallAvatar
   },
   data () {
     return {
-      isShowDetail: false,
-      firstOrder: { orderno: 'fdfdfdfdf', rate: 3, createTime: '2020-12-11', startTime: '2020-12-11', amount: 110, name: "Tom" },
+      order: {},
+      isShow: false,
     }
   },
   methods: {
-    handleEnterRoom () {
-      this.$router.push('/consultant/room')
+    handleEnterRoom (orderId) {
+      this.$router.push(`/consultant/room/${orderId}`)
     },
-    handleOpenDetail () {
-      this.isShowDetail = true
+    handleOpenDetail (order) {
+      this.order = order
+      this.isShow = true
     },
-    handleCloseDetail () {
-      this.isShowDetail = false
-    },
-    handleConfirm () {
-      this.handleCloseDetail()
+    handleCloseDetail (isConfirm) {
+      this.isShow = false
+      if (isConfirm) {
+        this.query()
+      }
     },
   }
 };

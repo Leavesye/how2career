@@ -104,7 +104,6 @@
 }
 .el-link.el-link--default:hover {
   color: #fff;
-  transform: scale(1.1);
 }
 .el-form-item--small.el-form-item {
   margin-bottom: 30px;
@@ -127,4 +126,8 @@
 }
 .el-rate__icon {
   margin-right: 0
+}
+
+.el-button + .el-button {
+  margin-left: 20px;
 }

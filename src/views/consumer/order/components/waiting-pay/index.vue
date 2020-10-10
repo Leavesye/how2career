@@ -11,9 +11,9 @@
     <div class="flex-hb row">
       <div class="flex">
         <p class="order-times">咨询时间(北京时间):</p>
-        <div v-for="(item, j) in o.consumerTime" :key="j">{{item.text}}</div>
+        <div style="margin-right: 10px" v-for="(item, j) in o.consumerTime" :key="j">{{item.text}}</div>
       </div>
-      <el-link type="success">时间调整</el-link>
+      <el-link type="success" @click="handleOpenTime(o)">时间调整</el-link>
     </div>
     <div class="flex-hb">
       <div class="flex-vc">
@@ -44,12 +44,14 @@
   </div>
   <!-- 取消订单弹框 -->
   <cancel-modal :isShow="isShow" @close="handleClose" :orderId="orderId"></cancel-modal>
+  <change-modal :isShow="isShowTime" @close="handleCloseTime" :order="order"></change-modal>
 </el-card>
 </template>
 
 <script>
 import SmallAvatar from '@/components/SmallAvatar'
 import CancelModal from './modal/cancel-order'
+import ChangeModal from './modal/change-time'
 import { cancelOrder } from '@/api/order'
 import { getAlipayUrl } from '@/api/pay'
 
@@ -58,12 +60,15 @@ export default {
   props: ['list', 'pagination', 'query'],
   components: {
     SmallAvatar,
-    CancelModal
+    CancelModal,
+    ChangeModal
   },
   data () {
     return {
+      isShowTime: false,
       isShow: false,
-      orderId: ''
+      orderId: '',
+      order: '',
     }
   },
   methods: {
@@ -74,6 +79,17 @@ export default {
     handleClose(isCancel) {
       this.isShow = false
       if (isCancel) {
+        // 刷新数据
+        this.query()
+      }
+    },
+    handleOpenTime(order) {
+      this.order = order
+      this.isShowTime = true
+    },
+    handleCloseTime(isConfirm) {
+      this.isShowTime = false
+      if (isConfirm) {
         // 刷新数据
         this.query()
       }

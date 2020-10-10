@@ -89,7 +89,7 @@
           </li>
         </ul>
         <div class="more"
-             @click="linkTo('/consultant/order')">更多订单<i class="el-icon-arrow-right"></i></div>
+             @click="linkTo('/consultant/order?status=4,5')">更多订单<i class="el-icon-arrow-right"></i></div>
       </el-card>
       <el-card class="order-card">
         <p class="title">即将超时确认的订单</p>
@@ -111,20 +111,20 @@
           </li>
         </ul>
         <div class="more"
-             @click="linkTo('/consultant/order')">更多订单<i class="el-icon-arrow-right"></i></div>
+             @click="linkTo('/consultant/order?status=2')">更多订单<i class="el-icon-arrow-right"></i></div>
       </el-card>
     </div>
   </section>
 </template>
 
 <script>
-import { getConsultantOrders, getConsultantOrdersCount } from '@/api/order'
+import { getOrders, getOrdersCount } from '@/api/order'
+import { getUserInfo } from '@/api/user'
 
 export default {
-  name: 'answerer-center',
   async created () {
     const l = this.loading()
-    const res = await this.$store.dispatch('user/getUserInfo').catch(e => l.close())
+    const res = await getUserInfo().catch(e => l.close())
     if (res.result) {
       // 无resume  就是未填写
       // backgroundVerifyStatus= 0  未审核
@@ -138,16 +138,17 @@ export default {
       this.isFinishReview = o.backgroundVerifyStatus == 3
       // 是否设置过服务时间
       this.isSettingTime = !!o.publicInfo.availableTime
-      // const ret = await Promise.all([
-      //   getConsultantOrders({
-      //     "from": "0",
-      //     "to": "2601444690",
-      //     "page": "1",
-      //     "limit": "100",
-      //     "condition": "status==1"
-      //   }),
-      //   getConsultantOrdersCount({ condition: "status==2:status==4:status==7:status==10" })
-      // ]).catch(e => l.close())
+      const ret = await Promise.all([
+        getOrders({
+          from: "0",
+          to: "2601444690",
+          page: "1",
+          limit: "100",
+          condition: "status==2:status==4:status==5:"
+        }),
+        getOrdersCount({ condition: "status==2:status==4:status==7:status==10" })
+      ]).catch(e => l.close())
+      console.log(ret)
     }
     l.close()
   },

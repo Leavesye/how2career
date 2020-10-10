@@ -7,42 +7,60 @@
   center>
   <section class="modal-main">
     <div class="flex-hb order-info">
-      <p class="order-no">订单号: fjdljfdkjfldkjf</p>
-      <div>创建时间: 2020-12-11 20:13:12</div>
+      <p class="order-no">订单号:{{order.orderId}}</p>
+      <div>创建时间:{{order.cTime}}</div>
     </div>
     <div class="flex rate">
       <p style="margin-right: 10px">投诉:</p>
-      <div>未完成服务</div>
+      <div>{{order.complaintTitle}}</div>
     </div>
-    <p class="desc">投诉说明：时间的价值远比年终奖宝贵，行动得越慢，决策成本越高。非常感谢老师！</p>
+    <p class="desc">投诉说明：{{order.complaintContent}}</p>
     <p class="explain">仲裁说明:</p>
     <el-input
       type="textarea"
       :rows="4"
       placeholder=""
-      v-model="desc">
+      :maxLength="300"
+      v-model="consultantReply">
     </el-input>
   </section>
   <span slot="footer" class="dialog-footer">
-    <el-button size="small" type="primary" @click="handleApply">申请仲裁</el-button>
+    <el-button :loading="isLoading" size="small" type="primary" @click="handleApply">申请仲裁</el-button>
   </span>
 </el-dialog>
 </template>
 
 <script>
+import { feedbackByConsultant } from '@/api/order'
+
 export default {
-  props: ['isShowApply'],
+  props: ['isShowApply', 'order'],
   data () {
     return {
-      desc: ''
+      consultantReply: '',
+      isLoading: false
     }
   },
   methods: {
     handleClose() {
       this.$emit('close')
     },
-    handleApply() {
-      this.$emit('apply')
+    async handleApply() {
+      if (!this.consultantReply) {
+        this.alert('请填写说明', 'warning')
+        return false
+      }
+      if (this.isLoading) return false
+      this.isLoading = true
+      const res = await feedbackByConsultant({
+        orderId: this.order.orderId,
+        consultantReply: this.consultantReply
+      }).catch(e=>this.isLoading=false)
+      if (res.result) {
+        this.alert('申请成功')
+        this.$emit('close', true)
+      }
+      this.isLoading = false
     }
   }
 };

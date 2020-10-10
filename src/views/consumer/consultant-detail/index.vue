@@ -62,7 +62,7 @@
       <el-card class="calendar-card">
         <h1>可预约时间表(北京时间)</h1>
         <calendar @set-time="handleSetTime">
-          <el-button v-if="times.length" class="appintment-btn"
+          <el-button class="appintment-btn"
                    size="small"
                    :type="user.role=='consumer'? 'success': 'primary'"
                    @click="handleCreateOrder">预约单生成</el-button>
@@ -144,6 +144,10 @@ export default {
       this.times = times
     },
     async handleCreateOrder () {
+      if (!this.times.length) {
+        this.alert('请选择时间', 'warning')
+        return false
+      }
       // 参数处理
       const {
         nickName, avatarImage, selfIntroduction, industry, company, 
@@ -151,6 +155,8 @@ export default {
       } = this.info
       let { school, discipline, degree, graduationTime } = this.publicInfo.resume.education[0]
       const p = {
+        consumerNickName: this.user.nickName,
+        consumerAvatar: this.user.avatar,
         consultant: {
           _id: this.$route.params.id,
           name: nickName,
@@ -186,7 +192,11 @@ export default {
   }
 }
 </script>
-
+<style>
+.e-appointment {
+  background: #36AE82!important;
+}
+</style>
 <style lang="scss" scoped>
 .page-title {
   padding: 18px 30px;

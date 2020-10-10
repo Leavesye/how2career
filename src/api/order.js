@@ -101,3 +101,11 @@ export function cancelOrder(data) {
     data
   })
 }
+// 查询订单的咨询者信息(用于咨询师订单详情显示)
+export function queryConsumerByOrderId(params) {
+  return request({
+    url: `order/platform/consultant/orders/consumer/query`,
+    method: 'get',
+    params
+  })
+}

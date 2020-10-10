@@ -13,6 +13,7 @@
     <p class="explain">说明:</p>
     <el-input
       type="textarea"
+      :maxLength="300"
       :rows="4"
       placeholder=""
       v-model="content">
@@ -41,16 +42,25 @@ export default {
       this.$emit('close')
     },
     async handleRate() {
+      if (this.point <1) {
+        this.alert('请选择评分', 'warning')
+        return false
+      }
+      if (!this.content) {
+        this.alert('请填写评价说明', 'warning')
+        return false
+      }
       if (this.isLoading) return
       this.isLoading = true
-      const res = await rateOrderByConsumer({ 
+      const res = await rateOrder({ 
         point: this.point,
         content: this.content,
         orderId: this.orderId
       }).catch(e=> this.isLoading = false)
       this.isLoading = false
       if (res.result) {
-        this.$emit('rate')
+        this.alert('评价成功')
+        this.$emit('close', true)
       }
     }
   }

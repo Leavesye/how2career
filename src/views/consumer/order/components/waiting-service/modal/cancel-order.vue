@@ -20,7 +20,7 @@
 import { cancelOrder } from '@/api/order'
 
 export default {
-  props: ['isShow', 'orderId'],
+  props: ['isShow', 'order'],
   data () {
     return {
       isLoading: false
@@ -33,7 +33,7 @@ export default {
     async confirm() {
       if (this.isLoading) return false
       this.isLoading = true
-      const res = await cancelOrder({ orderId: this.orderId }).catch(e=>this.isLoading=false)
+      const res = await cancelOrder({ orderId: this.order.orderId }).catch(e=>this.isLoading=false)
       if (res.result) {
         this.alert('订单取消成功')
         this.$emit('close', true)

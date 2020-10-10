@@ -6,72 +6,62 @@
   width="700px"
   center>
   <section class="modal-main">
-    <div class="flex">
-      <p class="order-no">订单号: 12121212121212</p>
-      <div>创建时间: 2020-12-11 20:13:12</div>
+    <div class="flex" style="margin-bottom: 10px">
+      <p class="order-no">订单号：{{order.orderId}}</p>
+      <div>创建时间:{{order.cTime}}</div>
     </div>
-    <div class="flex-vc">
-      <p class="order-no">投诉: 未完成服务</p>
-      <el-button size="small" @click="handleApply">申请仲裁</el-button>
+    <div v-if="order.complaintTitle">
+      <div class="flex-vc rate">
+        <p class="order-no">投诉: {{order.complaintTitle}}</p>
+        <el-button size="small" @click="handleApply">申请仲裁</el-button>
+      </div>
+      <p class="desc-p">投诉说明：{{order.complaintContent}}</p>
     </div>
-    <p class="desc">投诉说明：时间的价值远比年终奖宝贵，行动得越慢，决策成本越高。非常感谢老师！</p>
-    <div class="flex-vc rate">
-      <p style="margin-right: 10px">评价:</p>
-      <el-rate style="margin-right: 40px" v-model="rate" disabled></el-rate>
-      <el-button size="small" @click="handleFeedback">评价反馈</el-button>
+    <div v-if="order.point">
+      <div class="flex-vc rate">
+        <p style="margin-right: 10px">评价:</p>
+        <el-rate style="margin-right: 40px" v-model="order.point" disabled></el-rate>
+        <el-button size="small" @click="handleFeedback">评价反馈</el-button>
+      </div>
+      <p class="desc-p">评价说明：{{order.content}}</p>
     </div>
-    <p class="desc">评价说明：时间的价值远比年终奖宝贵，行动得越慢，决策成本越高。非常感谢老师！</p>
     <div class="flex info-box" v-if="true">
       <div class="head">
-        <div></div>
+        <avatar :imgUrl="order.avatarImage"></avatar>
         <p class="role">咨询者</p>
-        <p class="name">马里奥大叔</p>
+        <p class="name">{{order.name}}</p>
       </div>
       <div class="info">
         <div class="info-item">
           <div class="title">最高学历</div>
-          <p class="desc">电子工程</p>
+          <p class="desc">{{ order.country + ' ' + order.school + ' ' + order.discipline }}</p>
         </div>
         <div class="info-item">
-          <div class="title">最高学历</div>
-          <p class="desc">电子工程</p>
+          <div class="title">自我简介</div>
+          <p class="desc">{{order.selfIntroduction}}</p>
         </div>
         <div class="info-item">
-          <div class="title">最高学历</div>
-          <p class="desc">电子工程</p>
-        </div>
-        <div class="info-item">
-          <div class="title">最高学历</div>
-          <p class="desc">电子工程</p>
-        </div>
-        <div class="info-item">
-          <div class="title">最高学历</div>
-          <p class="desc">电子工程</p>
-        </div>
-        <div class="info-item">
-          <div class="title">最高学历</div>
-          <p class="desc">电子工程</p>
+          <div class="title">咨询问题</div>
+          <p class="desc" v-for="(item, i) in order.question" :key="i">{{item}}</p>
         </div>
       </div>
     </div>
   </section>
   <span slot="footer" class="dialog-footer">
-    <el-button size="small" type="primary" @click="handleConfirmTime">订单取消</el-button>
-    <el-button size="small" type="primary" @click="handleConfirmTime">提交等待咨询者确认</el-button>
-    <el-button size="small" type="primary" @click="handleConfirmTime">确认时间</el-button>
+    <el-button size="small" type="primary" @click="handleClose">关闭</el-button>
   </span>
 </el-dialog>
 </template>
 
 <script>
+import Avatar from '@/components/Avatar'
 export default {
-  name: 'confirm-order-detail',
-  props: ['isShowDetail'],
+  props: ['isShowDetail', 'order'],
   components: {
+    Avatar
   },
   data () {
     return {
-      rate: 3
     }
   },
   methods: {
@@ -153,7 +143,7 @@ export default {
 .rate {
   margin-bottom: 15px;
 }
-.desc {
+.desc-p {
   padding: 15px;
   margin-bottom: 30px;
   background: #F6F6F6;
