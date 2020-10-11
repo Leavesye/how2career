@@ -1,16 +1,20 @@
 <template>
   <div>
-    <component v-bind:is="'report-page'" />
+    <component v-bind:is="'reward-page'" />
   </div>
 </template>
 
 <script>
 import CostPage from './components/cost'
 import ReportPage from './components/report'
+import ExplainPage from './components/explain'
+import RewardPage from './components/reward'
 export default {
   components: {
     CostPage,
-    ReportPage
+    ReportPage,
+    ExplainPage,
+    RewardPage
   },
   data () {
     return {

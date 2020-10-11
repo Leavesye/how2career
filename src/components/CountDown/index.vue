@@ -18,7 +18,7 @@ function pad (n) {
 }
 export default {
   name: 'countdown',
-  props: ['bg'],
+  props: ['bg', 'targetTime'],
   data () {
     return {
       hours: '00',
@@ -29,7 +29,7 @@ export default {
   methods: {
     getCountdown () {
       const currentDate = new Date().getTime()
-      let secondsLeft = (this.targetDate - currentDate) / 1000
+      let secondsLeft = this.targetDate -currentDate / 1000
       this.hours = pad(parseInt(secondsLeft / 3600))
       secondsLeft = secondsLeft % 3600
       this.minutes = pad(parseInt(secondsLeft / 60))
@@ -37,7 +37,6 @@ export default {
     }
   },
   mounted () {
-    this.targetDate = new Date().getTime() + (1000 * 3600 * 48)
     this.getCountdown()
     setInterval(this.getCountdown, 1000)
   }

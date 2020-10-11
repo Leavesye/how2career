@@ -1,66 +1,60 @@
 <template>
   <section style="padding: 30px">
-    <el-image src="" class="banner"></el-image>
+    <el-image src=""
+              class="banner"></el-image>
     <!-- 状态面板 -->
     <div class="pannel flex-hb">
       <div class="p-item"
-            :class="{ active: isActive === i }"
-            v-for="(o, i) in pannels"
-            :key="i"
-            @click="handleClickPannel(o, i)">
+           :class="{ active: isActive === i }"
+           v-for="(o, i) in pannels"
+           :key="i"
+           @click="handleClickPannel(o, i)">
         <p v-if="o.count != 'search'">{{o.name}}</p>
         <div v-if="o.count != 'search'">{{o.count}}</div>
         <h1 v-else>{{o.name}} <i class="iconfont iconsousuo-01"></i></h1>
       </div>
     </div>
-    <el-card>
+    <div class="chart-box">
       <!-- 搜索条件 -->
       <section class="flex-hbc search">
-        <el-link type="success" :underline="false">推广订单产生统计</el-link>
-        <time-picker @change="handleTimeChange" :times='times' :curTime="curTime"></time-picker>
-        <el-date-picker
-          style="width: 230px"
-          size="small"
-          v-model="datetime"
-          type="daterange"
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期">
+        <h-title>推广订单产生统计</h-title>
+        <time-picker @change="handleTimeChange"
+                     :times='times'
+                     :curTime="curTime"></time-picker>
+        <el-date-picker style="width: 230px"
+                        size="small"
+                        v-model="datetime"
+                        type="daterange"
+                        range-separator="至"
+                        start-placeholder="开始日期"
+                        end-placeholder="结束日期">
         </el-date-picker>
-        <el-button size="small" type="success" plain>查询</el-button>
+        <el-button size="small"
+                   type="success"
+                   plain>查询</el-button>
       </section>
-      <div id="chart"></div>
-    </el-card>
+      <div class="bar-chart">
+        <bar-chart></bar-chart>
+      </div>
+    </div>
   </section>
 </template>
 
 <script>
 import TimePicker from '@/components/TimePicker'
+import BarChart from '@/components/BarChart'
+
 export default {
   components: {
-    TimePicker
+    TimePicker,
+    BarChart
   },
   mounted () {
-    const myChart = this.$echarts.init(document.getElementById('chart'))
-        myChart.setOption({
-        title: {
-            text: 'ECharts 入门示例'
-        },
-        tooltip: {},
-        xAxis: {
-            data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
-        },
-        yAxis: {},
-        series: [{
-            name: '销量',
-            type: 'bar',
-            data: [5, 20, 36, 10, 10, 20]
-        }]
-    });
-
   },
   data () {
     return {
+      chartData: null,
+      options: {},
       datetime: '',
       isActive: false,
       pannels: [
@@ -70,14 +64,12 @@ export default {
         { name: '已结算费用', count: 3635 }
       ],
       times: [
-        {name: '7天'},
-        {name: '15天'},
-        {name: '30天'},
+        { name: '7天' },
+        { name: '15天' },
+        { name: '30天' },
       ],
       curTime: '',
     }
-  },
-  computed: {
   },
   methods: {
     handleClickPannel (item, i) {
@@ -87,15 +79,14 @@ export default {
         this.isActive = i
       }
     },
-    handleTimeChange(v, i) {
+    handleTimeChange (v, i) {
       this.curTime = i
     },
   }
 }
 </script>
-
 <style lang="scss" scoped>
-$color: #36AE82;
+$color: #36ae82;
 .banner {
   height: 220px;
   width: 100%;
@@ -126,16 +117,24 @@ $color: #36AE82;
 .p-item > h1 {
   margin: 40px;
 }
-.p-item:hover, .p-item.active {
+.p-item:hover,
+.p-item.active {
   box-shadow: 0px 0px 4px 0px rgba(21, 71, 158, 0.5);
   border: 1px solid $color;
   color: $color;
 }
 .search {
-  padding-bottom: 12px;
-  border-bottom: 1px solid #EDEEEF;
+  padding: 14px;
+  border-bottom: 1px solid #edeeef;
 }
-#chart {
-  height: 300px;
+.chart-box {
+  height: 426px;
+  background: #ffffff;
+  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+.bar-chart {
+  height: 350px;
+  width:100%;
 }
 </style>

@@ -24,7 +24,7 @@
         </li>
       </ul>
       <div class="flex-he btns" v-if="o.status=='7' && o.question && o.question.length">
-        <el-button size="small" plain type="success">咨询问题</el-button>
+        <el-button size="small" plain type="success" @click="handleOpenQuestion(o)">咨询问题</el-button>
       </div>
     </el-card>
     <!-- 分页 -->
@@ -43,28 +43,34 @@
                      ref="pagination">
       </el-pagination>
     </div>
+    <question-modal :isShow="isShow" @close="handleClose" :questions="questions"></question-modal>
   </div>
 </template>
 
 <script>
 import SmallAvatar from '@/components/SmallAvatar'
+import QuestionModal from './modal/question'
 
 export default {
   name: 'finish-order',
   props: ['list', 'pagination'],
-  data () {
-    return {
-    }
-  },
   components: {
+    QuestionModal,
     SmallAvatar
   },
+  data () {
+    return {
+      isShow: false,
+      questions: [],
+    }
+  },
   methods: {
-    handelOrderCancel () {
-
+    handleOpenQuestion (order) {
+      this.isShow = true
     },
-    handelOrderDetail () {
-
+    handleClose(order) {
+      this.questions = order.question
+      this.isShow = false
     },
   }
 };

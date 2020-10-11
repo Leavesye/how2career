@@ -2,7 +2,6 @@
 <el-image
     class="avatar"
     :src="url"></el-image>
-    <!-- <div class="micro ani"><i class="iconfont iconhuatong"></i></div> -->
 </template>
 
 <script>
@@ -35,26 +34,5 @@ export default {
   border-radius: 50%;
   display: block;
   margin: 0 auto;
-}
-.micro {
-  position: absolute;
-  left: 62px;
-  bottom: 30px;
-  width: 30px;
-  height: 30px;
-  line-height: 30px;
-  border-radius: 50%;
-  background: #36AE82;
-}
-.micro i {
-  color: #fff;
-  font-size: 19px;
-}
-@keyframes flash {
-  from {background: #36AE82}
-  to {background: #15CA83}
-}
-.ani {
-  animation: flash 1s infinite;
 }
 </style>

@@ -93,6 +93,9 @@ export default {
   border-bottom: 1px solid #edeeef;
 }
 .container {
+  width: 600px;
+  margin: 0 auto;
+  margin-top: 40px;
   padding: 30px 110px;
 }
 </style>

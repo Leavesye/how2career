@@ -6,8 +6,6 @@ import ElementUI from 'element-ui'
 import '../theme/index.css'
 import * as elementApi from './utils/element-api'
 
-import { Calendar, ConfigProvider } from 'ant-design-vue'
-
 import '@/styles/index.scss' // global css
 
 import App from './App'
@@ -17,26 +15,17 @@ import router from './router'
 import '@/permission' // permission control
 // import TRTC from 'trtc-js-sdk'
 
-// echarts图表
-import echarts from 'echarts/lib/echarts'
-import 'echarts/lib/chart/bar'
-import 'echarts/lib/component/tooltip'
-import 'echarts/lib/component/title'
-
 import '@/utils/register-global'
 
 import { axTable, axTableColumn } from './components/table'
 import { axForm, axFormItem } from './components/form'
 import rules from './utils/validate-rules'
 
-Vue.use(Calendar)
-Vue.use(ConfigProvider)
 Vue.use(axForm)
 Vue.use(axFormItem)
 Vue.use(axTable)
 Vue.use(axTableColumn)
 Vue.prototype.$rules = rules
-Vue.prototype.$echarts = echarts
 Vue.prototype.alert = elementApi.alert
 Vue.prototype.loading = elementApi.loading
 
@@ -60,7 +49,7 @@ if (process.env.NODE_ENV !== 'production') {
   // mockXHR()
 }
 
-Vue.use(ElementUI)
+Vue.use(ElementUI, { size: 'small', zIndex: 3000 })
 
 Vue.config.productionTip = false
 

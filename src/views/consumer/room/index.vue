@@ -2,80 +2,85 @@
   <div style="padding: 30px">
     <section class="flex">
       <el-card class="card-l">
-        <div class="title" style="margin-bottom: 40px">咨询者</div>
-        <!-- 头像 -->
-        <avatar></avatar>
+        <div class="title"
+             style="margin-bottom: 40px">咨询师</div>
+        <div class="header">
+          <avatar :imgUrl="info.avatar"></avatar>
+          <div class="micro ani"><i class="iconfont iconhuatong"></i></div>
+        </div>
+        <p class="user-name">{{info.name}}</p>
       </el-card>
       <el-card class="card-c">
         <p class="title">咨询问题</p>
-        <p class="question">阿里P10对技术架构要求是什么?</p>
-        <p class="question">阿里P10对技术架构要求是什么?</p>
-        <p class="question">阿里P10对技术架构要求是什么?</p>
-        <p class="question">阿里P10对技术架构要求是什么?</p>
-        <p class="question">阿里P10对技术架构要求是什么?</p>
-        <p class="question">阿里P10对技术架构要求是什么?</p>
-        <p class="question">阿里P10对技术架构要求是什么?</p>
+        <p class="question" v-for="(item, i) in info.question" :key="i">{{item}}?</p>
       </el-card>
       <el-card class="card-r">
-        <p class="title" style="margin-bottom: 28px">咨询开始时间</p>
+        <p class="title"
+           style="margin-bottom: 28px">咨询开始时间</p>
         <p>北京时间</p>
-        <p>10月10日 20:00 ~ 21:00</p>
+        <p>{{info.startText}}</p>
         <p class="ques-status">咨询中</p>
         <!-- 计时器 -->
-        <count-down></count-down>
+        <count-down :targetTime="info.startTime"></count-down>
       </el-card>
     </section>
     <el-card class="detail-card">
       <el-tabs v-model="activeName">
-        <el-tab-pane label="基本信息" name="first">
+        <el-tab-pane label="基本信息"
+                     name="first">
           <div class="d-item">
-            <section class="flex-hb" style="width: 300px">
+            <section class="flex-hb"
+                     style="width: 300px">
               <div>
                 <p class="field-name">姓名</p>
-                <p>马里奥</p>
+                <p>{{info.name}}</p>
               </div>
               <div>
                 <p class="field-name">性别</p>
-                <p>男</p>
+                <p>{{info.gender}}</p>
               </div>
               <div>
                 <p class="field-name">出生年月</p>
-                <p>1998-01-10</p>
+                <p>{{info.birthday}}</p>
               </div>
             </section>
           </div>
           <div class="d-item">
             <p class="field-name">最高学历</p>
-            <p>中央民族大学 计算机科学  硕士</p>
+            <p>{{info.edus[0].desc}}</p>
           </div>
           <div class="d-item">
             <p class="field-name">自我评价</p>
-            <p>知乎盐选会员，是付费内容服务和用户体验的一次升级，旨在让知友们花的时间更值得。</p>
+            <p>{{info.selfIntroduction}}</p>
           </div>
           <div class="d-item">
-            <p class="field-name">评价介绍</p>
-            <p>知乎盐选会员，是付费内容服务和用户体验的一次升级，旨在让知友们花的时间更值得。盐选会员不仅可以为广大知友提社区功能权益、身份权益以及内容权益等多重福利；还能在社区问答的原生体验中，便捷地获得优质付费内容；完善的「盐选」机制，也能提升知友们获得好内容的效率。 可以在「我的」页面，点击「开通盐选会员」进行盐选会员的开通。目前 iOS 用户支持应用内购买，安卓用户支持微信支付。</p>
+            <p class="field-name">详细介绍</p>
+            <p>{{info.detailedIntroduction}}</p>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="学历信息" name="second">
+        <el-tab-pane label="学历信息"
+                     name="second">
           <div class="d-item">
             <p class="field-name">最高学历</p>
-            <p>中央民族大学 计算机科学  硕士</p>
+            <p>{{info.edus[0].desc}}</p>
           </div>
           <div class="d-item">
             <p class="field-name">前学历</p>
-            <p>中国清华大学 电子工程 硕士</p>
+            <p>{{info.edus[1] ? info.edus[1].desc : '无'}}</p>
           </div>
           <div class="d-item">
             <p class="field-name">前学历</p>
-            <p>中国清华大学 电子工程 硕士</p>
+            <p>{{info.edus[1] ? info.edus[1].desc : '无'}}</p>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="社会实践" name="third">社会实践</el-tab-pane>
-        <el-tab-pane label="其他信息" name="fourth">其他信息</el-tab-pane>
+        <el-tab-pane label="社会实践"
+                     name="third">社会实践</el-tab-pane>
+        <el-tab-pane label="其他信息"
+                     name="fourth">其他信息</el-tab-pane>
       </el-tabs>
     </el-card>
-    <room-status :isShow="isShow" @close="handleCloseModal"></room-status>
+    <room-status :isShow="isShow"
+                 @close="handleCloseModal"></room-status>
   </div>
 </template>
 
@@ -83,6 +88,10 @@
 import Avatar from '@/components/Avatar'
 import CountDown from '@/components/CountDown'
 import RoomStatus from './modal/room-status'
+import { getOrderById } from '@/api/order'
+import { getPublicInfo } from '@/api/user'
+import moment from 'moment'
+import { GENDERS } from '@/utils/enums'
 
 export default {
   name: 'room',
@@ -94,22 +103,61 @@ export default {
   data () {
     return {
       isShow: false,
-      activeName: 'first'
+      activeName: 'first',
+      info: {
+        edus: [{desc: ''}]
+      }
     }
   },
+  async created() {
+    const orderId = this.$route.params.id
+    const l = this.loading()
+    const res = await getOrderById({ orderId }).catch(e=>l.close())
+    if (res.result) {
+
+      const {
+        consultant:{ avatar, name,  _id },
+        startTime,
+        question
+      } = res.msg
+      // 查询咨询师公共信息
+      const ret = await getPublicInfo({ userId: _id }).catch(e=>l.close())
+      if (ret.result) {
+        const { birthday,gender,selfIntroduction,detailedIntroduction, resume: {education, workExperience}} = ret.msg.publicInfo
+        this.info = {
+          birthday, 
+          detailedIntroduction,
+          selfIntroduction,
+          gender: GENDERS.find(o=> o.value == gender).text,
+          startTime, question,avatar,name,
+          startText: moment(startTime*1000).format('MM月DD日 HH:mm') + '~' + moment(startTime*1000).subtract('-90', 'minutes').format('HH:mm'),
+          edus: education.map(o => {
+            return {
+              desc: `${o.school} ${o.discipline} ${o.degree}`
+            }
+          }),
+          works: workExperience
+        }
+      }
+
+    }
+    l.close()
+    
+  },
   methods: {
-    handleCloseModal() {
+    handleCloseModal () {
       this.isShow = false
     }
   },
-  mounted() {
+  mounted () {
     // setInterval(() => this.isShow = true, 30*1000)
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.card-l, .card-r  {
+.card-l,
+.card-r {
   width: 220px;
   height: 275px;
 }
@@ -118,7 +166,7 @@ export default {
   height: 275px;
   margin-right: 20px;
   overflow: auto;
-  color: #7C8EA5;
+  color: #7c8ea5;
 }
 .card-l {
   display: flex;
@@ -129,14 +177,16 @@ export default {
 }
 .card-r {
   text-align: center;
-  color: #7C8EA5;
+  color: #7c8ea5;
 }
 .title {
-  color: #15479E;
+  font-size: 14px;
+  font-weight: 600;
+  color: #36ae82;
 }
 .question {
   padding: 14px 0;
-  border-bottom: 1px solid #EDEEEF;
+  border-bottom: 1px solid #edeeef;
 }
 .ques-status {
   font-size: 20px;
@@ -147,16 +197,50 @@ export default {
 .detail-card {
   margin-top: 30px;
   font-size: 14px;
-  color: #7C8EA5;
+  color: #7c8ea5;
   height: 495px;
   overflow: auto;
 }
 .d-item {
   padding: 20px 0;
-  border-bottom: 1px solid #EDEEEF;
+  border-bottom: 1px solid #edeeef;
 }
 .field-name {
-  color: #15479E;
+  color: #15479e;
   margin-bottom: 10px;
+}
+.header {
+  position: relative;
+}
+.user-name {
+  font-size: 18px;
+  font-weight: 400;
+  color: #7c8ea5;
+  margin-top: 20px;
+}
+.micro {
+  position: absolute;
+  left: 31px;
+  bottom: -10px;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  border-radius: 50%;
+  background: #36ae82;
+}
+.micro i {
+  color: #fff;
+  font-size: 19px;
+}
+@keyframes flash {
+  from {
+    background: #36ae82;
+  }
+  to {
+    background: #15ca83;
+  }
+}
+.ani {
+  animation: flash 1s infinite;
 }
 </style>

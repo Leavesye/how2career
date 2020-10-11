@@ -11,15 +11,15 @@ export function boxing (from, to) {
   to.account.userName = from.userName
   to.account.passWord = from.passWord
   to.basic.name = from.name
-  to.basic.gender = from.gender
-  to.basic.birthday = from.birthday
+  to.publicInfo.gender = from.gender
+  to.publicInfo.birthday = from.birthday
   to.publicInfo.nickName = from.nickName
   to.publicInfo.avatarImage = from.avatarImage
   // 联系方式
   to.basic.phone = from.phone
   to.basic.wechat = from.wechat
   to.basic.email = from.email
-  to.basic.detailedIntroduction = from.detailedIntroduction
+  to.publicInfo.detailedIntroduction = from.detailedIntroduction
   to.publicInfo.selfIntroduction = from.selfIntroduction
   // 认证信息
   to.realVerify.phone = from.phoneNumber
@@ -34,8 +34,8 @@ export function unBoxing (from, to) {
   b.passWord.value = account.passWord
   b.name.value = basic.name
   b.nickName.value = publicInfo.nickName
-  b.gender.value = basic.gender
-  b.birthday.value = basic.birthday
+  b.gender.value = publicInfo.gender
+  b.birthday.value = publicInfo.birthday
   b.avatarImage.value = publicInfo.avatarImage
   publicInfo.avatarImage && (b.avatarImage.props['file-list'] = [{ url: process.env.VUE_APP_HOST_NAME + publicInfo.avatarImage }])
   const r = to.realVerify
@@ -47,6 +47,6 @@ export function unBoxing (from, to) {
   c.wechat.value = basic.wechat
   c.email.value = basic.email
   c.selfIntroduction.value = publicInfo.selfIntroduction
-  c.detailedIntroduction.value = basic.detailedIntroduction
+  c.detailedIntroduction.value = publicInfo.detailedIntroduction
 
 }

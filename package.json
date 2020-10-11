@@ -16,8 +16,8 @@
   },
   "dependencies": {
     "@syncfusion/ej2-vue-schedule": "^18.2.59",
-    "ant-design-vue": "^1.6.5",
     "axios": "0.18.1",
+    "chart.js": "^2.9.3",
     "cldr-data": "^36.0.0",
     "core-js": "3.6.5",
     "echarts": "^4.9.0",
@@ -28,8 +28,11 @@
     "normalize.css": "7.0.0",
     "nprogress": "0.2.0",
     "path-to-regexp": "2.4.0",
+    "qrcodejs2": "0.0.2",
     "trtc-js-sdk": "^4.6.4",
     "vue": "2.6.10",
+    "vue-chartjs": "^3.5.1",
+    "vue-echarts": "^5.0.0-beta.0",
     "vue-router": "3.0.6",
     "vuex": "3.1.0"
   },

@@ -14,3 +14,7 @@ export const ORDER_STATUS = [
   {text: '已结算', value: '11'},
   {text: '待选择咨询师', value: '12'},
 ]
+export const GENDERS = [
+  {text: '男', value: 'm'},
+  {text: '女', value: 'f'},
+]
