@@ -30,7 +30,7 @@
             :class="{active: current===i}">{{item.name}}</li>
       </ul>
       <!-- 日程表 -->
-      <scheduler></scheduler>
+      <scheduler v-if="isLoaded" :events="events"></scheduler>
     </el-card>
     <change-slot :isShow="isShow"></change-slot>
   </div>
@@ -38,8 +38,9 @@
 
 <script>
 import ChangeSlot from './modal/change-slot'
-// import { getUserInfo } from '@/api/user'
+import { getPublicInfo } from '@/api/user'
 import Scheduler from '@/components/Scheduler'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'time-setting',
@@ -55,15 +56,33 @@ export default {
         { name: '调整Slot数量' },
         { name: '补缴Slot费用' },
       ],
+      events: [],
+      isLoaded: false
     }
+  },
+  computed: {
+    ...mapGetters([
+      'user'
+    ])
   },
   methods: {
     handleClickBtn(i) {
       this.current = i
     }
   },
-  mounted () {
-    
+  async created () {
+    this.isLoaded = false
+    const l = this.loading()
+    const res = await getPublicInfo({ userId: this.user.userId }).catch(e=>{
+      l.close()
+      this.isLoaded = true
+    })
+    if (res.result) {
+      const { publicInfo: { availableTime }} = res.msg
+      this.events = availableTime
+    }
+    this.isLoaded = true
+    l.close()
   },
 }
 </script>

@@ -6,14 +6,7 @@ export default {
     },
     {
       prop: 'orderId',
-      renderHeader() {
-        return (
-          <div class="flex-vc">
-            <div style="margin-right: 14px">全选</div>
-            <el-button size="mini">批量提现</el-button> 
-          </div>
-        )
-      },
+      width: '300',
       render(h, scope) {
         return (
           <i>订单号:{scope.row.orderId}</i>
@@ -22,33 +15,38 @@ export default {
     },
     {
       label: '金额',
-      prop: 'price'
+      prop: 'amount',
+      render(h, scope) {
+        return (
+          <i>{scope.row.amount} RMB</i>
+        )
+      },
     },
     {
-      sortable: true,
-      label: '申请提现时间',
-      prop: 'cTime'
+      sortable: 'custom',
+      label: '创建时间',
+      prop: 'cTime',
     },
     {
       label: '',
-      prop: 'e',
-      render() {
-        return (
-          <el-button size="mini">提现</el-button> 
-        )
-      }
+      prop: '',
     },
   ],
+  events: {
+    'sort-change': null
+  },
   props: {
     headerCellStyle: {
       background: '#EDEEEF',
       fontSize: '14px!important',
       color: '#7C8FA5!important',
       fontWeight: '200',
+      textAlign: 'left',
     },
     cellStyle: {
       fontSize: '14px!important',
       color: '#7C8FA5!important',
+      textAlign: 'left'
     }
   }
 }

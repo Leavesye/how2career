@@ -34,6 +34,7 @@ import cfg from './table-config.js'
 import { getOrders } from '@/api/order'
 import { getConsultantFinanceOrder } from '@/api/consultant'
 import tool from '@/utils/tool'
+import moment from 'moment'
 
 export default {
   components: {
@@ -49,11 +50,6 @@ export default {
         { name: '未提现订单', status: '9' },
         { name: '费用待发放订单', status: '2' },
         { name: '已结算订单', status: '3' },
-      ],
-      times: [
-        {name: '7天'},
-        {name: '15天'},
-        {name: '30天'},
       ],
       table: cfg,
       pagination: {
@@ -76,28 +72,72 @@ export default {
       this.selPannel = this.pannels.find(o => o.status == status)
     }
     this.params = { from: 0, to: 2601444690, condition }
+    this.setColumns(this.selPannel.status)
+    this.table.events['sort-change'] = this.handleSort
     this.query()
   },
   methods: {
+    handleSort(data) {
+      this.params.order = data.order == 'ascending' ? '-':''
+      this.query()
+    },
+    setColumns (s){
+      if (s == '9') {
+        this.table.columns[3].label = '创建时间'
+        this.table.columns[3].prop = 'cTime'
+        this.table.columns[0].hide = false
+        this.table.columns[1].renderHeader = this.renderHeader
+        this.table.columns[4].render = this.renderOper
+      }
+      if (s == '2') {
+        this.table.columns[3].label = '申请提现时间'
+        this.table.columns[3].prop = 'cTime'
+        this.table.columns[0].hide = true
+        this.table.columns[4].hide = true
+      }
+      if (s == '3') {
+        this.table.columns[3].label = '结算时间'
+        this.table.columns[3].prop = 'uTime'
+        this.table.columns[0].hide = true
+        this.table.columns[4].hide = true
+      }
+    },
+    renderHeader() {
+      const status = this.selPannel.status
+      return (
+        <div class="flex-vc">
+          <div style="margin-right: 14px">{status=='9'?'全选':'订单号'}</div>
+          { status=='9'&&<el-button plain>批量提现</el-button>}
+        </div>
+      )
+    },
+    renderOper(h, scope) {
+      return (
+        <el-button plain>提现</el-button> 
+      )
+    },
     async query() {
       const l = this.loading()
       const { pageIndex, pageSize } = this.pagination
-      const { from, to, condition } = this.params
+      const { from, to, condition, order } = this.params
       const fn = this.selPannel.status == '9' ? getOrders : getConsultantFinanceOrder
-      const res = await fn({
+      const p = {
         from: from || 0,
         to: to || 2601444690,
         page: pageIndex || 0,
         limit: pageSize || 10,
-        condition: condition || ''
-      }).catch(e=> l.close())
+        condition: condition || '',
+      }
+      order && (p.order = order)
+      const res = await fn(p).catch(e=> l.close())
       if (res.result) {
-        this.pagination.total = res.msg.total
-        this.list = res.msg.list.map(o => {
-          const { _id: orderId, cTime, amount } = o
+        this.pagination.total = res.msg.count
+        this.table.data = res.msg.list.map(o => {
+          const { _id: orderId, cTime, uTime, amount } = o
           return { 
             orderId, 
-            cTime, 
+            cTime: moment(cTime*1000).format('YYYY-MM-DD HH:mm:ss'), 
+            uTime: moment(uTime*1000).format('YYYY-MM-DD HH:mm:ss'), 
             amount
           }
         })
@@ -105,13 +145,18 @@ export default {
       l.close()
     },
     handleSearch(p) {
-      this.params = p
+      this.params.from = p.from
+      this.params.to = p.to
+      if (p.condition) {
+        this.params.condition = p.condition
+      }
       this.query()
     },
     handlePannelChange (item) {
       const { status } = this.selPannel
       if (item.status == status) return false
       this.selPannel = item
+      this.setColumns(this.selPannel.status)
       // 参数重置
       this.list = []
       this.pagination.total = 0

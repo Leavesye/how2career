@@ -76,12 +76,15 @@ export default {
     },
     handleSearch () { 
       const { orderDate, status } = this.search
-      const params = {
-        from: orderDate[0] ? orderDate[0].valueOf()/1000 : 0,
-        to: orderDate[1] ? Math.ceil(orderDate[1].valueOf()/1000) : 2601444690,
-        condition: status ? `status==${status}` : 'status==0:status==7:status==8'
+      const p = {}
+      if (!this.title) {
+        p.condition = status ? `status==${status}` : 'status==0:status==7:status==8'
       }
-      this.$emit('search', params)
+      if (orderDate && orderDate.length) {
+        p.from = orderDate[0] ? orderDate[0].valueOf()/1000 : 0
+        p.to = orderDate[1] ? Math.ceil(orderDate[1].valueOf()/1000) : 2601444690
+      }
+      this.$emit('search', p)
     }
   }
 };
