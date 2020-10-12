@@ -41,7 +41,7 @@ export default {
     // 处理带参跳转
     let status = this.$route.query.status
     if (status) {
-      condition = this.getCondition(status)
+      condition = tool.getCondition(status)
       this.selPannel = this.pannels.find(o => o.status == status)
     }
     this.params = { from: 0, to: 2601444690, condition }
@@ -114,18 +114,6 @@ export default {
     handleClose () {
       this.isShowDetail = false
     },
-    getCondition(status) {
-      const arr = status.split(',')
-      let condition = ''
-      arr.forEach((o, i) => {
-        if (i == arr.length - 1) {
-          condition += `status==${o}`
-        } else {
-          condition += `status==${o}:`
-        }
-      })
-      return condition
-    },
     handlePannelChange (item) {
       const { status } = this.selPannel
       if (item.status == status) return false
@@ -137,7 +125,7 @@ export default {
       this.pagination.pageSize = 10
       this.params.from = 0
       this.params.to = 2601444690
-      this.params.condition = this.getCondition(item.status)
+      this.params.condition = tool.getCondition(item.status)
       this.query()
     },
   }

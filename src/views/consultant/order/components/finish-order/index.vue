@@ -2,51 +2,20 @@
   <div>
     <el-card>
       <!-- 搜索条件 -->
-      <section class="flex-hbc search">
-        <div class="flex-hbc">
-          <el-link type="primary"
-                   :underline="false">订单状态</el-link>
-          <el-select class="order-status"
-                     v-model="search.status"
-                     placeholder=""
-                     size="small">
-            <el-option v-for="item in orderStates"
-                       :key="item.value"
-                       :label="item.text"
-                       :value="item.value">
-            </el-option>
-          </el-select>
-        </div>
-        <time-picker @change="handleTimeChange"
-                     :times='times'
-                     :curTime="search.curIndex"></time-picker>
-        <el-date-picker style="width: 230px"
-                        size="small"
-                        v-model="search.orderDate"
-                        type="daterange"
-                        @change="handleDateChange"
-                        range-separator="至"
-                        start-placeholder="开始日期"
-                        end-placeholder="结束日期">
-        </el-date-picker>
-        <el-button size="small"
-                   type="primary"
-                   plain
-                   @click="handleSearch">查询</el-button>
-      </section>
+      <search-form @search="handleSearch"></search-form>
       <!-- 订单列表 -->
       <section v-for="(o ,i) in list"
                :key="i">
         <ul class="order-item flex-hbc">
           <li>
-            <p style="margin-bottom: 10px">订单号：{{o.orderId}}</p>
+            <p class="order-no">订单号：{{o.orderId}}</p>
             <div class="flex-vc">
               <small-avatar :imgUrl="o.avatar"></small-avatar>
               <div class="user-name">{{o.name}}</div>
             </div>
           </li>
           <li>
-            <p style="margin-bottom: 10px">创建时间：{{o.cTime}}</p>
+            <p class="create-time">创建时间：{{o.cTime}}</p>
             <div>开始时间：{{o.startTime}}</div>
           </li>
           <li class="flex-hbc"
@@ -58,11 +27,9 @@
 
           <li>{{o.rest}}</li>
           <li>
-            <div style="margin-bottom: 10px; text-align: right">订单金额:{{o.price}} RMB</div>
+            <div class="order-amount">订单金额:{{o.price}} RMB</div>
             <div class="flex-he">
-              <el-button size="small"
-                         plain
-                         type="primary"
+              <el-button plain
                          @click="handleOpenDetail(o)">订单详情</el-button>
             </div>
           </li>
@@ -103,58 +70,33 @@
 </template>
 
 <script>
-import moment from 'moment'
-import TimePicker from '@/components/TimePicker'
 import RateModal from './modal/rate'
 import ArbitrationModal from './modal/arbitration'
 import DetailModal from './modal/detail'
 import SmallAvatar from '@/components/SmallAvatar'
-import { ORDER_STATUS } from '@/utils/enums'
+import SearchForm from '@/components/SearchForm'
 
 export default {
   name: 'finish-order',
   props: ['list', 'pagination', 'query'],
   components: {
-    TimePicker,
     RateModal,
     ArbitrationModal,
     DetailModal,
-    SmallAvatar
+    SmallAvatar,
+    SearchForm
   },
   data () {
-    const day7 = moment().subtract(7, 'day').startOf('day')
-    const day15 = moment().subtract(15, 'day').startOf('day')
-    const day30 = moment().subtract(30, 'day').startOf('day')
-    const now = moment()
     return {
       order: {},
       isShowRate: false,
       isShowApply: false,
       isShowDetail: false,
-      search: {
-        status: '',
-        curIndex: '',
-        orderDate: '',
-      },
-      times: [
-        { name: '7天', v: [day7, now]},
-        { name: '15天', v: [day15, now]},
-        { name: '30天', v: [day30, now] },
-      ],
-    }
-  },
-  computed: {
-    orderStates: function() {
-      return ORDER_STATUS.filter(o => o.tag == 7)
     }
   },
   methods: {
-    handleTimeChange (value, i) { 
-      this.search.orderDate = [...value.v]
-      this.search.curIndex = i
-    },
-    handleDateChange(v) {
-      this.search.curIndex = -1
+    handleSearch(p) {
+      this.$emit('condition-query', p)
     },
     handleOpenDetail(order) {
       this.isShowDetail = true
@@ -183,15 +125,6 @@ export default {
         this.query()
       }
     },
-    handleSearch () { 
-      const { orderDate, status } = this.search
-      const params = {
-        from: orderDate[0] ? orderDate[0].valueOf()/1000 : 0,
-        to: orderDate[1] ? Math.ceil(orderDate[1].valueOf()/1000) : 2601444690,
-        condition: status ? `status==${status}` : 'status==0:status==7:status==8'
-      }
-      this.$emit('condition-query', params)
-    }
   }
 };
 </script>
@@ -206,17 +139,10 @@ export default {
 .user-name {
   margin-left: 10px;
 }
-.search {
-  padding-bottom: 12px;
-  border-bottom: 1px solid #edeeef;
+.order-no, .create-time {
+  margin-bottom: 10px;
 }
-.order-status {
-  width: 140px;
-  margin-left: 10px;
-}
-
-.title {
-  font-size: 14px;
-  color: #15479e;
+.order-amount {
+  margin-bottom: 10px; text-align: right
 }
 </style>

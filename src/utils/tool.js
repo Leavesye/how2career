@@ -17,6 +17,18 @@ function getCountDown (target) {
   }
   return str
 }
+function getCondition(status) {
+  const arr = status.split(',')
+  let condition = ''
+  arr.forEach((o, i) => {
+    if (i == arr.length - 1) {
+      condition += `status==${o}`
+    } else {
+      condition += `status==${o}:`
+    }
+  })
+  return condition
+}
 function formatConsultantOrder (list) {
   return list.map(o => {
     const { avatar, name, readme } =  o.consultant
@@ -125,6 +137,7 @@ function formatStatus(status) {
   return condition
 }
 export default { 
+  getCondition,
   formatConsultantOrder,
   formatConsumerOrder,
   formatStatus

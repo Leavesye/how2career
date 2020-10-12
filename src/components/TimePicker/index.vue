@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-hb time-box">
+  <div class="flex-hb time-box" >
     <div>时间</div>
     <div class="flex-hbc"
          style="width: 114px">

@@ -9,9 +9,9 @@ export function updateAvailableTime(data) {
   })
 }
 // 咨询师查询待发放订单
-export function getAvailableTime(params) {
+export function getConsultantFinanceOrder(params) {
   return request({
-    url: '/consultant/order/settlement',
+    url: '/consultantFinance/platform/consultant/order/settlement',
     method: 'get',
     params
   })

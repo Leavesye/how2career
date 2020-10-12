@@ -131,7 +131,7 @@ export default {
         { name: '待确认订单', count: 0, path: '/consultant/order?status=2' },
         { name: '待服务订单', count: 0, path: '/consultant/order?status=4,5'},
         { name: '已完成订单', count: 0, path: '/consultant/order?status=0,7,8'},
-        { name: '待结算订单', count: 0, path: '/consultant/order?status=10'}
+        { name: '待结算订单', count: 0, path: '/consultant/cost?status=2'}
       ],
       serviceOrders: [],
       confirmOrders: []
