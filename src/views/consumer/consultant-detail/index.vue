@@ -63,15 +63,15 @@
       </div>
       <el-card class="calendar-card">
         <h1>可预约时间表(北京时间)</h1>
-        <calendar @set-time="handleSetTime">
+        <calendar @set-time="handleSetTime" :order="order">
           <el-button class="appintment-btn"
-                   size="small"
                    :type="user.role=='consumer'? 'success': 'primary'"
                    @click="handleCreateOrder">预约单生成</el-button>
         </calendar>
       </el-card>
     </section>
     <rate-list :isShow="isShow"
+                :rateList="rateList"
                @close="handleClose"></rate-list>
   </div>
 </template>
@@ -84,6 +84,7 @@ import { getPublicInfo } from '@/api/user'
 import { createOrder } from '@/api/order'
 import moment from 'moment'
 import { mapGetters } from 'vuex'
+import { getRateList } from '@/api/consultant'
 
 export default {
   name: 'consultant-detail',
@@ -93,6 +94,7 @@ export default {
     RateList,
   },
   data () {
+    this.id = this.$route.params.id
     return {
       info: {},
       times: [],
@@ -100,6 +102,8 @@ export default {
       isShow: false,
       checked: false,
       isConfirm: false,
+      rateList: [],
+      order: { consultantId: this.id }
     }
   },
   computed: {
@@ -109,7 +113,7 @@ export default {
   },
   async created () {
     const l = this.loading()
-    const res = await getPublicInfo({ userId: this.$route.params.id }).catch(e => l.close())
+    const res = await getPublicInfo({ userId: this.id }).catch(e => l.close())
     if (res.result && res.msg.publicInfo) {
       this.publicInfo = res.msg.publicInfo
       const o = res.msg.publicInfo
@@ -180,8 +184,21 @@ export default {
       }
       l.close()
     },
-    showRateDetail () {
+    async showRateDetail () {
       this.isShow = true
+      const l = this.loading()
+      const res = await getRateList({ consultantId: this.id }).catch(e=> l.close())
+      if (res.result) {
+        this.rateList = res.msg.map(o => {
+          const { evaluation: { content, point, consultantReply } }  = o
+          return {
+            content,
+            point,
+            consultantReply
+          }
+        })
+      }
+      l.close()
     },
     handleClose () {
       this.isShow = false
@@ -190,8 +207,6 @@ export default {
       this.$router.go(-1)
     }
   },
-  mounted () {
-  }
 }
 </script>
 <style>

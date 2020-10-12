@@ -21,7 +21,7 @@
         <p>{{info.startText}}</p>
         <p class="ques-status">咨询中</p>
         <!-- 计时器 -->
-        <count-down :targetTime="info.startTime"></count-down>
+        <count-down bg="#36AE82" :targetTime="info.startTime"></count-down>
       </el-card>
     </section>
     <el-card class="detail-card">
@@ -79,6 +79,7 @@
                      name="fourth">其他信息</el-tab-pane>
       </el-tabs>
     </el-card>
+    <!-- 房间状态 -->
     <room-status :isShow="isShow"
                  @close="handleCloseModal"></room-status>
   </div>
@@ -102,6 +103,7 @@ export default {
   },
   data () {
     return {
+      roomStatus: 1, // 1 距离开始  2 距离结束
       isShow: false,
       activeName: 'first',
       info: {
@@ -138,6 +140,10 @@ export default {
           }),
           works: workExperience
         }
+        const now = moment().valueOf()
+        const start = startTime*1000
+        // 还没开始
+        this.roomStatus = start > now ? 1:2
       }
 
     }

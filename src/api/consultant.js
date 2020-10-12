@@ -16,5 +16,13 @@ export function getConsultantFinanceOrder(params) {
     params
   })
 }
+// 咨询师查评价列表
+export function getRateList(params) {
+  return request({
+    url: '/consultant/platform/consultant/evaluation',
+    method: 'get',
+    params
+  })
+}
 
 

@@ -16,7 +16,7 @@
         <p>距离结束还有</p>
         <div class="line"></div>
       </div>
-      <count-down bg="#7C8FA5"></count-down>
+      <count-down bg="#36AE82"></count-down>
     </div>
     <div v-else class="progress-box">
       <el-progress :show-text="false" :width="250" color="#36AE82" style="position: relative" type="circle" :percentage="percent"></el-progress>
@@ -46,7 +46,7 @@ export default {
   props: ['isShow'],
   data () {
     return {
-      isWait: false,
+      isWait: true,
       percent: 0,
       nums: [
         {v: '3', ani: ''},
