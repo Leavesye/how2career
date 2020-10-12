@@ -63,7 +63,6 @@ export default {
         dataSource: events,
          fields: {
             subject: { name: 'Subject', default: '咨询可预约时间' },
-            isAllDay: { name: 'IsAllDay', default: null },
         },
       },
     }
@@ -77,6 +76,7 @@ export default {
     // 新增 编辑 删除监听
     handleActionBegin (e) {
       console.log(e)
+      e.data && (e.data.IsAllDay = false)
       // 新增事件
       if (e.requestType == 'eventCreate') {
         this.createEvent(e.addedRecords[0])
@@ -237,6 +237,8 @@ export default {
     },
   },
   mounted () {
+    console.log(this.$refs.schedule)
+    console.log(this.$refs.schedule.getCurrentViewDates())
   }
 }
 </script>

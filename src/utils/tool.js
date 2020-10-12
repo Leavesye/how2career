@@ -1,27 +1,36 @@
 import moment from 'moment'
 
+function getCountDown (target) { 
+  if (!target) return false
+  let str = ''
+  // 倒计时时间计算
+  if (target) {
+      const countdown = target*1000 - moment().valueOf()
+      if (countdown > 0) {
+        let times = countdown/(3600*1000)
+        let hours = Math.floor(times)
+        let mintus = Math.ceil((times - hours)*60)
+        str = `还有${hours}小时${mintus}分开始`
+      } else {
+        str = '已过期'
+      }
+  }
+  return str
+}
 function formatConsultantOrder (list) {
   return list.map(o => {
     const { avatar, name, readme } =  o.consultant
-    let rest = ''
     // 倒计时时间计算
-    if (o.confirmTimeout) {
-       const countdown = o.confirmTimeout*1000 - moment().valueOf()
-       if (countdown > 0) {
-         let times = countdown/(3600*1000)
-         let hours = Math.floor(times)
-         let mintus = Math.ceil((times - hours)*60)
-         rest = `还有${hours}小时${mintus}分开始`
-       } else {
-         rest = '已过期'
-       }
-    }
+    let confirmCountDown = getCountDown(o.confirmTimeout)
+    let serviceCountDown = getCountDown(o.startTime)
+    
     return {
       orderId: o._id,
       avatar: process.env.VUE_APP_HOST_NAME + o.consumerAvatar,
       name: o.consumerNickName,
       cTime: moment(o.cTime * 1000).format('YYYY-MM-DD HH:mm:ss'),
-      rest,
+      confirmCountDown,
+      serviceCountDown,
       startTime: o.startTime ? moment(o.startTime * 1000).format('YYYY-MM-DD HH:mm:ss'): '',
       consumerTime: o.consumerTime ? o.consumerTime.map(v => {
         // 秒转毫秒

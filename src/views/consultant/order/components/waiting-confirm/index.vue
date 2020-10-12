@@ -14,7 +14,7 @@
             <small-avatar :imgUrl="o.avatar"></small-avatar>
             <div class="user-name">{{o.name}}</div>
           </div>
-          <div>{{o.rest}}</div>
+          <div>{{o.confirmCountDown}}</div>
           <el-button size="mini"
                      @click="handleOpenDetail(o)">订单详情</el-button>
         </div>

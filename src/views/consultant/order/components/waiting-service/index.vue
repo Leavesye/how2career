@@ -47,9 +47,8 @@
             <div>开始时间：{{o.startTime}}</div>
           </li>
           <li>
-            <div style="margin-top:30px">{{o.rest}}</div>
+            <div style="margin-top:30px">{{o.serviceCountDown}}</div>
           </li>
-          <li>{{o.rest}}</li>
           <li>
             <div style="margin-bottom: 10px; text-align: right">订单金额:{{o.price}} RMB</div>
             <div class="flex-he">

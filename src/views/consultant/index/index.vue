@@ -65,27 +65,26 @@
              :key="i"
              @click="handleClickPannel(o, i)">
           <p>{{o.name}}</p>
-          <div>{{o.count}}</div>
+          <div>{{o.count|num}}</div>
         </div>
       </div>
       <!-- 表格 -->
       <el-card class="order-card">
         <p class="title">即将开始的咨询</p>
         <ul class="list-item flex-hbc"
-            v-for="(o, i) in list1"
+            v-for="(o, i) in serviceOrders"
             :key="i">
           <li class="flex-hbc">
-            <el-image class="avatar"
-                       :src="defaultAvatar"></el-image>
+            <small-avatar :imgUrl="o.avatar"></small-avatar>
             <div>{{o.name}}</div>
           </li>
-          <li>开始时间: {{o.start}}</li>
-          <li>{{o.rest}}</li>
+          <li>开始时间: {{o.startTime}}</li>
+          <li>{{o.serviceCountDown}}</li>
           <li class="flex-hb">
             <el-button type="primary"
-                       size="mini"
-                       @click="linkTo('/consultant/room')">进入房间</el-button>
-            <el-button size="mini">订单详情</el-button>
+                        v-if="o.status=='5'"                      
+                       @click="linkTo('/consultant/room/'+o.orderId)">进入房间</el-button>
+            <el-button @click="handleOpenDetail(o)">订单详情</el-button>
           </li>
         </ul>
         <div class="more"
@@ -94,20 +93,18 @@
       <el-card class="order-card">
         <p class="title">即将超时确认的订单</p>
         <ul class="list-item flex-hbc"
-            v-for="(o, i) in list1"
+            v-for="(o, i) in confirmOrders"
             :key="i">
           <li class="flex-hbc">
-            <el-image class="avatar"
-                       :src="defaultAvatar"></el-image>
+            <small-avatar :imgUrl="o.avatar"></small-avatar>
             <div>{{o.name}}</div>
           </li>
-          <li>开始时间: {{o.start}}</li>
-          <li>{{o.rest}}</li>
+          <li>开始时间: {{o.startTime}}</li>
+          <li>{{o.confirmCountDown}}</li>
           <li class="flex-hb">
             <el-button type="primary"
-                       size="mini"
-                       @click="linkTo('/consultant/room')">进入房间</el-button>
-            <el-button size="mini">订单详情</el-button>
+                       @click="linkTo('/consultant/room/'+o.orderId)">进入房间</el-button>
+            <el-button @click="handleOpenDetail(o)">订单详情</el-button>
           </li>
         </ul>
         <div class="more"
@@ -120,38 +117,11 @@
 <script>
 import { getOrders, getOrdersCount } from '@/api/order'
 import { getUserInfo } from '@/api/user'
+import tool from '@/utils/tool'
+import SmallAvatar from '@/components/SmallAvatar'
 
 export default {
-  async created () {
-    const l = this.loading()
-    const res = await getUserInfo().catch(e => l.close())
-    if (res.result) {
-      // 无resume  就是未填写
-      // backgroundVerifyStatus= 0  未审核
-      // backgroundVerifyStatus= 1  待审核
-      // backgroundVerifyStatus= 2  资料待修正
-      // backgroundVerifyStatus= 3  已审核
-      const o = res.msg
-      // 是否填写过简历
-      this.isFillResume = !!o.publicInfo.resume
-      // 是否审核完成
-      this.isFinishReview = o.backgroundVerifyStatus == 3
-      // 是否设置过服务时间
-      this.isSettingTime = !!o.publicInfo.availableTime
-      const ret = await Promise.all([
-        getOrders({
-          from: "0",
-          to: "2601444690",
-          page: "1",
-          limit: "100",
-          condition: "status==2:status==4:status==5:"
-        }),
-        getOrdersCount({ condition: "status==2:status==4:status==7:status==10" })
-      ]).catch(e => l.close())
-      console.log(ret)
-    }
-    l.close()
-  },
+  components: {SmallAvatar},
   data () {
     return {
       isFillResume: false,
@@ -160,16 +130,13 @@ export default {
       isActive: false,
       curStep: 1,
       pannels: [
-        { name: '待确认订单', count: 5 },
-        { name: '待服务订单', count: 5 },
-        { name: '已完成订单', count: 5 },
-        { name: '待结算订单', count: 5 }
+        { name: '待确认订单', count: 0, path: '/consultant/order?status=2' },
+        { name: '待服务订单', count: 0, path: '/consultant/order?status=4,5'},
+        { name: '已完成订单', count: 0, path: '/consultant/order?status=0,7,8'},
+        { name: '待结算订单', count: 0, path: '/consultant/order?status=10'}
       ],
-      list1: [
-        { img: '', name: '马里奥', start: '2020-1-22', rest: '有2小时30分开始' },
-        { img: '', name: '马里奥', start: '2020-1-22', rest: '有2小时30分开始' },
-        { img: '', name: '马里奥', start: '2020-1-22', rest: '有2小时30分开始' },
-      ]
+      serviceOrders: [],
+      confirmOrders: []
     }
   },
   computed: {
@@ -192,9 +159,54 @@ export default {
       return require('@/assets/default-avatar.png')
     }
   },
+  async created () {
+    const l = this.loading()
+    const res = await getUserInfo().catch(e => l.close())
+    if (res.result) {
+      // 无resume  就是未填写
+      // backgroundVerifyStatus= 0  未审核
+      // backgroundVerifyStatus= 1  待审核
+      // backgroundVerifyStatus= 2  资料待修正
+      // backgroundVerifyStatus= 3  已审核
+      const o = res.msg
+      // 是否填写过简历
+      this.isFillResume = !!o.publicInfo.resume
+      // 是否审核完成
+      this.isFinishReview = o.backgroundVerifyStatus == 3
+      // 是否设置过服务时间
+      this.isSettingTime = !!o.publicInfo.availableTime
+      const p = { from: "0", to: "2601444690", page: "1", limit: "3" }
+      const ret = await Promise.all([
+        getOrders({ ...p, condition: "status==4:status==5"}),
+        getOrders({ ...p, condition: "status==2"}),
+        getOrdersCount({ condition: "status==3:status==4:status==7:status==10" })
+      ]).catch(e => l.close())
+      // 待服务订单
+      if (ret[0].result) {
+        this.serviceOrders = tool.formatConsultantOrder(ret[0].msg.list)
+      }
+      // 待确认订单
+      if (ret[1].result) {
+        this.confirmOrders = tool.formatConsultantOrder(ret[1].msg.list)
+      }
+      // 订单数量
+      if (ret[2].result) {
+        const info = ret[2].msg
+        this.pannels[0].count = info['3']
+        this.pannels[1].count = info['4']
+        this.pannels[2].count = info['7']
+        this.pannels[3].count = info['10']
+      }
+    }
+    l.close()
+  },
   methods: {
+    handleOpenDetail(order) {
+
+    },
     handleClickPannel (item, i) {
       this.isActive = i
+      this.linkTo(item.path)
     },
     linkTo (path) {
       this.$router.push(path)
@@ -297,7 +309,7 @@ $color: #15479e;
   font-size: 26px;
   margin-top: 20px;
 }
-.p-item.active {
+.p-item:hover {
   box-shadow: 0px 0px 4px 0px rgba(21, 71, 158, 0.5);
   border: 1px solid $color;
   color: $color;

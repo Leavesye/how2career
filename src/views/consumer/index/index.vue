@@ -9,7 +9,7 @@
              :key="i"
              @click="handleClickPannel(o, i)">
           <p v-if="o.count != 'search'">{{o.name}}</p>
-          <div v-if="o.count != 'search'">{{o.count}}</div>
+          <div v-if="o.count != 'search'">{{o.count|num}}</div>
           <h1 v-else>{{o.name}} <i class="iconfont iconsousuo-01"></i></h1>
         </div>
       </div>
@@ -64,27 +64,6 @@ export default {
     CareerList,
     SmallAvatar
   },
-  async created () {
-    const l = this.loading()
-    const res = await Promise.all([
-      getOrders({
-        "from": "0",
-        "to": "2601444690",
-        "page": "0",
-        "limit": "3",
-        "condition": "status==4:status==5"
-      }),
-      getOrdersCount({ condition: "status==2:status==4:status==7" })
-    ]).catch(e => l.close())
-    if (res[0].result) {
-      this.list = tool.formatConsumerOrder(res[0].msg.list)
-    }
-    if (res[1].result) {
-      // this.list = format.order(res[1].msg.list)
-    }
-    l.close()
-
-  },
   data () {
     return {
       isActive: false,
@@ -104,7 +83,29 @@ export default {
       ]
     }
   },
-  computed: {
+  async created () {
+    const l = this.loading()
+    const res = await Promise.all([
+      getOrders({
+        "from": "0",
+        "to": "2601444690",
+        "page": "0",
+        "limit": "3",
+        "condition": "status==4:status==5"
+      }),
+      getOrdersCount({ condition: "status==2:status==4:status==7" })
+    ]).catch(e => l.close())
+    if (res[0].result) {
+      this.list = tool.formatConsumerOrder(res[0].msg.list)
+    }
+    if (res[1].result) {
+      const info = res[1].msg
+      this.pannels[0].count = info['2']
+      this.pannels[1].count = info['4']
+      this.pannels[2].count = info['7']
+    }
+    l.close()
+
   },
   methods: {
     handleClickPannel (item, i) {
