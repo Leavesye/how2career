@@ -1,13 +1,13 @@
 <template>
   <div class="sider-bar"
-       :style="{minHeight,background: type==1?'#36AE82':'#15479E'}">
+       :style="{minHeight,background: user.role=='consumer'?'#36AE82':'#15479E'}">
     <div v-if="isCollapse"><i :class="[isCollapse ? 'el-icon-s-unfold': 'el-icon-s-fold']"></i></div>
     <el-menu :collapse="isCollapse"
              @open="handleOpen"
              @close="handleClose"
              :default-active="activeMenu"
              text-color="#fff"
-             :style="{background: type==1?'#36AE82':'#15479E', width: isCollapse? '': '240px'}"
+             :style="{background: user.role=='consumer'?'#36AE82':'#15479E', width: isCollapse? '': '240px'}"
              active-text-color="#fff">
       <template v-for="(item, index) in menus">
         <el-menu-item :key="index"
@@ -36,14 +36,16 @@
     </el-menu>
     <el-image v-if="!isCollapse"
               class="room-btn"
-              :src="roomBtn"
-              @click="linkTo('/consumer/room/5f81d4cada7549f9d3400abb')"></el-image>
-    <p class="my-code">我的推荐码</p>
-    <div class="flex-cc qrcode-box">
-      <div class="qrcode"
-           ref="qrCodeUrl"></div>
-    </div>
-    <div class="howto">如何推荐好友</div>
+              :src="user.role=='consumer'?roomGreen:roomBlue"
+              @click="linkTo('/'+user.role+'/room/5f81d4cada7549f9d3400abb')"></el-image>
+    <section v-if="user.role=='consumer'">
+      <p class="my-code">我的推荐码</p>
+      <div class="flex-cc qrcode-box">
+        <div class="qrcode"
+            ref="qrCodeUrl"></div>
+      </div>
+      <div class="howto">如何推荐好友</div>
+    </section>
     <div class="flex-hbc bottom-links"
          v-if="!isCollapse">
       <el-link :underline="false"
@@ -61,7 +63,7 @@ import QRCode from 'qrcodejs2'
 
 export default {
   name: 'sidebar',
-  props: ['menus', 'type'],
+  props: ['menus'],
   data () {
     return {
       activeMenu: '1',
@@ -70,11 +72,15 @@ export default {
     }
   },
   computed: {
-    roomBtn: function () {
+    roomBlue: function () {
       return require('../../../assets/enter-room-btn.png')
     },
+    roomGreen: function () {
+      return require('../../../assets/enter-room-green.png')
+    },
     ...mapGetters([
-      'room'
+      'room',
+      'user'
     ])
   },
   methods: {
@@ -89,12 +95,15 @@ export default {
     }
   },
   mounted () {
-    const qrcode = new QRCode(this.$refs.qrCodeUrl, {
-      text: 'www.baidu.com',
-      colorDark: '#000000',
-      colorLight: '#ffffff',
-      correctLevel: QRCode.CorrectLevel.H
-    })
+    if (this.user.role == 'consumer') {
+      require('@/styles/consumer.scss')
+      const qrcode = new QRCode(this.$refs.qrCodeUrl, {
+        text: 'www.baidu.com',
+        colorDark: '#000000',
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.H
+      })
+    }
     this.minHeight = document.body.clientHeight - (150 + 60 + 20 * 2) + 'px'
     // 刷新页面处理菜单高亮
     const path = this.$route.path

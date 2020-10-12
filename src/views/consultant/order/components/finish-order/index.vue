@@ -110,7 +110,6 @@ import ArbitrationModal from './modal/arbitration'
 import DetailModal from './modal/detail'
 import SmallAvatar from '@/components/SmallAvatar'
 import { ORDER_STATUS } from '@/utils/enums'
-import { queryConsumerByOrderId } from '@/api/order'
 
 export default {
   name: 'finish-order',
@@ -157,17 +156,9 @@ export default {
     handleDateChange(v) {
       this.search.curIndex = -1
     },
-    async handleOpenDetail(order) {
+    handleOpenDetail(order) {
       this.isShowDetail = true
-      const l = this.loading()
-      const res = await queryConsumerByOrderId({ orderId: order.orderId }).catch(e => l.close())
-      if (res.result) {
-        const { complaint, evaluation, ...restOrder } = order
-        const { highestEducation, ...restBasic }  = res.msg.basic
-        this.order = { complaintTitle: complaint.title, complaintContent: complaint.content,
-            ...evaluation,...restOrder,...restBasic, ...highestEducation }
-      }
-      l.close()
+      this.order = order
     },
     handleCloseDetail () {
       this.isShowDetail = false

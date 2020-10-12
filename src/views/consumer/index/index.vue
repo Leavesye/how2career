@@ -28,12 +28,9 @@
             <li>{{o.rest}}</li>
             <li class="flex-hb">
               <el-button type="success"
-                         size="small"
                          v-if="o.status==5"
                          @click="linkTo('/consumer/room/'+o.orderId)">进入房间</el-button>
-              <el-button size="small"
-                         plain
-                         type="success">订单详情</el-button>
+              <el-button plain >订单详情</el-button>
             </li>
           </ul>
         </div>
@@ -165,6 +162,8 @@ $color: #36ae82;
 .list-item {
   padding: 14px 0;
   border-bottom: 1px solid #edeeef;
+  font-size: 14px;
+  color:#7c8ea5;
 }
 .title {
   font-size: 16px;

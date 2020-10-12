@@ -29,9 +29,9 @@ export default {
     return {
       curPay: '',
       pays: [
-        {img: '', },
-        {img: '', },
-        {img: '', },
+        {img: require('@/assets/weixin.png') },
+        {img: require('@/assets/zhifubao.png')},
+        {img: require('@/assets/paypal.png')},
       ]
     }
   },
@@ -66,7 +66,7 @@ export default {
 }
 .pay-img {
   display: block;
-  width: 60px;
-  height: 60px;
+  width: 70px;
+  height: 70px;
 }
 </style>

@@ -21,8 +21,8 @@
         <div>{{o.name}}</div>
       </div>
       <div class="flex-he">
-        <el-button type="success" plain size="small" @click="handelOpenCancel(o.orderId)">订单取消</el-button> 
-        <el-button type="success" plain size="small" @click="handelPayOrder(o.orderId)">订单支付</el-button> 
+        <el-button plain @click="handelOpenCancel(o.orderId)">订单取消</el-button> 
+        <el-button type="success" @click="handelPayOrder(o.orderId)">订单支付</el-button> 
       </div>
     </div>
   </section>
@@ -114,6 +114,7 @@ export default {
   color: #7C8EA5;
   padding-bottom: 16px;
   border-bottom: 1px solid #EDEEEF;
+  margin-bottom: 20px;
 }
 .order-no {
   margin-right: 20px;

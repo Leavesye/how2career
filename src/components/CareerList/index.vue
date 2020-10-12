@@ -7,8 +7,6 @@
       <h1>Google</h1>
       <p>由拉里·佩奇和谢尔盖·布林共同创建，被公认为全球最大的搜索引擎公司。谷歌是一家位于美国的跨国科技企业，业务包括互联网搜索…</p>
       <el-button class="learn-more"
-                  size="small"
-                  type="success"
                   plain>了解更多</el-button>
     </li>
   </ul>

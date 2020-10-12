@@ -15,39 +15,8 @@
       <calendar @set-time="handleSetTime" :change="isShow"></calendar>
     </div>
     <p v-if="false" class="select-other" @click="toggleTimePicker">选择其他时间<i :class="[isShowCalendar?'el-icon-arrow-up':'el-icon-arrow-down']"></i></p>
-    <div class="flex info-box" v-if="false">
-      <div class="head">
-        <div></div>
-        <p class="role">咨询者</p>
-        <p class="name">马里奥大叔</p>
-      </div>
-      <div class="info">
-        <div class="info-item">
-          <div class="title">最高学历</div>
-          <p class="desc">电子工程</p>
-        </div>
-        <div class="info-item">
-          <div class="title">最高学历</div>
-          <p class="desc">电子工程</p>
-        </div>
-        <div class="info-item">
-          <div class="title">最高学历</div>
-          <p class="desc">电子工程</p>
-        </div>
-        <div class="info-item">
-          <div class="title">最高学历</div>
-          <p class="desc">电子工程</p>
-        </div>
-        <div class="info-item">
-          <div class="title">最高学历</div>
-          <p class="desc">电子工程</p>
-        </div>
-        <div class="info-item">
-          <div class="title">最高学历</div>
-          <p class="desc">电子工程</p>
-        </div>
-      </div>
-    </div>
+    <!-- 咨询者详情 -->
+    <consumer-info v-if="isShow" :order="order"></consumer-info>
   </section>
   <span slot="footer" class="dialog-footer">
     <el-button :loading="isLoading" size="small" type="primary" @click="handleCancel">订单取消</el-button>
@@ -60,11 +29,13 @@
 import Calendar from '@/components/Calendar'
 import { updateTime, cancelOrder } from '@/api/order'
 import moment from 'moment'
+import ConsumerInfo from '@/components/ConsumerInfo'
 
 export default {
   props: ['isShow', 'order'],
   components: {
-    Calendar
+    Calendar,
+    ConsumerInfo
   },
   data () {
     return {

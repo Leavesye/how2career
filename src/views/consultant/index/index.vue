@@ -84,7 +84,7 @@
             <el-button type="primary"
                         v-if="o.status=='5'"                      
                        @click="linkTo('/consultant/room/'+o.orderId)">进入房间</el-button>
-            <el-button @click="handleOpenDetail(o)">订单详情</el-button>
+            <el-button plain @click="handleOpenDetail(o)">订单详情</el-button>
           </li>
         </ul>
         <div class="more"
@@ -99,12 +99,10 @@
             <small-avatar :imgUrl="o.avatar"></small-avatar>
             <div>{{o.name}}</div>
           </li>
-          <li>开始时间: {{o.startTime}}</li>
+          <li>创建时间: {{o.cTime}}</li>
           <li>{{o.confirmCountDown}}</li>
           <li class="flex-hb">
-            <el-button type="primary"
-                       @click="linkTo('/consultant/room/'+o.orderId)">进入房间</el-button>
-            <el-button @click="handleOpenDetail(o)">订单详情</el-button>
+            <el-button plain @click="handleOpenDetail(o)">订单详情</el-button>
           </li>
         </ul>
         <div class="more"
@@ -318,6 +316,8 @@ $color: #15479e;
   margin-bottom: 20px;
 }
 .list-item {
+  font-size: 14px;
+  color:#7c8ea5;
   padding: 14px 0;
   border-bottom: 1px solid #edeeef;
 }
@@ -325,6 +325,7 @@ $color: #15479e;
   font-size: 14px;
   color: $color;
   margin-bottom: 20px;
+  font-weight: 600;
 }
 .avatar {
   margin-right: 10px;
@@ -337,5 +338,6 @@ $color: #15479e;
   font-size: 14px;
   margin-top: 18px;
   cursor: pointer;
+  font-weight: 400;
 }
 </style>

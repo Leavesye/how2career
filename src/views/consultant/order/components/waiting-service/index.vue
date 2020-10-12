@@ -22,9 +22,8 @@
           <div style="margin-bottom: 10px; text-align: right">订单金额:{{immediatelyOrder.price}} RMB</div>
           <div class="flex-he">
             <el-button type="primary"
-                       size="small"
                        @click="handleEnterRoom(immediatelyOrder.orderId)">进入房间</el-button>
-            <el-button size="small"
+            <el-button plain
                        @click="handleOpenDetail(immediatelyOrder)">订单详情</el-button>
           </div>
         </li>
@@ -52,8 +51,7 @@
           <li>
             <div style="margin-bottom: 10px; text-align: right">订单金额:{{o.price}} RMB</div>
             <div class="flex-he">
-              <el-button size="mini"
-                         @click="handleOpenDetail(o)">订单详情</el-button>
+              <el-button plain @click="handleOpenDetail(o)">订单详情</el-button>
             </div>
           </li>
         </ul>

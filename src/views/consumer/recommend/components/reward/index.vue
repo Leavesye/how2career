@@ -1,6 +1,6 @@
 <template>
   <section style="padding: 30px">
-    <el-image src=""
+    <el-image :src="banner"
               class="banner"></el-image>
     <el-card>
       <!-- 搜索条件 -->
@@ -48,6 +48,11 @@ export default {
   components: {
     QuickTable,
     TimePicker
+  },
+  computed: {
+    banner: function() {
+      return require('@/assets/invite.png')
+    }
   },
   data () {
     return {

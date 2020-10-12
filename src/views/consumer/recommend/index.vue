@@ -1,6 +1,6 @@
 <template>
   <div>
-    <component v-bind:is="'reward-page'" />
+    <component v-bind:is="'explain-page'" />
   </div>
 </template>
 

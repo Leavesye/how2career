@@ -24,7 +24,7 @@
               <span>职位: {{info.position}}</span>
             </div>
             <h1 class="time-title">候选预约时间</h1>
-            <ul class="book-times flex-hb">
+            <ul class="book-times flex-hs">
               <li v-for="(item, i) in info.times"
                   :key="i">
                 {{item}}
@@ -236,12 +236,13 @@ export default {
 }
 .book-times li {
   position: relative;
-  padding: 0 10px;
+  padding: 0 4px;
   height: 32px;
   line-height: 32px;
   text-align: center;
   background: #edeeef;
   border-radius: 4px;
+  margin-right: 10px;
 }
 .book-times li i {
   position: absolute;

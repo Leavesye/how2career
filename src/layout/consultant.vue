@@ -3,7 +3,7 @@
     <navbar></navbar>
     <section class="app-main flex">
       <!-- 侧边栏 -->
-      <side-bar :menus="menus" :type="2" />
+      <side-bar :menus="menus" />
       <!-- 页面路由 -->
       <transition name="fade-transform"
                   mode="out-in">
@@ -42,7 +42,13 @@ export default {
   }
 }
 </script>
-
+<style>
+.el-button--default.el-button.is-plain:hover{
+  background: #FFFFFF;
+  border-color: #15479E;
+  color: #15479E;
+}
+</style>
 <style lang="scss" scoped>
 .app-main {
   width: 1180px;

@@ -11,9 +11,10 @@
       <div class="user-role">{{item.role}}</div>
       <p class="user-desc">{{item.desc}}</p>
       <div class="flex-hbc">
-        <h1 class="rate-count">评价: {{item.rateCount}}</h1>
-        <el-button size="mini"
-                   plain
+        <h1 class="rate-count flex-vc"><i class="iconfont icondianping-01"></i>
+          <div style="margin-left: 4px">{{item.rateCount}}</div>
+        </h1>
+        <el-button plain
                    @click="handleClick(item.btn.cb)">{{item.btn.name}}</el-button>
       </div>
     </li>

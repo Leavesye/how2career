@@ -1,10 +1,10 @@
 <template>
   <section style="padding: 30px">
-    <el-image src=""
+    <el-image :src="banner"
               class="banner"></el-image>
     <div class="flex-hc content">
-      <el-image class="content-img"
-                src=""></el-image>
+      <el-image class="content-img friends"
+                :src="friends"></el-image>
       <div class="content-main" style="margin-left: 50px">
         <h1>邀请人奖励</h1>
         <p>邀请越多奖励越多</p>
@@ -17,8 +17,8 @@
         <p>注册有奖 成单第一笔也有奖励哟</p>
         <section>提供精准、高效、应用广泛的语音识别API，让用户的设备随时随地获得领跑业界的语音转文字能力，提高沟通效率、助力人机交互。</section>
       </div>
-      <el-image class="content-img"
-                src=""></el-image>
+      <el-image class="content-img report"
+                :src="report"></el-image>
     </div>
     <terms :isShow="isShow" @close="handleClose"></terms>
   </section>
@@ -28,12 +28,21 @@
 import Terms from './modal/terms'
 export default {
   components: {Terms},
-  mounted () {
-  },
   data () {
     return {
       isShow: true,
     }
+  },
+  computed: {
+    banner: function() {
+      return require('@/assets/invite.png')
+    },
+    friends: function() {
+      return require('@/assets/friends.png')
+    },
+    report: function() {
+      return require('@/assets/report.png')
+    },
   },
   methods: {
     handleClose() {
@@ -76,5 +85,13 @@ $color: #36ae82;
   font-size: 18px;
   color: #434D57;;
   font-weight: 300;
+}
+.friends {
+  width: 267px;
+  height: 264px
+}
+.report {
+  width: 355px;
+  height: 267px
 }
 </style>

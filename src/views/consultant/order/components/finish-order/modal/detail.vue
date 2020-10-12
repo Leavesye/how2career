@@ -25,44 +25,22 @@
       </div>
       <p class="desc-p">评价说明：{{order.content}}</p>
     </div>
-    <div class="flex info-box" v-if="true">
-      <div class="head">
-        <avatar :imgUrl="order.avatarImage"></avatar>
-        <p class="role">咨询者</p>
-        <p class="name">{{order.name}}</p>
-      </div>
-      <div class="info">
-        <div class="info-item">
-          <div class="title">最高学历</div>
-          <p class="desc">{{ order.country + ' ' + order.school + ' ' + order.discipline }}</p>
-        </div>
-        <div class="info-item">
-          <div class="title">自我简介</div>
-          <p class="desc">{{order.selfIntroduction}}</p>
-        </div>
-        <div class="info-item">
-          <div class="title">咨询问题</div>
-          <p class="desc" v-for="(item, i) in order.question" :key="i">{{item}}</p>
-        </div>
-      </div>
-    </div>
+    <!-- 咨询者详情 -->
+    <consumer-info v-if="isShowDetail" :order="order"></consumer-info>
   </section>
   <span slot="footer" class="dialog-footer">
-    <el-button size="small" type="primary" @click="handleClose">关闭</el-button>
+    <el-button type="primary" @click="handleClose">关闭</el-button>
   </span>
 </el-dialog>
 </template>
 
 <script>
-import Avatar from '@/components/Avatar'
+import ConsumerInfo from '@/components/ConsumerInfo'
+
 export default {
   props: ['isShowDetail', 'order'],
   components: {
-    Avatar
-  },
-  data () {
-    return {
-    }
+    ConsumerInfo
   },
   methods: {
     handleClose() {
@@ -106,39 +84,6 @@ export default {
   line-height: 60px;
   color: #15479E;
   cursor: pointer;
-}
-.info-box {
-  padding-top: 30px;
-  border-top: 1px solid #EDEEEF;
-}
-.head {
-  margin-right: 34px;
-  margin-left: 30px;
-  text-align: center;
-}
-.head > div {
-  width: 90px;
-  height: 90px;
-  background: #D8D8D8;
-  box-shadow: 0px 2px 8px 0px rgba(21, 71, 159, 0.4);
-  border: 6px solid #FFFFFF;
-  border-radius: 50%;
-  margin-bottom: 10px;
-}
-.info {
-  flex: 1;
-  height: 200px;
-  overflow: auto;
-}
-.info-item {
-  margin-bottom: 15px;
-}
-.name {
-  font-size: 16px;
-  margin-bottom: 10px;
-}
-.title {
-  color: #15479E;
 }
 .rate {
   margin-bottom: 15px;

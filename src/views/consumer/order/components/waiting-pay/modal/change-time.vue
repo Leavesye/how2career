@@ -11,7 +11,7 @@
       <div>创建时间: {{order.cTime}}</div>
     </div>
     <p class="time">咨询备选时间 (北京时间)：</p>
-    <ul class="flex-hb">
+    <ul class="flex">
       <li class="time-item" v-for="(o, i) in order.consumerTime" :key="i">
         {{o.text}}
       </li>
@@ -85,12 +85,13 @@ export default {
   margin-bottom: 15px;
 }
 .time-item {
-  padding: 0 10px;
+  padding: 0 4px;
   height: 32px;
   line-height: 32px;
   text-align: center;
   border-radius: 4px;
   border: 1px solid #E0E0E0;
+  margin-right: 10px;
 }
 .select-other {
   text-align: center;

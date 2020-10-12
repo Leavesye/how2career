@@ -15,8 +15,10 @@
           <div class="flex-hbc rate-box"
                @click="showRateDetail">
             <el-rate disabled
-                     v-model="rate"></el-rate>
-            <p>评价:234</p>
+                     v-model="info.rate"></el-rate>
+            <h1 class="rate-count flex-vc"><i class="iconfont icondianping-01"></i>
+              <div style="margin-left: 4px">{{info.rateCount}}</div>
+            </h1>
           </div>
           <p class="motto">{{info.selfIntroduction}}</p>
           <div class="flex-hb">

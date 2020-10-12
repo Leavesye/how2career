@@ -15,7 +15,7 @@
             <div class="user-name">{{o.name}}</div>
           </div>
           <div>{{o.confirmCountDown}}</div>
-          <el-button size="mini"
+          <el-button plain
                      @click="handleOpenDetail(o)">订单详情</el-button>
         </div>
       </section>
@@ -45,7 +45,6 @@
 <script>
 import Detail from './modal/detail'
 import SmallAvatar from '@/components/SmallAvatar'
-import { queryConsumerByOrderId } from '@/api/order'
 
 export default {
   name: 'waiting-confirm',
@@ -66,10 +65,7 @@ export default {
     },
     async handleOpenDetail (order) {
       this.isShow = true
-      const l = this.loading()
-      const res = await queryConsumerByOrderId({orderId: order.orderId}).catch(e=> l.close())
       this.order = order
-      l.close()
     },
     handleCloseDetail (isConfirm) {
       this.isShow = false

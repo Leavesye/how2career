@@ -129,7 +129,6 @@ export default {
 }
 .confirm-time {
   margin-top: 15px;
-  margin-bottom: 20px;
   color: #7C8EA5;
   font-size: 14px;
 }

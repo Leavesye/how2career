@@ -1,6 +1,6 @@
 <template>
   <section style="padding: 30px">
-    <el-image src=""
+    <el-image :src="banner"
               class="banner"></el-image>
     <!-- 状态面板 -->
     <div class="pannel flex-hb">
@@ -49,7 +49,10 @@ export default {
     TimePicker,
     BarChart
   },
-  mounted () {
+  computed: {
+    banner: function() {
+      return require('@/assets/invite.png')
+    }
   },
   data () {
     return {
