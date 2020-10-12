@@ -63,7 +63,7 @@
       </div>
       <el-card class="calendar-card">
         <h1>可预约时间表(北京时间)</h1>
-        <calendar @set-time="handleSetTime" :order="order">
+        <calendar @set-time="handleSetTime" :order="order" @init-data="handleInitData">
           <el-button class="appintment-btn"
                    :type="user.role=='consumer'? 'success': 'primary'"
                    @click="handleCreateOrder">预约单生成</el-button>
@@ -103,7 +103,8 @@ export default {
       checked: false,
       isConfirm: false,
       rateList: [],
-      order: { consultantId: this.id }
+      order: { consultantId: this.id },
+      availableTime: null
     }
   },
   computed: {
@@ -111,41 +112,40 @@ export default {
       'user'
     ])
   },
-  async created () {
-    const l = this.loading()
-    const res = await getPublicInfo({ userId: this.id }).catch(e => l.close())
-    if (res.result && res.msg.publicInfo) {
-      this.publicInfo = res.msg.publicInfo
-      const o = res.msg.publicInfo
-      let { school, discipline, degree, graduationTime } = o.resume.education[0]
-      const { industry, company, position, duty } = o.resume.workExperience[0]
-      // 评分
-      let rate = o.evaluationPoint > 0 ? o.evaluationPoint / o.evaluationCount : 0
-      // 工作年限
-      let works = o.resume.workExperience
-      let lastTime = works[0].resignationTime
-      lastTime = lastTime ? moment(lastTime).valueOf() : moment().valueOf()
-      let workingYears = Math.ceil((lastTime - moment(works[works.length-1].entryTime).valueOf()) / (365*24*60*60*1000))
-      this.info = {
-        price: res.msg.price,
-        nickName: o.nickName,
-        avatarImage: o.avatarImage,
-        selfIntroduction: o.selfIntroduction,
-        rateCount: o.evaluationCount,
-        totalRate: o.evaluationPoint,
-        rate,
-        highEdu: `${school} ${discipline} ${degree} ${moment(graduationTime).format('YYYY年毕业')}`,
-        industry,
-        company,
-        position,
-        duty,
-        workingYears,
-        skills: o.resume.skills.toString()
-      }
-    }
-    l.close()
-  },
   methods: {
+    // 避免重复调用接口 由子组件初始化页面数据
+    handleInitData(res){
+      if (res.result && res.msg.publicInfo) {
+        this.publicInfo = res.msg.publicInfo
+        const o = res.msg.publicInfo
+        this.availableTime = o.availableTime
+        let { school, discipline, degree, graduationTime } = o.resume.education[0]
+        const { industry, company, position, duty } = o.resume.workExperience[0]
+        // 评分
+        let rate = o.evaluationPoint > 0 ? o.evaluationPoint / o.evaluationCount : 0
+        // 工作年限
+        let works = o.resume.workExperience
+        let lastTime = works[0].resignationTime
+        lastTime = lastTime ? moment(lastTime).valueOf() : moment().valueOf()
+        let workingYears = Math.ceil((lastTime - moment(works[works.length-1].entryTime).valueOf()) / (365*24*60*60*1000))
+        this.info = {
+          price: res.msg.price,
+          nickName: o.nickName,
+          avatarImage: o.avatarImage,
+          selfIntroduction: o.selfIntroduction,
+          rateCount: o.evaluationCount,
+          totalRate: o.evaluationPoint,
+          rate,
+          highEdu: `${school} ${discipline} ${degree} ${moment(graduationTime).format('YYYY年毕业')}`,
+          industry,
+          company,
+          position,
+          duty,
+          workingYears,
+          skills: o.resume.skills.toString()
+        }
+      }
+    },
     handleSetTime(times) {
       this.times = times
     },

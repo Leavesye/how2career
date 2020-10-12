@@ -79,6 +79,7 @@ export default {
     if (res.result) {
       const { publicInfo: { availableTime }} = res.msg
       this.events = availableTime
+      this.$emit('init-data', res)
     }
     this.isLoaded = true
     l.close()
