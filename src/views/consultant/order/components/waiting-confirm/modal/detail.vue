@@ -17,15 +17,15 @@
       </li>
     </ul>
     <div v-if="isShowCalendar">
-      <calendar @set-time="handleSetTime"></calendar>
+      <calendar v-if="isShow" @set-time="handleSetTime" :order="order"></calendar>
     </div>
     <p class="select-other" @click="toggleTimePicker">选择其他时间<i :class="[isShowCalendar?'el-icon-arrow-up':'el-icon-arrow-down']"></i></p>
     <!-- 咨询者详情 -->
     <consumer-info v-if="isShow" :order="order"></consumer-info>
   </section>
   <span slot="footer" class="dialog-footer">
-    <el-button :loading="isLoading" size="small" type="primary" v-if="times.length" @click="handleUpdateTime">提交等待咨询者确认</el-button>
-    <el-button :loading="isLoading" size="small" type="primary" v-else @click="handleConfirmTime">确认时间</el-button>
+    <el-button :loading="isLoading" type="primary" v-if="times.length" @click="handleUpdateTime">提交等待咨询者确认</el-button>
+    <el-button :loading="isLoading" type="primary" v-else @click="handleConfirmTime">确认时间</el-button>
   </span>
 </el-dialog>
 </template>

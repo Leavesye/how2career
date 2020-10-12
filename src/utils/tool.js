@@ -31,12 +31,14 @@ function getCondition(status) {
 }
 function formatConsultantOrder (list) {
   return list.map(o => {
-    const { avatar, name, readme } =  o.consultant
+    const { _id: consultantId } =  o.consultant
     // 倒计时时间计算
     let confirmCountDown = getCountDown(o.confirmTimeout)
     let serviceCountDown = getCountDown(o.startTime)
     
     return {
+      consultantId,
+      consumerId: o.consumer,
       orderId: o._id,
       avatar: process.env.VUE_APP_HOST_NAME + o.consumerAvatar,
       name: o.consumerNickName,
@@ -71,28 +73,17 @@ function formatConsultantOrder (list) {
 function formatConsumerOrder (list) {
   return list.map(o => {
     const { _id, roomId, cTime, startTime, consumerTime, consultantTime,
-      price, status, evaluation, question, consultant } = o
-    const { work, education } = consultant
-    let rest = ''
-    // 倒计时时间计算
-    if (o.startTime) {
-        const countdown = o.startTime*1000 - moment().valueOf()
-        if (countdown > 0) {
-          let times = countdown/(3600*1000)
-          let hours = Math.floor(times)
-          let mintus = Math.ceil((times - hours)*60)
-          rest = `还有${hours}小时${mintus}分开始`
-        } else {
-          rest = '已过期'
-        }
-    }
+      price, status, evaluation, question, consultant:
+      { name, readme, work, education, _id: consultantId, avatar } } = o
+    let rest = getCountDown(o.startTime)
     return {
       ...work,
       ...education,
       orderId: _id,
-      avatar: process.env.VUE_APP_HOST_NAME + consultant.avatar,
-      name: consultant.name,
-      readme: consultant.readme,
+      consultantId,
+      avatar: process.env.VUE_APP_HOST_NAME + avatar,
+      name,
+      readme,
       roomId,
       rest,
       startTime: moment(startTime * 1000).format('YYYY-MM-DD HH:mm:ss'),

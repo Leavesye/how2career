@@ -12,7 +12,7 @@
     </div>
     <p class="time">原咨询时间 (北京时间):{{order.startTime}}</p>
     <div>
-      <calendar @set-time="handleSetTime" :change="isShow"></calendar>
+      <calendar v-if="isShow" :order="order" @set-time="handleSetTime"></calendar>
     </div>
     <p v-if="false" class="select-other" @click="toggleTimePicker">选择其他时间<i :class="[isShowCalendar?'el-icon-arrow-up':'el-icon-arrow-down']"></i></p>
     <!-- 咨询者详情 -->

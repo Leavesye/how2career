@@ -1,8 +1,8 @@
 <template>
   <el-row style="margin-top: 20px">
     <el-col :span="16">
-      <scheduler @open-timepicker="openTimepicker"
-                 mode="view"></scheduler>
+      <scheduler v-if="isLoaded" @open-timepicker="openTimepicker"
+                 mode="view" :events="events" :consultantId="order.consultantId"></scheduler>
     </el-col>
     <el-col :span="8">
       <div class="time-list">
@@ -46,10 +46,11 @@
 <script>
 import { mapGetters } from 'vuex'
 import Scheduler from '@/components/Scheduler'
+import { getPublicInfo } from '@/api/user'
 
 export default {
   name: 'calendar',
-  props: ['change'],
+  props: ['order'],
   components: {
     Scheduler
   },
@@ -58,7 +59,9 @@ export default {
       selectTime: '',
       isShow: false,
       usables: [],
-      selList: []
+      selList: [],
+      isLoaded: false,
+      events: []
     }
   },
   computed: {
@@ -66,16 +69,19 @@ export default {
       'user'
     ])
   },
-  watch: {
-    'change': function(n, o) {
-      // 关闭弹窗清空状态
-      if (!n) {
-        this.isShow = false
-        this.selList = []
-        this.usables = []
-        this.selectTime = ''
-      }
+  async created() {
+    this.isLoaded = false
+    const l = this.loading()
+    const res = await getPublicInfo({ userId: this.order.consultantId }).catch(e=>{
+      l.close()
+      this.isLoaded = true
+    })
+    if (res.result) {
+      const { publicInfo: { availableTime }} = res.msg
+      this.events = availableTime
     }
+    this.isLoaded = true
+    l.close()
   },
   methods: {
     openTimepicker (list, selectDate) {

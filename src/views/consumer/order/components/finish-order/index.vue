@@ -24,7 +24,7 @@
         </li>
       </ul>
       <div class="flex-he btns" v-if="o.status=='7' && o.question && o.question.length">
-        <el-button size="small" plain type="success" @click="handleOpenQuestion(o)">咨询问题</el-button>
+        <el-button plain @click="handleOpenQuestion(o)">咨询问题</el-button>
       </div>
     </el-card>
     <!-- 分页 -->

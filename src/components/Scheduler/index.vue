@@ -29,15 +29,9 @@ loadCldr(
   require('cldr-data/main/zh/numbers.json'),
   require('cldr-data/main/zh/timeZoneNames.json')
 )
-let events = []
-// 必须同步方式获取数据 否则无法回显
-const res = getUserInfoSync()
-if (res.result) {
-  events =  (res.msg.publicInfo && res.msg.publicInfo.availableTime) || []
-}
 export default {
   name: 'scheduler',
-  props: ['mode'],
+  props: ['mode', 'events', 'consultantId'],
   provide: {
     schedule: [Day, Week, WorkWeek, Month, Agenda]
   },
@@ -60,7 +54,7 @@ export default {
         slotCount: 1
       },
       eventSettings: { 
-        dataSource: events,
+        dataSource: this.events,
          fields: {
             subject: { name: 'Subject', default: '咨询可预约时间' },
         },
@@ -107,13 +101,11 @@ export default {
               return false
             }
             const selectDate = moment(currentDate).format('YYYY-MM-DD')
-            // 咨询师 or 咨询者打开 取userId
-            let id = this.user.role == 'consultant' ? this.user.userId : '搜索到的咨询师userId'
             // 获取咨询师该天已经被预约的时间列表
-            let ret = await getAppointmentedTimes({ userId: id })
+            let ret = await getAppointmentedTimes({ userId: this.consultantId })
             let useds = ret.result ? (ret.msg || []) : []
             const selectDayUseds = useds.filter(o => moment(o).format('YYYY-MM-DD') == selectDate)
-            let all = events.filter(o => moment(o.StartTime).format('YYYY-MM-DD') == selectDate)
+            let all = this.events.filter(o => moment(o.StartTime).format('YYYY-MM-DD') == selectDate)
             let usables = all.filter(o => !useds.includes(moment(o.StartTime).valueOf()))
             // 可使用的时间列表
             usables = usables.map(o => {
@@ -148,19 +140,11 @@ export default {
       l.close()
     },
     createEvent (event) {
-      events.push(event)
-      this.saveEvent(events)
+      this.events.push(event)
+      this.saveEvent(this.events)
     },
-    // 重复发生的事件
-    // 在这种情况下，修改后的数据应包含一个附加字段，即RecurrenceID映射到其父定期事件的Id值。
-    // 同样，此修改的事件将被视为Scheduler数据源中的新事件，在此它通过RecurrenceID字段值与其父事件链接。
-    // 该saveEvent方法采用2个参数，第一个参数接受修改后的事件数据对象，第二个参数接受2个文本值-EditOccurrence或EditSeries。
-    // 当第二个参数传递为时EditOccurrence，表示传递的事件数据是单个已修改的事件；而第二个参数传递为时EditSeries，
-    // 则意味着修改后的数据需要作为一个整体进行编辑，因此没有新的事件对象将保留在Scheduler数据源中。
-    // 在修改单个事件的情况下，还必须RecurrenceException与事件编辑一起更新父事件的字段。
-    // 要了解有关如何设置RecurrenceException值的更多信息，请参阅重复事件主题。
     updateEvent (e) {
-      let list = events
+      let list = this.events
       // 编辑重复发生事件中的单事件
       // 1.插入此单事件RecurrenceID关联到父  2.父事件加入RecurrenceException字段关联子
       const changeEvent = e.changedRecords[0]
@@ -196,11 +180,11 @@ export default {
           return o
         })
       }
-      events = list
-      this.saveEvent(events)
+      this.events = list
+      this.saveEvent(this.events)
     },
     deleteEvent (e) {
-      let list = events
+      let list = this.events
       const delRecords = e.deletedRecords
       let change = e.changedRecords[0]
       // 删除普通事件
@@ -232,8 +216,8 @@ export default {
           list = list.filter(o => o.RecurrenceID != change.Id)
         }
       }
-      events = list
-      this.saveEvent(events)
+      this.events = list
+      this.saveEvent(this.events)
     },
   },
   mounted () {

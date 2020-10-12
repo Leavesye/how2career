@@ -16,7 +16,7 @@
         {{o.text}}
       </li>
     </ul>
-    <calendar @set-time="handleSetTime" :change="isShow">
+    <calendar v-if="isShow" @set-time="handleSetTime" :order="order">
       <el-button style="margin-top:40px" :loading="isLoading" size="small" type="success" @click="handleConfirmTime">确认调整</el-button>
     </calendar>
   </section>

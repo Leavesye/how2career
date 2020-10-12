@@ -18,9 +18,7 @@
         <li>
           <div class="order-amount">订单金额：{{o.price}}RMB</div>
           <div class="flex-he">
-            <el-button size="small"
-                       plain
-                       type="success"
+            <el-button plain
                        @click="handleOpenChange(o)">时间调整</el-button>
           </div>
         </li>
@@ -35,28 +33,21 @@
                     size="medium"
                     v-model="item.v" :maxLength="100"></el-input>
           <el-button class="op-btn"
-                     size="small"
                      @click="handleRemoveQuestion(i, index)">删除</el-button>
         </li>
       </ul>
       <el-button type="success"
                  plain
-                 size="small"
                  @click="handleAddQuestion(i)">+添加问题</el-button>
       <el-button :loading="isLoading"
                  type="success"
                  plain
-                 size="small"
                  v-if="o.question.length"
                  @click="handleSaveQuestion(o)">保存</el-button>
       <div class="flex-he btns">
-        <el-button size="small"
-                   plain
-                   type="success"
+        <el-button plain
                    @click="handleOpenCancel(o)">订单取消</el-button>
-        <el-button size="small"
-                   plain
-                   type="success"
+        <el-button type="success"
                    @click="handleEnterRoom(o.orderId)">进入房间</el-button>
       </div>
     </el-card>

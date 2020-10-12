@@ -90,7 +90,7 @@ export default {
         "limit": "3",
         "condition": "status==4:status==5"
       }),
-      getOrdersCount({ condition: "status==2:status==4:status==7" })
+      getOrdersCount({ condition: "status==1:status==4:status==7" })
     ]).catch(e => l.close())
     if (res[0].result) {
       this.list = tool.formatConsumerOrder(res[0].msg.list)

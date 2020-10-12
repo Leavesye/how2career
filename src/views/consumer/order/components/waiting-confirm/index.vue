@@ -31,8 +31,8 @@
     <div class="flex-he btns" v-if="o.status=='3'">
       <!-- 后台自动赔偿  暂时不用 -->
       <!-- <el-button size="small" type="success" plain>获取补偿金</el-button> -->
-      <el-button :loading="isLoading" size="small" type="success" plain @click="handleOpenChange(o)">更换咨询师</el-button>
-      <el-button :loading="isLoading" size="small" type="success" plain @click="handleConfirmTime(o)">接受时间调整</el-button>
+      <el-button :loading="isLoading" plain @click="handleOpenChange(o)">更换咨询师</el-button>
+      <el-button :loading="isLoading"  plain @click="handleConfirmTime(o)">接受时间调整</el-button>
     </div>
   </el-card>
   <!-- 分页 -->

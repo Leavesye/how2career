@@ -27,8 +27,8 @@
         </li>
       </ul>
       <div class="flex-he btns">
-        <el-button size="small" plain type="success" @click="handleOpenComplaint(o)">投诉</el-button>
-        <el-button size="small" plain type="success" @click="handleOpenRate(o)">评价</el-button>
+        <el-button plain @click="handleOpenComplaint(o)">投诉</el-button>
+        <el-button plain @click="handleOpenRate(o)">评价</el-button>
       </div>
     </el-card>
     <!-- 分页 -->

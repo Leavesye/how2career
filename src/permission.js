@@ -25,18 +25,18 @@ router.beforeEach(async(to, from, next) => {
   // 有登录态直接跳转
   if (hasToken) {
     // 切换页面查询即将开始服务的订单
-    getOrders({
-      from: "0",
-      to: "2601444690",
-      page: 0,
-      limit: 10,
-      condition: 'status==5'
-    }).then(res => { 
-      if (res.result && res.msg.count) { 
-        const { roomId, orderId } = res.msg.list[0]
-        store.dispatch('room/setRoom', { roomId, orderId })
-      }
-    })
+    // getOrders({
+    //   from: "0",
+    //   to: "2601444690",
+    //   page: 0,
+    //   limit: 10,
+    //   condition: 'status==5'
+    // }).then(res => { 
+    //   if (res.result && res.msg.count) { 
+    //     const { roomId, orderId } = res.msg.list[0]
+    //     store.dispatch('room/setRoom', { roomId, orderId })
+    //   }
+    // })
     next()
     NProgress.done()
   } else {
