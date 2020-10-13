@@ -68,7 +68,25 @@ export default {
   }
 }
 </script>
-
+<style>
+.menu {
+  width: 504px;
+  display: flex;
+  justify-content: space-around;
+  li {
+    height: 60px;
+    line-height: 60px;
+    text-align: center;     
+    font-size: 14px;
+    color: #fff
+  }
+}
+@media screen and (max-width: 768px) {
+  .menu {
+    display: none;
+  }
+}
+</style>
 <style lang="scss" scoped>
 .navbar {
   position: sticky;
@@ -84,18 +102,6 @@ export default {
       height: 40px;
       background: #fff;
       cursor: pointer;
-    }
-    .menu {
-      width: 504px;
-      display: flex;
-      justify-content: space-around;
-      li {
-        height: 60px;
-        line-height: 60px;
-        text-align: center;     
-        font-size: 14px;
-        color: #fff
-      }
     }
   }
 }
