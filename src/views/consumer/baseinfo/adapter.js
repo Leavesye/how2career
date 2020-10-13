@@ -18,7 +18,9 @@ export function boxing (from) {
         "graduationTime": from.graduationTime,
         "GPA": from.GPA
       }
-    }
+    },
+    "refer": "",
+    "referType": "MGM"
   }
 }
 export function unBoxing (from, to) {

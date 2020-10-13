@@ -40,7 +40,8 @@ router.beforeEach(async(to, from, next) => {
     next()
     NProgress.done()
   } else {
-    if (whiteList.indexOf(to.path) > -1) {
+    const f = whiteList.find(o => to.path.includes(o))
+    if (f) {
       next()
       NProgress.done()
     } else {

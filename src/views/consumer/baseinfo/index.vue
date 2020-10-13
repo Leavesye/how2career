@@ -63,6 +63,8 @@ export default {
     ])
   },
   async created() {
+    // 好友推荐带过来的用户id
+    this.refer = this.$route.query.refer
     // 是否是注册页进来
     this.isReg = this.$route.path.includes('/register/consumer')
     this.isReg && (this.baseInfo.passWord.hide = false)
@@ -114,8 +116,11 @@ export default {
           ...this.$refs.baseInfo.getFormData(),
           ...this.$refs.education.getFormData()
         }
-        console.log(formData, 'formdata')
         const p = adapter.boxing(formData)
+        // 好友推荐注册
+        if (this.isReg && this.refer) {
+          p.refer = this.refer
+        }
         console.log(p, '参数')
         const l = this.loading()
         const fn = this.isReg ? register:updateUserInfo
