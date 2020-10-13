@@ -11,29 +11,19 @@
   <div class="flex-hb">
      <el-checkbox v-model="checked">我已阅读条款</el-checkbox>
      <div>
-       <el-button size="small">取消</el-button>
-       <el-button size="small" type="primary">同意</el-button>
+       <el-button plain @click="handleClose">取消</el-button>
+       <el-button type="success" @click="handleClose">同意</el-button>
      </div>
   </div>
 </el-dialog>
 </template>
 
 <script>
-import { cancelOrder } from '@/api/order'
-
 export default {
   props: ['isShow'],
   data () {
     return {
-      isLoading: false,
-      isRefuse: false
-    }
-  },
-  watch: {
-    'isShow': function(n, o) {
-      if (!n) {
-        this.isRefuse = false
-      }
+      checked: false,
     }
   },
   methods: {

@@ -9,10 +9,8 @@ export default {
     label: '国家',
     rules: [r.required()],
     props: { props: { label: 'text', value: 'value' } },
-    options: [
-      {text:'中国', value: '1'},
-      {text:'美国', value: '2'},
-    ]
+    options: [],
+    events: {}
   },
   school: {
     type: 'select',
@@ -20,10 +18,7 @@ export default {
     label: '学校',
     rules: [r.required()],
     props: { props: { label: 'text', value: 'value' } },
-    options: [
-      {text:'北大', value: '1'},
-      {text:'清华', value: '2'},
-    ]
+    options: []
   },
   discipline: {
     type: 'select',
@@ -31,20 +26,14 @@ export default {
     label: '专业',
     rules: [r.required()],
     props: { props: { label: 'text', value: 'value' } },
-    options: [
-      {text:'计算机', value: '1'},
-      {text:'工商管理', value: '2'},
-    ]
+    options: []
   },
   GPA: {
     type: 'select',
     value: '',
     label: 'GPA',
     props: { props: { label: 'text', value: 'value' } },
-    options: [
-      {text:'70分', value: '1'},
-      {text:'80分', value: '2'},
-    ]
+    options: []
   },
   degree: {
     type: 'select',
@@ -52,10 +41,7 @@ export default {
     label: '学位',
     rules: [r.required()],
     props: { props: { label: 'text', value: 'value' } },
-    options: [
-      {text:'学士', value: '1'},
-      {text:'硕士', value: '2'},
-    ]
+    options: []
   },
   graduationTime: {
     label : '毕业时间' ,

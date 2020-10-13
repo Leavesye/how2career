@@ -161,7 +161,7 @@ import form from './form'
 import eduForm from './form/edu-form'
 import expForm from './form/exp-form'
 import licenseForm from './form/license-form'
-import { getUserInfo, updateUserInfo, getDictss } from '@/api/user'
+import { getUserInfo, updateUserInfo, getDicts } from '@/api/user'
 import mixin from '@/mixins'
 
 const cfg = {
@@ -198,7 +198,7 @@ export default {
   },
   async created () {
     const l = this.loading()
-    let ret = await getDictss()
+    let ret = await getDicts()
     dicts = ret.msg
     let res = await getUserInfo().catch(e => l.close())
     if (res.result) {

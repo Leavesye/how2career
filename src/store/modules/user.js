@@ -120,7 +120,7 @@ const actions = {
   },
   setUser({ commit }, info) {
     info.nickName && commit('SET_NICKNAME', info.nickName)
-    info.avatar && commit('SET_AVATAR', process.env.VUE_APP_HOST_NAME + info.avatar)
+    info.avatar && commit('SET_AVATAR', info.avatar)
     info.userName && commit('SET_USERNAME', info.userName)
     info.role && commit('SET_ROLE', info.role)
   },

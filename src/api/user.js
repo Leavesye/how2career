@@ -120,7 +120,7 @@ export function getFavorites (params) {
   })
 }
 // 查询数据字典
-export function getDictss (params) {
+export function getDicts (params) {
   return request({
     url: `/user/platform/enumerate`,
     method: 'get',

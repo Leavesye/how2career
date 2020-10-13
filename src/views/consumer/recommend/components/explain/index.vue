@@ -55,7 +55,7 @@ export default {
 $color: #36ae82;
 .banner {
   height: 220px;
-  width: 100%;
+  width: 880px;
   margin-bottom: 30px;
 }
 .content {

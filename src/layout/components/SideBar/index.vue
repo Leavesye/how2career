@@ -98,7 +98,7 @@ export default {
     if (this.user.role == 'consumer') {
       require('@/styles/consumer.scss')
       const qrcode = new QRCode(this.$refs.qrCodeUrl, {
-        text: 'www.baidu.com',
+        text: `${process.env.VUE_APP_HOST_NAME}register/consumer?refer=${this.user.userId}`,
         colorDark: '#000000',
         colorLight: '#ffffff',
         correctLevel: QRCode.CorrectLevel.H

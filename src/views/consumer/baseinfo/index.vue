@@ -42,10 +42,11 @@ import * as adapter from './adapter'
 import { register } from '@/api/user'
 import defaultImg from '@/assets/avatar-upload.png'
 import { setToken } from '@/utils/auth'
-import { getUserInfo, updateUserInfo }  from '@/api/user'
+import { getUserInfo, updateUserInfo, getDicts }  from '@/api/user'
 
+// 数据字典
+let dicts = {}
 export default {
-  name: 'consumer-baseinfo',
   mixins: [mixin],
   components: {
     QuickForm,
@@ -70,16 +71,33 @@ export default {
     avatar.props["before-upload"] = (file) => this.uploadBefore(file)
     avatar.props["on-success"] = (res, file) => this.uploadSuccess(res, file, this.uploadCb)
     avatar.render = this.renderUpload
+    this.education.country.events.change = this.handleCountryChange
     if (!this.isReg) {
       const l = this.loading()
+      let ret = await getDicts()
+      dicts = ret.msg
+      this.education.country.options = dicts.countries
+      this.education.discipline.options = dicts.majors
+      this.education.GPA.options = dicts.gpa
+      this.education.degree.options = dicts.degrees
       let res = await getUserInfo().catch( e=> l.close())
       if (res.result) {
+        const {basic:{highestEducation:{country}}} = res.msg
+        if (country) {
+          console.log(country, dicts.countries)
+          this.education.school.options = dicts.countries.find(o => o.value == country).schools
+        }
         adapter.unBoxing(res.msg, this._data)
       }
       l.close()
     }
   },
   methods: {
+    handleCountryChange(v) {
+      const f = dicts.countries.find(o => o.value == v )
+      this.education.school.options = f.schools
+      this.education.school.value = ''
+    },
     handleClickChangePwd() {},
     async handleSave() {
       const keys = Object.keys(form)
@@ -100,12 +118,8 @@ export default {
         const p = adapter.boxing(formData)
         console.log(p, '参数')
         const l = this.loading()
-        let ret = null
-        if (this.isReg) {
-          ret = await register(p).catch(e => l.close())
-        } else {
-          ret = await updateUserInfo(p).catch(e => l.close())
-        }
+        const fn = this.isReg ? register:updateUserInfo
+        const ret = await fn(p).catch(e => l.close())
         if (ret.result) {
           this.alert(this.isReg ? '注册成功' : '保存成功')
           if (this.isReg ) {
