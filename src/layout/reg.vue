@@ -23,7 +23,6 @@ export default {
 
 <style lang="scss" scoped>
 .app-main {
-  width: 940px;
   margin: 20px auto 0;
   padding-bottom: 20px;
   overflow: hidden;
@@ -31,9 +30,5 @@ export default {
 
 .router-view {
   height: auto;
-  width: 940px;
-  background: #FDFDFD;
-  border-radius: 8px;
-  box-sizing: border-box;
 }
 </style>

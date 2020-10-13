@@ -1,36 +1,42 @@
 <template>
-  <section>
-    <h1 class="title">基本信息</h1>
-    <section class="form-box"
-             style="margin-top: 30px">
-      <el-card class="form-card">
-        <div class="flex-vc form-name">
-          <label for="">手机号</label>
-          <p>{{user.userName}}</p>
-        </div>
-        <div class="flex-vc form-name" v-if="!isReg">
-          <label for="">密码</label>
-          <p style="margin-right: 30px">**********</p>
-          <el-button size="small" @click="handleClickChangePwd">修改密码</el-button>
-        </div>
-        <quick-form :model="baseInfo"
-                    labelWidth="140px"
-                    ref="baseInfo"></quick-form>
-      </el-card>
-    </section>
-    <h1 class="title bottom">最高学历</h1>
-    <section class="form-box">
-      <el-card class="form-card">
-        <quick-form :model="education"
-                    labelWidth="140px"
-                    ref="education"></quick-form>
-      </el-card>
-    </section>
-    <div class="flex-he"
-         style="margin: 60px 60px 70px 0">
-      <el-button type="success" @click="handleSave">确定</el-button>
-    </div>
-  </section>
+  <el-row type="flex" justify="center">
+    <el-col class="reg-box" :xs="24" :sm="24" :md="20" :lg="15" :xl="12">
+      <h1 class="title">基本信息</h1>
+      <div class="form-section">
+        <section class="form-box"
+                style="margin-top: 30px">
+          <el-card class="form-card">
+            <div class="flex-vc form-name">
+              <label for="">手机号</label>
+              <p>{{user.userName}}</p>
+            </div>
+            <div class="flex-vc form-name" v-if="!isReg">
+              <label for="">密码</label>
+              <p style="margin-right: 30px">**********</p>
+              <el-button size="small" @click="handleClickChangePwd">修改密码</el-button>
+            </div>
+            <quick-form :model="baseInfo"
+                        labelWidth="80px"
+                        ref="baseInfo"></quick-form>
+          </el-card>
+        </section>
+      </div>
+      <h1 class="title bottom">最高学历</h1>
+      <div class="form-section">
+        <section class="form-box">
+          <el-card class="form-card">
+            <quick-form :model="education"
+                        labelWidth="80px"
+                        ref="education"></quick-form>
+          </el-card>
+        </section>
+      </div>
+      <div class="flex-he"
+          style="margin: 60px 60px 70px 0">
+        <el-button type="success" @click="handleSave">确定</el-button>
+      </div>
+    </el-col>
+  </el-row>
 </template>
 
 <script>
@@ -170,7 +176,23 @@ export default {
   }
 }
 </script>
-
+<style>
+.reg-box {
+  background: #FDFDFD;
+  border-radius: 8px;
+}
+.form-section {
+  padding: 0 70px;
+}
+@media screen and (max-width: 768px) {
+  .form-section {
+    padding: 0 10px;
+  }
+  .el-card__body {
+    padding: 10px;
+  }
+}
+</style>
 <style lang="scss" scoped>
 .title {
   padding: 20px 30px;
@@ -187,8 +209,8 @@ export default {
   padding-top: 30px;
 }
 .form-box {
-  width: 800px;
   margin: 0 auto;
+  padding: 0 10px;
 }
 .form-name {
   font-size: 14px;
@@ -196,7 +218,7 @@ export default {
 }
 .form-name > label {
   color: #7c8ea5;
-  width: 140px;
+  width: 80px;
   text-align: right;
   padding-right: 10px;
   font-weight: 500;
