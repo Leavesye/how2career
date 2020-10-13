@@ -95,3 +95,35 @@ export function getMessage (params) {
     params
   })
 }
+// 收藏咨询师
+export function favorite (data) {
+  return request({
+    url: `/user/platform/consumer/favorite`,
+    method: 'post',
+    data
+  })
+}
+// 删除收藏咨询师
+export function delFavorite (data) {
+  return request({
+    url: `/user/platform/consumer/favorite`,
+    method: 'delete',
+    data
+  })
+}
+// 查询收藏咨询师
+export function getFavorites (params) {
+  return request({
+    url: `/user/platform/consumer/favorite`,
+    method: 'get',
+    params
+  })
+}
+// 查询数据字典
+export function getDictss (params) {
+  return request({
+    url: `/user/platform/enumerate`,
+    method: 'get',
+    params
+  })
+}

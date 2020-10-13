@@ -161,7 +161,7 @@ import form from './form'
 import eduForm from './form/edu-form'
 import expForm from './form/exp-form'
 import licenseForm from './form/license-form'
-import { getUserInfo, updateUserInfo } from '@/api/user'
+import { getUserInfo, updateUserInfo, getDictss } from '@/api/user'
 import mixin from '@/mixins'
 
 const cfg = {
@@ -169,6 +169,7 @@ const cfg = {
   'workExperience': expForm,
   'otherCertificates': licenseForm,
 }
+let dicts = {}
 // 联动表单配置
 const fieldCfg = {
   studentOrganization: 1,
@@ -197,11 +198,14 @@ export default {
   },
   async created () {
     const l = this.loading()
+    let ret = await getDictss()
+    dicts = ret.msg
     let res = await getUserInfo().catch(e => l.close())
     if (res.result) {
       // 简历信息
       const resume = res.msg.publicInfo.resume
       this.initPublicInfo = res.msg.publicInfo || {}
+      // 编辑
       if (resume) {
         const { socialInsuranceImage, gallupCertified, gallupCertifiedImage, language, skills } = resume
         Object.keys(resume).forEach(key => {
@@ -212,6 +216,32 @@ export default {
               let copy = _.cloneDeep(cfg[key])
               this[key].push(copy)
               Object.keys(copy).forEach(k => {
+                // 国家
+                if (k == 'country') {
+                  copy[k].options = dicts.countries
+                  // 联动学校处理
+                  copy.school.options = dicts.countries.find(f => f.value==o[k]).schools
+                }
+                // 专业
+                if (k == 'discipline') {
+                  copy[k].options = dicts.majors
+                }
+                // gpa
+                if (k == 'GPA') {
+                  copy[k].options = dicts.gpa
+                }
+                // 学位
+                if (k == 'degree') {
+                  copy[k].options = dicts.degrees
+                }
+                // 行业
+                if (k == 'industry') {
+                  copy[k].options = dicts.industry
+                }
+                // 公司规模
+                if (k == 'companySize') {
+                  copy[k].options = dicts.companySize
+                }
                 // 联动设置
                 if (k in fieldCfg) {
                   this.handleCheckboxChange(fieldCfg[k], i, o[k])
@@ -231,8 +261,14 @@ export default {
         this.callup.gallupCertifiedImage.value = gallupCertifiedImage
         this.bindThis(this.callup)
         this.handleCheckboxChange(5, '', gallupCertified)
-      } else {
+      } else { // 新增
         // 绑定form表单事件方法this到组件实例 便于后续调用实例方法
+        this.education[0].country.options = dicts.countries
+        this.education[0].discipline.options = dicts.majors
+        this.education[0].GPA.options = dicts.gpa
+        this.education[0].degree.options = dicts.degrees
+        this.workExperience[0].industry.options = dicts.industry
+        this.workExperience[0].companySize.options = dicts.companySize
         this.education[0] = this.bindThis(this.education[0], 0)
         this.workExperience[0] = this.bindThis(this.workExperience[0], 0)
         this.otherCertificates[0] = this.bindThis(this.otherCertificates[0], 0)
@@ -243,9 +279,14 @@ export default {
     l.close()
   },
   methods: {
+    // 国家联动学校
+    handleCountryChange(i, v) {
+      const f = dicts.countries.find(o => o.value == v )
+      this.education[i].school.options = f.schools
+      this.education[i].school.value = ''
+    },
     // 表单联动操作
     handleCheckboxChange (type, index, v) {
-      console.log(type, index, v)
       const o = this.education[index]
       const exp = this.workExperience[index]
       if (type == 1) {

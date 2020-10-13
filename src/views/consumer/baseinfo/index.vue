@@ -28,8 +28,7 @@
     </section>
     <div class="flex-he"
          style="margin: 60px 60px 70px 0">
-      <el-button type="primary"
-                 size="mini" @click="handleSave">确定</el-button>
+      <el-button type="success" @click="handleSave">确定</el-button>
     </div>
   </section>
 </template>
@@ -156,7 +155,7 @@ export default {
 <style lang="scss" scoped>
 .title {
   padding: 20px 30px;
-  color: #15479e;
+  color: #36ae82;
   font-size: 16px;
   border-bottom: 1px solid #edeeef;
 }

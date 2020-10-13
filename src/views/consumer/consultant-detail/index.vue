@@ -12,13 +12,16 @@
         <el-card class="left">
           <avatar :imgUrl="info.avatarImage"></avatar>
           <p class="name">{{info.nickName}}</p>
-          <div class="flex-hbc rate-box"
-               @click="showRateDetail">
-            <el-rate disabled
+          <el-rate style="text-align: center" disabled
                      v-model="info.rate"></el-rate>
-            <h1 class="rate-count flex-vc"><i class="iconfont icondianping-01"></i>
+          <div class="flex-hb icons">
+            <div @click="showRateDetail" class="rate-count flex-vc"><i class="iconfont icondianping-01"></i>
               <div style="margin-left: 4px">{{info.rateCount}}</div>
-            </h1>
+            </div>
+            <div class="favorite flex-vc" @click="handleFavorite">
+              <i class="iconfont" :class="[isFavorite? 'iconyiguanzhu-01 active': 'icontianjiashoucang']"></i>
+              <div style="margin-left: 4px">{{isFavorite?'已收藏': '收藏'}}</div>
+            </div>
           </div>
           <p class="motto">{{info.selfIntroduction}}</p>
           <div class="flex-hb">
@@ -79,12 +82,13 @@
 <script>
 import Avatar from '@/components/Avatar'
 import Calendar from '@/components/Calendar'
-import RateList from './modal/rate-list'
+import RateList from '@/components/RateList'
 import { getPublicInfo } from '@/api/user'
 import { createOrder } from '@/api/order'
 import moment from 'moment'
 import { mapGetters } from 'vuex'
 import { getRateList } from '@/api/consultant'
+import { favorite, delFavorite, getFavorites } from '@/api/user'
 
 export default {
   name: 'consultant-detail',
@@ -98,13 +102,10 @@ export default {
     return {
       info: {},
       times: [],
-      rate: 4,
       isShow: false,
-      checked: false,
-      isConfirm: false,
       rateList: [],
       order: { consultantId: this.id },
-      availableTime: null
+      isFavorite: false
     }
   },
   computed: {
@@ -112,13 +113,18 @@ export default {
       'user'
     ])
   },
+  async created() {
+    const res = await getFavorites()
+    if (res.result) {
+      this.isFavorite = res.msg.list && !!res.msg.list.filter(o => o._id == this.id)
+    }
+  },
   methods: {
     // 避免重复调用接口 由子组件初始化页面数据
     handleInitData(res){
       if (res.result && res.msg.publicInfo) {
         this.publicInfo = res.msg.publicInfo
         const o = res.msg.publicInfo
-        this.availableTime = o.availableTime
         let { school, discipline, degree, graduationTime } = o.resume.education[0]
         const { industry, company, position, duty } = o.resume.workExperience[0]
         // 评分
@@ -145,6 +151,17 @@ export default {
           skills: o.resume.skills.toString()
         }
       }
+    },
+    // 收藏/取消收藏
+    async handleFavorite() {
+      const l = this.loading()
+      const fn = this.isFavorite ? delFavorite: favorite
+      const res = await fn({ consultantId: this.id }).catch(e=> e.close())
+      if (res.result) {
+        this.alert(this.isFavorite ?'取消收藏成功':'收藏成功')
+        this.isFavorite = !this.isFavorite
+      }
+      l.close()
     },
     handleSetTime(times) {
       this.times = times
@@ -190,8 +207,9 @@ export default {
       const res = await getRateList({ consultantId: this.id }).catch(e=> l.close())
       if (res.result) {
         this.rateList = res.msg.map(o => {
-          const { evaluation: { content, point, consultantReply } }  = o
+          const { evaluation: { cTime,content, point, consultantReply } }  = o
           return {
+            cTime: moment(cTime*1000).format('YYYY-MM-DD HH:mm:ss'),
             content,
             point,
             consultantReply
@@ -226,23 +244,36 @@ export default {
   padding: 30px;
 }
 .left {
-  width: 220px;
+  width: 280px;
   color: #7c8ea5;
 }
 .right {
-  width: 640px;
+  width: 580px;
+}
+.icons {
+  width: 140px;
+  margin: 0 auto;
+  margin-top: 18px;
 }
 .name {
   font-size: 18px;
   text-align: center;
   margin: 18px 0;
 }
+.favorite {
+  font-size: 14px;
+  cursor: pointer;
+}
+.favorite i.active{
+  color: #36AE82;
+  font-weight: 600;
+}
 .rate-box {
   cursor: pointer;
-  margin-bottom: 20px;
 }
 .motto {
   font-size: 14px;
+  margin-top: 20px;
   margin-bottom: 40px;
   text-align: justify;
   height: 150px;
@@ -310,25 +341,7 @@ export default {
 .base-info span {
   margin-right: 30px;
 }
-.time-title {
-  color: #36ae82;
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-.book-times li {
-  position: relative;
-  width: 196px;
-  height: 32px;
-  line-height: 32px;
-  text-align: center;
-  background: #edeeef;
-  border-radius: 4px;
-}
-.book-times li i {
-  position: absolute;
-  top: -5px;
-  right: -5px;
-}
+
 .degree {
   margin-top: 30px;
   text-align: right;

@@ -4,8 +4,9 @@
                   currentView="Month"
                   :popupOpen="onPopupOpen"
                   :actionBegin="handleActionBegin"
-                  :eventSettings='eventSettings'
+                  :eventSettings="eventSettings"
                   :timeScale="timeScale"
+                  :editorTemplate="editorTemplate"
                   :showQuickInfo="showQuickInfo"
                   :views="views"></ejs-schedule>
   </div>
@@ -17,6 +18,7 @@ import moment from 'moment'
 import zh from './zh.json'
 import { L10n, setCulture, loadCldr } from '@syncfusion/ej2-base'
 import { SchedulePlugin, Day, Week, WorkWeek, Month, Agenda } from '@syncfusion/ej2-vue-schedule'
+import { DateTimePicker } from '@syncfusion/ej2-calendars';
 import { getUserInfoSync, getAppointmentedTimes } from '@/api/user'
 import { updateAvailableTime } from '@/api/consultant'
 
@@ -29,6 +31,33 @@ loadCldr(
   require('cldr-data/main/zh/numbers.json'),
   require('cldr-data/main/zh/timeZoneNames.json')
 )
+var editorTemplateVue = Vue.component('editorTemplate', {
+  template: `<table class="custom-event-editor" width="100%" cellpadding="5">
+        <tbody>
+            <tr style="margin-bottom: 20px">
+                <td class="e-textlabel">标题</td>
+                <td colspan="4">
+                    <input id="Subject" class="e-field e-input" type="text" value="" name="Subject" style="width: 50%" />
+                </td>
+            </tr>
+            <tr>
+                <td class="e-textlabel">开始</td>
+                <td colspan="4">
+                    <input id="StartTime" class="e-field" type="text" name="StartTime"/>
+                </td>
+                <td class="e-textlabel">结束</td>
+                <td colspan="4">
+                    <input id="EndTime" class="e-field" type="text" name="EndTime" />
+                </td>
+            </tr>
+        </tbody>
+    </table>`,
+  data() {
+    return {
+      data: {}
+    };
+  }
+});
 export default {
   name: 'scheduler',
   props: ['mode', 'events', 'consultantId'],
@@ -47,16 +76,23 @@ export default {
     }
     return {
       views,
+      editorTemplate: function(e) {
+        return {
+          template: editorTemplateVue
+        };
+      },
       showQuickInfo: true,
       timeScale: {
         enable: true,
         interval: 90,
         slotCount: 1
       },
-      eventSettings: { 
+      eventSettings: {
         dataSource: this.events,
-         fields: {
-            subject: { name: 'Subject', default: '咨询可预约时间' },
+        fields: {
+          subject: { name: 'Subject', default: '咨询可预约时间' },
+          startTime: { name: 'StartTime', validation: { required: true } },
+          endTime: { name: 'EndTime', validation: { required: true } }
         },
       },
     }
@@ -69,7 +105,7 @@ export default {
   methods: {
     // 新增 编辑 删除监听
     handleActionBegin (e) {
-      console.log(e)
+      console.log(e, 'ActionBegin')
       e.data && (e.data.IsAllDay = false)
       // 新增事件
       if (e.requestType == 'eventCreate') {
@@ -83,7 +119,24 @@ export default {
       }
     },
     async onPopupOpen (args) {
-      console.log(args)
+      console.log(args, 'onPopupOpen')
+      if (args.type === 'Editor') {
+        let startElement = args.element.querySelector('#StartTime')
+        console.log(args.element, 999)
+        if (!startElement.classList.contains('e-datetimepicker')) {
+          new DateTimePicker(
+            { value: new Date(startElement.value) || new Date() },
+            startElement
+          )
+        }
+        let endElement = args.element.querySelector('#EndTime')
+        if (!endElement.classList.contains('e-datetimepicker')) {
+          new DateTimePicker(
+            { value: new Date(endElement.value) || new Date() },
+            endElement
+          )
+        }
+      }
       // 只读模式选择时间
       if (this.mode == 'view') {
         if (['EventContainer', 'QuickInfo', 'Editor'].includes(args.type)) {
@@ -121,9 +174,7 @@ export default {
             this.$emit('open-timepicker', usables, moment(selectDate).format('YYYY年MM月DD日'))
           }
         }
-      } else {
-        console.log(8888)
-        // 编辑模式样式处理
+      } else { // 编辑模式
         if (args.type == 'QuickInfo' && !args.data.Id) {
           document.querySelector('.e-subject.e-field.e-input').readOnly = true
         } else if (args.type == 'Editor') {
@@ -131,7 +182,7 @@ export default {
         }
       }
     },
-    async saveEvent(p) {
+    async saveEvent (p) {
       const l = this.loading()
       const res = await updateAvailableTime({ availableTime: p }).catch(e => l.close())
       if (res.result) {
@@ -227,7 +278,7 @@ export default {
 </script>
 <style>
 .e-schedule .e-date-header-wrap .e-schedule-table thead {
-  display: none!important;
+  display: none !important;
 }
 .e-all-day-time-zone-row {
   display: none;

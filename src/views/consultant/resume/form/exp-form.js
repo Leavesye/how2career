@@ -9,10 +9,7 @@ export default {
     label: '行业',
     rules: [r.required()],
     props: { props: { label: 'text', value: 'value' } },
-    options: [
-      {text: '金融',value: '1'},
-      {text: '互联网', value: '2'},
-    ]
+    options: []
   },
   company: {
     type: 'input',
@@ -25,10 +22,7 @@ export default {
     value: '',
     label: '公司规模',
     props: { props: { label: 'text', value: 'value' } },
-    options: [
-      {text: '0-10人', value: '1'},
-      {text: '10-50人', value: '2'},
-    ]
+    options: []
   },
   department: {
     type: 'input',
@@ -37,26 +31,16 @@ export default {
     rules: [r.required(), r.maxLength(20)],
   },
   position: {
-    type: 'select',
+    type: 'input',
     value: '',
     label: '职位',
     rules: [r.required()],
-    props: { props: { label: 'text', value: 'value' } },
-    options: [
-      {text: '普通员工', value: '1'},
-      {text: 'CEO', value: '2'},
-    ]
   },
   level: {
-    type: 'select',
+    type: 'input',
     value: '',
     label: '级别',
     rules: [r.required()],
-    props: { props: { label: 'text', value: 'value' } },
-    options: [
-      {text: 'P6', value: '1'},
-      {text: 'P7', value: '2'},
-    ]
   },
   onBoard: {
     type: 'single-checkbox',

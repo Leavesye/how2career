@@ -34,13 +34,20 @@
             </li>
           </ul>
         </div>
-        <p v-else
-           class="no-data">暂无数据</p>
+      <el-card v-else>
+        <p class="no-data">暂无数据</p>
+      </el-card>
       </el-card>
       <p class="title">我的收藏</p>
-      <card-list :list="favorites"></card-list>
+      <card-list v-if="favorites.length" :list="favorites"></card-list>
+      <el-card v-else>
+        <p class="no-data">暂无数据</p>
+      </el-card>
       <p class="title">经常查看的咨询师</p>
-      <card-list :list="favorites"></card-list>
+      <card-list v-if="oftenList.length" :list="oftenList"></card-list>
+      <el-card v-else>
+        <p class="no-data">暂无数据</p>
+      </el-card>
       <p class="title">更多职业选择</p>
       <career-list></career-list>
     </div>
@@ -52,6 +59,7 @@ import SmallAvatar from '@/components/SmallAvatar'
 import CardList from '@/components/CardList'
 import CareerList from '@/components/CareerList'
 import { getOrders, getOrdersCount } from '@/api/order'
+import { getFavorites } from '@/api/user'
 import tool from '@/utils/tool'
 
 export default {
@@ -72,12 +80,8 @@ export default {
         { name: '开始查找咨询师', count: 'search', path: '/consumer/search' }
       ],
       list: [],
-      favorites: [
-        { id: '5f781c38b6e04a5e2a037f5f', img: '', name: '马里奥', rate: 3, role: '高级专家', rateCount: '234', btn: { name: '预约', cb: this.handleAppintment }, desc: '高桥於1994年创立了自己的品牌Undercover，而当时Nigo…' },
-        { img: '', name: '马里奥', rate: 3, role: '高级专家', rateCount: '234', btn: { name: '预约', cb: this.handleAppintment }, desc: '高桥於1994年创立了自己的品牌Undercover，而当时Nigo…' },
-        { img: '', name: '马里奥', rate: 3, role: '高级专家', rateCount: '234', btn: { name: '预约', cb: this.handleAppintment }, desc: '高桥於1994年创立了自己的品牌Undercover，而当时Nigo…' },
-        { img: '', name: '马里奥', rate: 3, role: '高级专家', rateCount: '234', btn: { name: '预约', cb: this.handleAppintment }, desc: '高桥於1994年创立了自己的品牌Undercover，而当时Nigo…' },
-      ]
+      favorites: [],
+      oftenList: [],
     }
   },
   async created () {
@@ -90,7 +94,8 @@ export default {
         "limit": "3",
         "condition": "status==4:status==5"
       }),
-      getOrdersCount({ condition: "status==1:status==4:status==7" })
+      getOrdersCount({ condition: "status==1:status==4:status==7" }),
+      getFavorites()
     ]).catch(e => l.close())
     if (res[0].result) {
       this.list = tool.formatConsumerOrder(res[0].msg.list)
@@ -101,8 +106,14 @@ export default {
       this.pannels[1].count = info['4']
       this.pannels[2].count = info['7']
     }
+    if (res[2].result && res[2].msg.list) {
+      this.favorites = tool.formatFavorites(res[2].msg.list, '预约', this.handleAppintment)
+    }
+    this.oftenList = [{
+      nickName: '黑崎一护',id: '5f781c38b6e04a5e2a037f5f', position: '护廷十三队', rate: 4, 
+      evaluationCount: 234,  btn: { name: '预约', cb: this.handleAppintment.bind(this, '5f781c38b6e04a5e2a037f5f')}
+    }]
     l.close()
-
   },
   methods: {
     handleClickPannel (item, i) {
@@ -113,8 +124,8 @@ export default {
       }
       this.$router.push(item.path)
     },
-    handleAppintment () {
-      this.alert('预约')
+    handleAppintment (id) {
+      this.$router.push(`/consumer/consultant-detail/${id}`)
     },
     linkTo (path) {
       this.$router.push(path)
@@ -168,12 +179,11 @@ $color: #36ae82;
 .title {
   font-size: 16px;
   color: $color;
-  margin-bottom: 20px;
+  margin: 20px 0;
   font-weight: 600;
 }
 .no-data {
   text-align: center;
-  height: 60px;
   font-size: 14px;
   color: #7c8ea5;
 }

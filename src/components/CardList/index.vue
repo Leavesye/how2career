@@ -1,49 +1,74 @@
 <template>
+<section>
   <ul class="my-favorites">
     <li v-for="(item, i) in list"
-        :key="i"
-        @click="linkTo(item)">
-      <avatar></avatar>
-      <h1 class="user-name">{{item.name}}</h1>
+        :key="i">
+      <avatar :imgUrl="item.avatar"></avatar>
+      <h1 class="user-name">{{item.nickName}}</h1>
       <el-rate class="user-rate"
                disabled
                v-model="item.rate"></el-rate>
-      <div class="user-role">{{item.role}}</div>
-      <p class="user-desc">{{item.desc}}</p>
+      <div class="user-role">{{item.position}}</div>
+      <p class="user-desc">{{item.selfIntroduction}}</p>
       <div class="flex-hbc">
-        <h1 class="rate-count flex-vc"><i class="iconfont icondianping-01"></i>
-          <div style="margin-left: 4px">{{item.rateCount}}</div>
+        <h1 @click="handleShowRateList(item.id)" class="rate-count flex-vc"><i class="iconfont icondianping-01"></i>
+          <div style="margin-left: 4px">{{item.evaluationCount}}</div>
         </h1>
         <el-button plain
                    @click="handleClick(item.btn.cb)">{{item.btn.name}}</el-button>
       </div>
     </li>
   </ul>
+  <rate-list :isShow="isShow" :rateList="rateList" @close="handleCloseRateList"></rate-list>
+</section>
 </template>
 
 <script>
 import Avatar from '@/components/Avatar'
+import RateList from '@/components/RateList'
+import { getRateList } from '@/api/consultant'
+import moment from 'moment'
 
 export default {
   name: 'card-list',
   props: ['list'],
   components: {
-    Avatar
+    Avatar,
+    RateList
   },
   data () {
     return {
-
+      isShow: false,
+      rateList: []
     }
   },
   methods: {
-    linkTo (item) {
-      this.$router.push(`/consumer/consultant-detail/${item.id}`)
-    },
     handleClick (cb) {
       cb && cb()
-    }
+    },
+    handleCloseRateList() {
+      this.isShow = false
+    },
+    async handleShowRateList (id) {
+      this.isShow = true
+      const l = this.loading()
+      const res = await getRateList({ consultantId: id }).catch(e=> l.close())
+      if (res.result) {
+        this.rateList = res.msg.map(o => {
+          const { evaluation: { cTime,content, point, consultantReply } }  = o
+          return {
+            cTime: moment(cTime*1000).format('YYYY-MM-DD HH:mm:ss'),
+            content,
+            point,
+            consultantReply
+          }
+        })
+      }
+      l.close()
+    },
   },
   mounted () {
+    
   }
 };
 </script>
@@ -103,5 +128,6 @@ export default {
 .rate-count {
   color: #7c8ea5;
   font-weight: 400;
+  cursor: pointer;
 }
 </style>

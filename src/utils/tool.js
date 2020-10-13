@@ -127,9 +127,26 @@ function formatStatus(status) {
   })
   return condition
 }
+function formatFavorites (list, btnName, cb) { 
+  console.log(list, btnName, cb)
+  return list.map(o => {
+    const { _id: id, publicInfo: { 
+      nickName, avatarImage:avatar, evaluationCount, evaluationPoint,
+      selfIntroduction,resume: { workExperience: work }
+    } } = o
+    const rate = evaluationCount? Math.floor(evaluationPoint/evaluationCount): 0
+    return {
+      id,
+      nickName, avatar, rate, position: work[0].position,
+      evaluationCount, selfIntroduction,
+      btn: { name: btnName, cb: cb.bind(this, id)}
+    }
+  })
+}
 export default { 
   getCondition,
   formatConsultantOrder,
   formatConsumerOrder,
-  formatStatus
+  formatStatus,
+  formatFavorites
 }
