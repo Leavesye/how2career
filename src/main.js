@@ -21,11 +21,11 @@ import { axTable, axTableColumn } from './components/table'
 import { axForm, axFormItem } from './components/form'
 import rules from './utils/validate-rules'
 
+Vue.prototype.$rules = rules
 Vue.use(axForm)
 Vue.use(axFormItem)
 Vue.use(axTable)
 Vue.use(axTableColumn)
-Vue.prototype.$rules = rules
 Vue.prototype.alert = elementApi.alert
 Vue.prototype.loading = elementApi.loading
 

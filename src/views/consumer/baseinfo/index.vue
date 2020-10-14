@@ -1,6 +1,6 @@
 <template>
   <el-row type="flex" justify="center">
-    <el-col class="reg-box" :xs="24" :sm="24" :md="20" :lg="15" :xl="12">
+    <el-col class="reg-box" v-bind="layout">
       <h1 class="title">基本信息</h1>
       <div class="form-section">
         <section class="form-box"
@@ -59,6 +59,9 @@ export default {
   },
   data () {
     return {
+      layout: {
+        span: 24
+      },
       isReg: false,
       ...form,
     }
@@ -73,7 +76,10 @@ export default {
     this.refer = this.$route.query.refer
     // 是否是注册页进来
     this.isReg = this.$route.path.includes('/register/consumer')
-    this.isReg && (this.baseInfo.passWord.hide = false)
+    if (this.isReg) {
+      this.baseInfo.passWord.hide = false
+      this.layout = { xs: 24, sm:24, md: 20, lg:15, xl:12}
+    }
     // 给上传组件绑定回调
     const avatar = this.baseInfo.avatarImage
     avatar.props["before-upload"] = (file) => this.uploadBefore(file)

@@ -1,29 +1,111 @@
 {
-  "account": {
-    "userName": "18566070441",
-    "passWord": "123456"
-  },
+  "_id": "咨询者id 等同于platformUser _id",
+  "cTime": "创建时间",
+  "uTime": "更新时间",
+  "realVerified": true,
   "basic": {
-    "birthday": "1990-02-08",
-    "name": "ys",
-    "gender": "m",
-    "nickName": "咨询师",
+    "birthday": "出生年月",
+    "firstName": "名",
+    "lastName": "姓",
+    "gender": "f/m",
+    "nickName": "昵称",
     "avatarImage": "头像url",
     "selfIntroduction": "自我简介",
     "detailedIntroduction": "详细介绍",
     "highestEducation": {
-      "country": "1",
-      "school": "1",
-      "discipline": "1",
-      "degree": "1",
-      "graduationTime": "1990-02-08",
-      "GPA": "1"
+      "country": "国家",
+      "school": "毕业学校",
+      "discipline": "专业",
+      "degree": "学位",
+      "graduationTime": "毕业时间",
+      "GPA": "GPA成绩"
     }
   },
   "realVerify": {
     "phone": "手机号码",
     "idCard": "身份证"
   },
-  "refer": "上游用户的id",
-  "referType": "MGM"
+  "resume": {
+    "education": [
+      {
+        "country": "国家",
+        "school": "毕业学校",
+        "discipline": "专业",
+        "degree": "学位",
+        "graduationTime": "毕业时间",
+        "GPA": "GPA成绩",
+        "studentOrganization": true,
+        "studentOrganizationHistory": [
+          {
+            "onBoard": true,
+            "name": "社团名称",
+            "organizationTitle": "职位",
+            "department": "部门",
+            "entryTime": "2020-10",
+            "resignationTime": "2023-01",
+            "duty": "工作内容",
+            "reward": "奖励和荣誉"
+          }
+        ],
+        "projectExperience": [
+          {
+            "title": "项目名称",
+            "content": "内容"
+          }
+        ],
+        "publishArticle": true,
+        "ArticleHistory": [
+          {
+            "Periodical": "期刊名",
+            "Article": "文章名",
+            "level": "作者级别",
+            "duty": "主要承担工作"
+          }
+        ]
+      }
+    ],
+    "workExperience": [
+      {
+        "JobCategory": "工作类别",
+        "industry": "行业",
+        "company": "公司",
+        "department": "部门",
+        "position": "职位",
+        "onBoard": true,
+        "entryTime": "2020-10",
+        "resignationTime": "2023-01",
+        "duty": "工作内容",
+        "reward": "奖励和荣誉"
+      }
+    ],
+    "other": {
+      "getRewarded": true,
+      "rewardHistory": [
+        {
+          "name": "奖项名称",
+          "expireDate": "有效日期",
+          "comments": "备注"
+        }
+      ],
+      "hasCertificates": true,
+      "certificatesHistory": [
+        {
+          "name": "证书名称",
+          "expireDate": "有效日期",
+          "comments": "备注"
+        }
+      ],
+      "language": [
+        "english",
+        "french"
+      ],
+      "skills": [
+        "java",
+        "golang"
+      ]
+    }
+  },
+  "refer": "refer_id",
+  "referType": "MGM",
+  "joinMGM": true
 }
