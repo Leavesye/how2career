@@ -1,17 +1,23 @@
 <template>
-<div class="layout">
-  <navbar></navbar>
-  <section class="app-main flex-hc">
-    <!-- 侧边栏 -->
-    <side-bar :menus="menus" />
-    <!-- 页面路由 -->
-    <transition name="fade-transform" mode="out-in">
-      <router-view class="router-view" />
-    </transition>
-  </section>
-  <foot-bar />
-</div>
+  <div class="layout" >
+    <navbar></navbar>
+    <el-row type="flex" justify="center">
+      <el-col :xs="24" :sm="24" :md="22" :lg="19" :xl="15" class="app-main">
+        <el-row type="flex">
+          <!-- 侧边栏 -->
+          <side-bar style="width: 20%" :menus="menus" />
+          <!-- 页面路由 -->
+          <transition name="fade-transform"
+                      mode="out-in">
+            <router-view style="width: 80%" class="router-view" />
+          </transition>
+        </el-row>
+      </el-col>
+    </el-row>
+    <foot-bar />
+  </div>
 </template>
+
 
 <script>
 import { Navbar,SideBar,FootBar } from './components'
@@ -52,7 +58,6 @@ export default {
 
 .router-view {
   height: auto;
-  width: 940px;
   background: #FDFDFD;
   border-radius: 8px;
   box-sizing: border-box;

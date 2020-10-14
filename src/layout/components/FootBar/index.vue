@@ -1,6 +1,6 @@
 <template>
-  <section class="footer">
-    <div class="inner">
+  <el-row class="footer" type="flex" justify="center">
+    <el-col :xs="24" :sm="24" :md="22" :lg="19" :xl="15" class="inner">
       <section class="flex-hb links">
         <div class="flex-hbc left">
           <el-image @click="goHome" class="logo"
@@ -18,8 +18,8 @@
         </ul>
       </section>
       <section class="copyright">Copyright © 2020 howto careers All rights reserved 好途职场有限公司 版权所有 沪ICP备11011234号-1 沪公网安备3100020000号</section>
-    </div>
-  </section>
+    </el-col>
+  </el-row>
 </template>
 
 <script>
@@ -59,7 +59,6 @@ export default {
   height: 150px;
   background: #292e3d;
   .inner {
-    width: 1180px;
     margin: 0 auto;
     .logo {
       width: 96px;

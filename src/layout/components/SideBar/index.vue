@@ -7,7 +7,7 @@
              @close="handleClose"
              :default-active="activeMenu"
              text-color="#fff"
-             :style="{background: user.role=='consumer'?'#36AE82':'#15479E', width: isCollapse? '': '240px'}"
+             :style="{background: user.role=='consumer'?'#36AE82':'#15479E'}"
              active-text-color="#fff">
       <template v-for="(item, index) in menus">
         <el-menu-item :key="index"
@@ -34,11 +34,12 @@
         </el-submenu>
       </template>
     </el-menu>
-    <el-image v-if="!isCollapse"
-              class="room-btn"
-              :src="user.role=='consumer'?roomGreen:roomBlue"
-              @click="linkTo('/'+user.role+'/room/5f81d4cada7549f9d3400abb')"></el-image>
-    <section v-if="user.role=='consumer'">
+    <div class="flex-hc" v-if="!isCollapse">
+      <el-image class="room-btn"
+                :src="user.role=='consumer'?roomGreen:roomBlue"
+                @click="linkTo('/'+user.role+'/room/5f81d4cada7549f9d3400abb')"></el-image>
+    </div>
+    <section v-if="user.role=='consumer' && !isCollapse">
       <p class="my-code">我的推荐码</p>
       <div class="flex-cc qrcode-box">
         <div class="qrcode"
@@ -143,7 +144,7 @@ span {
 .room-btn {
   width: 180px;
   height: 50px;
-  margin: 200px 0 50px 30px;
+  margin-top: 200px;
   cursor: pointer;
 }
 .bottom-links {

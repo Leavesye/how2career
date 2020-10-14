@@ -30,7 +30,7 @@
             :class="{active: current===i}">{{item.name}}</li>
       </ul>
       <!-- 日程表 -->
-      <scheduler v-if="isLoaded" :events="events"></scheduler>
+      <scheduler v-if="isLoaded" :events="events" @reload="handleReloadSchduler"></scheduler>
     </el-card>
     <change-slot :isShow="isShow"></change-slot>
   </div>
@@ -68,21 +68,27 @@ export default {
   methods: {
     handleClickBtn(i) {
       this.current = i
+    },
+    handleReloadSchduler() {
+      this.init()
+    },
+    async init() {
+      this.isLoaded = false
+      const l = this.loading()
+      const res = await getPublicInfo({ userId: this.user.userId }).catch(e=>{
+        l.close()
+        this.isLoaded = true
+      })
+      if (res.result) {
+        const { publicInfo: { availableTime }} = res.msg
+        this.events = availableTime
+      }
+      this.isLoaded = true
+      l.close()
     }
   },
   async created () {
-    this.isLoaded = false
-    const l = this.loading()
-    const res = await getPublicInfo({ userId: this.user.userId }).catch(e=>{
-      l.close()
-      this.isLoaded = true
-    })
-    if (res.result) {
-      const { publicInfo: { availableTime }} = res.msg
-      this.events = availableTime
-    }
-    this.isLoaded = true
-    l.close()
+    this.init()
   },
 }
 </script>

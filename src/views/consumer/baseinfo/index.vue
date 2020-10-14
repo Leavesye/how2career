@@ -79,15 +79,15 @@ export default {
     avatar.props["before-upload"] = (file) => this.uploadBefore(file)
     avatar.props["on-success"] = (res, file) => this.uploadSuccess(res, file, this.uploadCb)
     avatar.render = this.renderUpload
+    let ret = await getDicts()
+    dicts = ret.msg
+    this.education.country.options = dicts.countries
+    this.education.discipline.options = dicts.majors
+    this.education.GPA.options = dicts.gpa
+    this.education.degree.options = dicts.degrees
     this.education.country.events.change = this.handleCountryChange
     if (!this.isReg) {
       const l = this.loading()
-      let ret = await getDicts()
-      dicts = ret.msg
-      this.education.country.options = dicts.countries
-      this.education.discipline.options = dicts.majors
-      this.education.GPA.options = dicts.gpa
-      this.education.degree.options = dicts.degrees
       let res = await getUserInfo().catch( e=> l.close())
       if (res.result) {
         const {basic:{highestEducation:{country}}} = res.msg

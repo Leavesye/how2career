@@ -5,10 +5,11 @@
                   :popupOpen="onPopupOpen"
                   :actionBegin="handleActionBegin"
                   :eventSettings="eventSettings"
-                  :timeScale="timeScale"
-                  :editorTemplate="editorTemplate"
+                  :editorTemplate='editorTemplate'
                   :showQuickInfo="showQuickInfo"
-                  :views="views"></ejs-schedule>
+                  :views="views"
+                  :dataBound="onDataBound"
+                  ></ejs-schedule>
   </div>
 </template>
 <script>
@@ -16,9 +17,10 @@ import Vue from 'vue'
 import { mapGetters } from 'vuex'
 import moment from 'moment'
 import zh from './zh.json'
+import EventEdit from './modal/edit'
 import { L10n, setCulture, loadCldr } from '@syncfusion/ej2-base'
-import { SchedulePlugin, Day, Week, WorkWeek, Month, Agenda } from '@syncfusion/ej2-vue-schedule'
-import { DateTimePicker } from '@syncfusion/ej2-calendars';
+import { SchedulePlugin, Day, Week, WorkWeek, Month, RecurrenceEditor } from '@syncfusion/ej2-vue-schedule'
+import { DateTimePicker } from '@syncfusion/ej2-calendars'
 import { getUserInfoSync, getAppointmentedTimes } from '@/api/user'
 import { updateAvailableTime } from '@/api/consultant'
 
@@ -31,38 +33,11 @@ loadCldr(
   require('cldr-data/main/zh/numbers.json'),
   require('cldr-data/main/zh/timeZoneNames.json')
 )
-var editorTemplateVue = Vue.component('editorTemplate', {
-  template: `<table class="custom-event-editor" width="100%" cellpadding="5">
-        <tbody>
-            <tr style="margin-bottom: 20px">
-                <td class="e-textlabel">标题</td>
-                <td colspan="4">
-                    <input id="Subject" class="e-field e-input" type="text" value="" name="Subject" style="width: 50%" />
-                </td>
-            </tr>
-            <tr>
-                <td class="e-textlabel">开始</td>
-                <td colspan="4">
-                    <input id="StartTime" class="e-field" type="text" name="StartTime"/>
-                </td>
-                <td class="e-textlabel">结束</td>
-                <td colspan="4">
-                    <input id="EndTime" class="e-field" type="text" name="EndTime" />
-                </td>
-            </tr>
-        </tbody>
-    </table>`,
-  data() {
-    return {
-      data: {}
-    };
-  }
-});
 export default {
   name: 'scheduler',
   props: ['mode', 'events', 'consultantId'],
   provide: {
-    schedule: [Day, Week, WorkWeek, Month, Agenda]
+    schedule: [Day, Week, WorkWeek, Month]
   },
   // created() {
   //   publicinfo.availableTime = []
@@ -76,23 +51,17 @@ export default {
     }
     return {
       views,
-      editorTemplate: function(e) {
+      editorTemplate: function (e) {
         return {
-          template: editorTemplateVue
-        };
+          template: EventEdit
+        }
       },
       showQuickInfo: true,
-      timeScale: {
-        enable: true,
-        interval: 90,
-        slotCount: 1
-      },
       eventSettings: {
         dataSource: this.events,
         fields: {
           subject: { name: 'Subject', default: '咨询可预约时间' },
-          startTime: { name: 'StartTime', validation: { required: true } },
-          endTime: { name: 'EndTime', validation: { required: true } }
+          startTime: { name: 'StartTime', validation: { required: [true, '请选择开始时间'] } },
         },
       },
     }
@@ -103,6 +72,11 @@ export default {
     ])
   },
   methods: {
+    // 获取所有事件
+    onDataBound: function (args){
+      let event = this.$refs.schedule.ej2Instances.getEvents();
+      console.log(event)
+    },
     // 新增 编辑 删除监听
     handleActionBegin (e) {
       console.log(e, 'ActionBegin')
@@ -118,24 +92,72 @@ export default {
         this.deleteEvent(e)
       }
     },
+    isExist(v) {
+      return !!this.events.find(o => moment(o.StartTime).valueOf()==moment(v).valueOf())
+    },
+    handleStartChange(v) {
+      if (this.isExist(v.value)) {
+        this.alert('该时间段已设置', 'warning')
+        return false
+      }
+      this.endTimePicker.value = new Date(moment(v.value).subtract(-90, 'minutes').valueOf())
+    },
     async onPopupOpen (args) {
       console.log(args, 'onPopupOpen')
+      // 单击出编辑框处理
+      if (args.type=='QuickInfo') {
+        // 屏蔽快捷弹框
+        args.cancel = true
+        // 编辑
+        let event = {}
+        if (args.data.Id) {
+          event = args.data
+        } else {
+          let start = new Date(moment(args.data.StartTime).startOf('day').subtract('-8','hours').valueOf())
+          event = {
+            startTime: start,
+            endTime: new Date(moment(start).subtract('-90','minutes').valueOf()),
+            isAllDay: false,
+          }
+        }
+        console.log(event,'event')
+        this.$refs.schedule.openEditor(event, args.data.Id ? 'Save' : 'Add')
+      }
+      // 自定义编辑器空间处理
       if (args.type === 'Editor') {
         let startElement = args.element.querySelector('#StartTime')
-        console.log(args.element, 999)
         if (!startElement.classList.contains('e-datetimepicker')) {
-          new DateTimePicker(
-            { value: new Date(startElement.value) || new Date() },
-            startElement
+          this.startTimePicker= new DateTimePicker(
+            { 
+              value: args.data.StartTime,
+              step: 90,// 间隔90分钟
+              allowEdit: false,// 禁用输入
+              showClearButton: false,// 隐藏清空按钮
+              change: this.handleStartChange
+            },
+            startElement,
           )
         }
         let endElement = args.element.querySelector('#EndTime')
         if (!endElement.classList.contains('e-datetimepicker')) {
-          new DateTimePicker(
-            { value: new Date(endElement.value) || new Date() },
+          this.endTimePicker = new DateTimePicker(
+            { 
+              value: args.data.EndTime,
+              enabled: false 
+            },
             endElement
           )
         }
+        // 重复事件编辑器设置
+        let scheduleObj = this.$refs.schedule.ej2Instances
+        console.log(scheduleObj, 'scheduleObj')
+        let recurElement = args.element.querySelector('#RecurrenceEditor')
+        if (!recurElement.classList.contains('e-recurrenceeditor')) {
+          let recurrObject = new RecurrenceEditor({})
+          recurrObject.appendTo(recurElement)
+          scheduleObj.eventWindow.recurrenceEditor = recurrObject
+        }
+        //document.getElementById('RecurrenceEditor').style.display = (scheduleObj.currentAction == 'EditOccurrence') ? 'none' : 'block'
       }
       // 只读模式选择时间
       if (this.mode == 'view') {
@@ -177,8 +199,6 @@ export default {
       } else { // 编辑模式
         if (args.type == 'QuickInfo' && !args.data.Id) {
           document.querySelector('.e-subject.e-field.e-input').readOnly = true
-        } else if (args.type == 'Editor') {
-          document.querySelector('.e-subject.e-field').readOnly = true
         }
       }
     },
@@ -187,10 +207,15 @@ export default {
       const res = await updateAvailableTime({ availableTime: p }).catch(e => l.close())
       if (res.result) {
         this.alert('保存成功')
+        this.$emit('reload')
       }
       l.close()
     },
     createEvent (event) {
+      if(this.isExist(event.StartTime)) {
+        this.alert('该时间段已设置', 'warning')
+        return false
+      }
       this.events.push(event)
       this.saveEvent(this.events)
     },
@@ -272,7 +297,6 @@ export default {
     },
   },
   mounted () {
-    console.log(this.$refs.schedule)
   }
 }
 </script>

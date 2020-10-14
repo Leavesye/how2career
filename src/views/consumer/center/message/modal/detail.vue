@@ -3,7 +3,7 @@
   title="消息通知"
   :visible.sync="isShow"
   :before-close="handleClose"
-  width="430px"
+  width="630px"
   center>
   <section class="modal-main">
     <div class="flex-hb" style="margin-bottom: 14px;">

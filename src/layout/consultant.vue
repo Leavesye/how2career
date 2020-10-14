@@ -1,15 +1,19 @@
 <template>
-  <div class="layout">
+  <div class="layout" >
     <navbar></navbar>
-    <section class="app-main flex">
-      <!-- 侧边栏 -->
-      <side-bar :menus="menus" />
-      <!-- 页面路由 -->
-      <transition name="fade-transform"
-                  mode="out-in">
-        <router-view class="router-view" />
-      </transition>
-    </section>
+    <el-row type="flex" justify="center">
+      <el-col :xs="24" :sm="24" :md="22" :lg="19" :xl="15" class="app-main">
+        <el-row type="flex">
+          <!-- 侧边栏 -->
+          <side-bar style="width: 20%" :menus="menus" />
+          <!-- 页面路由 -->
+          <transition name="fade-transform"
+                      mode="out-in">
+            <router-view style="width: 80%" class="router-view" />
+          </transition>
+        </el-row>
+      </el-col>
+    </el-row>
     <foot-bar />
   </div>
 </template>
@@ -51,14 +55,12 @@ export default {
 </style>
 <style lang="scss" scoped>
 .app-main {
-  width: 1180px;
   margin: 20px auto;
   overflow: hidden;
 }
 
 .router-view {
   height: auto;
-  width: 940px;
   background: #fdfdfd;
   border-radius: 8px;
   box-sizing: border-box;

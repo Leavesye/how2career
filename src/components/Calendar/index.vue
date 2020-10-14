@@ -1,7 +1,7 @@
 <template>
   <el-row style="margin-top: 20px">
     <el-col :span="16">
-      <scheduler v-if="isLoaded" @open-timepicker="openTimepicker"
+      <scheduler v-if="isLoaded" @reload="handleReloadSchduler" @open-timepicker="openTimepicker"
                  mode="view" :events="events" :consultantId="order.consultantId"></scheduler>
     </el-col>
     <el-col :span="8">
@@ -70,21 +70,27 @@ export default {
     ])
   },
   async created() {
-    this.isLoaded = false
-    const l = this.loading()
-    const res = await getPublicInfo({ userId: this.order.consultantId }).catch(e=>{
-      l.close()
-      this.isLoaded = true
-    })
-    if (res.result) {
-      const { publicInfo: { availableTime }} = res.msg
-      this.events = availableTime
-      this.$emit('init-data', res)
-    }
-    this.isLoaded = true
-    l.close()
+    this.init()
   },
   methods: {
+    handleReloadSchduler(){
+      this.init()
+    },
+    async init() {
+      this.isLoaded = false
+      const l = this.loading()
+      const res = await getPublicInfo({ userId: this.order.consultantId }).catch(e=>{
+        l.close()
+        this.isLoaded = true
+      })
+      if (res.result) {
+        const { publicInfo: { availableTime }} = res.msg
+        this.events = availableTime
+        this.$emit('init-data', res)
+      }
+      this.isLoaded = true
+      l.close()
+    },
     openTimepicker (list, selectDate) {
       this.isShow = true
       this.usables = list.map(o => {
