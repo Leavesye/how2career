@@ -141,12 +141,8 @@ export default {
   margin: 20px 0;
   font-weight: 600;
 }
-.no-order {
-  height: 100px;
-}
 .no-order p {
   text-align: center;
-  margin-top: 20px;
   color: #7c8ea5;
   font-size: 16px;
 }

@@ -195,6 +195,8 @@ export default {
 }
 .question-list {
   margin-top: 20px;
+  height: 280px;
+  overflow: auto;
 }
 .question-list > li {
   margin-bottom: 20px;

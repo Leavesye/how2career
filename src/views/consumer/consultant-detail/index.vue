@@ -55,7 +55,7 @@
             </li>
             <li class="info-item">
               <h1>主要工作内容</h1>
-              <p>{{info.duty}}</p>
+              <p class="work-duty">{{info.duty}}</p>
             </li>
             <li class="info-item">
               <h1>工作个人技能</h1>
@@ -373,5 +373,12 @@ export default {
 }
 .appintment-btn {
   margin-top: 40px;
+}
+.work-duty {
+  height: 66px;
+  overflow: auto;
+}
+.rate-count {
+  cursor: pointer;
 }
 </style>
