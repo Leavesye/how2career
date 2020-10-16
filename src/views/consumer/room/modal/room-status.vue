@@ -9,14 +9,16 @@
     <div v-if="isWait">
       <!-- 头像 -->
       <div class="flex-hc">
-        <avatar></avatar>
+        <avatar :imgUrl="info.avatar"></avatar>
       </div>
+      <p class="user-role">咨询师</p>
+      <p class="user-name">{{info.name}}</p>
       <div class="flex-hbc" style="margin-top: 40px; margin-bottom: 20px">
         <div class="line"></div>
-        <p>距离结束还有</p>
+        <p>距离{{targetTime>0? '开始': '结束'}}还有</p>
         <div class="line"></div>
       </div>
-      <count-down bg="#36AE82"></count-down>
+      <count-down bg="#7C8FA5" :targetTime="target"></count-down>
     </div>
     <div v-else class="progress-box">
       <el-progress :show-text="false" :width="250" color="#36AE82" style="position: relative" type="circle" :percentage="percent"></el-progress>
@@ -24,28 +26,28 @@
     </div>
   </section>
   <span slot="footer" class="dialog-footer">
-    <!-- 咨询者 -->
-    <!-- <el-button size="mini" type="primary" plain @click="handleConfirmTime">等待对方加入</el-button> -->
-    <!-- <el-button size="mini" type="primary" plain @click="handleConfirmTime">我已经准备好</el-button> -->
-    <!-- 咨询师 -->
-    <!-- <el-button size="mini" type="success" plain >等待对方加入</el-button> -->
+    <el-button :loading="isLoaded" style="width: 180px" :type="user.role=='consumer' ? 'success':'primary'" plain round @click="handleConfirm">
+      {{isReady ? '等待对方加入': '我已经准备好了'}}</el-button>
   </span>
 </el-dialog>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import Avatar from '@/components/Avatar'
 import CountDown from '@/components/CountDown'
+import { clickReady, getRoomStatus, getRoomStatusAfterReady } from '@/api/room'
 
 export default {
-  name: 'room-status',
+  props: ['isShow', 'targetTime', 'info'],
   components: {
     Avatar,
     CountDown,
   },
-  props: ['isShow'],
   data () {
     return {
+      isLoaded: false,
+      isReady: false,
       isWait: true,
       percent: 0,
       nums: [
@@ -55,7 +57,53 @@ export default {
       ]
     }
   },
+  computed: {
+    ...mapGetters(['user']),
+    target: function() {
+      return Math.abs(this.targetTime)
+    }
+  },
+  mounted() {
+    // 未准备好轮询
+    setInterval(() => {
+      this.getRoomStatus()
+    }, 5000)
+  },
   methods: {
+    async getRoomStatus() {
+      const res = await getRoomStatus({ roomId: this.info.roomId, roomMate: this.info.consultantId }).catch(e=>{
+        console.log(e)
+      })
+      if (res.result) {
+        this.online = res.msg.online
+      }
+    },
+    async getRoomStatusAfterReady() {
+      const {roomId, consultantId, consumerId, orderId, slotId } = this.info
+      let roomMate = this.user.rolo == 'consumer' ? consultantId : consumerId
+      const res = await getRoomStatusAfterReady({ 
+        roomId, roomMate, orderId,
+        slotId, consultant: consultantId, }).catch(e=>{
+        console.log(e)
+      })
+      if (res.result) {
+        
+      }
+    },
+    async handleConfirm() {
+      if (this.isLoaded) return false
+      this.isLoaded = true
+      const res = await clickReady({
+        orderId: this.info.orderId
+      }).catch(e=>this.isLoaded = false)
+      this.isLoaded = false
+      if (res.result) {
+        this.isReady = true
+        setInterval(() => {
+          this.getRoomStatusAfterReady()
+        }, 5000)
+      }
+    },
     go() {
       this.nums.forEach((o, i) => {
         let j = i
@@ -92,6 +140,14 @@ export default {
   font-size: 14px;
   color: #7C8EA5;
   margin: 0 auto;
+}
+.user-role {
+  text-align: center;
+  margin-top: 14px;
+}
+.user-name {
+  text-align: center;
+  font-size: 18px;
 }
 .line {
   width: 172px;

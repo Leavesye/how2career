@@ -1,6 +1,6 @@
 <template>
   <el-row class="footer" type="flex" justify="center">
-    <el-col :xs="24" :sm="24" :md="22" :lg="19" :xl="15" class="inner">
+    <el-col :xs="24" :sm="24" :md="22" :lg="22" :xl="15" class="inner">
       <section class="flex-hb links">
         <div class="flex-hbc left">
           <el-image @click="goHome" class="logo"

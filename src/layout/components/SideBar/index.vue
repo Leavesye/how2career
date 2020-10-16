@@ -130,6 +130,7 @@ export default {
   padding-top: 28px;
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
+  width: 240px;
 }
 i {
   color: #fff;

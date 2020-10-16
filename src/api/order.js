@@ -125,10 +125,19 @@ export function queryUpdateTimeMsg(params) {
     params
   })
 }
+// 查询好友推荐我的奖励
 export function queryReward(params) {
   return request({
     url: `/order/platform/mgm/list/query`,
     method: 'get',
     params
+  })
+}
+// 咨询者订单点击完成服务
+export function stopService(data) {
+  return request({
+    url: `/order/platform/consumer/orders/serviceComplete`,
+    method: 'put',
+    data
   })
 }
