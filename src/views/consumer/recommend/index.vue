@@ -17,7 +17,7 @@ export default {
   },
   data () {
     return {
-      currentView: 'explain-page'
+      currentView: ''
     }
   },
   methods: {
@@ -29,7 +29,7 @@ export default {
     const l = this.loading()
     const res = await getUserInfo().catch(e=> l.close())
     if (res.result) {
-      // this.currentView = res.msg.joinMGM ? 'reward-page': 'explain-page'
+      this.currentView = res.msg.joinMGM ? 'reward-page': 'explain-page'
     }
     l.close()
   }
