@@ -86,15 +86,18 @@
       <el-row>
         <el-col :offset="7"
                 :span="16">
-          <el-input style="width: 460px;margin-right:20px"
-                    v-model="lang"
-                    placeholder="请输入信息"
-                    size="small"
-                    :maxlength="10"
-                    @keyup.enter.native="handleAddLang"></el-input>
-          <el-button type="primary"
-                     size="mini"
-                     @click="handleAddLang">确认添加</el-button>
+          <div class="flex">
+            <el-input style="flex:1;margin-right:20px"
+                      v-model="lang"
+                      placeholder="请输入信息"
+                      size="small"
+                      :maxlength="10"
+                      @keyup.enter.native="handleAddLang"></el-input>
+            <el-button type="primary"
+                       size="mini"
+                       @click="handleAddLang">确认添加</el-button>
+
+          </div>
         </el-col>
       </el-row>
       <el-row>
@@ -116,15 +119,18 @@
       <el-row>
         <el-col :offset="7"
                 :span="16">
-          <el-input style="width: 460px;margin-right:20px"
-                    v-model="skill"
-                    placeholder="请输入信息"
-                    size="small"
-                    :maxlength="20"
-                    @keyup.enter.native="handleAddSkill"></el-input>
-          <el-button type="primary"
-                     size="mini"
-                     @click="handleAddSkill">确认添加</el-button>
+          <div class="flex">
+            <el-input style="flex:1;margin-right:20px"
+                      v-model="skill"
+                      placeholder="请输入信息"
+                      size="small"
+                      :maxlength="20"
+                      @keyup.enter.native="handleAddSkill"></el-input>
+            <el-button type="primary"
+                       size="mini"
+                       @click="handleAddSkill">确认添加</el-button>
+
+          </div>
         </el-col>
       </el-row>
       <el-row>
@@ -157,7 +163,8 @@
 import _ from 'lodash'
 import QuickForm from '@/components/QuickForm'
 import SubmitFinish from './modal/submit-finish'
-import form from './form'
+import socialForm from './form/social-ecurity'
+import callupForm from './form/callup'
 import eduForm from './form/edu-form'
 import expForm from './form/exp-form'
 import licenseForm from './form/license-form'
@@ -177,6 +184,7 @@ const fieldCfg = {
   projectArticle: 3,
   teamManagement: 4,
   gallupCertified: 5,
+  onBoard: 6
 }
 export default {
   name: 'fill-info',
@@ -193,13 +201,24 @@ export default {
       skills: [],
       isShow: false,
       labelWidth: '140px',
-      ...form,
+      education: [this.bindThis(_.cloneDeep(eduForm),0)],
+      workExperience: [this.bindThis(_.cloneDeep(expForm), 0)],
+      otherCertificates:[_.cloneDeep(licenseForm)],
+      socialEcurity: socialForm,
+      callup: callupForm
     }
   },
   async created () {
     const l = this.loading()
     let ret = await getDicts()
     dicts = ret.msg
+    const { countries, majors, degrees, gpa , industry, companySize } = dicts
+    eduForm.country.options = countries
+    eduForm.discipline.options = majors
+    eduForm.GPA.options = gpa
+    eduForm.degree.options = degrees
+    expForm.industry.options = industry
+    expForm.companySize.options = companySize
     let res = await getUserInfo().catch(e => l.close())
     if (res.result) {
       // 简历信息
@@ -218,29 +237,8 @@ export default {
               Object.keys(copy).forEach(k => {
                 // 国家
                 if (k == 'country') {
-                  copy[k].options = dicts.countries
                   // 联动学校处理
-                  copy.school.options = dicts.countries.find(f => f.value==o[k]).schools
-                }
-                // 专业
-                if (k == 'discipline') {
-                  copy[k].options = dicts.majors
-                }
-                // gpa
-                if (k == 'GPA') {
-                  copy[k].options = dicts.gpa
-                }
-                // 学位
-                if (k == 'degree') {
-                  copy[k].options = dicts.degrees
-                }
-                // 行业
-                if (k == 'industry') {
-                  copy[k].options = dicts.industry
-                }
-                // 公司规模
-                if (k == 'companySize') {
-                  copy[k].options = dicts.companySize
+                  copy.school.options = dicts.countries.find(f => f.value == o[k]).schools
                 }
                 // 联动设置
                 if (k in fieldCfg) {
@@ -280,8 +278,8 @@ export default {
   },
   methods: {
     // 国家联动学校
-    handleCountryChange(i, v) {
-      const f = dicts.countries.find(o => o.value == v )
+    handleCountryChange (i, v) {
+      const f = dicts.countries.find(o => o.value == v)
       this.education[i].school.options = f.schools
       this.education[i].school.value = ''
     },
@@ -313,7 +311,7 @@ export default {
         this.callup.gallupCertified.layout.span = v ? 6 : 24
       }
       if (type == 6) {
-        exp.resignationTime.hide = !v
+        exp.resignationTime.hide = v
         !v && (exp.resignationTime.value = '')
       }
     },
@@ -481,7 +479,7 @@ export default {
   margin-bottom: 10px;
 }
 .form-box {
-  width: 800px;
+  padding: 0 70px;
   margin: 0 auto;
 }
 .form-title {

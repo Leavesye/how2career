@@ -74,6 +74,7 @@ export default {
     type : 'date',
     rules: [r.required()],
     layout: { span: 12 },
+    hide: false,
     props: {
       "value-format": 'timestamp',
       // 离职时间不能大于当前时间

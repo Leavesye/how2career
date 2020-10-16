@@ -7,7 +7,7 @@ export default {
     type: 'input',
     label: '拥有证书信息',
     value: '',
-    layout: { span: 10 },
+    layout: { span: 12 },
     rules: [r.maxLength(20)],
     props: {
       placeholder: '请输入证书名称'
@@ -17,7 +17,7 @@ export default {
     type: 'date',
     label: '',
     value: '',
-    layout: { span: 7 },
+    layout: { span: 6 },
     labelWidth: '0',
     props: {
       "value-format": 'timestamp',
@@ -28,7 +28,7 @@ export default {
     type: 'input',
     label: '',
     value: '',
-    layout: { span: 7 },
+    layout: { span: 6 },
     labelWidth: '0',
     rules: [r.maxLength(100)],
     props: {

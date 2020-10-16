@@ -37,22 +37,17 @@ export default {
     type: 'select',
     value: '',
     label: 'GPA',
-    props: { props: { label: 'text', value: 'value' } },
+    props: { props: { label: 'text', value: 'value' },style: { width: '294px' }, },
     options: [],
-    style: {
-      width: '320px'
-    }
+    layout: { span: 14 }
   },
   degree: {
     type: 'select',
     value: '',
     label: '学位',
     rules: [r.required()],
-    props: { props: { label: 'text', value: 'value' } },
+    props: { props: { label: 'text', value: 'value' },style: { width: '294px' }, },
     options: [],
-    style: {
-      width: '320px'
-    }
   },
   graduationTime: {
     type: 'date',
@@ -61,7 +56,7 @@ export default {
     rules: [r.required()],
     props: {
       "value-format": 'timestamp',
-      style: { width: '300px' },
+      style: { width: '294px' },
       // 毕业时间不能大于当前时间
       'picker-options': {
         disabledDate(time) {

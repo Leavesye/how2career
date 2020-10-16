@@ -26,6 +26,7 @@
                       prop="userName">
           <el-input :maxlength="11"
                     class="phone"
+                    size="large"
                     placeholder="请输入手机号"
                     v-model="info.userName">
             <template slot="prepend">+86</template>
@@ -37,6 +38,7 @@
           <el-input type="password"
                     :maxlength="10"
                     class="phone"
+                    size="large"
                     placeholder="请输入密码"
                     v-model="info.passWord"
                     @keyup.enter.native="handleRegOrLogin"></el-input>
@@ -47,6 +49,7 @@
           <div class="flex-hb">
             <el-input :maxlength="6"
                       class="check-code"
+                      size="large"
                       placeholder="请输入验证码"
                       v-model="info.vCode"></el-input>
             <el-button class="send-code"
@@ -57,6 +60,7 @@
       </el-form>
       <div class="login-bottom">
         <el-button class="reg-btn"
+                    size="large"
                    :loading="isLoading"
                    :type="curTab == 0? 'success' : 'primary'"
                    @click="handleRegOrLogin">{{pageType==2? '注册': '登录'}}</el-button>

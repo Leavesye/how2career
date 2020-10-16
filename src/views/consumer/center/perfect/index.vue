@@ -216,7 +216,7 @@ export default {
     const l = this.loading()
     let ret = await getDicts()
     dicts = ret.msg
-    const { countries, majors, degrees, gpa , industry,workCategory, authorlevel } = dicts
+    const { countries, majors, degrees, gpa , industry, workCategory, authorlevel } = dicts
     eduForm.country.options = countries
     eduForm.discipline.options = majors
     eduForm.GPA.options = gpa
