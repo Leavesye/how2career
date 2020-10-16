@@ -52,7 +52,7 @@ export default {
     value : '' ,
     type : 'date',
     rules: [r.required()],
-    layout: { span: 12 },
+    layout: { span: 14 },
     props: {
       "value-format": 'timestamp',
       // 入职时间不能大于当前时间
@@ -68,7 +68,7 @@ export default {
     value : '' ,
     type : 'date',
     rules: [r.required()],
-    layout: { span: 12 },
+    layout: { span: 14 },
     hide: false,
     props: {
       "value-format": 'timestamp',

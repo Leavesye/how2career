@@ -63,7 +63,7 @@
                     :labelWidth="labelWidth"
                     :ref="'reward'+i"></quick-form>
         <div class="flex-he">
-          <el-button size="small"
+          <el-button class="del-btn"
                      @click="handleDelReward(i)"
                      plain>删除</el-button>
         </div>
@@ -87,7 +87,7 @@
                     :labelWidth="labelWidth"
                     :ref="'license'+i"></quick-form>
         <div class="flex-he">
-          <el-button size="small"
+          <el-button class="del-btn"
                      @click="handleDelLicense(i)"
                      plain>删除</el-button>
         </div>
@@ -564,6 +564,7 @@ export default {
 .del-btn {
   float: right;
   margin: 20px 0;
+  width: 90px;
 }
 .line {
   height: 1px;

@@ -38,9 +38,7 @@ export default {
     label: 'GPA',
     props: { props: { label: 'text', value: 'value' } },
     options: [],
-    style: {
-      width: '320px'
-    }
+    layout: { span: 14 },
   },
   degree: {
     type: 'select',
@@ -49,18 +47,16 @@ export default {
     rules: [r.required()],
     props: { props: { label: 'text', value: 'value' } },
     options: [],
-    style: {
-      width: '320px'
-    }
+    layout: { span: 14 },
   },
   graduationTime: {
     type: 'date',
     value: '',
     label: '毕业时间',
     rules: [r.required()],
+    layout: { span: 14 },
     props: {
       "value-format": 'timestamp',
-      style: { width: '300px' },
       // 毕业时间不能大于当前时间
       'picker-options': {
         disabledDate(time) {

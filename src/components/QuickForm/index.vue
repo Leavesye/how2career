@@ -1,6 +1,6 @@
 <!-- author : L.lawliet -->
 <template lang="html">
-  <ax-form @submit.native.prevent class="form" :model="model" :disabled="disabled" label-position="right" size="small" :label-width=" labelWidth || '110px'"  ref="form">
+  <ax-form @submit.native.prevent class="form" :model="model" :disabled="disabled" label-position="right" size="medium" :label-width=" labelWidth || '110px'"  ref="form">
     <el-row :gutter="20">
       <el-col v-for="item,prop,itemIndex in model" v-if="!item.slot" v-bind="item.layout || layout" :key="prop">
         <quick-form-item :model="item"  :prop="prop" :key="prop" :ref="prop" :label-width="labelWidth || '110px'" ></quick-form-item>

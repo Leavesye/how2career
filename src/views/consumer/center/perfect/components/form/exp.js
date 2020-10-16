@@ -8,18 +8,21 @@ export default {
     value: '',
     label: '社团/组织名称',
     rules: [r.required()],
+    layout: { span: 14 },
   },
   department: {
     type: 'input',
     value: '',
     label: '部门',
     rules: [r.maxLength(20)],
+    layout: { span: 14 },
   },
   position: {
     type: 'input',
     value: '',
     label: '职位',
     rules: [r.required()],
+    layout: { span: 14 },
   },
   onBoard: {
     type: 'single-checkbox',
@@ -36,7 +39,7 @@ export default {
     value : '' ,
     type : 'date',
     rules: [r.required()],
-    layout: { span: 12 },
+    layout: { span: 14 },
     props: {
       "value-format": 'timestamp',
       // 入职时间不能大于当前时间
@@ -52,7 +55,7 @@ export default {
     value : '' ,
     type : 'date',
     rules: [r.required()],
-    layout: { span: 12 },
+    layout: { span: 14 },
     hide: false,
     props: {
       "value-format": 'timestamp',
@@ -67,7 +70,8 @@ export default {
   duty: {
     type: 'input',
     label: '主要工作内容与业绩',
-    value : '' ,
+    value: '',
+    layout: { span: 20 },
     props: { type: 'textarea', rows: "6" },
     rules: [r.maxLength(300)]
   },

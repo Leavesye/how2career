@@ -1,5 +1,5 @@
 <template>
-  <el-card>
+  <el-card style="padding: 30px 0 30px ">
     <section class="form-part"
              v-for="(exp, i) in exps"
              :key="i">
@@ -203,7 +203,8 @@ export default {
 .remove-btn {
   position: absolute;
   right: 0;
-  bottom: 31px;
+  bottom: 24px;
+  width: 90px;
 }
 .plus-btn {
   margin-left: 110px;
