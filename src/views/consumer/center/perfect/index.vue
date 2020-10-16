@@ -251,29 +251,8 @@ export default {
               Object.keys(copy).forEach(k => {
                 // 国家
                 if (k == 'country') {
-                  copy[k].options = dicts.countries
                   // 联动学校处理
                   copy.school.options = dicts.countries.find(f => f.value == o[k]).schools
-                }
-                // 专业
-                if (k == 'discipline') {
-                  copy[k].options = dicts.majors
-                }
-                // gpa
-                if (k == 'GPA') {
-                  copy[k].options = dicts.gpa
-                }
-                // 学位
-                if (k == 'degree') {
-                  copy[k].options = dicts.degrees
-                }
-                // 工作类别
-                if (k == 'JobCategory') {
-                  copy[k].options = dicts.workCategory
-                }
-                // 行业
-                if (k == 'industry') {
-                  copy[k].options = dicts.industry
                 }
                 // 联动设置
                 if (k in fieldCfg) {
@@ -453,7 +432,6 @@ export default {
         }
         return this.$refs['education' + i][0].validate()
       })
-      console.log(eduv, expv, prjv, artv, 5555)
       // 表单校验
       let isValid = true
       console.log(33333)
@@ -471,15 +449,15 @@ export default {
       if (isValid) {
         const education = this.education.map((o, i) => {
           let main = this.$refs['education' + i][0].getFormData()
-          console.log(main, 33333)
           if (main.studentOrganization) {
             const org = this.$refs['org' + i][0]
             // 参加社团
             main.studentOrganizationHistory = []
-            main.projectExperience = []
+            main.projectHistory = []
             main.ArticleHistory = []
-            main.publishArticle = !!org.$refs['article0']
-            main.projectExperience = !!org.$refs['project0']
+            main.publishArticle = !!org.articles.length
+            console.log(org.articles, 4444)
+            main.projectExperience = !!org.projects.length
             if (main.studentOrganization) {
               main.studentOrganizationHistory = org.exps.map((v, i) => {
                 return org.$refs['exp' + i][0].getFormData()
@@ -495,6 +473,7 @@ export default {
               main.projectHistory = []
             }
             if (main.publishArticle) {
+              console.log(main.publishArticle, org, 333)
               main.ArticleHistory = org.articles.map((v, i) => {
                 return org.$refs['article' + i][0].getFormData()
               })
@@ -504,11 +483,9 @@ export default {
           }
           return main
         })
-        console.log(1)
         // 组装数据
         let certificatesHistory = this.hasCertificates ? this.otherCertificates.map((o, i) => this.$refs['license' + i][0].getFormData()):[]
         let rewardHistory = this.getRewarded ? this.rewards.map((o, i) => this.$refs['reward' + i][0].getFormData()):[]
-         console.log(3)
         const formData = {
           education,
           workExperience: this.workExperience.map((o, i) => this.$refs['experience' + i][0].getFormData()),

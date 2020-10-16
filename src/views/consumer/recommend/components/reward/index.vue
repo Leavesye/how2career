@@ -57,9 +57,10 @@ export default {
             prop: 'orderId',
             render(h, scope) {
               return (
-                <i>订单号:{scope.row.a}</i>
+                <i>订单号:{scope.row.orderId}</i>
               )
             },
+            width: '300',
           },
           {
             label: '类型',

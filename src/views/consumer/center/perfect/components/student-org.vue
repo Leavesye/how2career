@@ -16,7 +16,7 @@
                  @click="handleAddExp()">+更多社团经历</el-button>
     </div>
     <div class="s-check">
-      <el-checkbox v-model="hasPrj">有项目经历</el-checkbox>
+      <el-checkbox v-model="hasPrj" @change="handlePrjCheck">有项目经历</el-checkbox>
     </div>
     <div v-if="hasPrj">
       <section class="form-part"
@@ -36,7 +36,7 @@
       </div>
     </div>
     <div class="s-check">
-      <el-checkbox v-model="hasArticle">在校内发表文章</el-checkbox>
+      <el-checkbox v-model="hasArticle" @change="handleArticleCheck">在校内发表文章</el-checkbox>
     </div>
     <div v-if="hasArticle">
       <section class="form-part"
@@ -79,7 +79,9 @@ export default {
     return {
       hasPrj: false,
       hasArticle: false,
-      ..._.cloneDeep(form)
+      exps: [],
+      projects: [],
+      articles: []
     }
   },
   watch: {
@@ -90,7 +92,6 @@ export default {
   mounted () {
     this.exps = this.bindThis(this.exps)
     article.level.options = this.authorlevel
-    console.log(article, this.authorlevel, 'article')
     const { studentOrganizationHistory: exps,
       projectHistory: projects, projectExperience, publishArticle, ArticleHistory: articles } = this.initData
     this.hasPrj = projectExperience
@@ -116,24 +117,7 @@ export default {
               })
               this.bindThis(copy, i)
             })
-          } else {
-            // 创建表单对象并加入列表
-            let copy = _.cloneDeep(cfg[key])
-            this[key].push(copy)
-            // 给表单绑定下拉选项并赋值
-            Object.keys(copy).forEach(k => {
-              // 作者级别
-              if (k == 'level') {
-                copy[k].options = this.authorlevel
-              }
-              // 联动设置
-              if (k == 'onBoard') {
-                this.handleCheckOnBoard(i, o[k])
-              }
-            })
-            this.bindThis(copy, 0)
           }
-
         }
       })
     }
@@ -165,6 +149,13 @@ export default {
       this.exps.splice(i, 1)
     },
     // 项目操作
+    handlePrjCheck(v) {
+      if (v) {
+        this.projects=[this.bindThis(_.cloneDeep(project), 0)]
+      } else {
+        this.projects = []
+      }
+    },
     handleAddPrj () {
       const len = this.projects.length
       if (len == 10) return false
@@ -177,6 +168,13 @@ export default {
       }
     },
     // 文章操作
+    handleArticleCheck(v) {
+      if (v) {
+        this.articles=[this.bindThis(_.cloneDeep(article), 0)]
+      } else {
+        this.articles = []
+      }
+    },
     handleAddArticle () {
       const len = this.articles.length
       if (len == 10) return false
