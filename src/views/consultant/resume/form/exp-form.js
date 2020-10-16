@@ -46,6 +46,11 @@ export default {
     type: 'single-checkbox',
     text: '是否在职',
     value: '',
+    events: {
+      change: function (i, v) {
+        this.handleCheckboxChange(6, i, v)
+      }
+    }
   },
   entryTime: {
     label : '入职时间' ,

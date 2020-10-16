@@ -12,7 +12,10 @@
                     :labelWidth="labelWidth"
                     :ref="'education' + i"></quick-form>
         <!-- 社团 -->
-        <student-org v-if="o.studentOrganization.value" :ref="'org' + i"></student-org>
+        <student-org v-if="o.studentOrganization.value"
+                     :initData="oriEduData[i]"
+                     :authorlevel="authorlevel"
+                     :ref="'org' + i"></student-org>
         <el-button class="del-btn"
                    plain
                    @click="handleDelEducation(i)"
@@ -40,37 +43,61 @@
                    plain
                    v-if="workExperience.length > 1">删除</el-button>
       </el-card>
-      <section class="flex-he">
+      <section class="flex-he" style="margin-bottom: 30px">
         <el-button class="add-btn"
                    type="success"
                    plain
                    @click="handleAddExperience">+添加社会实践</el-button>
       </section>
     </section>
-    <p class="form-title">执照与证书</p>
-    <section class="form-box">
-      <el-card class="form-card"
-               v-for="(license, i) in otherCertificates"
-               :key="i">
+    <div class="common-check">
+      <el-checkbox v-model="getRewarded">是否曾经获奖</el-checkbox>
+    </div>
+    <section class="form-box"
+             v-if="getRewarded">
+      <div class="form-div"
+           v-for="(reward, i) in rewards"
+           :key="i">
+        <quick-form :model="reward"
+                    :labelWidth="labelWidth"
+                    :ref="'reward'+i"></quick-form>
+        <div class="flex-he">
+          <el-button size="small"
+                     @click="handleDelReward(i)"
+                     plain>删除</el-button>
+        </div>
+      </div>
+      <section class="flex-he" style="margin-bottom: 30px">
+        <el-button class="add-btn"
+                   type="success"
+                   plain
+                   @click="handleAddReward">+添加更多奖项</el-button>
+      </section>
+    </section>
+    <div class="common-check">
+      <el-checkbox v-model="hasCertificates">是否有执照或者证书</el-checkbox>
+    </div>
+    <section class="form-box"
+             v-if="hasCertificates">
+      <div class="form-div"
+           v-for="(license, i) in otherCertificates"
+           :key="i">
         <quick-form :model="license"
                     :labelWidth="labelWidth"
                     :ref="'license'+i"></quick-form>
-        <el-button class="del-btn"
-                   size="small"
-                   @click="handleDelLicense(i)"
-                   v-if="otherCertificates.length > 1"
-                   plain>删除</el-button>
-      </el-card>
+        <div class="flex-he">
+          <el-button size="small"
+                     @click="handleDelLicense(i)"
+                     plain>删除</el-button>
+        </div>
+      </div>
       <section class="flex-he">
         <el-button class="add-btn"
                    type="success"
                    plain
-                   @click="handleAddLicense">+添加更多证书</el-button>
+                   @click="handleAddLicense">+添加更多执照</el-button>
       </section>
     </section>
-    <quick-form :model="callup"
-                labelWidth="216px"
-                ref="callup"></quick-form>
     <p class="line"></p>
     <!-- 添加语言 -->
     <section>
@@ -146,6 +173,7 @@ import form from './form'
 import eduForm from './form/edu-form'
 import expForm from './form/exp-form'
 import licenseForm from './form/license-form'
+import rewardForm from './form/reward-form'
 import { getUserInfo, updateUserInfo, getDicts } from '@/api/user'
 import mixin from '@/mixins'
 
@@ -153,18 +181,14 @@ const cfg = {
   'education': eduForm,
   'workExperience': expForm,
   'otherCertificates': licenseForm,
+  'rewards': rewardForm,
 }
 let dicts = {}
 // 联动表单配置
 const fieldCfg = {
-  studentOrganization: 1,
-  getRewarded: 2,
-  projectArticle: 3,
-  teamManagement: 4,
-  gallupCertified: 5,
+  onBoard: 1,
 }
 export default {
-  name: 'fill-info',
   components: {
     QuickForm,
     StudentOrg
@@ -172,6 +196,8 @@ export default {
   mixins: [mixin],
   data () {
     return {
+      hasCertificates: false,
+      getRewarded: false,
       lang: '',
       language: [],
       skill: '',
@@ -179,32 +205,55 @@ export default {
       isShow: false,
       labelWidth: '140px',
       ...form,
+      authorlevel: [],
+      oriEduData: {}
     }
   },
   async created () {
     const l = this.loading()
     let ret = await getDicts()
     dicts = ret.msg
+    const { countries, majors, degrees, gpa , industry,workCategory, authorlevel } = dicts
+    eduForm.country.options = countries
+    eduForm.discipline.options = majors
+    eduForm.GPA.options = gpa
+    eduForm.degree.options = degrees
+    expForm.JobCategory.options = workCategory
+    expForm.industry.options = industry
+    this.authorlevel = authorlevel
     let res = await getUserInfo().catch(e => l.close())
     if (res.result) {
       // 简历信息
       const resume = res.msg.resume
       // 编辑
       if (resume) {
-        const { socialInsuranceImage, gallupCertified, gallupCertifiedImage, language, skills } = resume
-        Object.keys(resume).forEach(key => {
-          if (['education', 'workExperience', 'otherCertificates'].includes(key)) {
-            const form = resume[key]
+        const { education, workExperience,other: { language, skills,
+        certificatesHistory: otherCertificates, rewardHistory: rewards,
+        getRewarded, hasCertificates } } = resume
+        this.oriEduData = education
+        this.getRewarded = getRewarded
+        this.hasCertificates = hasCertificates
+        const data = { education, workExperience, otherCertificates, rewards }
+        Object.keys(data).forEach(key => {
+          if (['education', 'workExperience', 'otherCertificates', 'rewards'].includes(key)) {
+            const form = data[key]
             this[key] = []
-            form.forEach((o, i) => {
+            if (['otherCertificates', 'rewards'].includes(key) && !data[key]) {
+              // 创建表单对象并加入列表
               let copy = _.cloneDeep(cfg[key])
               this[key].push(copy)
+            }
+            form.forEach((o, i) => {
+              // 创建表单对象并加入列表
+              let copy = _.cloneDeep(cfg[key])
+              this[key].push(copy)
+              // 给表单绑定下拉选项并赋值
               Object.keys(copy).forEach(k => {
                 // 国家
                 if (k == 'country') {
                   copy[k].options = dicts.countries
                   // 联动学校处理
-                  copy.school.options = dicts.countries.find(f => f.value==o[k]).schools
+                  copy.school.options = dicts.countries.find(f => f.value == o[k]).schools
                 }
                 // 专业
                 if (k == 'discipline') {
@@ -218,13 +267,13 @@ export default {
                 if (k == 'degree') {
                   copy[k].options = dicts.degrees
                 }
+                // 工作类别
+                if (k == 'JobCategory') {
+                  copy[k].options = dicts.workCategory
+                }
                 // 行业
                 if (k == 'industry') {
                   copy[k].options = dicts.industry
-                }
-                // 公司规模
-                if (k == 'companySize') {
-                  copy[k].options = dicts.companySize
                 }
                 // 联动设置
                 if (k in fieldCfg) {
@@ -239,34 +288,33 @@ export default {
         })
         this.language = language
         this.skills = skills
-        this.socialEcurity.socialInsuranceImage.value = socialInsuranceImage
-        this.bindThis(this.socialEcurity)
-        this.callup.gallupCertified.value = gallupCertified
-        this.callup.gallupCertifiedImage.value = gallupCertifiedImage
-        this.bindThis(this.callup)
-        this.handleCheckboxChange(5, '', gallupCertified)
       } else { // 新增
         // 绑定form表单事件方法this到组件实例 便于后续调用实例方法
         this.education[0] = this.bindThis(this.education[0], 0)
-        console.log(this.workExperience[0] , 444)
         this.workExperience[0] = this.bindThis(this.workExperience[0], 0)
         this.otherCertificates[0] = this.bindThis(this.otherCertificates[0], 0)
-        this.callup = this.bindThis(this.callup)
+        this.rewards[0] = this.bindThis(this.rewards[0], 0)
       }
     }
     l.close()
   },
   methods: {
     // 国家联动学校
-    handleCountryChange(i, v) {
-      const f = dicts.countries.find(o => o.value == v )
-      this.education[i].school.options = f.schools
+    handleCountryChange (i, v) {
+      if (v) {
+        console.log(dicts.countries, v)
+        const f = dicts.countries.find(o => o.value == v)
+        this.education[i].school.options = f.schools
+      } else {
+        this.education[i].school.options = []
+      }
       this.education[i].school.value = ''
     },
     // 表单联动操作
     handleCheckboxChange (type, index, v) {
       if (type == 1) {
         this.workExperience[index].resignationTime.hide = v
+        this.workExperience[index].resignationTime.value = ''
       }
     },
     // 学历操作
@@ -294,11 +342,21 @@ export default {
       this.otherCertificates.push(this.bindThis(_.cloneDeep(licenseForm), this.otherCertificates.length))
     },
     handleDelLicense (i) {
-      if (this.otherCertificates.length == 1) return false
       this.otherCertificates.splice(i, 1)
+      this.hasCertificates = !!this.otherCertificates.length
+    },
+    // 奖项操作
+    handleAddReward () {
+      if (this.rewards.length == 10) return false
+      this.rewards.push(this.bindThis(_.cloneDeep(rewardForm), this.rewards.length))
+    },
+    handleDelReward (i) {
+      this.rewards.splice(i, 1)
+      this.getRewarded = !!this.rewards.length
     },
     // 语言操作
     handleAddLang () {
+      console.log(this.language, 'iiii')
       if (this.language.length == 10) return false
       this.lang && this.language.push(this.lang)
       this.lang = ''
@@ -365,38 +423,112 @@ export default {
       }
     },
     async handleSave (type) {
-      console.log(this.$refs)
+      console.log(this.$refs, 5555)
+      // 社团校验
+      let eduv = []
+      let expv = []
+      let prjv = []
+      let artv = []
+      eduv = this.education.map((o, i) => {
+        if (this.education[i].studentOrganization.value) {
+          let org = this.$refs['org' + i][0]
+          org.exps = org.exps || []
+          expv = org.exps.map((v, i) => {
+            const ref = org.$refs['exp' + i]
+            let p = ref ? ref[0].validate() : Promise.resolve(true)
+            return p
+          })
+          org.projects = org.projects || []
+          prjv = org.projects.map((v, i) => {
+            const ref = org.$refs['project' + i]
+            let p = ref ? ref[0].validate() : Promise.resolve(true)
+            return p
+          })
+          org.articles = org.articles || []
+          artv = org.articles.map((v, i) => {
+            const ref = org.$refs['article' + i]
+            let p = ref ? ref[0].validate() : Promise.resolve(true)
+            return p
+          })
+        }
+        return this.$refs['education' + i][0].validate()
+      })
+      console.log(eduv, expv, prjv, artv, 5555)
       // 表单校验
       let isValid = true
+      console.log(33333)
+      let certV = this.hasCertificates ? this.otherCertificates.map((o, i) => this.$refs['license' + i][0].validate()):[]
+      let rewardV = this.getRewarded ? this.rewards.map((o, i) => this.$refs['reward' + i][0].validate()):[]
       const res = await Promise.all([
-        ...this.education.map((o, i) => this.$refs['education' + i][0].validate()),
+        ...eduv,
+        ...expv,
+        ...prjv,
+        ...artv,
         ...this.workExperience.map((o, i) => this.$refs['experience' + i][0].validate()),
-        ...this.otherCertificates.map((o, i) => this.$refs['license' + i][0].validate()),
-        this.$refs.socialEcurity.validate(),
-        this.$refs.callup.validate(),
+        ...certV,
+        ...rewardV,
       ]).catch(e => isValid = false)
       if (isValid) {
-        const l = this.loading()
+        const education = this.education.map((o, i) => {
+          let main = this.$refs['education' + i][0].getFormData()
+          console.log(main, 33333)
+          if (main.studentOrganization) {
+            const org = this.$refs['org' + i][0]
+            // 参加社团
+            main.studentOrganizationHistory = []
+            main.projectExperience = []
+            main.ArticleHistory = []
+            main.publishArticle = !!org.$refs['article0']
+            main.projectExperience = !!org.$refs['project0']
+            if (main.studentOrganization) {
+              main.studentOrganizationHistory = org.exps.map((v, i) => {
+                return org.$refs['exp' + i][0].getFormData()
+              })
+            } else {
+              main.studentOrganizationHistory = []
+            }
+            if (main.projectExperience) {
+              main.projectHistory = org.projects.map((v, i) => {
+                return org.$refs['project' + i][0].getFormData()
+              })
+            } else {
+              main.projectHistory = []
+            }
+            if (main.publishArticle) {
+              main.ArticleHistory = org.articles.map((v, i) => {
+                return org.$refs['article' + i][0].getFormData()
+              })
+            } else {
+              main.ArticleHistory = []
+            }
+          }
+          return main
+        })
+        console.log(1)
         // 组装数据
+        let certificatesHistory = this.hasCertificates ? this.otherCertificates.map((o, i) => this.$refs['license' + i][0].getFormData()):[]
+        let rewardHistory = this.getRewarded ? this.rewards.map((o, i) => this.$refs['reward' + i][0].getFormData()):[]
+         console.log(3)
         const formData = {
-          education: this.education.map((o, i) => this.$refs['education' + i][0].getFormData()),
+          education,
           workExperience: this.workExperience.map((o, i) => this.$refs['experience' + i][0].getFormData()),
-          otherCertificates: this.otherCertificates.map((o, i) => this.$refs['license' + i][0].getFormData()),
-          ...this.$refs.socialEcurity.getFormData(),
-          ... this.$refs.callup.getFormData(),
-          language: this.language,
-          skills: this.skills
+          other: {
+            hasCertificates: this.hasCertificates,
+            certificatesHistory,
+            getRewarded: this.getRewarded,
+            rewardHistory,
+            language: this.language,
+            skills: this.skills,
+          },
         }
         console.log(formData, 'formdata')
-        this.initPublicInfo.resume = formData
         const p = {
-          publicInfo: this.initPublicInfo
+          resume: formData
         }
-        // 保存并提交审核 更新  backgroundVerifyStatus= 1 ,保存不更新这个字段
-        type == 1 && (p.backgroundVerifyStatus = 1)
+        const l = this.loading()
         const ret = await updateUserInfo(p).catch(e => l.close())
         if (ret.result) {
-          this.alert(type == 1 ? '保存并提交审核成功' : '保存成功')
+          this.alert('保存成功')
         }
         l.close()
       } else {
@@ -405,7 +537,7 @@ export default {
     }
   },
   mounted () {
-    console.log(this.$refs.org0, 333)
+    console.log(this.$refs, 333)
   }
 }
 </script>
@@ -418,7 +550,7 @@ export default {
 .page-title > div {
   font-size: 16px;
   font-weight: 600;
-  color: #36AE82;
+  color: #36ae82;
   margin-right: 30px;
 }
 .page-title > p {
@@ -429,13 +561,12 @@ export default {
   margin-bottom: 10px;
 }
 .form-box {
-  width: 800px;
   margin: 0 auto;
   padding: 0 70px;
 }
 .form-title {
   font-size: 16px;
-  color: #36AE82;
+  color: #36ae82;
   margin: 30px;
 }
 .add-btn {
@@ -479,5 +610,17 @@ export default {
   border-radius: 50%;
   background: #7a7f84;
   color: #fff;
+}
+.common-check {
+  padding-left: 240px;
+  margin-bottom: 20px;
+}
+.form-div {
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  padding: 30px 10px 10px 0;
+  background: #ffffff;
+  border-radius: 4px;
+  border: 1px solid #edeeef;
+  margin-bottom: 10px;
 }
 </style>

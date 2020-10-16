@@ -4,12 +4,10 @@ import moment from 'moment'
 const r = Vue.prototype.$rules
 export default {
   name: {
-    type: 'select',
+    type: 'input',
     value: '',
     label: '社团/组织名称',
     rules: [r.required()],
-    props: { props: { label: 'text', value: 'value' } },
-    options: [],
   },
   department: {
     type: 'input',
@@ -26,7 +24,7 @@ export default {
   onBoard: {
     type: 'single-checkbox',
     text: '是否在职',
-    value: '',
+    value: false,
     events: {
       change: function (i, v) {
         this.handleCheckOnBoard(i, v)
@@ -76,7 +74,8 @@ export default {
   reward: {
     type: 'input',
     label: '奖励和荣誉',
-    value : '' ,
+    value: '',
+    layout: { span: 20 },
     props: { type: 'textarea', rows: "6" },
     rules: [r.maxLength(300)]
   },

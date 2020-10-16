@@ -73,6 +73,6 @@ export default {
     type: 'single-checkbox',
     layout: { span: 24 },
     text: '曾经参加学生组织',
-    value: '',
+    value: false,
   },
 }

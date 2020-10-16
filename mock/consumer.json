@@ -47,7 +47,8 @@
             "reward": "奖励和荣誉"
           }
         ],
-        "projectExperience": [
+        "projectExperience": true,
+        "projectHistory": [
           {
             "title": "项目名称",
             "content": "内容"
@@ -92,7 +93,8 @@
         {
           "name": "证书名称",
           "expireDate": "有效日期",
-          "comments": "备注"
+          "comments": "备注",
+          "certificateImage": "证书文件url",
         }
       ],
       "language": [

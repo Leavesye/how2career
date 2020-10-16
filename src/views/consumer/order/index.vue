@@ -130,18 +130,6 @@ export default {
   }
 }
 </script>
-<style>
-#pagin .el-pager .number.active {
-  background-color: #36ae82;
-  color: #ffffff;
-}
-#pagin .el-pager > .number {
-  color: #36ae82;
-}
-#pagin .el-icon {
-  color: #36ae82;
-}
-</style>
 <style lang="scss" scoped>
 .order-status {
   width: 140px;

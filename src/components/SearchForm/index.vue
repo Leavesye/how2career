@@ -2,8 +2,8 @@
 <!-- 搜索条件 -->
 <section class="flex-hbc search">
   <div class="flex-hbc">
-    <el-link type="primary"
-              :underline="false">{{title || '订单状态'}}</el-link>
+    <el-link :type="user.role=='consumer' ?'success':'primary'"
+              :underline="false" style="font-weight: 600">{{title || '订单状态'}}</el-link>
     <el-select v-if="!title" class="order-status"
                 v-model="search.status"
                 placeholder=""
@@ -39,6 +39,7 @@
 import moment from 'moment'
 import { ORDER_STATUS } from '@/utils/enums'
 import TimePicker from '@/components/TimePicker'
+import { mapGetters } from 'vuex'
 
 export default {
   props: ['title'],
@@ -64,7 +65,10 @@ export default {
   computed: {
     orderStates: function() {
       return ORDER_STATUS.filter(o => o.tag == 7)
-    }
+    },
+    ...mapGetters([
+      'user'
+    ])
   },
   methods: {
     handleTimeChange (value, i) { 

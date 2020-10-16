@@ -109,3 +109,26 @@ export function queryConsumerByOrderId(params) {
     params
   })
 }
+// 获取咨询者/咨询师订单取消提示文字
+export function queryCancelMsg(params) {
+  return request({
+    url: `order/platform/${store.state.user.role}/orders/cancel/message`,
+    method: 'get',
+    params
+  })
+}
+// 获取咨询者/咨询师更新预约时间消息
+export function queryUpdateTimeMsg(params) {
+  return request({
+    url: `order/platform/${store.state.user.role}/orders/time/message`,
+    method: 'get',
+    params
+  })
+}
+export function queryReward(params) {
+  return request({
+    url: `/order/platform/mgm/list/query`,
+    method: 'get',
+    params
+  })
+}

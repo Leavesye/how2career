@@ -3,11 +3,11 @@
   title="订单取消"
   :visible.sync="isShow"
   :before-close="handleClose"
+  append-to-body
   width="430px"
   center>
   <section class="modal-main">
-    <p>当前订单取消会扣除XXX RMB费用</p>
-    <p>退款金额为XXX RMB</p>
+    <p style="margin-bottom: 20px">{{msg}}</p>
     <p><el-link type="success">点击了解更多规则</el-link></p>
   </section>
   <span slot="footer" class="dialog-footer">
@@ -20,7 +20,7 @@
 import { cancelOrder } from '@/api/order'
 
 export default {
-  props: ['isShow', 'order'],
+  props: ['isShow', 'order', 'msg'],
   data () {
     return {
       isLoading: false

@@ -2,51 +2,62 @@
   <section style="padding: 30px">
     <el-image :src="banner"
               class="banner"></el-image>
-    <div class="flex-hc content">
-      <el-image class="content-img friends"
-                :src="friends"></el-image>
-      <div class="content-main" style="margin-left: 50px">
-        <h1>邀请人奖励</h1>
-        <p>邀请越多奖励越多</p>
-        <section>聚焦企业高潜人才储备、人才梯队建设、岗位胜任力发展，基于已有数万家客户企业学习的数据洞察，结合市场需求，打造以提高胜任力、效能最大化为</section>
+    <h1 class="title">加入好途职场，邀请好友有奖</h1>
+    <div class="flex-hb">
+      <div v-for="(item, i) in list"
+           :key="i"
+           class="flex-cc item">
+        <el-image class="icon-img" :src="item.icon"></el-image>
+        <p>你也可以设置您的服务时间以便通过审核</p>
       </div>
     </div>
-    <div class="flex-hc content">
-      <div class="content-main" style="margin-right: 50px">
-        <h1>被邀请好友奖励</h1>
-        <p>注册有奖 成单第一笔也有奖励哟</p>
-        <section>提供精准、高效、应用广泛的语音识别API，让用户的设备随时随地获得领跑业界的语音转文字能力，提高沟通效率、助力人机交互。</section>
-      </div>
-      <el-image class="content-img report"
-                :src="report"></el-image>
+    <div class="join-btn" @click="handleJoin">加入好友推荐计划</div>
+    <div class="bottom-link">
+      点击查看<el-link type="success">《好友推荐规则》</el-link>
     </div>
-    <terms :isShow="isShow" @close="handleClose"></terms>
+    <terms :isShow="isShow"
+           @close="handleClose"></terms>
   </section>
 </template>
 
 <script>
 import Terms from './modal/terms'
+import { join } from '@/api/user'
+
 export default {
-  components: {Terms},
+  components: { Terms },
   data () {
     return {
-      isShow: true,
+      isShow: false,
+      list: [
+        { icon: require('@/assets/icon-1.png'), text: '你也可以设置您的服务时间以便通过审核' },
+        { icon: require('@/assets/icon-2.png'), text: '你也可以设置您的服务时间以便通过审核' },
+        { icon: require('@/assets/icon-3.png'), text: '你也可以设置您的服务时间以便通过审核' },
+      ]
     }
   },
   computed: {
-    banner: function() {
+    banner: function () {
       return require('@/assets/invite.png')
-    },
-    friends: function() {
-      return require('@/assets/friends.png')
-    },
-    report: function() {
-      return require('@/assets/report.png')
     },
   },
   methods: {
-    handleClose() {
+    async handleJoin() {
+      if (!this.isAgree) {
+        this.isShow = true
+        return false
+      }
+      const l = this.loading()
+      const res = await join().catch(e=> l.close())
+      if (res.result) {
+        this.alert('加入成功')
+        this.$emit('success')
+      }
+      l.close()
+    },
+    handleClose (checked) {
       this.isShow = false
+      this.isAgree = checked
     }
   }
 }
@@ -56,42 +67,57 @@ $color: #36ae82;
 .banner {
   height: 220px;
   width: 880px;
-  margin-bottom: 30px;
+  margin-bottom: 50px;
 }
-.content {
-  margin-bottom: 100px;
-  padding: 0 30px;
-}
-.content-img {
-  width: 300px;
-  height: 240px;
-}
-.content-main {
-  flex: 1;
-}
-.content-main h1 {
-  font-size: 32px;
-  color: #15479e;
+.title {
+  font-size: 28px;
   font-weight: 600;
-  margin-bottom: 10px;
+  color: #15479e;
+  text-align: center;
+  margin-bottom: 50px;
 }
-.content-main p {
-  font-size: 24px;
+.item {
+  flex: 1;
+  height: 130px;
+  background: #ffffff;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  margin-right: 20px;
+}
+.item:last-child {
+  margin-right: 0;
+}
+.item > .icon-img {
+  margin-right: 20px;
+  width: 30px;
+  height: 30px;
+}
+.item > p{
+  width: 122px;
+}
+.join-btn {
+  width: 200px;
+  height: 48px;
+  line-height: 48px;
+  background: rgba(54, 174, 130, 0.2);
+  border-radius: 24px;
+  border: 1px solid #36ae82;
   color: #36ae82;
-  font-weight: 400;
-  margin-bottom: 40px
-}
-.content-main section {
   font-size: 18px;
-  color: #434D57;;
-  font-weight: 300;
+  text-align: center;
+  margin: 0 auto;
+  margin-top: 50px;
 }
-.friends {
-  width: 267px;
-  height: 264px
+.join-btn:hover {
+  background: #36ae82;
+  opacity: 0.89;
+  border: 1px solid #36ae82;
+  color: #fff;
 }
-.report {
-  width: 355px;
-  height: 267px
+.bottom-link {
+  text-align: center;
+  color: #7A7F84;
+  font-size: 14px;
+  margin-top: 20px;
 }
 </style>

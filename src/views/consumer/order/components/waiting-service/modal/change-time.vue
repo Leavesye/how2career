@@ -11,7 +11,7 @@
       <div>创建时间: {{order.cTime}}</div>
     </div>
     <p class="time">咨询时间(北京时间){{order.startTime}}</p>
-    <p class="time">调整时间会产生XXXRMB的费用 <el-link type="success">点击了解更多规则</el-link></p>
+    <p class="time">{{msg}} <el-link type="success">点击了解更多规则</el-link></p>
     <calendar v-if="isShow" @set-time="handleSetTime" :order="order">
       <el-button style="margin-top:40px" :loading="isLoading" size="small" type="success" @click="handleConfirmTime">确认调整</el-button>
     </calendar>
@@ -25,7 +25,7 @@ import { updateTime } from '@/api/order'
 import moment from 'moment'
 
 export default {
-  props: ['isShow', 'order'],
+  props: ['isShow', 'order', 'msg'],
   components: {
     Calendar
   },

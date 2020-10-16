@@ -127,3 +127,11 @@ export function getDicts (params) {
     params
   })
 }
+// 自诩这
+export function join (data) {
+  return request({
+    url: `/user/platform/mgm/join`,
+    method: 'put',
+    data
+  })
+}

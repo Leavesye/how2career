@@ -2,8 +2,8 @@
   <section>
     <h1 class="page-title">我的收藏</h1>
     <div class="container">
-      <card-list :list="list"></card-list>
-      <p class="no-favorite">暂无收藏</p>
+      <card-list v-if="list.length" :list="list"></card-list>
+      <p v-else class="no-favorite">暂无收藏</p>
     </div>
   </section>
 </template>

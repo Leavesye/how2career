@@ -27,6 +27,7 @@ export default {
   methods: {
     handleConfirmTime() {
       this.$emit('close')
+      this.$router.push('/consultant/setting')
     }
   }
 };

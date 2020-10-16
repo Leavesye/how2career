@@ -45,7 +45,7 @@
             <li class="info-item flex-hbc">
               <div>
                 <h1>工作信息</h1>
-                <p style="margin-bottom: 10px">所属行业: {{info.industry}}</p>
+                <p style="margin-bottom: 10px">所属行业: {{info.industryText}}</p>
                 <p>公司名称: {{info.company}}</p>
               </div>
               <div>职位: {{info.position}}</div>
@@ -88,7 +88,7 @@ import { createOrder } from '@/api/order'
 import moment from 'moment'
 import { mapGetters } from 'vuex'
 import { getRateList } from '@/api/consultant'
-import { favorite, delFavorite, getFavorites } from '@/api/user'
+import { favorite, delFavorite, getFavorites, getDicts } from '@/api/user'
 
 export default {
   name: 'consultant-detail',
@@ -114,9 +114,16 @@ export default {
     ])
   },
   async created() {
-    const res = await getFavorites()
-    if (res.result) {
-      this.isFavorite = res.msg.list && !!res.msg.list.filter(o => o._id == this.id)
+    const res = await Promise.all([
+      getFavorites(),
+      getDicts()
+    ])
+    if (res[0].result) {
+      const data = res[0].msg
+      this.isFavorite = data.list && !!data.list.filter(o => o._id == this.id)
+    }
+    if (res[1].result) {
+      this.dicts = res[1].msg
     }
   },
   methods: {
@@ -125,8 +132,14 @@ export default {
       if (res.result && res.msg.publicInfo) {
         this.publicInfo = res.msg.publicInfo
         const o = res.msg.publicInfo
-        let { school, discipline, degree, graduationTime } = o.resume.education[0]
+        let { country, school, discipline, degree, graduationTime } = o.resume.education[0]
+        const { countries, majors, degrees, industry:industrys,  } = this.dicts
+        const schools = countries.find(v => v.value == country).schools
+        const schoolText = schools.find(v => v.value == school).text
+        const disciplineText = majors.find(v => v.value == discipline).text
+        const degreeText = degrees.find(v => v.value == degree).text
         const { industry, company, position, duty } = o.resume.workExperience[0]
+        const industryText = industrys.find(v => v.value == industry).text
         // 评分
         let rate = o.evaluationPoint > 0 ? o.evaluationPoint / o.evaluationCount : 0
         // 工作年限
@@ -142,8 +155,9 @@ export default {
           rateCount: o.evaluationCount,
           totalRate: o.evaluationPoint,
           rate,
-          highEdu: `${school} ${discipline} ${degree} ${moment(graduationTime).format('YYYY年毕业')}`,
+          highEdu: `${schoolText} ${disciplineText} ${degreeText} ${moment(graduationTime).format('YYYY年毕业')}`,
           industry,
+          industryText,
           company,
           position,
           duty,

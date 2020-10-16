@@ -71,11 +71,11 @@
     <!-- 取消订单弹框 -->
     <cancel-modal :isShow="isShow"
                   @close="handleClose"
-                  :order="order"></cancel-modal>
+                  :order="order" :msg="cancelMsg"></cancel-modal>
     <!-- 时间调整弹框 -->
     <change-modal :isShow="isShowTime"
                   @close="handleCloseTime"
-                  :order="order"></change-modal>
+                  :order="order" :msg="changeMsg"></change-modal>
   </div>
 </template>
 
@@ -83,7 +83,7 @@
 import SmallAvatar from '@/components/SmallAvatar'
 import CancelModal from './modal/cancel-order'
 import ChangeModal from './modal/change-time'
-import { orderAddQuestion } from '@/api/order'
+import { orderAddQuestion, queryCancelMsg, queryUpdateTimeMsg } from '@/api/order'
 
 export default {
   name: 'waiting-service',
@@ -100,6 +100,8 @@ export default {
       order: {},
       orderList: this.list,
       isLoading: false,
+      cancelMsg: '',
+      changeMsg: '',
     }
   },
   methods: {
@@ -127,9 +129,15 @@ export default {
       if (this.orderList[i].question.length == 20) return false
       this.orderList[i].question.push({ v: '' })
     },
-    handleOpenCancel (order) {
+    async handleOpenCancel (order) {
       this.isShow = true
       this.order = order
+      const l = this.loading()
+      const res = await queryCancelMsg({ orderId: order.orderId }).catch(e=> l.close())
+      if (res.result) {
+        this.cancelMsg = res.msg
+      }
+      l.close()
     },
     handleClose (isCancel) {
       this.isShow = false
@@ -138,9 +146,15 @@ export default {
         this.query()
       }
     },
-    handleOpenChange (order) {
+    async handleOpenChange (order) {
       this.isShowTime = true
       this.order = order
+      const l = this.loading()
+      const res = await queryUpdateTimeMsg({ orderId: order.orderId }).catch(e=> l.close())
+      if (res.result) {
+        this.changeMsg = res.msg
+      }
+      l.close()
     },
     handleCloseTime (isConfirm) {
       this.isShowTime = false

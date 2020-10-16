@@ -4,19 +4,7 @@
               class="banner"></el-image>
     <el-card>
       <!-- 搜索条件 -->
-      <section class="flex-hbc search">
-        <h-title>我的奖励</h-title>
-        <time-picker @change="handleTimeChange" :times='times' :curTime="curTime"></time-picker>
-        <el-date-picker
-          style="width: 230px"
-          v-model="datetime"
-          type="daterange"
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期">
-        </el-date-picker>
-        <el-button>查询</el-button>
-      </section>
+      <search-form @search="handleSearch" title="我的奖励"></search-form>
       <!-- 订单列表 -->
       <quick-table :table="table"></quick-table>
     </el-card>
@@ -41,13 +29,14 @@
 
 <script>
 import QuickTable from '@/components/QuickTable'
-import Pannel from '@/components/Pannel'
-import TimePicker from '@/components/TimePicker'
+import SearchForm from '@/components/SearchForm'
+import { queryReward } from '@/api/order'
+import moment from 'moment'
 
 export default {
   components: {
     QuickTable,
-    TimePicker
+    SearchForm
   },
   computed: {
     banner: function() {
@@ -55,46 +44,38 @@ export default {
     }
   },
   data () {
+    let fn = this.handleOpenReward
     return {
-      datetime: '',
-      isShow: false,
-      curTime: '',
-      times: [
-        {name: '7天'},
-        {name: '15天'},
-        {name: '30天'},
-      ],
       table: {
-        data: [{a:'fhfhfhfhfhf', b: '2400 RMB', c: '2020-11-12 20:13:12', d: '2020-11-12 20:13:12'}],
+        data: [],
         columns: [
           {
             type: 'selection',
           },
           {
             label: '订单号',
-            prop: 'a',
-            render(a, b) {
-              console.log(a,b )
+            prop: 'orderId',
+            render(h, scope) {
               return (
-                <i>订单号:{b.row.a}</i>
+                <i>订单号:{scope.row.a}</i>
               )
             },
           },
           {
             label: '类型',
-            prop: 'b'
+            prop: 'cardTitle'
           },
           {
             sortable: true,
             label: '创建时间',
-            prop: 'c'
+            prop: 'cTime'
           },
           {
             label: '',
-            prop: 'e',
-            render() {
+            prop: '',
+            render(h, scope) {
               return (
-                <el-button size="mini">提现</el-button> 
+                <el-button plain onClick={ () => fn(scope.row.orderId) }>查看奖励</el-button> 
               )
             }
           },
@@ -105,10 +86,12 @@ export default {
             fontSize: '14px!important',
             color: '#7C8FA5!important',
             fontWeight: '200',
+            textAlign: 'left'
           },
           cellStyle: {
             fontSize: '14px!important',
             color: '#7C8FA5!important',
+            textAlign: 'left'
           }
         }
       },
@@ -120,16 +103,51 @@ export default {
           'current-change': this.handlePageChange,
           'size-change': this.handlePageSizeChange,
         },
-        props: {},
       },
     }
   },
+  created() {
+    this.params = { from: 0, to: 2601444690 }
+    this.query()
+  },
   methods: {
-    handleClose() {
-      this.isShow = false
+    async query() {
+      const l = this.loading()
+      const { pageIndex, pageSize } = this.pagination
+      const { from, to, order } = this.params
+      const p = {
+        from: from || 0,
+        to: to || 2601444690,
+        page: pageIndex || 0,
+        limit: pageSize || 10,
+        condition: 'status==2',
+      }
+      order && (p.order = order)
+      const res = await queryReward(p).catch(e=> l.close())
+      if (res.result) {
+        this.pagination.total = res.msg.count
+        this.table.data = res.msg.list.map(o => {
+          const { _id: orderId, cardTitle, cardContent, cTime } = o
+          return { 
+            orderId,
+            cardTitle,
+            cardContent,
+            cTime: moment(cTime*1000).format('YYYY-MM-DD HH:mm:ss'), 
+          }
+        })
+      }
+      l.close()
     },
-    handleTimeChange(v, i) {
-      this.curTime = i
+    handleOpenReward() {
+      console.log(111)
+    },
+    handleSearch(p) {
+      this.params.from = p.from
+      this.params.to = p.to
+      if (p.condition) {
+        this.params.condition = p.condition
+      }
+      this.query()
     },
     handlePageChange (pageIndex) {
       this.pagination.pageIndex = pageIndex

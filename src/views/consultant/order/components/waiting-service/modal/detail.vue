@@ -10,7 +10,8 @@
       <p class="order-no">订单号:{{order.orderId}}</p>
       <div>创建时间:{{order.cTime}}</div>
     </div>
-    <p class="time">原咨询时间 (北京时间):{{order.startTime}}</p>
+    <p class="time">咨询时间 (北京时间):{{order.startTime}}</p>
+    <p class="time">{{msg}} <el-link type="success">点击了解更多规则</el-link></p>
     <div>
       <calendar v-if="isShow" :order="order" @set-time="handleSetTime"></calendar>
     </div>
@@ -19,48 +20,56 @@
     <consumer-info v-if="isShow" :order="order"></consumer-info>
   </section>
   <span slot="footer" class="dialog-footer">
-    <el-button :loading="isLoading" size="small" type="primary" @click="handleCancel">订单取消</el-button>
+    <el-button :loading="isLoading" size="small" type="primary" @click="handleOpenCancel(order)">订单取消</el-button>
     <el-button :loading="isLoading" size="small" type="primary" @click="handleChangeTime">时间调整</el-button>
   </span>
+  <!-- 取消订单弹框 -->
+  <cancel-modal :isShow="isShowCancel"
+                @close="handleCloseCancel"
+                :order="order" :msg="cancelMsg"></cancel-modal>
 </el-dialog>
 </template>
 
 <script>
 import Calendar from '@/components/Calendar'
-import { updateTime, cancelOrder } from '@/api/order'
+import { updateTime, queryCancelMsg } from '@/api/order'
 import moment from 'moment'
 import ConsumerInfo from '@/components/ConsumerInfo'
+import CancelModal from '@/views/consumer/order/components/waiting-service/modal/cancel-order'
 
 export default {
-  props: ['isShow', 'order'],
+  props: ['isShow', 'order', 'msg'],
   components: {
     Calendar,
-    ConsumerInfo
+    ConsumerInfo,
+    CancelModal
   },
   data () {
     return {
+      isShowCancel: false,
       isShowCalendar: false,
       isLoading: false,
-      times: []
+      times: [],
+      cancelMsg: ''
     }
   },
   methods: {
+    handleCloseCancel() {
+      this.isShowCancel = false
+    },
     handleSetTime(times) {
       this.times = times
     },
     handleClose() {
       this.$emit('close')
     },
-    // 订单取消
-    async handleCancel() {
-      if (this.isLoading) return false
-      this.isLoading = true
-      const res = await cancelOrder({ orderId: this.order.orderId }).catch(e=>this.isLoading=false)
+    async handleOpenCancel (order) {
+      this.isShowCancel = true
+      this.order = order
+      const res = await queryCancelMsg({ orderId: this.order.orderId })
       if (res.result) {
-        this.alert('订单取消成功')
-        this.$emit('close', true)
+        this.cancelMsg = res.msg
       }
-      this.isLoading=false
     },
     // 更换服务时间给咨询者确认
     async handleChangeTime() {

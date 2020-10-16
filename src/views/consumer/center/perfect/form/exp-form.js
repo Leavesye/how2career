@@ -40,7 +40,7 @@ export default {
   onBoard: {
     type: 'single-checkbox',
     text: '是否在职',
-    value: '',
+    value: false,
     events: {
       change: function (i, v) {
         this.handleCheckboxChange(1, i, v)

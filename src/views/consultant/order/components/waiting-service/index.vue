@@ -76,6 +76,7 @@
     <!-- 订单详情 -->
     <detail-modal :isShow="isShow"
                   :order="order"
+                  :msg="changeMsg"
                   @close="handleCloseDetail"></detail-modal>
   </div>
 </template>
@@ -83,6 +84,7 @@
 <script>
 import DetailModal from './modal/detail'
 import SmallAvatar from '@/components/SmallAvatar'
+import { queryUpdateTimeMsg } from '@/api/order'
 
 export default {
   name: 'waiting-service',
@@ -95,15 +97,22 @@ export default {
     return {
       order: {},
       isShow: false,
+      changeMsg: ''
     }
   },
   methods: {
     handleEnterRoom (orderId) {
       this.$router.push(`/consultant/room/${orderId}`)
     },
-    handleOpenDetail (order) {
-      this.order = order
+    async handleOpenDetail (order) {
       this.isShow = true
+      this.order = order
+      const l = this.loading()
+      const res = await queryUpdateTimeMsg({ orderId: order.orderId }).catch(e=> l.close())
+      if (res.result) {
+        this.changeMsg = res.msg
+      }
+      l.close()
     },
     handleCloseDetail (isConfirm) {
       this.isShow = false

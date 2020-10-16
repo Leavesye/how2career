@@ -12,7 +12,7 @@
      <el-checkbox v-model="checked">我已阅读条款</el-checkbox>
      <div>
        <el-button plain @click="handleClose">取消</el-button>
-       <el-button type="success" @click="handleClose">同意</el-button>
+       <el-button type="success" @click="handleAgree">同意</el-button>
      </div>
   </div>
 </el-dialog>
@@ -28,8 +28,15 @@ export default {
   },
   methods: {
     handleClose() {
-      this.$emit('close')
+      this.$emit('close', this.checked)
     },
+    handleAgree() {
+      if (!this.checked) {
+        this.alert('请先同意条款', 'warning')
+        return false
+      }
+      this.$emit('close', this.checked)
+    }
   }
 };
 </script>

@@ -1,46 +1,40 @@
 <template>
   <div>
-    <component v-bind:is="'explain-page'" />
+    <component v-bind:is="currentView" @success="handleJoinSuccess" />
   </div>
 </template>
 
 <script>
-import CostPage from './components/cost'
 import ReportPage from './components/report'
 import ExplainPage from './components/explain'
 import RewardPage from './components/reward'
+import { getUserInfo } from '@/api/user'
 export default {
   components: {
-    CostPage,
     ReportPage,
     ExplainPage,
     RewardPage
   },
   data () {
     return {
-      
+      currentView: 'explain-page'
     }
   },
   methods: {
-    
+    handleJoinSuccess() {
+      this.currentView = 'reward-page'
+    }
   },
-  mounted() {
-
+  async created() {
+    const l = this.loading()
+    const res = await getUserInfo().catch(e=> l.close())
+    if (res.result) {
+      // this.currentView = res.msg.joinMGM ? 'reward-page': 'explain-page'
+    }
+    l.close()
   }
 }
 </script>
-<style>
-#pagin .el-pager .number.active {
-  background-color: #36ae82;
-  color: #ffffff;
-}
-#pagin .el-pager > .number {
-  color: #36ae82;
-}
-#pagin .el-icon {
-  color: #36ae82;
-}
-</style>
 <style lang="scss" scoped>
 
 </style>

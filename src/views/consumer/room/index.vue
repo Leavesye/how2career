@@ -90,7 +90,7 @@ import Avatar from '@/components/Avatar'
 import CountDown from '@/components/CountDown'
 import RoomStatus from './modal/room-status'
 import { getOrderById } from '@/api/order'
-import { getPublicInfo } from '@/api/user'
+import { getPublicInfo, getDicts } from '@/api/user'
 import moment from 'moment'
 import { GENDERS } from '@/utils/enums'
 
@@ -114,18 +114,20 @@ export default {
   async created() {
     const orderId = this.$route.params.id
     const l = this.loading()
-    const res = await getOrderById({ orderId }).catch(e=>l.close())
-    if (res.result) {
-
-      const {
-        consultant:{ avatar, name,  _id },
-        startTime,
-        question
-      } = res.msg
+    const res = await Promise.all([
+      getOrderById({ orderId }),
+      getDicts()
+    ]).catch(e=> l.close())
+    if (res[1].result) {
+      this.dicts = res[1].msg
+    }
+    if (res[0].result) {
+      const { consultant:{ avatar, name,  _id }, startTime, question } = res[0].msg
       // 查询咨询师公共信息
       const ret = await getPublicInfo({ userId: _id }).catch(e=>l.close())
       if (ret.result) {
-        const { birthday,gender,selfIntroduction,detailedIntroduction, resume: {education, workExperience}} = ret.msg.publicInfo
+        const { birthday,gender,selfIntroduction,detailedIntroduction, 
+        resume: {education, workExperience}} = ret.msg.publicInfo
         this.info = {
           birthday, 
           detailedIntroduction,
@@ -134,8 +136,13 @@ export default {
           startTime, question,avatar,name,
           startText: moment(startTime*1000).format('MM月DD日 HH:mm') + '~' + moment(startTime*1000).subtract('-90', 'minutes').format('HH:mm'),
           edus: education.map(o => {
+            const { countries, majors, degrees, industry:industrys,  } = this.dicts
+            const schools = countries.find(v => v.value == o.country).schools
+            const schoolText = schools.find(v => v.value == o.school).text
+            const disciplineText = majors.find(v => v.value == o.discipline).text
+            const degreeText = degrees.find(v => v.value == o.degree).text
             return {
-              desc: `${o.school} ${o.discipline} ${o.degree}`
+              desc: `${schoolText} ${disciplineText} ${degreeText}`
             }
           }),
           works: workExperience

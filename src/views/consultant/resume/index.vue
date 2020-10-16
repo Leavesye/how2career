@@ -310,8 +310,11 @@ export default {
       }
       if (type == 5) {
         this.callup.gallupCertifiedImage.hide = !v
-        // !v && (this.callup.gallupCertifiedImage.value = '')
         this.callup.gallupCertified.layout.span = v ? 6 : 24
+      }
+      if (type == 6) {
+        exp.resignationTime.hide = !v
+        !v && (exp.resignationTime.value = '')
       }
     },
     // 学历操作
@@ -441,7 +444,11 @@ export default {
         type == 1 && (p.backgroundVerifyStatus = 1)
         const ret = await updateUserInfo(p).catch(e => l.close())
         if (ret.result) {
-          this.alert(type == 1 ? '保存并提交审核成功' : '保存成功')
+          if (type == 1) {
+            this.isShow = true
+          } else {
+            this.alert('保存成功')
+          }
         }
         l.close()
       } else {

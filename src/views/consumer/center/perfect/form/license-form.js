@@ -35,25 +35,25 @@ export default {
       placeholder: '请输入补充信息'
     }
   },
-  certificateImage: {
-    label: '',
-    type: "upload",
-    value: '',
-    props: {
-      action: process.env.VUE_APP_BASE_API + "/user/platform/consultant/upload",
-      accept: '.jpg,.png,.gif',
-      name: 'UploadFiles',
-      limit: 1,
-      "file-list": [],
-      "list-type":"picture-card",
-      "show-file-list": true,
-      "auto-upload": true,
-      "before-upload": function (index, file) { this.uploadBefore(file, index) },
-      "on-success": function (index, res, file) { this.uploadSuccess(res, file, index, ['otherCertificates', 'certificateImage']) },
-      "on-remove": function (index, file, fileList) { this.uploadRemove(file, fileList, index, ['otherCertificates', 'certificateImage']) },
-    },
-    render: (h) => {
-      return upload(h)
-    }
-  },
+//   certificateImage: {
+//     label: '',
+//     type: "upload",
+//     value: '',
+//     props: {
+//       action: process.env.VUE_APP_BASE_API + "/user/platform/consultant/upload",
+//       accept: '.jpg,.png,.gif',
+//       name: 'UploadFiles',
+//       limit: 1,
+//       "file-list": [],
+//       "list-type":"picture-card",
+//       "show-file-list": true,
+//       "auto-upload": true,
+//       "before-upload": function (index, file) { this.uploadBefore(file, index) },
+//       "on-success": function (index, res, file) { this.uploadSuccess(res, file, index, ['otherCertificates', 'certificateImage']) },
+//       "on-remove": function (index, file, fileList) { this.uploadRemove(file, fileList, index, ['otherCertificates', 'certificateImage']) },
+//     },
+//     render: (h) => {
+//       return upload(h)
+//     }
+//   },
 }
