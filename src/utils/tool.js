@@ -66,7 +66,12 @@ function formatConsultantOrder (list) {
       status: o.status,
       rate: o.evaluation ? o.evaluation.point : 0,
       complaint: o.complaint ? o.complaint : {},
-      evaluation: o.evaluation ? o.evaluation : {}
+      evaluation: o.evaluation ? o.evaluation : {},
+      question: o.question ? o.question.map(v => {
+        return {
+          v,
+        }
+      }) : []
     }
   })
 }

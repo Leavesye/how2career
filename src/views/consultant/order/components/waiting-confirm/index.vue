@@ -88,6 +88,9 @@ export default {
   border-bottom: 1px solid #EDEEEF;
   margin-bottom: 14px;
 }
+.order-item:last-child {
+  margin-bottom: 0
+}
 .row {
   margin-bottom: 14px;
 }

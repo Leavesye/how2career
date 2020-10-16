@@ -144,6 +144,9 @@ export default {
   font-size: 14px;
   color: #7C8FA5;
 }
+.order-item:last-child {
+  margin-bottom: 0
+}
 .user-name {
   margin-left: 10px;
 }

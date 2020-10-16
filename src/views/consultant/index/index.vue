@@ -1,5 +1,6 @@
 <template>
-  <section style="padding: 30px">
+  <section style="padding: 30px"
+           v-if="isLoaded">
     <!-- 未认证简历或者没有填写服务时间 -->
     <div v-if="!isSettingTime">
       <el-image class="banner"
@@ -69,7 +70,7 @@
         </div>
       </div>
       <!-- 表格 -->
-      <el-card class="order-card">
+      <section class="order-card">
         <p class="title">即将开始的咨询</p>
         <ul class="list-item flex-hbc"
             v-for="(o, i) in serviceOrders"
@@ -82,15 +83,16 @@
           <li>{{o.serviceCountDown}}</li>
           <li class="flex-hb">
             <el-button type="primary"
-                        v-if="o.status=='5'"                      
+                       v-if="o.status=='5'"
                        @click="linkTo('/consultant/room/'+o.orderId)">进入房间</el-button>
-            <el-button plain @click="handleOpenDetail(o)">订单详情</el-button>
+            <el-button plain
+                       @click="handleOpenDetail(o)">订单详情</el-button>
           </li>
         </ul>
         <div class="more"
              @click="linkTo('/consultant/order?status=4,5')">更多订单<i class="el-icon-arrow-right"></i></div>
-      </el-card>
-      <el-card class="order-card">
+      </section>
+      <section class="order-card">
         <p class="title">即将超时确认的订单</p>
         <ul class="list-item flex-hbc"
             v-for="(o, i) in confirmOrders"
@@ -102,12 +104,13 @@
           <li>创建时间: {{o.cTime}}</li>
           <li>{{o.confirmCountDown}}</li>
           <li class="flex-hb">
-            <el-button plain @click="handleOpenDetail(o)">订单详情</el-button>
+            <el-button plain
+                       @click="handleOpenDetail(o)">订单详情</el-button>
           </li>
         </ul>
         <div class="more"
              @click="linkTo('/consultant/order?status=2')">更多订单<i class="el-icon-arrow-right"></i></div>
-      </el-card>
+      </section>
     </div>
   </section>
 </template>
@@ -119,9 +122,10 @@ import tool from '@/utils/tool'
 import SmallAvatar from '@/components/SmallAvatar'
 
 export default {
-  components: {SmallAvatar},
+  components: { SmallAvatar },
   data () {
     return {
+      isLoaded: false,
       isFillResume: false,
       isFinishReview: false,
       isSettingTime: false,
@@ -129,9 +133,9 @@ export default {
       curStep: 1,
       pannels: [
         { name: '待确认订单', count: 0, path: '/consultant/order?status=2' },
-        { name: '待服务订单', count: 0, path: '/consultant/order?status=4,5'},
-        { name: '已完成订单', count: 0, path: '/consultant/order?status=0,7,8'},
-        { name: '待结算订单', count: 0, path: '/consultant/cost?status=2'}
+        { name: '待服务订单', count: 0, path: '/consultant/order?status=4,5' },
+        { name: '已完成订单', count: 0, path: '/consultant/order?status=0,7,8' },
+        { name: '待结算订单', count: 0, path: '/consultant/cost?status=2' }
       ],
       serviceOrders: [],
       confirmOrders: []
@@ -153,7 +157,7 @@ export default {
     certFinish: function () {
       return require('../../../assets/cert-finish.png')
     },
-    defaultAvatar: function() {
+    defaultAvatar: function () {
       return require('@/assets/default-avatar.png')
     }
   },
@@ -161,6 +165,7 @@ export default {
     const l = this.loading()
     const res = await getUserInfo().catch(e => l.close())
     if (res.result) {
+      this.isLoaded = true
       // 无resume  就是未填写
       // backgroundVerifyStatus= 0  未审核
       // backgroundVerifyStatus= 1  待审核
@@ -175,8 +180,8 @@ export default {
       this.isSettingTime = !!o.publicInfo.availableTime
       const p = { from: "0", to: "2601444690", page: "1", limit: "3" }
       const ret = await Promise.all([
-        getOrders({ ...p, condition: "status==4:status==5"}),
-        getOrders({ ...p, condition: "status==2"}),
+        getOrders({ ...p, condition: "status==4:status==5" }),
+        getOrders({ ...p, condition: "status==2" }),
         getOrdersCount({ condition: "status==3:status==4:status==7:status==10" })
       ]).catch(e => l.close())
       // 待服务订单
@@ -199,7 +204,7 @@ export default {
     l.close()
   },
   methods: {
-    handleOpenDetail(order) {
+    handleOpenDetail (order) {
 
     },
     handleClickPannel (item, i) {
@@ -313,7 +318,15 @@ $color: #15479e;
   color: $color;
 }
 .order-card {
+  padding: 20px;
   margin-bottom: 20px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  border: 1px solid #EBEEF5;
+  background-color: #FFFFFF;
+  overflow: hidden;
+  color: #303133;
+  transition: 0.3s;
 }
 .list-item {
   font-size: 14px;

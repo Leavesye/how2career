@@ -12,7 +12,7 @@
           </div>
         </li>
         <li>
-          <p style="margin-bottom: 10px">创建时间:{{o.cTime}}</p>
+          <p style="margin-bottom: 18px">创建时间:{{o.cTime}}</p>
           <p>咨询时间(北京时间){{o.startTime}}</p>
         </li>
         <li>
@@ -85,7 +85,7 @@ export default {
   font-size: 14px;
 }
 .order-amount {
-  margin-bottom: 10px;
+  margin-bottom: 18px;
   text-align: right;
 }
 .desc {

@@ -7,7 +7,7 @@ export default {
     type: 'input',
     value: '',
     label: '社团/组织名称',
-    rules: [r.required()],
+    rules: [r.required(),r.maxLength(20)],
     layout: { span: 14 },
   },
   department: {
@@ -21,7 +21,7 @@ export default {
     type: 'input',
     value: '',
     label: '职位',
-    rules: [r.required()],
+    rules: [r.required(),r.maxLength(20)],
     layout: { span: 14 },
   },
   onBoard: {

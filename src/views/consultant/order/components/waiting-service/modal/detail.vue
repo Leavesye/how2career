@@ -100,6 +100,8 @@ export default {
 .modal-main  {
   font-size: 14px;
   color: #7C8EA5;
+  height: 540px;
+  overflow: auto;
 }
 .order-no {
   margin-right: 40px;

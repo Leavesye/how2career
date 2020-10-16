@@ -83,12 +83,11 @@
 import Avatar from '@/components/Avatar'
 import Calendar from '@/components/Calendar'
 import RateList from '@/components/RateList'
-import { getPublicInfo } from '@/api/user'
 import { createOrder } from '@/api/order'
 import moment from 'moment'
 import { mapGetters } from 'vuex'
 import { getRateList } from '@/api/consultant'
-import { favorite, delFavorite, getFavorites, getDicts } from '@/api/user'
+import { getPublicInfo, favorite, delFavorite, getFavorites, getDicts } from '@/api/user'
 
 export default {
   name: 'consultant-detail',

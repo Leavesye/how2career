@@ -3,10 +3,10 @@
   title="咨询问题"
   :visible.sync="isShow"
   :before-close="handleClose"
-  width="560px"
+  width="430px"
   center>
   <section class="modal-main">
-    <div class="ques-item" v-for="(item, i) in questions" :key="i">{{item}}</div>
+    <div class="ques-item" v-for="(item, i) in questions" :key="i">{{item.v}}</div>
   </section>
 </el-dialog>
 </template>

@@ -8,7 +8,7 @@
   <div class="info">
     <div class="info-item">
       <div class="title">最高学历</div>
-      <p class="desc">{{ info.country + ' ' + info.school + ' ' + info.discipline }}</p>
+      <p class="desc">{{ info.countryText + ' ' + info.schoolText + ' ' + info.disciplineText }}</p>
     </div>
     <div class="info-item">
       <div class="title">自我简介</div>
@@ -16,7 +16,7 @@
     </div>
     <div class="info-item">
       <div class="title">咨询问题</div>
-      <p class="desc" v-for="(item, i) in info.question" :key="i">{{item}}</p>
+      <p class="desc" v-for="(item, i) in info.question" :key="i">{{item.v}}</p>
     </div>
   </div>
 </div>
@@ -25,6 +25,7 @@
 <script>
 import Avatar from '@/components/Avatar'
 import { queryConsumerByOrderId } from '@/api/order'
+import { getDicts } from '@/api/user'
 
 export default {
   props: ['order'],
@@ -37,16 +38,22 @@ export default {
     }
   },
   methods: {
-    init() {
-        const l = this.loading()
-        queryConsumerByOrderId({ orderId: this.order.orderId }).then(res=> {
-          if (res.result) {
-            const { highestEducation, ...restBasic }  = res.msg.basic
-            this.info = { ...restBasic, ...highestEducation, question: this.order.question }
-            console.log(this.info)
-          }
-          l.close()
-        }).catch(e => l.close())
+    async init() {
+      const l = this.loading()
+      const res = await Promise.all([
+        getDicts(),
+        queryConsumerByOrderId({ orderId: this.order.orderId })
+      ]).catch(e => l.close())
+      if (res[1].result) {
+        const { nickName,avatarImage,highestEducation: { country, school, discipline }, selfIntroduction }  = res[1].msg.basic
+        const {  countries, majors, degrees } = res[0].msg
+        const f = countries.find(v => v.value == country)
+        const countryText = f.text
+        const schoolText = f.schools.find(v => v.value == school).text
+        const disciplineText = majors.find(v => v.value == discipline).text
+        this.info = { nickName, avatarImage,selfIntroduction, countryText, schoolText, disciplineText, question: this.order.question }
+      }
+      l.close()
     }
   },
   created() {

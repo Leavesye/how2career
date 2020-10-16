@@ -12,7 +12,9 @@
       </el-card>
       <el-card class="card-c">
         <p class="title">咨询问题</p>
-        <p class="question" v-for="(item, i) in info.question" :key="i">{{item}}?</p>
+        <div class="q-box">
+          <p class="question" v-for="(item, i) in info.question" :key="i">{{item}}?</p>
+        </div>
       </el-card>
       <el-card class="card-r">
         <p class="title"
@@ -25,59 +27,36 @@
       </el-card>
     </section>
     <el-card class="detail-card">
-      <el-tabs v-model="activeName">
-        <el-tab-pane label="基本信息"
-                     name="first">
-          <div class="d-item">
-            <section class="flex-hb"
-                     style="width: 300px">
-              <div>
-                <p class="field-name">姓名</p>
-                <p>{{info.name}}</p>
-              </div>
-              <div>
-                <p class="field-name">性别</p>
-                <p>{{info.gender}}</p>
-              </div>
-              <div>
-                <p class="field-name">出生年月</p>
-                <p>{{info.birthday}}</p>
-              </div>
-            </section>
+      <div class="d-item">
+        <p class="field-name title">最高学历</p>
+        <div class="flex-hbc">
+            <span>{{info.edus[0].desc}}</span>
+            <el-button plain>更多</el-button>
+        </div>
+      </div>
+      <div class="d-item">
+        <p class="field-name title">工作信息</p>
+        <p>所属行业：{{info.works[0].industry}}</p>
+        <div class="flex-hbc">
+          <div class="flex work-item">
+            <span>公司名称：{{info.works[0].company}}</span>
+            <span>职位：{{info.works[0].position}}</span>
+            <span>工作年限：{{info.works[0].workingYears}}</span>
           </div>
-          <div class="d-item">
-            <p class="field-name">最高学历</p>
-            <p>{{info.edus[0].desc}}</p>
-          </div>
-          <div class="d-item">
-            <p class="field-name">自我评价</p>
-            <p>{{info.selfIntroduction}}</p>
-          </div>
-          <div class="d-item">
-            <p class="field-name">详细介绍</p>
-            <p>{{info.detailedIntroduction}}</p>
-          </div>
-        </el-tab-pane>
-        <el-tab-pane label="学历信息"
-                     name="second">
-          <div class="d-item">
-            <p class="field-name">最高学历</p>
-            <p>{{info.edus[0].desc}}</p>
-          </div>
-          <div class="d-item">
-            <p class="field-name">前学历</p>
-            <p>{{info.edus[1] ? info.edus[1].desc : '无'}}</p>
-          </div>
-          <div class="d-item">
-            <p class="field-name">前学历</p>
-            <p>{{info.edus[1] ? info.edus[1].desc : '无'}}</p>
-          </div>
-        </el-tab-pane>
-        <el-tab-pane label="社会实践"
-                     name="third">社会实践</el-tab-pane>
-        <el-tab-pane label="其他信息"
-                     name="fourth">其他信息</el-tab-pane>
-      </el-tabs>
+          <el-button plain>更多</el-button>
+        </div>
+      </div>
+      <div class="d-item">
+        <p class="field-name title">主要工作内容</p>
+        <p>{{info.works[0].duty}}</p>
+      </div>
+      <div class="d-item">
+        <p class="field-name title">工作个人技能</p>
+        <p>{{info.skills}}</p>
+      </div>
+      <div class="flex-he">
+        <el-button class="stop-btn" type="success">结束服务</el-button> 
+      </div>
     </el-card>
     <!-- 房间状态 -->
     <room-status :isShow="isShow"
@@ -127,7 +106,7 @@ export default {
       const ret = await getPublicInfo({ userId: _id }).catch(e=>l.close())
       if (ret.result) {
         const { birthday,gender,selfIntroduction,detailedIntroduction, 
-        resume: {education, workExperience}} = ret.msg.publicInfo
+        resume: {education, workExperience, skills}} = ret.msg.publicInfo
         this.info = {
           birthday, 
           detailedIntroduction,
@@ -136,7 +115,7 @@ export default {
           startTime, question,avatar,name,
           startText: moment(startTime*1000).format('MM月DD日 HH:mm') + '~' + moment(startTime*1000).subtract('-90', 'minutes').format('HH:mm'),
           edus: education.map(o => {
-            const { countries, majors, degrees, industry:industrys,  } = this.dicts
+            const { countries, majors, degrees  } = this.dicts
             const schools = countries.find(v => v.value == o.country).schools
             const schoolText = schools.find(v => v.value == o.school).text
             const disciplineText = majors.find(v => v.value == o.discipline).text
@@ -145,7 +124,19 @@ export default {
               desc: `${schoolText} ${disciplineText} ${degreeText}`
             }
           }),
-          works: workExperience
+          works: workExperience.map(o => {
+            // 工作年限
+            let lastTime = o.resignationTime ? moment(o.resignationTime).valueOf() : moment().valueOf()
+            let workingYears = Math.ceil((lastTime - moment(o.entryTime).valueOf()) / (365*24*60*60*1000))
+            return {
+              company: o.company,
+              industry: this.dicts.industry.find(v => v.value == o.industry).text,
+              position: o.position,
+              workingYears: workingYears?`${workingYears}年`: '',
+              duty: o.duty
+            }
+          }),
+          skills: skills ? skills.toString(): ''
         }
         const now = moment().valueOf()
         const start = startTime*1000
@@ -178,9 +169,9 @@ export default {
   width: 410px;
   height: 275px;
   margin-right: 20px;
-  overflow: auto;
   color: #7c8ea5;
 }
+
 .card-l {
   display: flex;
   flex-direction: column;
@@ -197,6 +188,10 @@ export default {
   font-weight: 600;
   color: #36ae82;
 }
+.q-box {
+  height: 200px;
+  overflow: auto;
+}
 .question {
   padding: 14px 0;
   border-bottom: 1px solid #edeeef;
@@ -208,6 +203,7 @@ export default {
 }
 
 .detail-card {
+  position: relative;
   margin-top: 30px;
   font-size: 14px;
   color: #7c8ea5;
@@ -215,11 +211,14 @@ export default {
   overflow: auto;
 }
 .d-item {
-  padding: 20px 0;
   border-bottom: 1px solid #edeeef;
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+}
+.work-item > span {
+  margin-right: 40px;
 }
 .field-name {
-  color: #15479e;
   margin-bottom: 10px;
 }
 .header {
