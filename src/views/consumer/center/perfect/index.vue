@@ -3,7 +3,7 @@
     <div class="flex-vc page-title">
       <div>补充信息</div>
     </div>
-    <p class="form-title">更多学历信息</p>
+    <p class="form-title">其他学历信息</p>
     <section class="form-box">
       <el-card class="form-card"
                v-for="(o, i) in education"
@@ -13,8 +13,9 @@
                     :ref="'education' + i"></quick-form>
         <!-- 社团 -->
         <student-org v-if="o.studentOrganization.value"
-                     :initData="oriEduData[i]"
+                     :initData="oriEduData[i]||{}"
                      :authorlevel="authorlevel"
+                     :studentOrganization="o.studentOrganization.value"
                      :ref="'org' + i"></student-org>
         <el-button class="del-btn"
                    plain
@@ -51,7 +52,7 @@
       </section>
     </section>
     <div class="common-check">
-      <el-checkbox v-model="getRewarded">是否曾经获奖</el-checkbox>
+      <el-checkbox v-model="getRewarded" @change="handleRewardCheck">是否曾经获奖</el-checkbox>
     </div>
     <section class="form-box"
              v-if="getRewarded">
@@ -75,7 +76,7 @@
       </section>
     </section>
     <div class="common-check">
-      <el-checkbox v-model="hasCertificates">是否有执照或者证书</el-checkbox>
+      <el-checkbox v-model="hasCertificates" @change="handleCertCheck">是否有执照或者证书</el-checkbox>
     </div>
     <section class="form-box"
              v-if="hasCertificates">
@@ -169,7 +170,6 @@
 import _ from 'lodash'
 import QuickForm from '@/components/QuickForm'
 import StudentOrg from './components/student-org'
-import form from './form'
 import eduForm from './form/edu-form'
 import expForm from './form/exp-form'
 import licenseForm from './form/license-form'
@@ -204,7 +204,10 @@ export default {
       skills: [],
       isShow: false,
       labelWidth: '140px',
-      ...form,
+      education: [_.cloneDeep(eduForm)],
+      workExperience: [_.cloneDeep(expForm)],
+      otherCertificates:[],
+      rewards:[],
       authorlevel: [],
       oriEduData: {}
     }
@@ -238,11 +241,6 @@ export default {
           if (['education', 'workExperience', 'otherCertificates', 'rewards'].includes(key)) {
             const form = data[key]
             this[key] = []
-            if (['otherCertificates', 'rewards'].includes(key) && !data[key]) {
-              // 创建表单对象并加入列表
-              let copy = _.cloneDeep(cfg[key])
-              this[key].push(copy)
-            }
             form.forEach((o, i) => {
               // 创建表单对象并加入列表
               let copy = _.cloneDeep(cfg[key])
@@ -316,6 +314,13 @@ export default {
       this.workExperience.splice(i, 1)
     },
     // 执照与证书操作
+    handleCertCheck(v) {
+      if (v) {
+        this.otherCertificates=[this.bindThis(_.cloneDeep(licenseForm), 0)]
+      } else {
+        this.otherCertificates = []
+      }
+    },
     handleAddLicense () {
       if (this.otherCertificates.length == 10) return false
       this.otherCertificates.push(this.bindThis(_.cloneDeep(licenseForm), this.otherCertificates.length))
@@ -325,6 +330,13 @@ export default {
       this.hasCertificates = !!this.otherCertificates.length
     },
     // 奖项操作
+    handleRewardCheck(v) {
+      if (v) {
+        this.rewards=[this.bindThis(_.cloneDeep(rewardForm), 0)]
+      } else {
+        this.rewards = []
+      }
+    },
     handleAddReward () {
       if (this.rewards.length == 10) return false
       this.rewards.push(this.bindThis(_.cloneDeep(rewardForm), this.rewards.length))
@@ -551,7 +563,7 @@ export default {
 }
 .del-btn {
   float: right;
-  margin-bottom: 20px;
+  margin: 20px 0;
 }
 .line {
   height: 1px;

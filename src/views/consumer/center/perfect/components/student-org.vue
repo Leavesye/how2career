@@ -64,7 +64,6 @@ import QuickForm from '@/components/QuickForm'
 import exp from './form/exp'
 import project from './form/project'
 import article from './form/article'
-import form from './form'
 import _ from 'lodash'
 
 const cfg = {
@@ -74,7 +73,7 @@ const cfg = {
 }
 export default {
   components: { QuickForm },
-  props: ['authorlevel', 'initData'],
+  props: ['authorlevel', 'initData', 'studentOrganization'],
   data () {
     return {
       hasPrj: false,
@@ -85,12 +84,20 @@ export default {
     }
   },
   watch: {
-    'oriEduData': function (n, o) {
-      console.log(n, o, 4367)
+    'studentOrganization': function(nval,oval) {
+      console.log(nval, 'hahah ')
+      if (nval) {
+        this.exps = [this.bindThis(_.cloneDeep(exp), 0)]
+      } else {
+        this.exps = []
+      }
     }
   },
   mounted () {
-    this.exps = this.bindThis(this.exps)
+    if (this.studentOrganization) {
+      this.exps = [this.bindThis(_.cloneDeep(exp), 0)]
+    }
+    // 文章表单绑定下拉
     article.level.options = this.authorlevel
     const { studentOrganizationHistory: exps,
       projectHistory: projects, projectExperience, publishArticle, ArticleHistory: articles } = this.initData
@@ -121,7 +128,6 @@ export default {
         }
       })
     }
-
   },
   methods: {
     bindThis (o, i) {
