@@ -20,12 +20,14 @@
         </li>
       </ul>
       <div class="desc">职业：{{o.industry}} 简介：{{o.readme}}</div>
-      <h-title>咨询的问题</h-title>
-      <ul class="question-list">
-        <li class="flex-vc" v-for="(item, index) in o.question" :key="index">
-          {{item}}
-        </li>
-      </ul>
+      <div v-if="o.question && o.question.length">
+        <h-title>咨询的问题</h-title>
+        <ul class="question-list">
+          <li class="flex-vc" v-for="(item, index) in o.question" :key="index">
+            {{item}}
+          </li>
+        </ul>
+      </div>
       <div class="flex-he btns">
         <el-button plain @click="handleOpenComplaint(o)">投诉</el-button>
         <el-button plain @click="handleOpenRate(o)">评价</el-button>

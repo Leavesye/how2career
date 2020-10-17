@@ -13,7 +13,7 @@
             <div class="flex-vc form-name" v-if="!isReg">
               <label for="">密码</label>
               <p style="margin-right: 30px">**********</p>
-              <el-button size="small" @click="handleClickChangePwd">修改密码</el-button>
+              <el-button plain @click="handleClickChangePwd">修改密码</el-button>
             </div>
             <quick-form :model="baseInfo"
                         labelWidth="80px"
@@ -36,6 +36,7 @@
         <el-button type="success" @click="handleSave">确定</el-button>
       </div>
     </el-col>
+    <change-pwd :isShow="isShow" @close="handleClose"></change-pwd>
   </el-row>
 </template>
 
@@ -49,6 +50,7 @@ import { register } from '@/api/user'
 import defaultImg from '@/assets/avatar-upload.png'
 import { setToken } from '@/utils/auth'
 import { getUserInfo, updateUserInfo, getDicts }  from '@/api/user'
+import ChangePwd from '@/components/ChangePwd'
 
 // 数据字典
 let dicts = {}
@@ -56,9 +58,11 @@ export default {
   mixins: [mixin],
   components: {
     QuickForm,
+    ChangePwd
   },
   data () {
     return {
+      isShow: false,
       layout: {
         span: 24
       },
@@ -107,12 +111,17 @@ export default {
     }
   },
   methods: {
+    handleClickChangePwd() {
+      this.isShow = true
+    },
+    handleClose() {
+      this.isShow = false
+    },
     handleCountryChange(v) {
       const f = dicts.countries.find(o => o.value == v )
       this.education.school.options = f.schools
       this.education.school.value = ''
     },
-    handleClickChangePwd() {},
     async handleSave() {
       const keys = Object.keys(form)
       // 校验所有表单

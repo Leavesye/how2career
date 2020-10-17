@@ -3,7 +3,7 @@
   title="咨询问题"
   :visible.sync="isShow"
   :before-close="handleClose"
-  width="430px"
+  width="500px"
   center>
   <section class="modal-main">
     <div class="ques-item" v-for="(item, i) in questions" :key="i">{{item.v}}</div>

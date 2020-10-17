@@ -161,7 +161,7 @@ export default {
       }
       // 只读模式选择时间
       if (this.mode == 'view') {
-        if (['EventContainer', 'QuickInfo', 'Editor'].includes(args.type)) {
+        if (['EventContainer', 'Editor'].includes(args.type)) {
           // 禁用弹框
           args.cancel = true
           // 选值 弹自定义弹框

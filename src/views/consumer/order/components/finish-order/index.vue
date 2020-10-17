@@ -67,9 +67,9 @@ export default {
   methods: {
     handleOpenQuestion (order) {
       this.isShow = true
+      this.questions = order.question
     },
     handleClose(order) {
-      this.questions = order.question
       this.isShow = false
     },
   }

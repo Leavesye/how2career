@@ -11,7 +11,7 @@
         <div class="flex-vc form-name" v-if="!isReg">
           <label for="">密码</label>
           <p style="margin-right: 30px">**********</p>
-          <el-button size="small" @click="handleClickChangePwd">修改密码</el-button>
+          <el-button plain @click="handleClickChangePwd">修改密码</el-button>
         </div>
         <quick-form :model="baseInfo"
                     labelWidth="140px"
@@ -48,12 +48,14 @@
       <el-button type="primary"
                  size="mini" @click="handleSave">确定</el-button>
     </div>
+    <change-pwd :isShow="isShow" @close="handleClose"></change-pwd>
   </section>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import QuickForm from '@/components/QuickForm'
+import ChangePwd from '@/components/ChangePwd'
 import form from './form'
 import mixin from '@/mixins'
 import * as adapter from './adapter'
@@ -65,10 +67,12 @@ export default {
   name: 'consultant-baseinfo',
   components: {
     QuickForm,
+    ChangePwd
   },
   mixins: [mixin],
   data () {
     return {
+      isShow: false,
       realVerified: false,
       isReg: false, // 是否注册页面
       ...form, // 表单配置
@@ -93,7 +97,10 @@ export default {
   },
   methods: {
     handleClickChangePwd() {
-      
+      this.isShow = true
+    },
+    handleClose() {
+      this.isShow = false
     },
     // 重新实名认证
     async handleVerify() {

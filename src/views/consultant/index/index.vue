@@ -182,7 +182,7 @@ export default {
       const ret = await Promise.all([
         getOrders({ ...p, condition: "status==4:status==5" }),
         getOrders({ ...p, condition: "status==2" }),
-        getOrdersCount({ condition: "status==3:status==4:status==7:status==10" })
+        getOrdersCount({ condition: "status==2:status==4:status==7:status==10" })
       ]).catch(e => l.close())
       // 待服务订单
       if (ret[0].result) {
@@ -195,7 +195,7 @@ export default {
       // 订单数量
       if (ret[2].result) {
         const info = ret[2].msg
-        this.pannels[0].count = info['3']
+        this.pannels[0].count = info['2']
         this.pannels[1].count = info['4']
         this.pannels[2].count = info['7']
         this.pannels[3].count = info['10']

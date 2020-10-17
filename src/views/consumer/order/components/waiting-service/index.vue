@@ -23,7 +23,9 @@
           </div>
         </li>
       </ul>
-      <div class="desc">职业：{{o.industry}} 简介：{{o.readme}}</div>
+      <el-tooltip effect="dark" :content="o.readme" placement="top-start">
+        <div class="desc">职业：{{o.industry}} 简介：{{o.readme}}</div>
+      </el-tooltip>
       <h-title>咨询的问题</h-title>
       <ul class="question-list">
         <li class="flex-vc"
@@ -192,10 +194,13 @@ export default {
   font-size: 14px;
   padding: 0 20px;
   margin-bottom: 20px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 .question-list {
   margin-top: 20px;
-  height: 280px;
+  max-height: 280px;
   overflow: auto;
 }
 .question-list > li {

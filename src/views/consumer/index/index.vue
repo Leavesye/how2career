@@ -30,7 +30,7 @@
               <el-button type="success"
                          v-if="o.status==5"
                          @click="linkTo('/consumer/room/'+o.orderId)">进入房间</el-button>
-              <el-button plain >订单详情</el-button>
+              <el-button plain @click="handleOpenDetail(o)">订单详情</el-button>
             </li>
           </ul>
         </div>
@@ -51,6 +51,7 @@
       <p class="title">更多职业选择</p>
       <career-list></career-list>
     </div>
+    <detail-modal :isShow="isShow" :order="order" @close="handleClose"></detail-modal>
   </section>
 </template>
 
@@ -58,8 +59,9 @@
 import SmallAvatar from '@/components/SmallAvatar'
 import CardList from '@/components/CardList'
 import CareerList from '@/components/CareerList'
+import DetailModal from './modal/detail'
 import { getOrders, getOrdersCount } from '@/api/order'
-import { getFavorites } from '@/api/user'
+import { getFavorites, getDicts } from '@/api/user'
 import tool from '@/utils/tool'
 
 export default {
@@ -67,12 +69,13 @@ export default {
   components: {
     CardList,
     CareerList,
-    SmallAvatar
+    SmallAvatar,
+    DetailModal
   },
   data () {
     return {
+      isShow: false,
       isActive: false,
-      rate: 4,
       pannels: [
         { name: '待付款订单', count: 0, path: '/consumer/order?status=1' },
         { name: '待服务订单', count: 0, path: '/consumer/order?status=4,5' },
@@ -82,6 +85,7 @@ export default {
       list: [],
       favorites: [],
       oftenList: [],
+      order: {}
     }
   },
   async created () {
@@ -116,6 +120,16 @@ export default {
     l.close()
   },
   methods: {
+    async handleOpenDetail(order){
+      const res = await getDicts()
+      console.log(order, 'order')
+      order.industryText = res.msg.industry.find(o => o.value == order.industry).text
+      this.order = order
+      this.isShow = true
+    },
+    handleClose() {
+      this.isShow = false
+    },
     handleClickPannel (item, i) {
       if (i == this.pannels.length - 1) {
         this.isActive = ''

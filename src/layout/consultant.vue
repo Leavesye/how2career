@@ -2,10 +2,10 @@
   <div class="layout" >
     <navbar></navbar>
     <el-row type="flex" justify="center">
-      <el-col :xs="24" :sm="24" :md="22" :lg="19" :xl="15" class="app-main">
+      <el-col :xs="24" :sm="24" :md="22" :lg="22" :xl="15" class="app-main">
         <el-row type="flex">
           <!-- 侧边栏 -->
-          <side-bar style="width: 20%" :menus="menus" />
+          <side-bar :menus="menus" />
           <!-- 页面路由 -->
           <transition name="fade-transform"
                       mode="out-in">

@@ -84,7 +84,7 @@ export default {
         startTime: this.order.consumerTime[this.radio].value
       }).catch(e=> this.isLoading = false)
       if (res.result) {
-        this.alert('更新服务时间成功')
+        this.alert('操作成功')
         this.$emit('close', true)
       }
       this.isLoading = false

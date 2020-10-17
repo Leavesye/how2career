@@ -34,7 +34,7 @@
         </el-submenu>
       </template>
     </el-menu>
-    <div class="flex-hc" v-if="!isCollapse" style="margin-bottom: 20px">
+    <div class="flex-hc" v-if="!isCollapse" :style="{marginBottom: '20px', paddingBottom: user.role=='consultant'?'50px':'0'}">
       <el-image class="room-btn"
                 :src="user.role=='consumer'?roomGreen:roomBlue"
                 @click="linkTo('/'+user.role+'/room/5f81d4cada7549f9d3400abb')"></el-image>
@@ -145,7 +145,7 @@ span {
 .room-btn {
   width: 180px;
   height: 50px;
-  margin-top: 200px;
+  margin-top: 150px;
   cursor: pointer;
 }
 .bottom-links {
