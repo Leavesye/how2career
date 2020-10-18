@@ -2,6 +2,7 @@
 <el-dialog
   title="Slot数量调整"
   :visible.sync="isShow"
+  :before-close="handleClose"
   width="430px"
   center>
   <section class="modal-main">
@@ -41,6 +42,9 @@ export default {
     }
   },
   methods: {
+    handleClose() {
+      this.$emit('close')
+    },
   },
 };
 </script>

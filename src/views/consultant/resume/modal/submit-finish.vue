@@ -2,6 +2,7 @@
 <el-dialog
   title="信息已经提交审核"
   :visible.sync="isShow"
+  :before-close="handleClose"
   width="430px"
   center>
   <section class="modal-main">
@@ -25,6 +26,9 @@ export default {
     }
   },
   methods: {
+    handleClose() {
+      this.$emit('close')
+    },
     handleConfirmTime() {
       this.$emit('close')
       this.$router.push('/consultant/setting')

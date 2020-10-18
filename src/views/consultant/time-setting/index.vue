@@ -23,16 +23,16 @@
       </ul>
       <p class="slot-desc">Slot数代表在一个自然周内,你可同时接的预约,你可以通过购买更多的slot来增加每周的同时预约数</p>
       <!-- 按钮组 -->
-      <ul class="slot-btns flex-hc">
-        <li v-for="(item, i) in btns"
+      <div class="slot-btns flex-hc">
+        <div class="btn-item" v-for="(item, i) in btns"
             :key="i"
             @click="handleClickBtn(item, i)"
-            :class="{active: current===i}">{{item.name}}</li>
-      </ul>
+            :class="[current===i ? 'active':'']">{{item.name}}</div>
+      </div>
       <!-- 日程表 -->
       <scheduler v-if="isLoaded" :events="events" @reload="handleReloadSchduler"></scheduler>
     </el-card>
-    <change-slot :isShow="isShow"></change-slot>
+    <change-slot :isShow="isShow" @close="handleClose"></change-slot>
   </div>
 </template>
 
@@ -51,7 +51,7 @@ export default {
   data () {
     return {
       isShow: false,
-      current: 0,
+      current: '',
       btns: [
         { name: '调整Slot数量' },
         { name: '补缴Slot费用' },
@@ -66,8 +66,12 @@ export default {
     ])
   },
   methods: {
-    handleClickBtn(i) {
+    handleClickBtn(item, i) {
       this.current = i
+      this.isShow = true
+    },
+    handleClose() {
+      this.isShow = false
     },
     handleReloadSchduler() {
       this.init()
@@ -134,7 +138,7 @@ export default {
 .slot-btns {
   margin-bottom: 30px;
 }
-.slot-btns li {
+.btn-item {
   width: 120px;
   height: 32px;
   line-height: 32px;
@@ -145,8 +149,9 @@ export default {
   border: 1px solid #e0e0e0;
   background: #ffffff;
   margin-left: 20px;
+  cursor: pointer;
 }
-.slot-btns li.active {
+.btn-item.active {
   background: #15479e;
   color: #fff;
 }
