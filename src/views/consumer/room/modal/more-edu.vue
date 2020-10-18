@@ -7,7 +7,7 @@
   center>
   <section class="modal-main">
     <div class="d-item" v-for="item,i in edus" :key="i">
-      <p class="field-name title">最高学历</p>
+      <p class="field-name title">学历信息</p>
       <p>{{item.desc}}</p>
     </div>
   </section>

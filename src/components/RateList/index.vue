@@ -17,6 +17,9 @@
       </li>
     </ul>
   </section>
+  <span slot="footer" class="dialog-footer">
+    <el-button type="success" @click="handleClose">关闭</el-button>
+  </span>
 </el-dialog>
 </template>
 
@@ -43,7 +46,7 @@ export default {
   margin: 0 auto;
 }
 ul {
-  height: 500px;
+  max-height: 400px;
   overflow: auto;
 }
 ul > li {

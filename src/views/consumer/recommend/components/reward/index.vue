@@ -24,19 +24,22 @@
         >
       </el-pagination>
     </div>
+    <detail-modal :isShow="isShow" :reward="reward" @close="handleClose"></detail-modal>
   </section>
 </template>
 
 <script>
 import QuickTable from '@/components/QuickTable'
 import SearchForm from '@/components/SearchForm'
+import DetailModal from './modal/detail'
 import { queryReward } from '@/api/order'
 import moment from 'moment'
 
 export default {
   components: {
     QuickTable,
-    SearchForm
+    SearchForm,
+    DetailModal
   },
   computed: {
     banner: function() {
@@ -46,6 +49,8 @@ export default {
   data () {
     let fn = this.handleOpenReward
     return {
+      isShow: false,
+      reward: {},
       table: {
         data: [],
         columns: [
@@ -76,7 +81,7 @@ export default {
             prop: '',
             render(h, scope) {
               return (
-                <el-button plain onClick={ () => fn(scope.row.orderId) }>查看奖励</el-button> 
+                <el-button plain onClick={ () => fn(scope.row) }>查看奖励</el-button> 
               )
             }
           },
@@ -112,6 +117,13 @@ export default {
     this.query()
   },
   methods: {
+    handleOpenReward(row) {
+      this.reward = row
+      this.isShow = true
+    },
+    handleClose() {
+      this.isShow = false
+    },
     async query() {
       const l = this.loading()
       const { pageIndex, pageSize } = this.pagination
@@ -138,9 +150,6 @@ export default {
         })
       }
       l.close()
-    },
-    handleOpenReward() {
-      console.log(111)
     },
     handleSearch(p) {
       this.params.from = p.from
