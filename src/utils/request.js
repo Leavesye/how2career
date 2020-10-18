@@ -45,6 +45,7 @@ service.interceptors.response.use(
     const res = response.data
     // token不合法或者失效
     if (response.status === 403) {
+      console.log(response, 'response111')
       // to re-login
       MessageBox.confirm('您已注销，可以取消以保留在该页面上，或者再次登录', '重新登录', {
         confirmButtonText: '重新登录',
