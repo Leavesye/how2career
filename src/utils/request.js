@@ -43,28 +43,26 @@ service.interceptors.response.use(
    */
   response => {
     const res = response.data
-
-    // if the custom code is not 20000, it is judged as an error.
+    // token不合法或者失效
+    if (response.status === 403) {
+      // to re-login
+      MessageBox.confirm('您已注销，可以取消以保留在该页面上，或者再次登录', '重新登录', {
+        confirmButtonText: '重新登录',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        store.dispatch('user/resetToken').then(() => {
+          location.reload()
+        })
+      })
+      return false
+    }
     if (!res.result) {
       Message({
         message: res.msg || 'Error',
         type: 'error',
         duration: 5 * 1000
       })
-
-      // token不合法或者失效
-      if (res.code === 403) {
-        // to re-login
-        MessageBox.confirm('您已注销，可以取消以保留在该页面上，或者再次登录', '重新登录', {
-          confirmButtonText: '重新登录',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          store.dispatch('user/resetToken').then(() => {
-            location.reload()
-          })
-        })
-      }
       return Promise.reject(new Error(res.msg || 'Error'))
     } else {
       return res
