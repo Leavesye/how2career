@@ -55,10 +55,10 @@ service.interceptors.response.use(
     }
   },
   error => {
-    console.log('err111' + error) // for debug
+    console.log('err111',error, typeof error) // for debug
     // token不合法或者失效
     if (error.includes('403')) {
-      console.log(response, 'response111')
+      console.log('response111')
       // to re-login
       MessageBox.confirm('您已注销，可以取消以保留在该页面上，或者再次登录', '重新登录', {
         confirmButtonText: '重新登录',
