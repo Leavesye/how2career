@@ -55,7 +55,7 @@ service.interceptors.response.use(
     }
   },
   error => {
-    console.log('err' + error) // for debug
+    console.log('err111' + error) // for debug
     // token不合法或者失效
     if (error.includes('403')) {
       console.log(response, 'response111')
