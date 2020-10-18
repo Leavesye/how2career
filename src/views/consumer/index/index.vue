@@ -14,7 +14,7 @@
         </div>
       </div>
       <el-card class="order-card">
-        <p class="title"
+        <p class="start-title"
            style="font-size: 14px">即将开始的咨询</p>
         <div v-if="list.length">
           <ul class="list-item flex-hbc"
@@ -34,9 +34,7 @@
             </li>
           </ul>
         </div>
-      <el-card v-else>
-        <p class="no-data">暂无数据</p>
-      </el-card>
+        <p v-else class="no-data">暂无数据</p>
       </el-card>
       <p class="title">我的收藏</p>
       <card-list v-if="favorites.length" :list="favorites"></card-list>
@@ -189,6 +187,11 @@ $color: #36ae82;
   border-bottom: 1px solid #edeeef;
   font-size: 14px;
   color:#7c8ea5;
+}
+.start-title {
+  font-size: 16px;
+  color: $color;
+  font-weight: 600;
 }
 .title {
   font-size: 16px;

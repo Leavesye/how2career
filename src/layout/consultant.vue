@@ -2,7 +2,7 @@
   <div class="layout" >
     <navbar></navbar>
     <el-row type="flex" justify="center">
-      <el-col :xs="24" :sm="24" :md="22" :lg="22" :xl="15" class="app-main">
+      <el-col :xs="24" :sm="24" :md="22" :lg="20" :xl="15" class="app-main">
         <el-row type="flex">
           <!-- 侧边栏 -->
           <side-bar :menus="menus" />
