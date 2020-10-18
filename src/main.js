@@ -13,8 +13,6 @@ import store from './store'
 import router from './router'
 
 import '@/permission' // permission control
-// import TRTC from 'trtc-js-sdk'
-
 import '@/utils/register-global'
 
 import { axTable, axTableColumn } from './components/table'

@@ -90,7 +90,9 @@
           </li>
         </ul>
         <div class="more"
+             v-if="serviceOrders && serviceOrders.length"
              @click="linkTo('/consultant/order?status=4,5')">更多订单<i class="el-icon-arrow-right"></i></div>
+        <p v-else class="no-data">暂无数据</p>
       </section>
       <section class="order-card">
         <p class="title">即将超时确认的订单</p>
@@ -109,7 +111,9 @@
           </li>
         </ul>
         <div class="more"
+             v-if="serviceOrders && confirmOrders.length"
              @click="linkTo('/consultant/order?status=2')">更多订单<i class="el-icon-arrow-right"></i></div>
+        <p v-else class="no-data">暂无数据</p>
       </section>
     </div>
   </section>
@@ -352,5 +356,11 @@ $color: #15479e;
   margin-top: 18px;
   cursor: pointer;
   font-weight: 400;
+}
+.no-data {
+  text-align: center;
+  font-size: 14px;
+  color: #7c8ea5;
+  padding-bottom: 36px;
 }
 </style>

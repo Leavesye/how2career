@@ -54,10 +54,11 @@ export default {
   color: #7C8EA5;
   padding: 0 20px;
   margin-bottom: 20px;
+  height: 57px;
+  display: -webkit-box;    
   -webkit-box-orient: vertical;    
   -webkit-line-clamp: 3;    
   overflow: hidden;
-  height: 57px;
 }
 .learn-more {
   margin-left: 100px;

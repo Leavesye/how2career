@@ -37,25 +37,25 @@
             <li class="flex-hbc info-item">
               <div>
                 <h1>最高学历</h1>
-                <p>{{ info.highEdu }}</p>
+                <p>{{ highEdu.desc }}</p>
               </div>
-              <el-button size="mini"
+              <el-button @click="toggleEdu"
                          plain>更多</el-button>
             </li>
             <li class="info-item flex-hbc">
               <div>
                 <h1>工作信息</h1>
-                <p style="margin-bottom: 10px">所属行业: {{info.industryText}}</p>
-                <p>公司名称: {{info.company}}</p>
+                <p style="margin-bottom: 10px">所属行业: {{lastWork.industryText}}</p>
+                <p>公司名称: {{lastWork.company}}</p>
               </div>
-              <div>职位: {{info.position}}</div>
-              <div>工作年限: {{info.workingYears}}年</div>
-              <el-button size="mini"
+              <div>职位: {{lastWork.position}}</div>
+              <div>工作年限: {{lastWork.workingYears}}年</div>
+              <el-button @click="toggleWork"
                          plain>更多</el-button>
             </li>
             <li class="info-item">
               <h1>主要工作内容</h1>
-              <p class="work-duty">{{info.duty}}</p>
+              <p class="work-duty">{{lastWork.duty}}</p>
             </li>
             <li class="info-item">
               <h1>工作个人技能</h1>
@@ -73,9 +73,16 @@
         </calendar>
       </el-card>
     </section>
+    <!-- 评价列表 -->
     <rate-list :isShow="isShow"
-                :rateList="rateList"
+              :rateList="rateList"
                @close="handleClose"></rate-list>
+    <!-- 更多学历 -->
+    <more-edu :isShow="isShowEdu"
+                 @close="toggleEdu" :edus="edus"></more-edu>
+    <!-- 更多工作 -->
+    <more-work :isShow="isShowWork"
+                 @close="toggleWork" :works="works"></more-work>
   </div>
 </template>
 
@@ -83,6 +90,8 @@
 import Avatar from '@/components/Avatar'
 import Calendar from '@/components/Calendar'
 import RateList from '@/components/RateList'
+import MoreEdu from '../room/modal/more-edu'
+import MoreWork from '../room/modal/more-work'
 import { createOrder } from '@/api/order'
 import moment from 'moment'
 import { mapGetters } from 'vuex'
@@ -95,11 +104,19 @@ export default {
     Avatar,
     Calendar,
     RateList,
+    MoreEdu,
+    MoreWork
   },
   data () {
     this.id = this.$route.params.id
     return {
+      isShowEdu: false,
+      isShowWork: false,
       info: {},
+      edus: [],
+      highEdu: {},
+      works: [],
+      lastWork: {},
       times: [],
       isShow: false,
       rateList: [],
@@ -126,42 +143,62 @@ export default {
     }
   },
   methods: {
+    toggleEdu() {
+      this.isShowEdu = !this.isShowEdu
+    },
+    toggleWork() {
+      this.isShowWork = !this.isShowWork
+    },
     // 避免重复调用接口 由子组件初始化页面数据
     handleInitData(res){
       if (res.result && res.msg.publicInfo) {
-        this.publicInfo = res.msg.publicInfo
-        const o = res.msg.publicInfo
-        let { country, school, discipline, degree, graduationTime } = o.resume.education[0]
         const { countries, majors, degrees, industry:industrys,  } = this.dicts
-        const schools = countries.find(v => v.value == country).schools
-        const schoolText = schools.find(v => v.value == school).text
-        const disciplineText = majors.find(v => v.value == discipline).text
-        const degreeText = degrees.find(v => v.value == degree).text
-        const { industry, company, position, duty } = o.resume.workExperience[0]
-        const industryText = industrys.find(v => v.value == industry).text
+        const { publicInfo: { resume: { education, workExperience } }} = res.msg
+        // 学历列表
+        this.edus = education.map(o => {
+          let { country, school, discipline, degree, graduationTime } = o
+          const schools = countries.find(v => v.value == country).schools
+          const schoolText = schools.find(v => v.value == school).text
+          const disciplineText = majors.find(v => v.value == discipline).text
+          const degreeText = degrees.find(v => v.value == degree).text
+          return {
+            country, school, discipline, degree, graduationTime,
+            desc: `${schoolText} ${disciplineText} ${degreeText} ${moment(graduationTime).format('YYYY年毕业')}`
+          }
+        })
+        // 最高学历
+        this.highEdu = this.edus[0]
+        // 工作列表
+        this.works = workExperience.map(o => {
+          const { industry, company, position, duty, entryTime, resignationTime } = o
+          const industryText = industrys.find(v => v.value == industry).text
+          const lastTime = resignationTime ? moment(resignationTime).valueOf() : moment().valueOf()
+          let workingYears = Math.ceil((lastTime - moment(entryTime).valueOf()) / (365*24*60*60*1000))
+          return {
+            industry,
+            industryText,
+            company,
+            position,
+            duty,
+            workingYears
+          }
+        })
+        // 最近一份工作
+        this.lastWork = this.works[0]
+        const { publicInfo: { evaluationPoint: point, evaluationCount:count,
+        nickName, avatarImage, selfIntroduction, resume: { skills }}} = res.msg
         // 评分
-        let rate = o.evaluationPoint > 0 ? o.evaluationPoint / o.evaluationCount : 0
-        // 工作年限
-        let works = o.resume.workExperience
-        let lastTime = works[0].resignationTime
-        lastTime = lastTime ? moment(lastTime).valueOf() : moment().valueOf()
-        let workingYears = Math.ceil((lastTime - moment(works[works.length-1].entryTime).valueOf()) / (365*24*60*60*1000))
+        let rate = point > 0 ? point / count : 0
+        // 基本信息
         this.info = {
           price: res.msg.price,
-          nickName: o.nickName,
-          avatarImage: o.avatarImage,
-          selfIntroduction: o.selfIntroduction,
-          rateCount: o.evaluationCount,
-          totalRate: o.evaluationPoint,
+          nickName,
+          avatarImage,
+          selfIntroduction,
+          rateCount: count,
+          totalRate: point,
           rate,
-          highEdu: `${schoolText} ${disciplineText} ${degreeText} ${moment(graduationTime).format('YYYY年毕业')}`,
-          industry,
-          industryText,
-          company,
-          position,
-          duty,
-          workingYears,
-          skills: o.resume.skills.toString()
+          skills: skills.toString()
         }
       }
     },
@@ -186,10 +223,10 @@ export default {
       }
       // 参数处理
       const {
-        nickName, avatarImage, selfIntroduction, industry, company, 
-        position, duty, workingYears, skills, totalRate, rateCount
+        nickName, avatarImage, selfIntroduction, skills, totalRate, rateCount
       } = this.info
-      let { school, discipline, degree, graduationTime } = this.publicInfo.resume.education[0]
+      let { school, discipline, degree, graduationTime } = this.edus[0]
+      let { industry, company, position, workingYears, duty } = this.works[0]
       const p = {
         consumerNickName: this.user.nickName,
         consumerAvatar: this.user.avatar,
@@ -289,7 +326,9 @@ export default {
   margin-top: 20px;
   margin-bottom: 40px;
   text-align: justify;
-  height: 150px;
+  display: -webkit-box;    
+  -webkit-box-orient: vertical;    
+  -webkit-line-clamp: 8;    
   overflow: hidden;
 }
 .user-rate {

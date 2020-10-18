@@ -1,12 +1,19 @@
 <template>
 <el-dialog
   :show-close="false"
-  :title="isWait? '房间状态' : '咨询开始'"
+  :close-on-click-modal="false"
+  :close-on-press-escape="false"
+  :title="isReady && online? '房间状态' : '咨询开始'"
   :visible.sync="isShow"
   width="530px"
   center>
   <section class="modal-main">
-    <div v-if="isWait">
+    <!-- 双方都都准备好倒计时三秒 -->
+    <div v-if="isReady && online" class="progress-box">
+      <el-progress :show-text="false" :width="250" color="#36AE82" style="position: relative" type="circle" :percentage="percent"></el-progress>
+      <div class="number" :class="[o.ani]" v-for="(o, i) in nums" :key="i">{{o.v}}</div>
+    </div>
+    <div v-else>
       <!-- 头像 -->
       <div class="flex-hc">
         <avatar :imgUrl="info.avatar"></avatar>
@@ -19,10 +26,6 @@
         <div class="line"></div>
       </div>
       <count-down bg="#7C8FA5" :targetTime="target"></count-down>
-    </div>
-    <div v-else class="progress-box">
-      <el-progress :show-text="false" :width="250" color="#36AE82" style="position: relative" type="circle" :percentage="percent"></el-progress>
-      <div class="number" :class="[o.ani]" v-for="(o, i) in nums" :key="i">{{o.v}}</div>
     </div>
   </section>
   <span slot="footer" class="dialog-footer">
@@ -48,7 +51,7 @@ export default {
     return {
       isLoaded: false,
       isReady: false,
-      isWait: true,
+      online: false,
       percent: 0,
       nums: [
         {v: '3', ani: ''},
@@ -65,7 +68,7 @@ export default {
   },
   mounted() {
     // 未准备好轮询
-    setInterval(() => {
+    this.beforeTimer = setInterval(() => {
       this.getRoomStatus()
     }, 5000)
   },
@@ -75,6 +78,7 @@ export default {
         console.log(e)
       })
       if (res.result) {
+        // 对方是否在线
         this.online = res.msg.online
       }
     },
@@ -90,6 +94,7 @@ export default {
         
       }
     },
+    // 点击准备好了
     async handleConfirm() {
       if (this.isLoaded) return false
       this.isLoaded = true
@@ -99,7 +104,13 @@ export default {
       this.isLoaded = false
       if (res.result) {
         this.isReady = true
-        setInterval(() => {
+        if (this.isReady && this.online) {
+          // 3 2 1倒计时
+          this.go()
+        }
+        // 销毁删除准备前定时器
+        clearInterval(this.beforeTimer)
+        this.afterTimer = setInterval(() => {
           this.getRoomStatusAfterReady()
         }, 5000)
       }
@@ -111,27 +122,17 @@ export default {
           o.ani="animate"
           this.percent += 100/3
           if (j==2) {
-            setTimeout(() => this.$emit('close'), 500)
+            setTimeout(() => this.$emit('start'), 500)
           }
         }, 1000 * j)
       })
     }
   },
-  watch: {
-    'isShow': function(newV, oldV) {
-      console.log(newV, oldV)
-      if (newV) {
-        this.go()
-      } else {
-        this.nums =  [
-          {v: '3', ani: ''},
-          {v: '2', ani: ''},
-          {v: '1', ani: ''},
-        ]
-        this.percent = 0
-      }
-    }
-  },
+  beforeDestroy() {
+    // 销毁定时器
+    clearInterval(this.beforeTimer)
+    clearInterval(this.afterTimer)
+  }
 };
 </script>
 

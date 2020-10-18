@@ -9,6 +9,9 @@
     <p style="margin-bottom: 10px;">{{reward.cardTitle}}</p>
     <div>{{reward.cardContent}}</div>
   </section>
+  <span slot="footer" class="dialog-footer">
+    <el-button type="success" @click="handleClose">关闭</el-button>
+  </span>
 </el-dialog>
 </template>
 

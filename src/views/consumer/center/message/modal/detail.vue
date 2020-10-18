@@ -12,6 +12,9 @@
     </div>
     <p>转采了你的采集时尚几何图案彩色图形创意背</p>
   </section>
+  <span slot="footer" class="dialog-footer">
+    <el-button type="success" @click="handleClose">关闭</el-button>
+  </span>
 </el-dialog>
 </template>
 

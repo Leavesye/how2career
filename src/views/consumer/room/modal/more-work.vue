@@ -8,7 +8,7 @@
   <section class="modal-main">
     <div class="d-item" v-for="(item,i) in works" :key="i">
       <p class="field-name title">工作信息</p>
-      <p>所属行业：{{item.industry}}</p>
+      <p>所属行业：{{item.industryText}}</p>
       <div class="flex-hbc fields">
         <p class="field-name">公司名称：{{item.company}}</p>
         <p class="field-name">职位：{{item.position}}</p>

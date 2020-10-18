@@ -132,14 +132,15 @@
     </el-card>
     <!-- 房间状态 -->
     <room-status :isShow="isShow"
-                 @close="handleCloseModal"></room-status>
+                 @start="handleChatStart" :targetTime="info.startTime" :info="info"></room-status>
   </div>
 </template>
 
 <script>
+import RtcClient from '@/utils/rtc-client'
 import Avatar from '@/components/Avatar'
 import CountDown from '@/components/CountDown'
-import RoomStatus from './modal/room-status'
+import RoomStatus from '@/components/RoomStatus'
 import { getOrderById, queryConsumerByOrderId } from '@/api/order'
 import { getDicts } from '@/api/user'
 import moment from 'moment'
@@ -153,8 +154,8 @@ export default {
   },
   data () {
     return {
-      roomStatus: 1, // 1 距离开始  2 距离结束
-      isShow: false,
+      targetTime: 0,
+      isShow: true,
       activeName: 'first',
       info: {
         edus: [{ desc: '' }]
@@ -171,7 +172,8 @@ export default {
     ]).catch(e => l.close())
     if (res[1].result) {
       // 订单信息
-      const { consumerAvatar: avatar, consumerNickName: name, startTime, question } = res[1].msg
+      const { slotId, roomId, consultant: { _id, },consumer, consumerAvatar: avatar, consumerNickName: name, startTime, question } = res[1].msg
+      this.initRtcClient(roomId, consumer)
       if (res[2].result) {
         const { countries, majors, degrees, gender: genders, industry: industrys, workCategory } = res[0].msg
         // 咨询者信息
@@ -181,6 +183,11 @@ export default {
         highestEducation = highestEducation || []
         education.unshift(highestEducation)
         this.info = {
+          slotId,
+          orderId,
+          roomId,
+          consultantId: _id,
+          consumerId: consumer,
           avatar, name, birthday, question, startTime,
           startText: moment(startTime * 1000).format('MM月DD日 HH:mm') + '~' + moment(startTime * 1000).subtract('-90', 'minutes').format('HH:mm'),
           selfIntroduction, detailedIntroduction,
@@ -208,16 +215,25 @@ export default {
         }
         const now = moment().valueOf()
         const start = startTime * 1000
-        // 还没开始
-        this.roomStatus = start > now ? 1 : 2
       }
     }
     l.close()
   },
   methods: {
-    handleCloseModal () {
+    initRtcClient(roomId, userId) {
+      this.rtc = new RtcClient({
+        sdkAppId: process.env.VUE_APP_SKDAPPID,
+        userSig: process.env.VUE_APP_USERSIG,
+        userId, 
+        roomId,
+      })
+      console.log(this.rtc, 'rtc')
+    },
+    handleChatStart () {
       this.isShow = false
-    }
+      // 加入聊天室
+      this.rtc.join()
+    },
   },
   mounted () {
     // setInterval(() => this.isShow = true, 30*1000)

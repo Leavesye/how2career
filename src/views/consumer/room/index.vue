@@ -55,12 +55,12 @@
         <p>{{info.skills}}</p>
       </div>
       <div class="flex-he">
-        <el-button class="stop-btn" type="success" @click="handleStopService">结束服务</el-button> 
+        <el-button class="stop-btn" type="success" @click="handleLeaveRoom">结束服务</el-button> 
       </div>
     </el-card>
     <!-- 房间状态 -->
     <room-status :isShow="isShow"
-                 @close="handleCloseModal" :targetTime="info.startTime" :info="info"></room-status>
+                 @start="handleChatStart" :targetTime="info.startTime" :info="info"></room-status>
     <!-- 更多学历 -->
     <more-edu :isShow="isShowEdu"
                  @close="toggleEdu" :edus="edus"></more-edu>
@@ -71,10 +71,11 @@
 </template>
 
 <script>
+import RtcClient from '@/utils/rtc-client'
 import moment from 'moment'
 import Avatar from '@/components/Avatar'
 import CountDown from '@/components/CountDown'
-import RoomStatus from './modal/room-status'
+import RoomStatus from '@/components/RoomStatus'
 import MoreEdu from './modal/more-edu'
 import MoreWork from './modal/more-work'
 import { getOrderById, stopService } from '@/api/order'
@@ -112,12 +113,14 @@ export default {
     if (res[0].result) {
       const { consultant:{ avatar, name,  _id }, consumer,startTime, question, roomId, slotId } = res[0].msg
       const { countries, majors, degrees, industry:industrys, gender:genders } = res[1].msg
+      this.initRtcClient(roomId, _id)
       // 查询咨询师公共信息
       const ret = await getPublicInfo({ userId: _id }).catch(e=>l.close())
       if (ret.result) {
         const { birthday,gender,selfIntroduction,detailedIntroduction, 
         resume: {education, workExperience, skills}} = ret.msg.publicInfo
         this.info = {
+          slotId,
           consultantId: _id,
           consumerId: consumer,
           orderId: this.orderId,
@@ -146,7 +149,8 @@ export default {
           let workingYears = Math.ceil((lastTime - moment(o.entryTime).valueOf()) / (365*24*60*60*1000))
           return {
             company: o.company,
-            industry: industrys.find(v => v.value == o.industry).text,
+            industry: o.industry,
+            industryText: industrys.find(v => v.value == o.industry).text,
             position: o.position,
             workingYears: workingYears?`${workingYears}年`: '',
             duty: o.duty
@@ -156,11 +160,21 @@ export default {
       }
     }
     l.close()
-    
   },
   methods: {
-    handleCloseModal () {
+    initRtcClient(roomId, userId) {
+      this.rtc = new RtcClient({
+        sdkAppId: process.env.VUE_APP_SKDAPPID,
+        userSig: process.env.VUE_APP_USERSIG,
+        userId, 
+        roomId,
+      })
+      console.log(this.rtc, 'rtc')
+    },
+    handleChatStart () {
       this.isShow = false
+      // 加入聊天室
+      this.rtc.join()
     },
     toggleEdu() {
       this.isShowEdu = !this.isShowEdu
@@ -168,7 +182,7 @@ export default {
     toggleWork() {
       this.isShowWork = !this.isShowWork
     },
-    handleStopService() {
+    handleLeaveRoom() {
       this.$alert('点击服务确认将结束此次服务，无法再次进入房间', '服务结束确认', {
         confirmButtonText: '确认',
         callback: action => {
@@ -176,6 +190,8 @@ export default {
           if (action == 'confirm') {
             stopService({ orderId: this.orderId }).then(res => {
               if (res.result) {
+                // 退出房间
+                this.rtc.leave()
                 this.alert('服务已结束')
               }
             })
