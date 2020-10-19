@@ -25,5 +25,13 @@ export function clickReady(data) {
     data
   })
 }
+// 获取语音客户端签名
+export function getSign(params) {
+  return request({
+    url: `/user/platform/trtc/sign`,
+    method: 'get',
+    params
+  })
+}
 
 

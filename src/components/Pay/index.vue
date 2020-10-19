@@ -29,6 +29,7 @@
 </template>
 <script>
 import { getAlipayUrl } from '@/api/pay'
+import { getPayStatus } from '@/api/order'
 
 export default {
   name: 'pays',
@@ -74,10 +75,18 @@ export default {
         confirmButtonText: '已完成支付',
         cancelButtonText: '立即支付',
         type: 'warning'
-      }).then(() => {// 已完成支付
-        // 查询订单支付完成状态
-        this.$emit('confirm')
-      }).catch(() => {// 立即支付
+      }).then(() => {// 点击已完成支付
+        getPayStatus({ orderId: this.order._id }).then(res => {
+          if (res.result) {
+            // 已支付
+            if (res.msg.payment) {
+              this.$emit('confirm', true)
+            } else {// 未支付
+              this.$emit('confirm', false)
+            }
+          }
+        }).catch(e=> console.log(e))
+      }).catch(() => {// 点击立即支付
         // 跳转支付
         this.toPay()
       })

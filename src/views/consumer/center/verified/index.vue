@@ -51,11 +51,11 @@ export default {
     const l = this.loading()
     const res = await getUserInfo().catch(e=> l.close())
     if (res.result) {
-      this.realVerified = res.msg.realVerified
-      const o = res.msg.realVerify
-      this.form.name.value = res.msg.basic.name
-      this.form.phone.value = o.phone
-      this.form.idCard.value = o.idCard
+      const { realVerified, realVerify, basic: { name } } = res.msg
+      this.realVerified = realVerified
+      this.form.name.value = name
+      this.form.phone.value = realVerify ? realVerify.phone : ''
+      this.form.idCard.value = realVerify ? realVerify.idCard : ''
       if (this.realVerified) {
         this.form.phone.props.disabled =true
         this.form.idCard.props.disabled =true

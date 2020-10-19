@@ -109,7 +109,7 @@ export default {
         times: consumerTime.map(o => {
           return {
             v: o,
-            text: `${moment(o).format('YYYY-MM-DD')} ${moment(o).format('HH:mm:ss')}-${moment(o).subtract(-90, 'minutes').format('HH:mm:ss')}`
+            text: `${moment(o*1000).format('YYYY-MM-DD')} ${moment(o*1000).format('HH:mm:ss')}-${moment(o*1000).subtract(-90, 'minutes').format('HH:mm:ss')}`
           }
         }),
         price,
@@ -141,9 +141,13 @@ export default {
     handleClosePay () {
       this.isShowPay = false
     },
-    handleConfirmPay () {
+    handleConfirmPay (isPayment) {
       this.isShowPay = false
-      this.$router.push('/consumer/order?status=2,3')
+      if (isPayment) {
+        this.$router.push('/consumer/order?status=2,3')
+      } else {
+        this.alert('订单未支付成功', 'warning')
+      }
     },
     goBack () {
       this.$router.go(-1)
@@ -267,7 +271,7 @@ export default {
   text-align: center;
   background: #edeeef;
   border-radius: 4px;
-  margin-right: 10px;
+  margin-right: 8px;
 }
 .book-times li i {
   position: absolute;

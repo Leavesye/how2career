@@ -141,3 +141,11 @@ export function stopService(data) {
     data
   })
 }
+// 咨询者订单付款状态查询
+export function getPayStatus(params) {
+  return request({
+    url: `/order/platform/orders/paymentStatus`,
+    method: 'get',
+    params
+  })
+}

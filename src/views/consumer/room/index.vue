@@ -80,6 +80,7 @@ import MoreEdu from './modal/more-edu'
 import MoreWork from './modal/more-work'
 import { getOrderById, stopService } from '@/api/order'
 import { getPublicInfo, getDicts } from '@/api/user'
+import { getSign } from '@/api/room'
 
 export default {
   name: 'room',
@@ -109,11 +110,12 @@ export default {
     const res = await Promise.all([
       getOrderById({ orderId: this.orderId }),
       getDicts(),
+      getSign()
     ]).catch(e=> l.close())
     if (res[0].result) {
       const { consultant:{ avatar, name,  _id }, consumer,startTime, question, roomId, slotId } = res[0].msg
       const { countries, majors, degrees, industry:industrys, gender:genders } = res[1].msg
-      this.initRtcClient(roomId, _id)
+      this.initRtcClient(roomId, _id, res[2].msg)
       // 查询咨询师公共信息
       const ret = await getPublicInfo({ userId: _id }).catch(e=>l.close())
       if (ret.result) {
@@ -162,10 +164,9 @@ export default {
     l.close()
   },
   methods: {
-    initRtcClient(roomId, userId) {
+    initRtcClient(roomId, userId, sign) {
       this.rtc = new RtcClient({
-        sdkAppId: process.env.VUE_APP_SKDAPPID,
-        userSig: process.env.VUE_APP_USERSIG,
+        userSig: sign,
         userId, 
         roomId,
       })

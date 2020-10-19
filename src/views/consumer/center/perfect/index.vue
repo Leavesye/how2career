@@ -204,8 +204,8 @@ export default {
       skills: [],
       isShow: false,
       labelWidth: '140px',
-      education: [_.cloneDeep(eduForm)],
-      workExperience: [_.cloneDeep(expForm)],
+      education: [this.bindThis(eduForm, 0)],
+      workExperience: [this.bindThis(expForm,0)],
       otherCertificates:[],
       rewards:[],
       authorlevel: [],
@@ -267,10 +267,10 @@ export default {
         this.skills = skills
       } else { // 新增
         // 绑定form表单事件方法this到组件实例 便于后续调用实例方法
-        this.education[0] = this.bindThis(this.education[0], 0)
-        this.workExperience[0] = this.bindThis(this.workExperience[0], 0)
-        this.otherCertificates[0] = this.bindThis(this.otherCertificates[0], 0)
-        this.rewards[0] = this.bindThis(this.rewards[0], 0)
+        // this.education[0] = this.bindThis(this.education[0], 0)
+        // this.workExperience[0] = this.bindThis(this.workExperience[0], 0)
+        // this.otherCertificates[0] = this.bindThis(this.otherCertificates[0], 0)
+        // this.rewards[0] = this.bindThis(this.rewards[0], 0)
       }
     }
     l.close()
