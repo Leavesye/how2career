@@ -152,7 +152,8 @@ $color: #36ae82;
   margin-bottom: 20px;
 }
 .p-item {
-  width: 207px;
+  flex: 1;
+  margin-right: 20px;
   height: 114px;
   background: #ffffff;
   box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.1);
@@ -161,6 +162,9 @@ $color: #36ae82;
   box-sizing: border-box;
   color: #7c8ea5;
   cursor: pointer;
+}
+.p-item:last-child {
+  margin-right: 0;
 }
 .p-item > p {
   font-size: 14px;

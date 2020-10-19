@@ -34,18 +34,15 @@
         <el-tab-pane label="基本信息"
                      name="first">
           <div class="d-item">
-            <section class="flex-hb"
-                     style="width: 300px">
-              <div>
+            <section class="info-row">
+              <div style="margin-bottom: 10px;">
                 <p class="field-name">姓名</p>
-                <p>{{info.name}}</p>
-              </div>
-              <div>
                 <p class="field-name">性别</p>
-                <p>{{info.gender}}</p>
+                <p class="field-name">出生年月</p>
               </div>
               <div>
-                <p class="field-name">出生年月</p>
+                <p>{{info.name}}</p>
+                <p>{{info.gender}}</p>
                 <p>{{info.birthday}}</p>
               </div>
             </section>
@@ -65,53 +62,39 @@
         </el-tab-pane>
         <el-tab-pane label="学历信息"
                      name="second">
-          <div class="d-item">
-            <p class="field-name">最高学历</p>
-            <p>{{info.edus[0].desc}}</p>
-          </div>
-          <div class="d-item">
-            <p class="field-name">前学历</p>
-            <p>{{info.edus[1] ? info.edus[1].desc : '无'}}</p>
-          </div>
-          <div class="d-item">
-            <p class="field-name">前学历</p>
-            <p>{{info.edus[2] ? info.edus[2].desc : '无'}}</p>
+          <div class="d-item" v-for="(item, i) in info.edus" :key="i">
+            <p class="field-name">{{i==0?'最高学历': '前学历'}}</p>
+            <p>{{item.desc}}</p>
           </div>
         </el-tab-pane>
         <el-tab-pane label="社会实践"
                      name="third">
-          <div v-for="item, i in info.works"
-                     :key="i">
+          <div v-for="(item, i) in info.works"
+               :key="i">
             <div class="d-item">
-              <section class="flex-hb"
-                       style="width: 300px">
+              <section class="info-row">
                 <div>
                   <p class="field-name">工作类型</p>
-                  <p>{{item.type}}</p>
-                </div>
-                <div>
                   <p class="field-name">行业</p>
-                  <p>{{item.industry}}</p>
+                  <p class="field-name">企业</p>
                 </div>
                 <div>
-                  <p class="field-name">企业</p>
+                  <p>{{item.type}}</p>
+                  <p>{{item.industry}}</p>
                   <p>{{item.company}}</p>
                 </div>
               </section>
             </div>
             <div class="d-item">
-              <section class="flex-hb"
-                       style="width: 300px">
+              <section class="info-row">
                 <div>
                   <p class="field-name">职位</p>
-                  <p>{{item.position}}</p>
-                </div>
-                <div>
                   <p class="field-name">入职时间</p>
-                  <p>{{item.entryTime}}</p>
+                  <p class="field-name">离职时间</p>
                 </div>
                 <div>
-                  <p class="field-name">离职时间</p>
+                  <p>{{item.position}}</p>
+                  <p>{{item.entryTime}}</p>
                   <p>{{item.resignationTime}}</p>
                 </div>
               </section>
@@ -127,12 +110,61 @@
           </div>
         </el-tab-pane>
         <el-tab-pane label="其他信息"
-                     name="fourth">其他信息</el-tab-pane>
+                     name="fourth">
+          <h-title style="margin-top: 20px;">获奖经历</h-title>
+          <div class="d-item"
+               v-if="rewards.length">
+            <section class="info-row">
+              <div>
+                <p>名称</p>
+                <p>有效期</p>
+                <p>备注</p>
+              </div>
+              <div v-for="(item, i) in rewards"
+                   :key="i">
+                <p>{{item.name}}</p>
+                <p>{{item.expireDate}}</p>
+                <p>{{item.comments}}</p>
+              </div>
+            </section>
+          </div>
+          <div v-else
+               style="margin-top: 20px">暂无获奖经历</div>
+          <h-title style="margin-top: 20px;">执照与证书</h-title>
+          <div class="d-item"
+               v-if="certs.length">
+            <section class="info-row">
+              <div>
+                <p>名称</p>
+                <p>有效期</p>
+                <p>备注</p>
+              </div>
+              <div v-for="(item, i) in certs"
+                   :key="i">
+                <p>{{item.name}}</p>
+                <p>{{item.expireDate}}</p>
+                <p>{{item.comments}}</p>
+              </div>
+            </section>
+          </div>
+          <div v-else
+               style="margin-top: 20px">暂无执照与证书</div>
+          <div class="d-item">
+            <p class="field-name">语言</p>
+            <p>{{info.language}}</p>
+          </div>
+          <div class="d-item">
+            <p class="field-name">工作个人技能</p>
+            <p>{{info.skills}}</p>
+          </div>
+        </el-tab-pane>
       </el-tabs>
     </el-card>
     <!-- 房间状态 -->
     <room-status :isShow="isShow"
-                 @start="handleChatStart" :targetTime="info.startTime" :info="info"></room-status>
+                 @start="handleChatStart"
+                 :targetTime="info.startTime"
+                 :info="info"></room-status>
   </div>
 </template>
 
@@ -155,8 +187,10 @@ export default {
   data () {
     return {
       targetTime: 0,
-      isShow: true,
+      isShow: false,
       activeName: 'first',
+      rewards: [],
+      certs: [],
       info: {
         edus: [{ desc: '' }]
       }
@@ -172,13 +206,27 @@ export default {
     ]).catch(e => l.close())
     if (res[1].result) {
       // 订单信息
-      const { slotId, roomId, consultant: { _id, },consumer, consumerAvatar: avatar, consumerNickName: name, startTime, question } = res[1].msg
-      this.initRtcClient(roomId, consumer)
+      const { slotId, roomId, consultant: { _id, }, consumer, consumerAvatar: avatar, consumerNickName: name, startTime, question } = res[1].msg
+      // this.initRtcClient(roomId, consumer)
       if (res[2].result) {
         const { countries, majors, degrees, gender: genders, industry: industrys, workCategory } = res[0].msg
         // 咨询者信息
         let { basic: { name, gender, birthday, highestEducation, selfIntroduction, detailedIntroduction },
-          resume: { education, workExperience } } = res[2].msg
+          resume: { education, workExperience, other: { rewardHistory, certificatesHistory, language, skills } } } = res[2].msg
+        this.rewards = (rewardHistory || []).map(o => {
+          return {
+            name: o.name,
+            comments: o.comments,
+            expireDate: moment(o.expireDate).format('YYYY-MM-DD')
+          }
+        })
+        this.certs = (certificatesHistory || []).map(o => {
+          return {
+            name: o.name,
+            comments: o.comments,
+            expireDate: moment(o.expireDate).format('YYYY-MM-DD')
+          }
+        })
         education = education || []
         highestEducation = highestEducation || []
         education.unshift(highestEducation)
@@ -211,22 +259,21 @@ export default {
               resignationTime: o.resignationTime ? moment(o.resignationTime).format('YYYY-MM-DD') : '',
               duty: o.duty, reward: o.reward
             }
-          })
+          }),
+          language: (language || []).toString(),
+          skills: (skills || []).toString(),
         }
-        const now = moment().valueOf()
-        const start = startTime * 1000
       }
     }
     l.close()
   },
   methods: {
-    initRtcClient(roomId, userId) {
+    initRtcClient (roomId, userId) {
       this.rtc = new RtcClient({
-        sdkAppId: process.env.VUE_APP_SKDAPPID,
-        userSig: process.env.VUE_APP_USERSIG,
-        userId, 
+        userId,
         roomId,
       })
+      this.rtc.join()
       console.log(this.rtc, 'rtc')
     },
     handleChatStart () {
@@ -295,9 +342,19 @@ export default {
   padding: 20px 0;
   border-bottom: 1px solid #edeeef;
 }
+.info-row > div {
+  display: flex;
+  margin-right: 20px;
+  margin-bottom: 10px;
+}
+.info-row > div > p {
+  width: 200px;
+  margin-right: 20px;
+}
 .field-name {
   color: #15479e;
   margin-bottom: 10px;
+  font-weight: 600;
 }
 .header {
   position: relative;

@@ -1,15 +1,19 @@
 import Vue from 'vue'
 import TRTC from 'trtc-js-sdk'
+import genTestUserSig from './GenerateTestUserSig'
 
 const alert = Vue.prototype.alert
 /* global $ TRTC getCameraId getMicrophoneId resetView isHidden shareUserId addMemberView removeView addVideoView */
 export default class RtcClient {
   constructor(options) {
-    this.sdkAppId_ = options.sdkAppId
+    const config = genTestUserSig(options.userId, process.env.VUE_APP_SKDAPPID, process.env.VUE_APP_USERSIG)
+    this.sdkAppId_ = config.sdkAppId
+    this.userSig_ = config.userSig
     this.userId_ = options.userId
-    this.userSig_ = options.userSig
     this.roomId_ = options.roomId
 
+    this.cameraId = ''
+    this.micId = ''
     this.isJoined_ = false
     this.isPublished_ = false
     this.isAudioMuted = false
@@ -26,6 +30,29 @@ export default class RtcClient {
       userSig: this.userSig_
     })
     this.handleEvents()
+    TRTC.checkSystemRequirements().then(result => {
+      if (!result) {
+        alert('您的浏览器不兼容此应用！\n建议下载最新版Chrome浏览器')
+      }
+    })
+
+    // populate camera options
+    TRTC.getCameras().then(devices => {
+      devices.forEach(device => {
+        if (!this.cameraId) {
+          this.cameraId = device.deviceId
+        }
+      })
+    })
+
+    // populate microphone options
+    TRTC.getMicrophones().then(devices => {
+      devices.forEach(device => {
+        if (!this.micId) {
+          this.micId = device.deviceId
+        }
+      })
+    })
   }
 
   async join () {
@@ -42,13 +69,13 @@ export default class RtcClient {
       this.isJoined_ = true
 
       // create a local stream with audio/video from microphone/camera
-      if (getCameraId() && getMicrophoneId()) {
+      if (this.cameraId && this.micId) {
         this.localStream_ = TRTC.createStream({
           audio: true,
           video: true,
           userId: this.userId_,
-          cameraId: getCameraId(),
-          microphoneId: getMicrophoneId(),
+          cameraId: this.cameraId,
+          microphoneId: this.micId,
           mirror: true
         })
       } else {
@@ -98,7 +125,6 @@ export default class RtcClient {
     this.localStream_.close()
     this.localStream_ = null
     this.isJoined_ = false
-    resetView()
   }
 
   async publish () {

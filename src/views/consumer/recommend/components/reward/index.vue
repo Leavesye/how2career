@@ -54,9 +54,9 @@ export default {
       table: {
         data: [],
         columns: [
-          {
-            type: 'selection',
-          },
+          // {
+          //   type: 'selection',
+          // },
           {
             label: '订单号',
             prop: 'orderId',

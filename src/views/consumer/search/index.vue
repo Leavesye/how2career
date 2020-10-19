@@ -8,7 +8,7 @@
       <quick-form :model="form"
                   labelWidth="140px"
                   ref="form"></quick-form>
-      <el-button class="search-btn" round plain type="success" >搜索</el-button>
+      <el-button size="large" class="search-btn" round plain type="success" >搜索</el-button>
     </el-card>
     <p class="title">搜索结果</p>
     <card-list :list="list"></card-list>

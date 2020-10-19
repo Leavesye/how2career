@@ -9,7 +9,7 @@
           <!-- 页面路由 -->
           <transition name="fade-transform"
                       mode="out-in">
-            <router-view style="width: 80%" class="router-view" />
+            <router-view style="flex:1" class="router-view" />
           </transition>
         </el-row>
       </el-col>
