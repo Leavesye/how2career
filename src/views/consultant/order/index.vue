@@ -133,12 +133,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.no-order {
-  height: 100px;
-}
 .no-order p {
   text-align: center;
-  margin-top: 20px;
   color: #7c8ea5;
   font-size: 16px;
 }

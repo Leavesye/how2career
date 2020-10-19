@@ -60,8 +60,7 @@
     <!-- 分页 -->
     <div class="flex-he"
          style="margin-top: 20px">
-      <el-pagination id="pagin"
-                     :page-sizes="pagination.pageSizes || [10, 20, 30, 40]"
+      <el-pagination :page-sizes="pagination.pageSizes || [10, 20, 30, 40]"
                      :total="pagination.total"
                      :current-page="pagination.pageIndex"
                      :page-size="pagination.pageSize"

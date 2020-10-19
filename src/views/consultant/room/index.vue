@@ -175,6 +175,7 @@ import CountDown from '@/components/CountDown'
 import RoomStatus from '@/components/RoomStatus'
 import { getOrderById, queryConsumerByOrderId } from '@/api/order'
 import { getDicts } from '@/api/user'
+import { getSign } from '@/api/room'
 import moment from 'moment'
 
 export default {
@@ -202,12 +203,13 @@ export default {
     const res = await Promise.all([
       getDicts(),
       getOrderById({ orderId }),
-      queryConsumerByOrderId({ orderId })
+      queryConsumerByOrderId({ orderId }),
+      getSign()
     ]).catch(e => l.close())
     if (res[1].result) {
       // 订单信息
       const { slotId, roomId, consultant: { _id, }, consumer, consumerAvatar: avatar, consumerNickName: name, startTime, question } = res[1].msg
-      // this.initRtcClient(roomId, consumer)
+      this.initRtcClient(roomId, consumer, res[3].msg)
       if (res[2].result) {
         const { countries, majors, degrees, gender: genders, industry: industrys, workCategory } = res[0].msg
         // 咨询者信息
@@ -268,9 +270,10 @@ export default {
     l.close()
   },
   methods: {
-    initRtcClient (roomId, userId) {
+    initRtcClient (roomId, userId, sign) {
       this.rtc = new RtcClient({
-        userId,
+        userSig: sign,
+        userId, 
         roomId,
       })
       this.rtc.join()

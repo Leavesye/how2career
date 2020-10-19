@@ -23,9 +23,7 @@
           </div>
         </li>
       </ul>
-      <el-tooltip effect="dark" :content="o.readme" placement="top-start">
-        <div class="desc">职业：{{o.industry}} 简介：{{o.readme}}</div>
-      </el-tooltip>
+      <div class="desc">职业：{{o.industry}} 简介：{{o.readme}}</div>
       <h-title>咨询的问题</h-title>
       <ul class="question-list">
         <li class="flex-vc"
@@ -196,7 +194,6 @@ export default {
   margin-bottom: 20px;
   text-overflow: ellipsis;
   overflow: hidden;
-  white-space: nowrap;
 }
 .question-list {
   margin-top: 20px;

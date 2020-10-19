@@ -8,7 +8,7 @@ export default class RtcClient {
   constructor(options) {
     // const config = genTestUserSig(options.userId, process.env.VUE_APP_SKDAPPID, process.env.VUE_APP_USERSIG)
     this.sdkAppId_ = +process.env.VUE_APP_SKDAPPID
-    this.userSig_ = options.sign
+    this.userSig_ = options.userSig
     this.userId_ = options.userId
     this.roomId_ = options.roomId
 
