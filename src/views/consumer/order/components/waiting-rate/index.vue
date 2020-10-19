@@ -130,6 +130,7 @@ export default {
   font-size: 14px;
   padding: 0 20px;
   margin-bottom: 20px;
+  overflow: hidden;
 }
 .question-list {
   margin-top: 20px;
