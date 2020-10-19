@@ -40,7 +40,6 @@ export default {
 }
 .p-item {
   margin-right: 20px;
-  width: 205px;
   height: 60px;
   background: #FFFFFF;
   box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.1);
@@ -53,6 +52,15 @@ export default {
   font-size: 14px;
   margin-top: 20px;
   margin-left: 20px;
+}
+.p-item.consultant {
+  width: 205px;
+}
+.p-item.consumer {
+  flex: 1;
+}
+.p-item.consumer:last-child {
+  margin-right: 0;
 }
 .p-item.consultant.active {  
   background: linear-gradient(123deg, #15479E 0%, #3271CD 100%);

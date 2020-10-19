@@ -57,7 +57,7 @@
     </section>
     <pay :isShow="isShowPay"
          @close="handleClosePay"
-         @confirm="handleConfirmPay"></pay>
+         @confirm="handleConfirmPay" :order="order"></pay>
   </div>
 </template>
 
@@ -79,6 +79,7 @@ export default {
       isShow: false,
       checked: false,
       isShowPay: false,
+      order: {},
     }
   },
   computed: {
@@ -90,6 +91,7 @@ export default {
     const l = this.loading()
     const res = await getOrderById({ orderId: this.$route.params.id }).catch(e => l.close())
     if (res.result) {
+      this.order = res.msg
       const c = res.msg.consultant
       const { avatar, name } = c
       const { industry, company, position } = c.work
@@ -119,6 +121,7 @@ export default {
     },
     handleConfirmPay () {
       this.isShowPay = false
+      this.$router.push('/consumer/order?status=1')
     },
     goBack () {
       this.$router.go(-1)

@@ -53,7 +53,6 @@ import SmallAvatar from '@/components/SmallAvatar'
 import CancelModal from './modal/cancel-order'
 import ChangeModal from './modal/change-time'
 import { cancelOrder } from '@/api/order'
-import { getAlipayUrl } from '@/api/pay'
 
 export default {
   name: 'waiting-pay',
@@ -95,14 +94,7 @@ export default {
       }
     },
     async handelPayOrder(orderId) {
-      const res = await getAlipayUrl({
-        orderId,
-        amount: 1000,
-        subject: '测试商品',
-        type: 'order'
-      })
-      console.log(decodeURIComponent(res.msg))
-      // this.$router.push(`/consumer/order-confirm/${orderId}`)
+      this.$router.push(`/consumer/order-confirm/${orderId}`)
     },
   }
 };
