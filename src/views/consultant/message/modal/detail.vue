@@ -13,7 +13,7 @@
     <p>{{item.content}}</p>
   </section>
   <span slot="footer" class="dialog-footer">
-    <el-button type="success" @click="handleClose">关闭</el-button>
+    <el-button type="primary" @click="handleClose">关闭</el-button>
   </span>
 </el-dialog>
 </template>

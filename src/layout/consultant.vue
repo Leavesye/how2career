@@ -39,6 +39,7 @@ export default {
             { name: '基本信息', path: '/consultant/baseinfo' },
             { name: '资质信息', path: '/consultant/resume' },
             { name: '服务时间', path: '/consultant/setting' },
+            { name: '消息通知', path: '/consultant/message' },
           ]
         },
       ]

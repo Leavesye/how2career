@@ -137,7 +137,7 @@ export default {
 .page-title {
   font-size: 16px;
   font-weight: 600;
-  color: #36ae82;
+  color: #15479E;
   padding: 20px 30px;
   border-bottom: 1px solid #EDEEEF;
 }

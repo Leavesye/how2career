@@ -27,4 +27,8 @@ export default [
     path: '/consultant/setting',
     component: () => import('@/views/consultant/time-setting'),
   },
+  {
+    path: '/consultant/message',
+    component: () => import('@/views/consultant/message'),
+  },
 ]

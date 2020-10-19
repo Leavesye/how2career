@@ -33,24 +33,30 @@
       <scheduler v-if="isLoaded" :events="events" @reload="handleReloadSchduler"></scheduler>
     </el-card>
     <change-slot :isShow="isShow" @close="handleClose"></change-slot>
+    <!-- 支付 -->
+    <pay-modal :isShow="isShowPay"
+         @close="handleClosePay"
+         @confirm="handleConfirmPay"></pay-modal>
   </div>
 </template>
-
 <script>
-import ChangeSlot from './modal/change-slot'
-import { getPublicInfo } from '@/api/user'
-import Scheduler from '@/components/Scheduler'
 import { mapGetters } from 'vuex'
+import ChangeSlot from './modal/change-slot'
+import Scheduler from '@/components/Scheduler'
+import PayModal from '@/components/Pay'
+import { getPublicInfo } from '@/api/user'
 
 export default {
   name: 'time-setting',
   components: {
     ChangeSlot,
-    Scheduler
+    Scheduler,
+    PayModal
   },
   data () {
     return {
       isShow: false,
+      isShowPay: false,
       current: '',
       btns: [
         { name: '调整Slot数量' },
@@ -68,7 +74,13 @@ export default {
   methods: {
     handleClickBtn(item, i) {
       this.current = i
-      this.isShow = true
+      i == 0? (this.isShow = true):(this.isShowPay = true)
+    },
+    handleClosePay() {
+      this.isShowPay = false
+    },
+    handleConfirmPay() {
+      this.isShowPay = false
     },
     handleClose() {
       this.isShow = false
