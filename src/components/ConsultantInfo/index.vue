@@ -7,11 +7,11 @@
   </div>
   <div class="info">
     <div class="info-item">
-      <div class="title">{{info.industryText}}</div>
+      <div class="title">自我介绍</div>
       <p class="desc">{{info.selfIntroduction}}</p>
     </div>
     <div class="info-item">
-      <div class="title">咨询问题</div>
+      <div class="title" v-if="info.question && info.question.length">咨询问题</div>
       <p class="desc" v-for="(item, i) in info.question" :key="i">{{item.v}}</p>
     </div>
   </div>
@@ -41,7 +41,7 @@ export default {
         queryConsumerByOrderId({ orderId: this.order.orderId })
       ]).catch(e => l.close())
       if (res[1].result) {
-        const { nickName,avatarImage,highestEducation: { country, school, discipline }, selfIntroduction }  = res[1].msg.basic
+        const { basic: { nickName,avatarImage,highestEducation: { country, school, discipline }, selfIntroduction}}  = res[1].msg
         const {  countries, majors, degrees } = res[0].msg
         const f = countries.find(v => v.value == country)
         const countryText = f.text

@@ -116,19 +116,26 @@
         <p v-else class="no-data">暂无数据</p>
       </section>
     </div>
+    <detail-modal :isShow="isShow" :order="order" @close="handleClose"></detail-modal>
   </section>
 </template>
 
 <script>
 import { getOrders, getOrdersCount } from '@/api/order'
-import { getUserInfo } from '@/api/user'
+import { getUserInfo, getDicts } from '@/api/user'
 import tool from '@/utils/tool'
 import SmallAvatar from '@/components/SmallAvatar'
+import DetailModal from './modal/detail'
 
 export default {
-  components: { SmallAvatar },
+  components: { 
+    SmallAvatar,
+    DetailModal
+  },
   data () {
     return {
+      isShow: false,
+      order: {},
       isLoaded: false,
       isFillResume: false,
       isFinishReview: false,
@@ -208,8 +215,14 @@ export default {
     l.close()
   },
   methods: {
-    handleOpenDetail (order) {
-
+    async handleOpenDetail(order){
+      const res = await getDicts()
+      console.log(order, 'order')
+      this.order = order
+      this.isShow = true
+    },
+    handleClose() {
+      this.isShow = false
     },
     handleClickPannel (item, i) {
       this.isActive = i
@@ -298,7 +311,8 @@ $color: #15479e;
   margin-bottom: 20px;
 }
 .p-item {
-  width: 205px;
+  flex: 1;
+  margin-right: 20px;
   height: 114px;
   background: #ffffff;
   box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.1);
@@ -307,6 +321,9 @@ $color: #15479e;
   box-sizing: border-box;
   color: #7c8ea5;
   cursor: pointer;
+}
+.p-item:last-child {
+  margin-right: 0;
 }
 .p-item > p {
   font-size: 14px;

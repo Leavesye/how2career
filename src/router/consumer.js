@@ -29,6 +29,10 @@ export default [
     path: '/consumer/recommend',
     component: () => import('@/views/consumer/recommend'),
   },
+  {
+    path: '/consumer/howto',
+    component: () => import('@/views/consumer/recommend/howto'),
+  },
   // 咨询房间
   {
     path: '/consumer/room/:id',

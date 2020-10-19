@@ -14,7 +14,7 @@
       <div class="title">自我简介</div>
       <p class="desc">{{info.selfIntroduction}}</p>
     </div>
-    <div class="info-item">
+    <div class="info-item" v-if="info.question && info.question.length">
       <div class="title">咨询问题</div>
       <p class="desc" v-for="(item, i) in info.question" :key="i">{{item.v}}</p>
     </div>

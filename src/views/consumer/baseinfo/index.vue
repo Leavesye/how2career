@@ -36,7 +36,7 @@
         <el-button type="success" @click="handleSave">确定</el-button>
       </div>
     </el-col>
-    <change-pwd :isShow="isShow" @close="handleClose"></change-pwd>
+    <change-pwd :isShow="isShow" :account="account" @close="handleClose"></change-pwd>
   </el-row>
 </template>
 
@@ -62,6 +62,7 @@ export default {
   },
   data () {
     return {
+      account: {},
       isShow: false,
       layout: {
         span: 24
@@ -100,7 +101,8 @@ export default {
       const l = this.loading()
       let res = await getUserInfo().catch( e=> l.close())
       if (res.result) {
-        const {basic:{highestEducation:{country}}} = res.msg
+        const {basic: { highestEducation: { country }}, account } = res.msg
+        this.account = account
         if (country) {
           console.log(country, dicts.countries)
           this.education.school.options = dicts.countries.find(o => o.value == country).schools

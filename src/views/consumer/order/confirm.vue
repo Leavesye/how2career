@@ -121,7 +121,7 @@ export default {
     },
     handleConfirmPay () {
       this.isShowPay = false
-      this.$router.push('/consumer/order?status=1')
+      this.$router.push('/consumer/order?status=2')
     },
     goBack () {
       this.$router.go(-1)

@@ -48,7 +48,7 @@
       <el-button type="primary"
                  size="mini" @click="handleSave">确定</el-button>
     </div>
-    <change-pwd :isShow="isShow" @close="handleClose"></change-pwd>
+    <change-pwd :isShow="isShow" :account="account" @close="handleClose"></change-pwd>
   </section>
 </template>
 
@@ -72,6 +72,7 @@ export default {
   mixins: [mixin],
   data () {
     return {
+      account: {},
       isShow: false,
       realVerified: false,
       isReg: false, // 是否注册页面
@@ -89,6 +90,7 @@ export default {
       let res = await getUserInfo().catch( e=> l.close())
       if (res.result) {
         this.initData = res.msg
+        this.account = res.msg.account
         this.realVerified = res.msg.realVerified
         adapter.unBoxing(res.msg, this._data)
       }

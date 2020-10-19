@@ -122,7 +122,7 @@
           <ul class="flex item-select">
             <li v-for="(o,i) in language"
                 :key="i">{{o}}
-              <i class="el-icon-close"
+              <i class="el-icon-close" style="cursor: pointer"
                  @click="handleDelLang(i)"></i>
             </li>
           </ul>
@@ -151,7 +151,7 @@
           <ul class="flex item-select">
             <li v-for="(o,i) in skills"
                 :key="i">{{o}}
-              <i class="el-icon-close"
+              <i class="el-icon-close" style="cursor: pointer"
                  @click="handleDelSkill(i)"></i>
             </li>
           </ul>

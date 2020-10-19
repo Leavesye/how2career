@@ -17,14 +17,15 @@
 <script>
 import { mapGetters } from 'vuex'
 import QuickForm from '@/components/QuickForm'
+import { updateUserInfo } from '@/api/user'
 export default {
-  props: ['isShow'],
+  props: ['isShow', 'account'],
   components: {QuickForm},
   data () {
     const r = this.$rules
     return {
       form: {
-        oldPwd: {
+        oldPassWord: {
           value: '',
           label: '输入旧密码',
           props: {
@@ -33,15 +34,21 @@ export default {
           rules: [r.required(), r.length(6, 12)],
           hide: false,
         },
-        newPwd: {
+        passWord: {
           value: '',
           label: '新密码',
           rules: [r.required(), r.length(6, 12)],
+          props: {
+            type: 'password'
+          },
         },
         confirmPwd: {
           value: '',
           label: '再次输入新密码',
           rules: [r.required(), r.length(6, 12)],
+          props: {
+            type: 'password'
+          },
         },
       }
     }
@@ -54,7 +61,27 @@ export default {
       this.$emit('close')
     },
     handleConfirm() {
-      this.$emit('close')
+      const formData = this.$refs.form.getFormData()
+      this.$refs.form.validate((valid) => {
+        if (valid) {
+          if (formData.passWord != formData.confirmPwd) {
+            this.alert('两次输入密码不一致', 'warning')
+            return false
+          }
+          const p = {
+            account: this.account
+          }
+          console.log(p)
+          p.account.oldPassWord = formData.oldPassWord
+          p.account.passWord = formData.passWord
+          updateUserInfo(p).then(res => {
+            if (res.result) {
+              this.alert('修改成功')
+              this.$emit('close')
+            }
+          })
+        }
+      })
     }
   }
 };

@@ -8,62 +8,66 @@
                  @click="goBack">返回</el-button>
     </h1>
     <section class="card-box">
-      <div class="flex-hb">
-        <el-card class="left">
-          <avatar :imgUrl="info.avatarImage"></avatar>
-          <p class="name">{{info.nickName}}</p>
-          <el-rate style="text-align: center" disabled
-                     v-model="info.rate"></el-rate>
-          <div class="flex-hb icons">
-            <div @click="showRateDetail" class="rate-count flex-vc"><i class="iconfont icondianping-01"></i>
-              <div style="margin-left: 4px">{{info.rateCount}}</div>
-            </div>
-            <div class="favorite flex-vc" @click="handleFavorite">
-              <i class="iconfont" :class="[isFavorite? 'iconyiguanzhu-01 active': 'icontianjiashoucang']"></i>
-              <div style="margin-left: 4px">{{isFavorite?'已收藏': '收藏'}}</div>
-            </div>
-          </div>
-          <p class="motto">{{info.selfIntroduction}}</p>
-          <div class="flex-hb">
-            <p class="cost-item">咨询费用</p>
-            <div class="flex-hc">
-              <div class="num">{{info.price}}</div>
-              <div class="unit">RMB</div>
-            </div>
-          </div>
-        </el-card>
-        <el-card class="right">
-          <ul>
-            <li class="flex-hbc info-item">
-              <div>
-                <h1>最高学历</h1>
-                <p>{{ highEdu.desc }}</p>
+      <el-row :gutter="20" type="flex" justify="space-between">
+        <el-col :span="8">
+          <el-card class="left">
+            <avatar :imgUrl="info.avatarImage"></avatar>
+            <p class="name">{{info.nickName}}</p>
+            <el-rate style="text-align: center" disabled
+                      v-model="info.rate"></el-rate>
+            <div class="flex-hb icons">
+              <div @click="showRateDetail" class="rate-count flex-vc"><i class="iconfont icondianping-01"></i>
+                <div style="margin-left: 4px">{{info.rateCount}}</div>
               </div>
-              <el-button @click="toggleEdu"
-                         plain>更多</el-button>
-            </li>
-            <li class="info-item flex-hbc">
-              <div>
-                <h1>工作信息</h1>
-                <p style="margin-bottom: 10px">所属行业: {{lastWork.industryText}}</p>
-                <p>公司名称: {{lastWork.company}}</p>
+              <div class="favorite flex-vc" @click="handleFavorite">
+                <i class="iconfont" :class="[isFavorite? 'iconyiguanzhu-01 active': 'icontianjiashoucang']"></i>
+                <div style="margin-left: 4px">{{isFavorite?'已收藏': '收藏'}}</div>
               </div>
-              <div>职位: {{lastWork.position}}</div>
-              <div>工作年限: {{lastWork.workingYears}}年</div>
-              <el-button @click="toggleWork"
-                         plain>更多</el-button>
-            </li>
-            <li class="info-item">
-              <h1>主要工作内容</h1>
-              <p class="work-duty">{{lastWork.duty}}</p>
-            </li>
-            <li class="info-item">
-              <h1>工作个人技能</h1>
-              <p>{{info.skills}}</p>
-            </li>
-          </ul>
-        </el-card>
-      </div>
+            </div>
+            <p class="motto">{{info.selfIntroduction}}</p>
+            <div class="flex-hb">
+              <p class="cost-item">咨询费用</p>
+              <div class="flex-hc">
+                <div class="num">{{info.price}}</div>
+                <div class="unit">RMB</div>
+              </div>
+            </div>
+          </el-card>
+        </el-col>
+        <el-col :span="16">
+          <el-card class="right">
+            <ul>
+              <li class="flex-hbc info-item">
+                <div>
+                  <h1>最高学历</h1>
+                  <p>{{ highEdu.desc }}</p>
+                </div>
+                <el-button @click="toggleEdu"
+                          plain>更多</el-button>
+              </li>
+              <li class="info-item flex-hbc">
+                <div>
+                  <h1>工作信息</h1>
+                  <p style="margin-bottom: 10px">所属行业: {{lastWork.industryText}}</p>
+                  <p>公司名称: {{lastWork.company}}</p>
+                </div>
+                <div>职位: {{lastWork.position}}</div>
+                <div>工作年限: {{lastWork.workingYears}}年</div>
+                <el-button @click="toggleWork"
+                          plain>更多</el-button>
+              </li>
+              <li class="info-item">
+                <h1>主要工作内容</h1>
+                <p class="work-duty">{{lastWork.duty}}</p>
+              </li>
+              <li class="info-item">
+                <h1>工作个人技能</h1>
+                <p>{{info.skills}}</p>
+              </li>
+            </ul>
+          </el-card>
+        </el-col>
+      </el-row>
       <el-card class="calendar-card">
         <h1>可预约时间表(北京时间)</h1>
         <calendar @set-time="handleSetTime" :order="order" @init-data="handleInitData">
@@ -293,12 +297,9 @@ export default {
 .card-box {
   padding: 30px;
 }
-.left {
-  width: 280px;
+.left,.right {
+  height: 500px;
   color: #7c8ea5;
-}
-.right {
-  width: 580px;
 }
 .icons {
   width: 140px;
@@ -328,7 +329,7 @@ export default {
   text-align: justify;
   display: -webkit-box;    
   -webkit-box-orient: vertical;    
-  -webkit-line-clamp: 8;    
+  -webkit-line-clamp: 6;    
   overflow: hidden;
 }
 .user-rate {
@@ -413,7 +414,7 @@ export default {
   margin-top: 40px;
 }
 .work-duty {
-  height: 66px;
+  height: 40px;
   overflow: auto;
 }
 .rate-count {

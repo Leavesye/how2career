@@ -45,7 +45,7 @@
         <div class="qrcode"
             ref="qrCodeUrl"></div>
       </div>
-      <div class="howto">如何推荐好友</div>
+      <div class="howto" @click="linkTo('/consumer/howto')">如何推荐好友</div>
     </section>
     <div class="flex-hbc bottom-links"
          v-if="!isCollapse">
