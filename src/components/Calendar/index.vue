@@ -103,8 +103,8 @@ export default {
       this.$emit('create-order', this.selList)
     },
     handleSelectTime (i, item) {
-      if (this.usables.filter(o=>o.isActive).length==3 && !item.isActive) {
-        this.alert('最多只能选择三个时间')
+      if (this.selList.length == 3) {
+        this.alert('最多只能选择三个时间', 'warning')
         return false
       }
       item.isActive = !item.isActive

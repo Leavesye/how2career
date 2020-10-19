@@ -19,7 +19,7 @@
           </div>
           <div class="content-r">
             <div class="flex base-info">
-              <span>所属行业: {{info.industry}}</span>
+              <span>所属行业: {{info.industryText}}</span>
               <span>公司名称: {{info.company}}</span>
               <span>职位: {{info.position}}</span>
             </div>
@@ -27,8 +27,8 @@
             <ul class="book-times flex-hs">
               <li v-for="(item, i) in info.times"
                   :key="i">
-                {{item}}
-                <i class="el-icon-error" @click="handleDelTime"></i>
+                {{item.text}}
+                <i v-if="info.times.length > 1" class="el-icon-error" style="cousor: pointer" @click="handleDelTime(i)"></i>
               </li>
             </ul>
             <p class="degree"
@@ -62,11 +62,13 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import Avatar from '@/components/Avatar'
 import Pay from '@/components/Pay'
 import moment from 'moment'
 import { mapGetters } from 'vuex'
-import { getOrderById } from '@/api/order'
+import { getOrderById, updateTime } from '@/api/order'
+import { getDicts } from '@/api/user'
 
 export default {
   components: {
@@ -89,17 +91,28 @@ export default {
   },
   async created () {
     const l = this.loading()
-    const res = await getOrderById({ orderId: this.$route.params.id }).catch(e => l.close())
-    if (res.result) {
-      this.order = res.msg
-      const c = res.msg.consultant
-      const { avatar, name } = c
-      const { industry, company, position } = c.work
-      let rate = c.evaluationPoint > 0 ? c.evaluationPoint / c.evaluationCount : 0
+    this.orderId = this.$route.params.id
+    const res = await Promise.all([
+      getDicts(),
+      getOrderById({ orderId: this.orderId })
+    ]).catch(e => l.close())
+    if (res[1].result) {
+      const { industry: industrys } = res[0].msg
+      this.order = res[1].msg
+      const { price, consumerTime, consultant: { avatar, name, evaluationPoint, evaluationCount, 
+      work: { industry, company, position } } } = res[1].msg
+      this.oriTimes = _.cloneDeep(consumerTime)
+      const industryText = industrys.find(o => o.value == industry).text
+      let rate = evaluationPoint > 0 ? evaluationPoint / evaluationCount : 0
       this.info = {
-        avatarImage: avatar, nickName: name, rate, industry, company, position,
-        times: res.msg.consumerTime.map(o => `${moment(o).format('YYYY-MM-DD')} ${moment(o).format('HH:mm:ss')}-${moment(o).subtract(-90, 'minutes').format('HH:mm:ss')}`),
-        price: res.msg.price,
+        avatarImage: avatar, nickName: name, rate, industryText, company, position,
+        times: consumerTime.map(o => {
+          return {
+            v: o,
+            text: `${moment(o).format('YYYY-MM-DD')} ${moment(o).format('HH:mm:ss')}-${moment(o).subtract(-90, 'minutes').format('HH:mm:ss')}`
+          }
+        }),
+        price,
       }
     }
     l.close()
@@ -109,19 +122,28 @@ export default {
       if (this.info.times.length == 1) return false
       this.info.times.splice(i, 1)
     },
-    handleClickPay () {
+    async handleClickPay () {
       if (!this.checked) {
         this.alert('请先阅读条款', 'warning')
         return false
       }
       this.isShowPay = true
+      // 时间有变动  更新服务时间
+      if (this.oriTimes.length != this.info.times) {
+        const l = this.loading()
+        const res = await updateTime({
+          orderId: this.orderId,
+          consumerTime: this.info.times.map(o => o.v),
+        }).catch(e=>l.close())
+        l.close()
+      }
     },
     handleClosePay () {
       this.isShowPay = false
     },
     handleConfirmPay () {
       this.isShowPay = false
-      this.$router.push('/consumer/order?status=2')
+      this.$router.push('/consumer/order?status=2,3')
     },
     goBack () {
       this.$router.go(-1)

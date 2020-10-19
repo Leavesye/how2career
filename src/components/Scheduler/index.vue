@@ -75,7 +75,6 @@ export default {
     // 获取所有事件
     onDataBound: function (args){
       let event = this.$refs.schedule.ej2Instances.getEvents();
-      console.log(event)
     },
     // 新增 编辑 删除监听
     handleActionBegin (e) {
@@ -233,7 +232,6 @@ export default {
           // 更新父事件
           list = list.filter(o => o.Id != changeEvent.RecurrenceID)
           list.push(e.data.parent)
-          console.log(list, 222)
         } else { // 编辑事件序列
           // 取消对此系列单个实例的修改
           if (!changeEvent.RecurrenceException) {

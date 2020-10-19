@@ -57,7 +57,7 @@ export default {
         })
         if (res.result) {
           console.log(decodeURIComponent(res.msg))
-          this.alipayReturnUrl = decodeURIComponent(res.msg)
+          this.alipayReturnUrl = res.msg
         }
       }
     },
