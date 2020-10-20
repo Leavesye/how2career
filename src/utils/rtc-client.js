@@ -239,7 +239,7 @@ export default class RtcClient {
       remoteStream.on('player-state-changed', event => {
         console.log(`${event.type} player is ${event.state}`)
       })
-      addVideoView(id)
+      // addVideoView(id)
       // objectFit 为播放的填充模式，详细参考：https://trtc-1252463788.file.myqcloud.com/web/docs/Stream.html#play
       remoteStream.play(id, { objectFit: 'contain' })
       console.log('stream-subscribed ID: ', id)
