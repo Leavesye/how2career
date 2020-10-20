@@ -99,7 +99,7 @@ export default class RtcClient {
         // publish the local stream
         await this.publish()
 
-        this.localStream_.play('main-video')
+        this.localStream_.play('local_stream')
       } catch (e) {
         console.error('failed to initialize local stream - ' + e)
       }
@@ -218,7 +218,7 @@ export default class RtcClient {
     // 远端用户退房通知，只有主动推流的远端用户退房才会收到该通知。
     this.client_.on('peer-leave', evt => {
       const userId = evt.userId
-      removeView(userId)
+      // removeView(userId)
       console.log('peer-leave ' + userId)
     })
     // 远端流添加事件，当远端用户发布流后会收到该通知
@@ -252,7 +252,7 @@ export default class RtcClient {
       this.remoteStreams_ = this.remoteStreams_.filter(stream => {
         return stream.getId() !== id
       })
-      removeView(id)
+      // removeView(id)
       console.log(`stream-removed ID: ${id}  type: ${remoteStream.getType()}`)
     })
 

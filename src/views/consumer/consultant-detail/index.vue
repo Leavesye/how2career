@@ -20,7 +20,7 @@
                 <div style="margin-left: 4px">{{info.rateCount}}</div>
               </div>
               <div class="favorite flex-vc" @click="handleFavorite">
-                <i class="iconfont" :class="[isFavorite? 'iconyiguanzhu-01 active': 'icontianjiashoucang']"></i>
+                <i class="iconfont" :class="[isFavorite? 'iconyiguanzhu-01 active': 'iconshoucang-01']"></i>
                 <div style="margin-left: 4px">{{isFavorite?'已收藏': '收藏'}}</div>
               </div>
             </div>
@@ -62,7 +62,7 @@
               </li>
               <li class="info-item">
                 <h1>工作个人技能</h1>
-                <p>{{info.skills}}</p>
+                <p>{{skills}}</p>
               </li>
             </ul>
           </el-card>
@@ -100,7 +100,7 @@ import { createOrder } from '@/api/order'
 import moment from 'moment'
 import { mapGetters } from 'vuex'
 import { getRateList } from '@/api/consultant'
-import { getPublicInfo, favorite, delFavorite, getFavorites, getDicts } from '@/api/user'
+import { getPublicInfo, favorite, delFavorite, getFavorites, getDicts, trackViewConsultant } from '@/api/user'
 
 export default {
   name: 'consultant-detail',
@@ -124,6 +124,7 @@ export default {
       times: [],
       isShow: false,
       rateList: [],
+      skills: '',
       order: { consultantId: this.id },
       isFavorite: false
     }
@@ -136,7 +137,9 @@ export default {
   async created() {
     const res = await Promise.all([
       getFavorites(),
-      getDicts()
+      getDicts(),
+      // 收集top4咨询师
+      trackViewConsultant({ consultantId: this.id } )
     ])
     if (res[0].result) {
       const data = res[0].msg
@@ -157,40 +160,44 @@ export default {
     handleInitData(res){
       if (res.result && res.msg.publicInfo) {
         const { countries, majors, degrees, industry:industrys,  } = this.dicts
-        const { publicInfo: { resume: { education, workExperience } }} = res.msg
-        // 学历列表
-        this.edus = education.map(o => {
-          let { country, school, discipline, degree, graduationTime } = o
-          const schools = countries.find(v => v.value == country).schools
-          const schoolText = schools.find(v => v.value == school).text
-          const disciplineText = majors.find(v => v.value == discipline).text
-          const degreeText = degrees.find(v => v.value == degree).text
-          return {
-            country, school, discipline, degree, graduationTime,
-            desc: `${schoolText} ${disciplineText} ${degreeText} ${moment(graduationTime).format('YYYY年毕业')}`
-          }
-        })
-        // 最高学历
-        this.highEdu = this.edus[0]
-        // 工作列表
-        this.works = workExperience.map(o => {
-          const { industry, company, position, duty, entryTime, resignationTime } = o
-          const industryText = industrys.find(v => v.value == industry).text
-          const lastTime = resignationTime ? moment(resignationTime).valueOf() : moment().valueOf()
-          let workingYears = Math.ceil((lastTime - moment(entryTime).valueOf()) / (365*24*60*60*1000))
-          return {
-            industry,
-            industryText,
-            company,
-            position,
-            duty,
-            workingYears
-          }
-        })
-        // 最近一份工作
-        this.lastWork = this.works[0]
-        const { publicInfo: { evaluationPoint: point, evaluationCount:count,
-        nickName, avatarImage, selfIntroduction, resume: { skills }}} = res.msg
+        const { publicInfo: { resume }} = res.msg
+        if (resume) {
+          const { education = [], workExperience = [], skills = [] } = resume
+          this.skills = skills.toString()
+          // 学历列表
+          this.edus = education.map(o => {
+            let { country, school, discipline, degree, graduationTime } = o
+            const schools = countries.find(v => v.value == country).schools
+            const schoolText = schools.find(v => v.value == school).text
+            const disciplineText = majors.find(v => v.value == discipline).text
+            const degreeText = degrees.find(v => v.value == degree).text
+            return {
+              country, school, discipline, degree, graduationTime,
+              desc: `${schoolText} ${disciplineText} ${degreeText} ${moment(graduationTime).format('YYYY年毕业')}`
+            }
+          })
+          // 最高学历
+          this.highEdu = this.edus[0]
+          // 工作列表
+          this.works = workExperience.map(o => {
+            const { industry, company, position, duty, entryTime, resignationTime } = o
+            const industryText = industrys.find(v => v.value == industry).text
+            const lastTime = resignationTime ? moment(resignationTime).valueOf() : moment().valueOf()
+            let workingYears = Math.ceil((lastTime - moment(entryTime).valueOf()) / (365*24*60*60*1000))
+            return {
+              industry,
+              industryText,
+              company,
+              position,
+              duty,
+              workingYears
+            }
+          })
+          // 最近一份工作
+          this.lastWork = this.works[0]
+        }
+        const { publicInfo: { evaluationPoint: point, evaluationCount: count,
+        nickName, avatarImage, selfIntroduction }} = res.msg
         // 评分
         let rate = point > 0 ? point / count : 0
         // 基本信息
@@ -202,7 +209,6 @@ export default {
           rateCount: count,
           totalRate: point,
           rate,
-          skills: skills.toString()
         }
       }
     },

@@ -3,7 +3,7 @@
     <!-- 状态面板 -->
     <pannel @change="handlePannelChange"
             :pannels="pannels"
-            :selPannel="selPannel"></pannel>
+            :selPannel="selPannel" css="search"></pannel>
     <el-card>
       <quick-form :model="form"
                   labelWidth="140px"

@@ -3,6 +3,7 @@
     <!-- 状态面板 -->
     <pannel @change="handlePannelChange"
             :pannels="pannels"
+            css="consumer"
             :selPannel="selPannel"></pannel>
     <!-- 订单列表 -->
     <component v-if="list.length"

@@ -127,11 +127,27 @@ export function getDicts (params) {
     params
   })
 }
-// 自诩这
+// 加入好友推荐
 export function join (data) {
   return request({
     url: `/user/platform/mgm/join`,
     method: 'put',
     data
+  })
+}
+// tracking 访问咨询师详情动作
+export function trackViewConsultant (data) {
+  return request({
+    url: `/user/platform/consumer/visits`,
+    method: 'post',
+    data
+  })
+}
+// 咨询者获取经常访问咨询师top4
+export function getTop4Consultant (params) {
+  return request({
+    url: `/user/platform/consumer/visits`,
+    method: 'get',
+    params
   })
 }

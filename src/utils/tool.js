@@ -86,6 +86,7 @@ function formatConsumerOrder (list) {
       ...education,
       orderId: _id,
       consultantId,
+      avatarImage: avatar,
       avatar: process.env.VUE_APP_HOST_NAME + avatar,
       name,
       readme,
@@ -139,7 +140,7 @@ function formatFavorites (list, btnName, cb) {
       nickName, avatarImage:avatar, evaluationCount, evaluationPoint,
       selfIntroduction,resume: { workExperience: work }
     } } = o
-    const rate = evaluationCount? Math.floor(evaluationPoint/evaluationCount): 0
+    const rate = evaluationCount? evaluationPoint/evaluationCount: 0
     return {
       id,
       nickName, avatar, rate, position: work[0].position,

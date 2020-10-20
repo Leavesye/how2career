@@ -42,7 +42,7 @@
         <p class="no-data">暂无数据</p>
       </el-card>
       <p class="title">经常查看的咨询师</p>
-      <card-list v-if="oftenList.length" :list="oftenList"></card-list>
+      <card-list v-if="top4.length" :list="top4"></card-list>
       <el-card v-else>
         <p class="no-data">暂无数据</p>
       </el-card>
@@ -59,7 +59,7 @@ import CardList from '@/components/CardList'
 import CareerList from '@/components/CareerList'
 import DetailModal from './modal/detail'
 import { getOrders, getOrdersCount } from '@/api/order'
-import { getFavorites, getDicts } from '@/api/user'
+import { getFavorites, getDicts, getTop4Consultant } from '@/api/user'
 import tool from '@/utils/tool'
 
 export default {
@@ -82,7 +82,7 @@ export default {
       ],
       list: [],
       favorites: [],
-      oftenList: [],
+      top4: [],
       order: {}
     }
   },
@@ -90,14 +90,15 @@ export default {
     const l = this.loading()
     const res = await Promise.all([
       getOrders({
-        "from": "0",
-        "to": "2601444690",
-        "page": "0",
-        "limit": "3",
-        "condition": "status==4:status==5"
+        from: "0",
+        to: "2601444690",
+        page: "0",
+        limit: "3",
+        condition: "status==4:status==5"
       }),
       getOrdersCount({ condition: "status==1:status==4:status==0:status==7:status==8" }),
-      getFavorites()
+      getFavorites(),
+      getTop4Consultant(),
     ]).catch(e => l.close())
     if (res[0].result) {
       this.list = tool.formatConsumerOrder(res[0].msg.list)
@@ -108,13 +109,14 @@ export default {
       this.pannels[1].count = info['4']
       this.pannels[2].count = info['0'] + info['7'] + info['8']
     }
+    // 我的收藏
     if (res[2].result && res[2].msg.list) {
       this.favorites = tool.formatFavorites(res[2].msg.list, '预约', this.handleAppintment)
     }
-    this.oftenList = [{
-      nickName: '黑崎一护',id: '5f781c38b6e04a5e2a037f5f', position: '护廷十三队', rate: 4, 
-      evaluationCount: 234,  btn: { name: '预约', cb: this.handleAppintment.bind(this, '5f781c38b6e04a5e2a037f5f')}
-    }]
+    // 经常查看的咨询师top4
+    if (res[3].result && res[3].msg.list) {
+      this.top4 = tool.formatFavorites(res[3].msg.list, '预约', this.handleAppintment)
+    }
     l.close()
   },
   methods: {

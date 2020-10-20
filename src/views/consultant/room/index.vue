@@ -1,34 +1,37 @@
 <template>
   <div style="padding: 30px">
-    <section class="flex">
-      <el-card class="card-l">
-        <div class="title"
-             style="margin-bottom: 40px">咨询者</div>
-        <div class="header">
-          <avatar :imgUrl="info.avatar"></avatar>
-          <div class="micro ani"><i class="iconfont iconhuatong"></i></div>
-        </div>
-        <p class="user-name">{{info.name}}</p>
-      </el-card>
-      <el-card class="card-c">
-        <p class="title">咨询问题</p>
-        <div class="q-box">
-          <p class="question"
-             v-for="(item, i) in info.question"
-             :key="i">{{item}}?</p>
-        </div>
-      </el-card>
-      <el-card class="card-r">
-        <p class="title"
-           style="margin-bottom: 28px">咨询开始时间</p>
-        <p>北京时间</p>
-        <p>{{info.startText}}</p>
-        <p class="ques-status">咨询中</p>
-        <!-- 计时器 -->
-        <count-down bg="#15479E"
-                    :targetTime="info.startTime"></count-down>
-      </el-card>
-    </section>
+    <el-row :gutter="10" type="flex" justify="space-between">
+      <el-col :span="6">
+        <el-card class="card-l">
+          <div class="title"
+              style="margin-bottom: 40px">咨询师</div>
+          <div class="header">
+            <avatar :imgUrl="info.avatar"></avatar>
+            <div class="micro ani"><i class="iconfont iconhuatong"></i></div>
+          </div>
+          <p class="user-name">{{info.name}}</p>
+        </el-card>
+      </el-col>
+      <el-col :span="12">
+        <el-card class="card-c">
+          <p class="title">咨询问题</p>
+          <div class="q-box">
+            <p class="question" v-for="(item, i) in info.question" :key="i">{{item}}?</p>
+          </div>
+        </el-card>
+      </el-col>
+      <el-col :span="6">
+        <el-card class="card-r">
+          <p class="title"
+            style="margin-bottom: 28px">咨询开始时间</p>
+          <p>北京时间</p>
+          <p>{{info.startText}}</p>
+          <p class="ques-status">咨询中</p>
+          <!-- 计时器 -->
+          <count-down bg="#36AE82" :targetTime="info.startTime"></count-down>
+        </el-card>
+      </el-col>
+    </el-row>
     <el-card class="detail-card">
       <el-tabs v-model="activeName">
         <el-tab-pane label="基本信息"
@@ -49,7 +52,7 @@
           </div>
           <div class="d-item">
             <p class="field-name">最高学历</p>
-            <p>{{info.edus[0].desc}}</p>
+            <p>{{highestEdu.desc}}</p>
           </div>
           <div class="d-item">
             <p class="field-name">自我评价</p>
@@ -62,14 +65,14 @@
         </el-tab-pane>
         <el-tab-pane label="学历信息"
                      name="second">
-          <div class="d-item" v-for="(item, i) in info.edus" :key="i">
+          <div class="d-item" v-for="(item, i) in edus" :key="i">
             <p class="field-name">{{i==0?'最高学历': '前学历'}}</p>
             <p>{{item.desc}}</p>
           </div>
         </el-tab-pane>
         <el-tab-pane label="社会实践"
                      name="third">
-          <div v-for="(item, i) in info.works"
+          <div v-for="(item, i) in works"
                :key="i">
             <div class="d-item">
               <section class="info-row">
@@ -80,7 +83,7 @@
                 </div>
                 <div>
                   <p>{{item.type}}</p>
-                  <p>{{item.industry}}</p>
+                  <p>{{item.industryText}}</p>
                   <p>{{item.company}}</p>
                 </div>
               </section>
@@ -151,11 +154,11 @@
                style="margin-top: 20px">暂无执照与证书</div>
           <div class="d-item">
             <p class="field-name">语言</p>
-            <p>{{info.language}}</p>
+            <p>{{langs}}</p>
           </div>
           <div class="d-item">
             <p class="field-name">工作个人技能</p>
-            <p>{{info.skills}}</p>
+            <p>{{skills}}</p>
           </div>
         </el-tab-pane>
       </el-tabs>
@@ -165,11 +168,14 @@
                  @start="handleChatStart"
                  :targetTime="info.startTime"
                  :info="info"></room-status> -->
+    <div id="local_stream"></div>
+    <div v-html="remoteStream">
+    </div>
   </div>
 </template>
 
 <script>
-import RtcClient from '@/utils/rtc-client'
+import TRTC from 'trtc-js-sdk'
 import Avatar from '@/components/Avatar'
 import CountDown from '@/components/CountDown'
 import RoomStatus from '@/components/RoomStatus'
@@ -194,7 +200,13 @@ export default {
       certs: [],
       info: {
         edus: [{ desc: '' }]
-      }
+      },
+      langs: '',
+      skills: '',
+      edus: [],
+      highestEdu: {},
+      works: [],
+      remoteStream: ''
     }
   },
   async created () {
@@ -213,38 +225,7 @@ export default {
       if (res[2].result) {
         const { countries, majors, degrees, gender: genders, industry: industrys, workCategory } = res[0].msg
         // 咨询者信息
-        let { basic: { name, gender, birthday, highestEducation, selfIntroduction, detailedIntroduction } } = res[2].msg
-        const resume = res[2].msg.resume
-        let edus = []
-        let works = []
-        let langs = []
-        let skills = []
-        if (resume) {
-          const { education, workExperience } = resume
-          edus = education || []
-          works = workExperience || []
-          if (resume.other) {
-            const { rewardHistory, certificatesHistory, language, skills:skill } = resume.other
-            langs = language || []
-            skills = skill || []
-            this.rewards = (rewardHistory || []).map(o => {
-              return {
-                name: o.name,
-                comments: o.comments,
-                expireDate: moment(o.expireDate).format('YYYY-MM-DD')
-              }
-            })
-            this.certs = (certificatesHistory || []).map(o => {
-              return {
-                name: o.name,
-                comments: o.comments,
-                expireDate: moment(o.expireDate).format('YYYY-MM-DD')
-              }
-            })
-          }
-        }
-        highestEducation = highestEducation || []
-        edus.unshift(highestEducation)
+        let { basic: { name, gender, birthday, highestEducation = {}, selfIntroduction, detailedIntroduction } } = res[2].msg
         this.info = {
           slotId,
           orderId,
@@ -255,7 +236,13 @@ export default {
           startText: moment(startTime * 1000).format('MM月DD日 HH:mm') + '~' + moment(startTime * 1000).subtract('-90', 'minutes').format('HH:mm'),
           selfIntroduction, detailedIntroduction,
           gender: genders.find(o => o.value == gender).text,
-          edus: edus.map(o => {
+        }
+        const resume = res[2].msg.resume
+        if (resume) {
+          const { education = [], workExperience = [] } = resume
+          education.unshift(highestEducation)
+          // 学历列表
+          this.edus = education.map(o => {
             const schools = countries.find(v => v.value == o.country).schools
             const schoolText = schools.find(v => v.value == o.school).text
             const disciplineText = o.discipline ? majors.find(v => v.value == o.discipline).text : ''
@@ -264,33 +251,148 @@ export default {
             return {
               desc: `${schoolText} ${disciplineText} ${degreeText}`
             }
-          }),
-          works: works.map(o => {
+          })
+          // 最高学历
+          this.highestEdu = this.edus[0]
+          // 工作列表
+          this.works = workExperience.map(o => {
             return {
               type: o.JobCategory ? workCategory.find(v => v.value == o.JobCategory).text : '',
-              industry: o.industry ? industrys.find(v => v.value == o.industry).text : '',
+              industryText: o.industry ? industrys.find(v => v.value == o.industry).text : '',
               company: o.company, position: o.position,
               entryTime: moment(o.entryTime).format('YYYY-MM-DD'),
               resignationTime: o.resignationTime ? moment(o.resignationTime).format('YYYY-MM-DD') : '',
               duty: o.duty, reward: o.reward
             }
-          }),
-          language: langs.toString(),
-          skills: skills.toString(),
+          })
+          if (resume.other) {
+            const { rewardHistory = [], certificatesHistory = [], language = [], skills = [] } = resume.other
+            this.langs = language.toString()
+            this.skills = skills.toString()
+            this.rewards = rewardHistory.map(o => {
+              return {
+                name: o.name,
+                comments: o.comments,
+                expireDate: moment(o.expireDate).format('YYYY-MM-DD')
+              }
+            })
+            this.certs = certificatesHistory.map(o => {
+              return {
+                name: o.name,
+                comments: o.comments,
+                expireDate: moment(o.expireDate).format('YYYY-MM-DD')
+              }
+            })
+          }
         }
       }
     }
     l.close()
   },
   methods: {
-    initRtcClient (roomId, userId, sign) {
-      this.rtc = new RtcClient({
-        userSig: sign,
-        userId, 
-        roomId,
+    initRtcClient(roomId, userId, sign) {
+      this.client = TRTC.createClient({
+        mode: 'rtc',
+        sdkAppId: process.env.VUE_APP_SKDAPPID,
+        userId,
+        userSig: sign
       })
-      this.rtc.join()
-      console.log(this.rtc, 'rtc')
+      //注册远程监听，要放在加入房间前--这里用了发布订阅模式
+      this.subscribeStream(this.client)
+      //初始化后才能加入房间
+      this.joinRoom(this.client, roomId, userId)
+    },
+    //加入房间
+    joinRoom (client, roomId, userId) {
+      client.join({ roomId })
+        .catch(error => {
+          console.error('进房失败 ' + error);
+        })
+        .then(() => {
+          console.log('进房成功');
+          //创建本地流
+          this.createStream(userId)
+          //播放远端流
+          this.playStream(this.client)
+      });
+    },
+    
+    //创建本地音视频流
+    createStream (userId) {
+      const localStream = TRTC.createStream({ userId, audio: true, video: false });
+      this.localStream =localStream 
+     
+      localStream
+        .initialize()
+        .catch(error => {
+          console.error('初始化本地流失败 ' + error);
+        })
+        .then(() => {
+          console.log('初始化本地流成功');
+          // 创建好后才能播放 本地流播放 local_stream 是div的id
+          localStream.play('local_stream');
+          //创建好后才能发布
+          this.publishStream(localStream, this.client)
+        });
+    },
+
+    //发布本地音视频流
+    publishStream (localStream, client) {
+      client
+        .publish(localStream)
+        .catch(error => {
+          console.error('本地流发布失败 ' + error);
+        })
+        .then(() => {
+          console.log('本地流发布成功');
+        });
+     },
+     
+    //订阅远端流--加入房间之前
+    subscribeStream (client) {
+      client.on('stream-added', event => {
+        const remoteStream = event.stream;
+        console.log('远端流增加: ' + remoteStream.getId());
+        //订阅远端流
+        client.subscribe(remoteStream);
+      });
+    },
+
+    //播放远端流
+    playStream (client) {
+      client.on('stream-subscribed', event => {
+        const remoteStream = event.stream;
+        console.log('远端流订阅成功：' + remoteStream.getId());
+        // 创建远端流标签，因为id是动态的，所以动态创建，用了v-html
+        
+        this.remoteStream = `<view id="${'remote_stream-' + remoteStream.getId()}"  ></view>`;
+        
+        //做了dom操作 需要使用$nextTick(),否则找不到创建的标签无法进行播放
+        this.$nextTick(() => {
+            //播放
+          remoteStream.play('remote_stream-' + remoteStream.getId());
+        })
+      });
+    },
+
+    //退出音视频
+    leaveRoom (client) {
+      client
+        .leave()
+        .then(() => {
+            console.log('退房成功')
+          // 停止本地流，关闭本地流内部的音视频播放器
+          this.localStream.stop();
+          // 关闭本地流，释放摄像头和麦克风访问权限
+          this.localStream.close();
+          this.localStream = null;
+          this.client = null
+          // 退房成功，可再次调用client.join重新进房开启新的通话。
+        })
+        .catch(error => {
+          console.error('退房失败 ' + error);
+          // 错误不可恢复，需要刷新页面。
+        });
     },
     handleChatStart () {
       this.isShow = false
@@ -307,13 +409,10 @@ export default {
 <style lang="scss" scoped>
 .card-l,
 .card-r {
-  width: 220px;
   height: 275px;
 }
 .card-c {
-  width: 410px;
   height: 275px;
-  margin-right: 20px;
   color: #7c8ea5;
 }
 
@@ -321,7 +420,6 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-right: 10px;
   text-align: center;
 }
 .card-r {

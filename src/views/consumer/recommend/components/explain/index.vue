@@ -68,6 +68,8 @@ $color: #36ae82;
   height: 220px;
   width: 880px;
   margin-bottom: 50px;
+  display: block;
+  margin: 0 auto;
 }
 .title {
   font-size: 28px;

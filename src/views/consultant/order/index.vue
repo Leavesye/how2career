@@ -3,6 +3,7 @@
     <!-- 状态面板 -->
     <pannel @change="handlePannelChange"
             :pannels="pannels"
+            css="consultant"
             :selPannel="selPannel"></pannel>
     <!-- 订单列表 -->
     <component v-bind:is="selPannel.component"

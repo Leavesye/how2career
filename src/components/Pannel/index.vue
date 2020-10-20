@@ -1,7 +1,7 @@
 <template>
 <div class="pannel flex">
   <div class="p-item"
-      :class="[user.role, { active: o.status == selPannel.status  }]"
+      :class="[css]"
       v-for="(o, i) in pannels"
       :key="i"
       @click="handleClickPannel(o)">
@@ -15,7 +15,7 @@ import { mapGetters } from 'vuex'
 
 export default {
   name: 'pannels',
-  props: ['pannels', 'selPannel'],
+  props: ['pannels', 'selPannel', 'css'],
   data () {
     return {
       
@@ -55,6 +55,9 @@ export default {
 }
 .p-item.consultant {
   width: 205px;
+}
+.p-item.search {
+  width: 245px;
 }
 .p-item.consumer {
   flex: 1;
