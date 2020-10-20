@@ -75,6 +75,7 @@ import ArbitrationModal from './modal/arbitration'
 import DetailModal from './modal/detail'
 import SmallAvatar from '@/components/SmallAvatar'
 import SearchForm from '@/components/SearchForm'
+import { getDicts } from '@/api/user'  
 
 export default {
   name: 'finish-order',
@@ -98,9 +99,15 @@ export default {
     handleSearch(p) {
       this.$emit('condition-query', p)
     },
-    handleOpenDetail(order) {
-      this.isShowDetail = true
+    async handleOpenDetail(order) {
       this.order = order
+      const res = await getDicts()
+      if (res.result) {
+        if (order.complaint) {
+          order.complaint.title = res.msg.complaint.find(o => o.value == order.complaint.title).text
+        }
+      }
+      this.isShowDetail = true
     },
     handleCloseDetail () {
       this.isShowDetail = false

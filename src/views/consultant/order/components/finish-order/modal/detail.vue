@@ -10,20 +10,20 @@
       <p class="order-no">订单号：{{order.orderId}}</p>
       <div>创建时间:{{order.cTime}}</div>
     </div>
-    <div v-if="order.complaintTitle">
+    <div v-if="order.complaint">
       <div class="flex-vc rate">
-        <p class="order-no">投诉: {{order.complaintTitle}}</p>
+        <p class="order-no">投诉: {{order.complaint.title}}</p>
         <el-button size="small" @click="handleApply">申请仲裁</el-button>
       </div>
-      <p class="desc-p">投诉说明：{{order.complaintContent}}</p>
+      <p class="desc-p">投诉说明：{{order.complaint.content}}</p>
     </div>
-    <div v-if="order.point">
+    <div v-if="order.evaluation">
       <div class="flex-vc rate">
         <p style="margin-right: 10px">评价:</p>
-        <el-rate style="margin-right: 40px" v-model="order.point" disabled></el-rate>
+        <el-rate style="margin-right: 40px" v-model="order.evaluation.point" disabled></el-rate>
         <el-button size="small" @click="handleFeedback">评价反馈</el-button>
       </div>
-      <p class="desc-p">评价说明：{{order.content}}</p>
+      <p class="desc-p">评价说明：{{order.evaluation.content}}</p>
     </div>
     <!-- 咨询者详情 -->
     <consumer-info v-if="isShowDetail" :order="order"></consumer-info>

@@ -65,8 +65,8 @@ function formatConsultantOrder (list) {
       price: o.price,
       status: o.status,
       rate: o.evaluation ? o.evaluation.point : 0,
-      complaint: o.complaint ? o.complaint : {},
-      evaluation: o.evaluation ? o.evaluation : {},
+      complaint: o.complaint,
+      evaluation: o.evaluation,
       question: o.question ? o.question.map(v => {
         return {
           v,

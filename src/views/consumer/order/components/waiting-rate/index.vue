@@ -52,7 +52,7 @@
     <!-- 评价 -->
     <rate-modal :isShow="isShowRate" @close="handleCloseRate" @rate="handleRate" :orderId="orderId"></rate-modal>
     <!-- 投诉 -->
-    <complaint-modal :isShow="isShowComplaint" @close="handleCloseComplaint" @complaint="handleComplaint" :orderId="orderId"></complaint-modal>
+    <complaint-modal :isShow="isShowComplaint" :options="options" @close="handleCloseComplaint" @complaint="handleComplaint" :orderId="orderId"></complaint-modal>
   </div>
 </template>
 
@@ -61,6 +61,7 @@ import RateModal from './modal/rate'
 import ComplaintModal from './modal/complaint'
 import SmallAvatar from '@/components/SmallAvatar'
 import { rateOrder } from '@/api/order'
+import { getDicts } from '@/api/user'
 
 export default {
   name: 'waiting-rate',
@@ -75,10 +76,15 @@ export default {
       orderId: '',
       isShowComplaint: false,
       isShowRate: false,
+      options: []
     }
   },
   methods: {
-    handleOpenComplaint (item) {
+    async handleOpenComplaint (item) {
+      const res = await getDicts()
+      if (res.result) {
+        this.options = res.msg.complaint
+      }
       this.isShowComplaint = true
       this.orderId = item.orderId
     },

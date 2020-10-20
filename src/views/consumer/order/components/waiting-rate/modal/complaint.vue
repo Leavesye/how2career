@@ -6,8 +6,8 @@
   width="560px"
   center>
   <section class="modal-main">
-    <el-select v-model="title" size="small">
-      <el-option value="1" label="未回答提纲问题"></el-option>
+    <el-select v-model="title" style="margin-bottom: 20px;">
+      <el-option :value="item.value" :label="item.text" v-for="(item, i) in options" :key="i"></el-option>
     </el-select>
     <p class="explain">说明:</p>
     <el-input
@@ -18,7 +18,7 @@
     </el-input>
   </section>
   <span slot="footer" class="dialog-footer">
-    <el-button :loading="isLoading" size="small" type="success" @click="handleComplaint">确认提交</el-button>
+    <el-button :loading="isLoading" type="success" @click="handleComplaint">确认提交</el-button>
   </span>
 </el-dialog>
 </template>
@@ -27,7 +27,7 @@
 import { complaintByConsumer } from '@/api/order'
 
 export default {
-  props: ['isShow', 'orderId'],
+  props: ['isShow', 'orderId', 'options'],
   data () {
     return {
       isLoading: false,
