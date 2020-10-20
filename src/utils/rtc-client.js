@@ -211,9 +211,9 @@ export default class RtcClient {
     this.client_.on('peer-join', evt => {
       const userId = evt.userId
       console.log('peer-join ' + userId)
-      if (userId !== shareUserId) {
-        addMemberView(userId)
-      }
+      // if (userId !== shareUserId) {
+      //   addMemberView(userId)
+      // }
     })
     // 远端用户退房通知，只有主动推流的远端用户退房才会收到该通知。
     this.client_.on('peer-leave', evt => {
