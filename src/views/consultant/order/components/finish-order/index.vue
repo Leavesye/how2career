@@ -100,13 +100,13 @@ export default {
       this.$emit('condition-query', p)
     },
     async handleOpenDetail(order) {
-      this.order = order
       const res = await getDicts()
       if (res.result) {
         if (order.complaint) {
-          order.complaint.title = res.msg.complaint.find(o => o.value == order.complaint.title).text
+          order.complaint.titleText = res.msg.complaint.find(o => o.value == order.complaint.title).text
         }
       }
+      this.order = order
       this.isShowDetail = true
     },
     handleCloseDetail () {

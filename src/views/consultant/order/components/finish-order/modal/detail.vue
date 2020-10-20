@@ -12,7 +12,7 @@
     </div>
     <div v-if="order.complaint">
       <div class="flex-vc rate">
-        <p class="order-no">投诉: {{order.complaint.title}}</p>
+        <p class="order-no">投诉: {{order.complaint.titleText}}</p>
         <el-button size="small" @click="handleApply">申请仲裁</el-button>
       </div>
       <p class="desc-p">投诉说明：{{order.complaint.content}}</p>
