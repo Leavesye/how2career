@@ -1,7 +1,7 @@
 <template>
 <div class="pannel flex">
   <div class="p-item"
-      :class="[css]"
+      :class="[css, selPannel.name==o.name ? 'active': '']"
       v-for="(o, i) in pannels"
       :key="i"
       @click="handleClickPannel(o)">
@@ -70,6 +70,10 @@ export default {
   color: #fff;
 }
 .p-item.consumer.active {  
+  background: linear-gradient(122deg, #36AE82 0%, #50E3A3 100%);
+  color: #fff;
+}
+.p-item.search.active {  
   background: linear-gradient(122deg, #36AE82 0%, #50E3A3 100%);
   color: #fff;
 }

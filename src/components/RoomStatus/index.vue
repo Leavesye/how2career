@@ -80,6 +80,10 @@ export default {
       if (res.result) {
         // 对方是否在线
         this.online = res.msg.online
+        // 对方在线 停止轮询
+        if (this.online) {
+          clearInterval(this.beforeTimer)
+        }
       }
     },
     async getRoomStatusAfterReady() {
@@ -87,9 +91,7 @@ export default {
       let roomMate = this.user.rolo == 'consumer' ? consultantId : consumerId
       const res = await getRoomStatusAfterReady({ 
         roomId, roomMate, orderId,
-        slotId, consultant: consultantId, }).catch(e=>{
-        console.log(e)
-      })
+        slotId, consultant: consultantId, }).catch(e=>{console.log(e)})
       if (res.result) {
         
       }
@@ -108,8 +110,9 @@ export default {
           // 3 2 1倒计时
           this.go()
         }
-        // 销毁删除准备前定时器
+        // 销毁准备前定时器
         clearInterval(this.beforeTimer)
+        // 启动准备后定时器轮询对方状态
         this.afterTimer = setInterval(() => {
           this.getRoomStatusAfterReady()
         }, 5000)
