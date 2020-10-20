@@ -28,7 +28,7 @@
           <p>{{info.startText}}</p>
           <p class="ques-status">咨询中</p>
           <!-- 计时器 -->
-          <count-down bg="#36AE82" :targetTime="info.startTime"></count-down>
+          <count-down bg="#15479e" :targetTime="info.startTime"></count-down>
         </el-card>
       </el-col>
     </el-row>
@@ -498,7 +498,7 @@ export default {
     background: #36ae82;
   }
   to {
-    background: #15ca83;
+    background: #15479e;
   }
 }
 .ani {

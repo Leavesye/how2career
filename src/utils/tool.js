@@ -133,7 +133,7 @@ function formatStatus(status) {
   })
   return condition
 }
-function formatFavorites (list, btnName, cb) { 
+function formatFavorites (list, btnName, cb, positions) { 
   console.log(list, btnName, cb)
   return list.map(o => {
     const { _id: id, publicInfo: { 
@@ -143,7 +143,7 @@ function formatFavorites (list, btnName, cb) {
     const rate = evaluationCount? evaluationPoint/evaluationCount: 0
     return {
       id,
-      nickName, avatar, rate, position: work[0].position,
+      nickName, avatar, rate, position: positions.find(v => v.value == work[0].position).text,
       evaluationCount, selfIntroduction,
       btn: { name: btnName, cb: cb.bind(this, id)}
     }

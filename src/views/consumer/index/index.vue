@@ -99,7 +99,11 @@ export default {
       getOrdersCount({ condition: "status==1:status==4:status==0:status==7:status==8" }),
       getFavorites(),
       getTop4Consultant(),
+      getDicts()
     ]).catch(e => l.close())
+    if (res[4].result) {
+      this.dicts = res[4].msg
+    }
     if (res[0].result) {
       this.list = tool.formatConsumerOrder(res[0].msg.list)
     }
@@ -111,19 +115,18 @@ export default {
     }
     // 我的收藏
     if (res[2].result && res[2].msg.list) {
-      this.favorites = tool.formatFavorites(res[2].msg.list, '预约', this.handleAppintment)
+      this.favorites = tool.formatFavorites(res[2].msg.list, '预约', this.handleAppintment, this.dicts.position)
     }
     // 经常查看的咨询师top4
     if (res[3].result && res[3].msg.list) {
-      this.top4 = tool.formatFavorites(res[3].msg.list, '预约', this.handleAppintment)
+      getDicts()
+      this.top4 = tool.formatFavorites(res[3].msg.list, '预约', this.handleAppintment, this.dicts.position)
     }
     l.close()
   },
   methods: {
-    async handleOpenDetail(order){
-      const res = await getDicts()
-      console.log(order, 'order')
-      order.industryText = res.msg.industry.find(o => o.value == order.industry).text
+    handleOpenDetail(order){
+      order.industryText = this.dicts.industry.find(o => o.value == order.industry).text
       this.order = order
       this.isShow = true
     },
