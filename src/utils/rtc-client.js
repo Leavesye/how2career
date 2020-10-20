@@ -228,13 +228,7 @@ export default class RtcClient {
       const userId = remoteStream.getUserId()
       this.members_.set(userId, remoteStream)
       console.log(`remote stream added: [${userId}] ID: ${id} type: ${remoteStream.getType()}`)
-      if (remoteStream.getUserId() === shareUserId) {
-        // don't need screen shared by us
-        this.client_.unsubscribe(remoteStream)
-      } else {
-        console.log('subscribe to this remote stream')
-        this.client_.subscribe(remoteStream)
-      }
+      this.client_.subscribe(remoteStream)
     })
     // 远端流订阅成功事件，调用 subscribe() 成功后会触发该事件
     this.client_.on('stream-subscribed', evt => {
