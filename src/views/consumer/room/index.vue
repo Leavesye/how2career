@@ -165,11 +165,13 @@ export default {
   },
   methods: {
     initRtcClient(roomId, userId, sign) {
+      console.log(roomId, userId, sign, '参数')
       this.rtc = new RtcClient({
         userSig: sign,
         userId, 
         roomId,
       })
+      this.rtc.join()
       console.log(this.rtc, 'rtc')
     },
     handleChatStart () {

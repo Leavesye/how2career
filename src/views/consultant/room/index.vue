@@ -213,25 +213,38 @@ export default {
       if (res[2].result) {
         const { countries, majors, degrees, gender: genders, industry: industrys, workCategory } = res[0].msg
         // 咨询者信息
-        let { basic: { name, gender, birthday, highestEducation, selfIntroduction, detailedIntroduction },
-          resume: { education, workExperience, other: { rewardHistory, certificatesHistory, language, skills } } } = res[2].msg
-        this.rewards = (rewardHistory || []).map(o => {
-          return {
-            name: o.name,
-            comments: o.comments,
-            expireDate: moment(o.expireDate).format('YYYY-MM-DD')
+        let { basic: { name, gender, birthday, highestEducation, selfIntroduction, detailedIntroduction } } = res[2].msg
+        const resume = res[2].msg.resume
+        let edus = []
+        let works = []
+        let langs = []
+        let skills = []
+        if (resume) {
+          const { education, workExperience } = resume
+          edus = education || []
+          works = workExperience || []
+          if (resume.other) {
+            const { rewardHistory, certificatesHistory, language, skills:skill } = resume.other
+            langs = language || []
+            skills = skill || []
+            this.rewards = (rewardHistory || []).map(o => {
+              return {
+                name: o.name,
+                comments: o.comments,
+                expireDate: moment(o.expireDate).format('YYYY-MM-DD')
+              }
+            })
+            this.certs = (certificatesHistory || []).map(o => {
+              return {
+                name: o.name,
+                comments: o.comments,
+                expireDate: moment(o.expireDate).format('YYYY-MM-DD')
+              }
+            })
           }
-        })
-        this.certs = (certificatesHistory || []).map(o => {
-          return {
-            name: o.name,
-            comments: o.comments,
-            expireDate: moment(o.expireDate).format('YYYY-MM-DD')
-          }
-        })
-        education = education || []
+        }
         highestEducation = highestEducation || []
-        education.unshift(highestEducation)
+        edus.unshift(highestEducation)
         this.info = {
           slotId,
           orderId,
@@ -242,7 +255,7 @@ export default {
           startText: moment(startTime * 1000).format('MM月DD日 HH:mm') + '~' + moment(startTime * 1000).subtract('-90', 'minutes').format('HH:mm'),
           selfIntroduction, detailedIntroduction,
           gender: genders.find(o => o.value == gender).text,
-          edus: education.map(o => {
+          edus: edus.map(o => {
             const schools = countries.find(v => v.value == o.country).schools
             const schoolText = schools.find(v => v.value == o.school).text
             const disciplineText = o.discipline ? majors.find(v => v.value == o.discipline).text : ''
@@ -252,7 +265,7 @@ export default {
               desc: `${schoolText} ${disciplineText} ${degreeText}`
             }
           }),
-          works: workExperience.map(o => {
+          works: works.map(o => {
             return {
               type: o.JobCategory ? workCategory.find(v => v.value == o.JobCategory).text : '',
               industry: o.industry ? industrys.find(v => v.value == o.industry).text : '',
@@ -262,8 +275,8 @@ export default {
               duty: o.duty, reward: o.reward
             }
           }),
-          language: (language || []).toString(),
-          skills: (skills || []).toString(),
+          language: langs.toString(),
+          skills: skills.toString(),
         }
       }
     }

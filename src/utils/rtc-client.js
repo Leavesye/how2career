@@ -1,14 +1,14 @@
 import Vue from 'vue'
 import TRTC from 'trtc-js-sdk'
-// import genTestUserSig from './GenerateTestUserSig'
+import genTestUserSig from './GenerateTestUserSig'
 
 const alert = Vue.prototype.alert
 /* global $ TRTC getCameraId getMicrophoneId resetView isHidden shareUserId addMemberView removeView addVideoView */
 export default class RtcClient {
   constructor(options) {
-    // const config = genTestUserSig(options.userId, process.env.VUE_APP_SKDAPPID, process.env.VUE_APP_USERSIG)
+    const config = genTestUserSig(options.userId, process.env.VUE_APP_SKDAPPID, process.env.VUE_APP_USERSIG)
     this.sdkAppId_ = +process.env.VUE_APP_SKDAPPID
-    this.userSig_ = options.userSig
+    this.userSig_ = config.userSig
     this.userId_ = options.userId
     this.roomId_ = options.roomId
 
@@ -36,14 +36,14 @@ export default class RtcClient {
       }
     })
 
-    // populate camera options
-    TRTC.getCameras().then(devices => {
-      devices.forEach(device => {
-        if (!this.cameraId) {
-          this.cameraId = device.deviceId
-        }
-      })
-    })
+    // // populate camera options
+    // TRTC.getCameras().then(devices => {
+    //   devices.forEach(device => {
+    //     if (!this.cameraId) {
+    //       this.cameraId = device.deviceId
+    //     }
+    //   })
+    // })
 
     // populate microphone options
     TRTC.getMicrophones().then(devices => {
@@ -69,22 +69,22 @@ export default class RtcClient {
       this.isJoined_ = true
 
       // create a local stream with audio/video from microphone/camera
-      if (this.cameraId && this.micId) {
+      if (this.micId) {
         this.localStream_ = TRTC.createStream({
           audio: true,
-          video: true,
+          video: false,
           userId: this.userId_,
-          cameraId: this.cameraId,
+          // cameraId: this.cameraId,
           microphoneId: this.micId,
-          mirror: true
+          // mirror: true
         })
       } else {
         // not to specify cameraId/microphoneId to avoid OverConstrainedError
         this.localStream_ = TRTC.createStream({
           audio: true,
-          video: true,
+          video: false,
           userId: this.userId_,
-          mirror: true
+          mirror: false
         })
       }
       try {
