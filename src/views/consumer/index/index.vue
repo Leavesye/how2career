@@ -4,7 +4,8 @@
       <!-- 状态面板 -->
       <div class="pannel flex-hb">
         <div class="p-item"
-             :class="{ active: isActive === i }"
+             :class="[o.count == 'search'? 'flex-cc': '',{ active: isActive === i }]"
+             :style="{paddingLeft:o.count == 'search'? '0': '20px' }"
              v-for="(o, i) in pannels"
              :key="i"
              @click="handleClickPannel(o, i)">
@@ -178,9 +179,6 @@ $color: #36ae82;
 .p-item > div {
   font-size: 26px;
   margin-top: 20px;
-}
-.p-item > h1 {
-  margin: 40px;
 }
 .p-item:hover,
 .p-item.active {
