@@ -6,9 +6,9 @@ const alert = Vue.prototype.alert
 /* global $ TRTC getCameraId getMicrophoneId resetView isHidden shareUserId addMemberView removeView addVideoView */
 export default class RtcClient {
   constructor(options) {
-    const config = genTestUserSig(options.userId, process.env.VUE_APP_SKDAPPID, process.env.VUE_APP_USERSIG)
+    // const config = genTestUserSig(options.userId, process.env.VUE_APP_SKDAPPID, process.env.VUE_APP_USERSIG)
     this.sdkAppId_ = +process.env.VUE_APP_SKDAPPID
-    this.userSig_ = config.userSig
+    this.userSig_ = options.userSig
     this.userId_ = options.userId
     this.roomId_ = options.roomId
 

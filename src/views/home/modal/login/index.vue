@@ -197,8 +197,15 @@ export default {
                 this.$alert('该账号为咨询师账号,是否直接登录咨询师', '登录角色错误', {
                   confirmButtonText: '确定',
                   callback: action => {
-                    this.$store.dispatch('user/setRole', 'consultant')
-                    action == 'confirm' && this.$router.replace('/consultant/index')
+                    if (action == 'confirm') {
+                      info.role = 'consultant'
+                      // 重新登入
+                      this.$store.dispatch('user/login', info).then(ret => {
+                        if (res.result) {
+                          this.$router.replace('/consultant/index')
+                        }
+                      })
+                    }
                   }
                 })
                 return false
@@ -207,13 +214,19 @@ export default {
                 this.$alert('该账号为咨询者账号,是否直接登录咨询者', '登录角色错误', {
                   confirmButtonText: '确定',
                   callback: action => {
-                    this.$store.dispatch('user/setRole', 'consumer')
-                    action == 'confirm' && this.$router.replace('/consumer/index')
+                    if (action == 'confirm') {
+                      info.role = 'consumer'
+                      // 重新登入
+                      this.$store.dispatch('user/login', info).then(ret => {
+                        if (res.result) {
+                          this.$router.replace('/consumer/index')
+                        }
+                      })
+                    }
                   }
                 })
                 return false
               }
-              console.log(3333)
               const path = this.role == 'consultant' ? '/consultant/index' : '/consumer/index'
               this.$router.replace(path)
             }

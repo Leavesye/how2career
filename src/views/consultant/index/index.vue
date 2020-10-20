@@ -184,11 +184,11 @@ export default {
       // backgroundVerifyStatus= 3  已审核
       const o = res.msg
       // 是否填写过简历
-      this.isFillResume = !!o.publicInfo.resume
+      this.isFillResume = !!(o.publicInfo && o.publicInfo.resume)
       // 是否审核完成
       this.isFinishReview = o.backgroundVerifyStatus == 3
       // 是否设置过服务时间
-      this.isSettingTime = !!o.publicInfo.availableTime
+      this.isSettingTime = !!(o.publicInfo && o.publicInfo.availableTime)
       const p = { from: "0", to: "2601444690", page: "1", limit: "3" }
       const ret = await Promise.all([
         getOrders({ ...p, condition: "status==4:status==5" }),

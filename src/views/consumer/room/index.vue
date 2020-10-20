@@ -115,7 +115,7 @@ export default {
     if (res[0].result) {
       const { consultant:{ avatar, name,  _id }, consumer,startTime, question, roomId, slotId } = res[0].msg
       const { countries, majors, degrees, industry:industrys, gender:genders } = res[1].msg
-      this.initRtcClient(roomId, _id, res[2].msg)
+      this.initRtcClient(roomId, consumer, res[2].msg)
       // 查询咨询师公共信息
       const ret = await getPublicInfo({ userId: _id }).catch(e=>l.close())
       if (ret.result) {

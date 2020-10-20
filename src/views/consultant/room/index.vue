@@ -161,10 +161,10 @@
       </el-tabs>
     </el-card>
     <!-- 房间状态 -->
-    <room-status :isShow="isShow"
+    <!-- <room-status :isShow="isShow"
                  @start="handleChatStart"
                  :targetTime="info.startTime"
-                 :info="info"></room-status>
+                 :info="info"></room-status> -->
   </div>
 </template>
 
@@ -209,7 +209,7 @@ export default {
     if (res[1].result) {
       // 订单信息
       const { slotId, roomId, consultant: { _id, }, consumer, consumerAvatar: avatar, consumerNickName: name, startTime, question } = res[1].msg
-      this.initRtcClient(roomId, consumer, res[3].msg)
+      this.initRtcClient(roomId, _id, res[3].msg)
       if (res[2].result) {
         const { countries, majors, degrees, gender: genders, industry: industrys, workCategory } = res[0].msg
         // 咨询者信息
