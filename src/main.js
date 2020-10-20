@@ -3,7 +3,8 @@ import Vue from 'vue'
 import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 
 import ElementUI from 'element-ui'
-import '../theme/index.css'
+// import '../theme/index.css'
+import 'element-ui/lib/theme-chalk/index.css'
 import * as elementApi from './utils/element-api'
 
 import '@/styles/index.scss' // global css
@@ -26,13 +27,6 @@ Vue.use(axTable)
 Vue.use(axTableColumn)
 Vue.prototype.alert = elementApi.alert
 Vue.prototype.loading = elementApi.loading
-
-// const client = TRTC.createClient({
-//   mode: 'rtc',
-//   sdkAppId: '1400420577',
-//   userId: '123',
-//   userSig:'12333'
-// })
 
 /**
  * If you don't want to use mock-server
