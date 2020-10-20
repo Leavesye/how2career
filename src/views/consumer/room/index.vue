@@ -45,8 +45,8 @@
         <p>所属行业：{{work.industryText}}</p>
         <div class="flex-hbc">
           <div class="flex work-item">
-            <span>公司名称：{{work.company}}</span>
-            <span>职位：{{work.position}}</span>
+            <span>公司名称：{{work.companyText}}</span>
+            <span>职位：{{work.positionText}}</span>
             <span>工作年限：{{work.workingYears}}</span>
           </div>
           <el-button plain v-if="works.length>1" @click="toggleWork">更多</el-button>
@@ -125,7 +125,7 @@ export default {
     ]).catch(e=> l.close())
     if (res[0].result) {
       const { consultant:{ avatar, name,  _id }, consumer, startTime, question, roomId, slotId } = res[0].msg
-      const { countries, majors, degrees, industry:industrys, gender:genders } = res[1].msg
+      const { countries, majors, degrees, industry:industrys, gender:genders, company: companys, position: positions } = res[1].msg
       // 初始化语音聊天
       this.initRtcClient(roomId, consumer, res[2].msg)
       // 查询咨询师公共信息
@@ -167,9 +167,11 @@ export default {
             let workingYears = Math.ceil((lastTime - moment(o.entryTime).valueOf()) / (365*24*60*60*1000))
             return {
               company: o.company,
+              companyText: companys.find(v => v.value == o.company).text,
               industry: o.industry,
               industryText: industrys.find(v => v.value == o.industry).text,
               position: o.position,
+              positionText: positions.find(v => v.value == o.position).text,
               workingYears: workingYears?`${workingYears}年`: '',
               duty: o.duty
             }

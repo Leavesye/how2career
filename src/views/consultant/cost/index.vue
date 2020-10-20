@@ -1,7 +1,7 @@
 <template>
   <section style="padding: 30px">
     <!-- 状态面板 -->
-    <pannel @change="handlePannelChange" :pannels="pannels" :selPannel="selPannel"></pannel>
+    <pannel @change="handlePannelChange" :pannels="pannels" :selPannel="selPannel" css="consultant"></pannel>
     <el-card>
       <!-- 搜索条件 -->
       <search-form @search="handleSearch" title="我的订单"></search-form>

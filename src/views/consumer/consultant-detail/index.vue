@@ -49,9 +49,9 @@
                 <div>
                   <h1>工作信息</h1>
                   <p style="margin-bottom: 10px">所属行业: {{lastWork.industryText}}</p>
-                  <p>公司名称: {{lastWork.company}}</p>
+                  <p>公司名称: {{lastWork.companyText}}</p>
                 </div>
-                <div>职位: {{lastWork.position}}</div>
+                <div>职位: {{lastWork.positionText}}</div>
                 <div>工作年限: {{lastWork.workingYears}}年</div>
                 <el-button @click="toggleWork"
                           plain>更多</el-button>
@@ -159,7 +159,7 @@ export default {
     // 避免重复调用接口 由子组件初始化页面数据
     handleInitData(res){
       if (res.result && res.msg.publicInfo) {
-        const { countries, majors, degrees, industry:industrys,  } = this.dicts
+        const { countries, majors, degrees, industry:industrys, company: companys, position: positions  } = this.dicts
         const { publicInfo: { resume }} = res.msg
         if (resume) {
           const { education = [], workExperience = [], skills = [] } = resume
@@ -188,7 +188,9 @@ export default {
               industry,
               industryText,
               company,
+              companyText: companys.find(v => v.value == company).text,
               position,
+              positionText: positions.find(v => v.value == position).text,
               duty,
               workingYears
             }

@@ -47,6 +47,7 @@ export default {
         { img: '', name: '马里奥', rate: 3, role: '高级专家', rateCount: '234', btn: { name: '订单详情', cb: this.handleOpenDetail }, desc: '高桥於1994年创立了自己的品牌Undercover，而当时Nigo…' },
         { img: '', name: '马里奥', rate: 3, role: '高级专家', rateCount: '234', btn: { name: '订单详情', cb: this.handleOpenDetail }, desc: '高桥於1994年创立了自己的品牌Undercover，而当时Nigo…' },
         { img: '', name: '马里奥', rate: 3, role: '高级专家', rateCount: '234', btn: { name: '订单详情', cb: this.handleOpenDetail }, desc: '高桥於1994年创立了自己的品牌Undercover，而当时Nigo…' },
+        { img: '', name: '马里奥', rate: 3, role: '高级专家', rateCount: '234', btn: { name: '订单详情', cb: this.handleOpenDetail }, desc: '高桥於1994年创立了自己的品牌Undercover，而当时Nigo…' },
       ]
     }
   },

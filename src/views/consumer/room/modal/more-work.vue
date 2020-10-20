@@ -10,8 +10,8 @@
       <p class="field-name title">工作信息</p>
       <p>所属行业：{{item.industryText}}</p>
       <div class="flex-hbc fields">
-        <p class="field-name">公司名称：{{item.company}}</p>
-        <p class="field-name">职位：{{item.position}}</p>
+        <p class="field-name">公司名称：{{item.companyText}}</p>
+        <p class="field-name">职位：{{item.positionText}}</p>
         <p class="field-name">工作年限：{{item.workingYears}}</p>
       </div>
     </div>

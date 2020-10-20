@@ -12,10 +12,12 @@ export default {
     options: []
   },
   company: {
-    type: 'input',
+    type: 'select',
     value: '',
     label: '企业',
-    rules: [r.required(), r.maxLength(100)],
+    rules: [r.required()],
+    props: { props: { label: 'text', value: 'value' } },
+    options: []
   },
   companySize: {
     type: 'select',
@@ -31,10 +33,12 @@ export default {
     rules: [r.required(), r.maxLength(20)],
   },
   position: {
-    type: 'input',
+    type: 'select',
     value: '',
     label: '职位',
     rules: [r.required()],
+    props: { props: { label: 'text', value: 'value' } },
+    options: []
   },
   level: {
     type: 'input',

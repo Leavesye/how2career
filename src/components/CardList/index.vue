@@ -1,23 +1,25 @@
 <template>
 <section>
   <ul class="my-favorites">
-    <li v-for="(item, i) in list"
-        :key="i">
-      <avatar :imgUrl="item.avatar"></avatar>
-      <h1 class="user-name">{{item.nickName}}</h1>
-      <el-rate class="user-rate"
-               disabled
-               v-model="item.rate"></el-rate>
-      <div class="user-role">{{item.position}}</div>
-      <p class="user-desc">{{item.selfIntroduction}}</p>
-      <div class="flex-hbc">
-        <h1 @click="handleShowRateList(item.id)" class="rate-count flex-vc"><i class="iconfont icondianping-01"></i>
-          <div style="margin-left: 4px">{{item.evaluationCount}}</div>
-        </h1>
-        <el-button plain
-                   @click="handleClick(item.btn.cb)">{{item.btn.name}}</el-button>
-      </div>
-    </li>
+    <template v-for="(item, i) in tList">
+      <li :key="i" class="favorite-item" v-if="!item.isBlank">
+        <avatar :imgUrl="item.avatar"></avatar>
+        <h1 class="user-name">{{item.nickName}}</h1>
+        <el-rate class="user-rate"
+                disabled
+                v-model="item.rate"></el-rate>
+        <div class="user-role">{{item.position}}</div>
+        <p class="user-desc">{{item.selfIntroduction}}</p>
+        <div class="flex-hbc">
+          <h1 @click="handleShowRateList(item.id)" class="rate-count flex-vc"><i class="iconfont icondianping-01"></i>
+            <div style="margin-left: 4px">{{item.evaluationCount}}</div>
+          </h1>
+          <el-button plain
+                    @click="handleClick(item.btn.cb)">{{item.btn.name}}</el-button>
+        </div>
+      </li>
+      <li :key="i" v-else class="blank-item"></li>
+    </template>
   </ul>
   <rate-list :isShow="isShow" :rateList="rateList" @close="handleCloseRateList"></rate-list>
 </section>
@@ -39,7 +41,20 @@ export default {
   data () {
     return {
       isShow: false,
-      rateList: []
+      rateList: [],
+    }
+  },
+  computed: {
+    tList: function() {
+      let target = this.list
+      const rest = this.list.length % 4
+      if (rest > 0) {
+        let blankCount = 4-rest
+        Array.from({ length: blankCount }).forEach(o => {
+          target.push({ isBlank: true })
+        })
+      }
+      return target
     }
   },
   methods: {
@@ -79,11 +94,7 @@ export default {
   justify-content: space-between;
   flex-wrap: wrap;
 }
-.my-favorites:after {
-  content: "";
-  flex: auto;
-}
-.my-favorites li {
+.favorite-item {
   padding: 30px 20px;
   width: 205px;
   height: 380px;
@@ -93,11 +104,21 @@ export default {
   margin-bottom: 20px;
   margin-right: 20px;
 }
-.my-favorites li:nth-child(4n) {
+.favorite-item:nth-child(4n) {
   margin-right: 0;
 }
-.my-favorites > li:hover {
+.favorite-item:hover {
   border: 1px solid #36ae82;
+}
+.blank-item:nth-child(4n) {
+  margin-right: 0;
+}
+.blank-item {
+  padding: 30px 20px;
+  width: 205px;
+  height: 380px;
+  margin-bottom: 20px;
+  margin-right: 20px;
 }
 .user-name {
   text-align: center;

@@ -201,9 +201,9 @@ export default {
       skills: [],
       isShow: false,
       labelWidth: '140px',
-      education: [this.bindThis(_.cloneDeep(eduForm),0)],
-      workExperience: [this.bindThis(_.cloneDeep(expForm), 0)],
-      otherCertificates:[_.cloneDeep(licenseForm)],
+      education: [this.bindThis(eduForm,0)],
+      workExperience: [this.bindThis(expForm, 0)],
+      otherCertificates:[licenseForm],
       socialEcurity: socialForm,
       callup: callupForm
     }
@@ -212,13 +212,15 @@ export default {
     const l = this.loading()
     let ret = await getDicts()
     dicts = ret.msg
-    const { countries, majors, degrees, gpa , industry, companySize } = dicts
+    const { countries, majors, degrees, gpa , industry, company, companySize, position} = dicts
     eduForm.country.options = countries
     eduForm.discipline.options = majors
     eduForm.GPA.options = gpa
     eduForm.degree.options = degrees
     expForm.industry.options = industry
+    expForm.company.options = company
     expForm.companySize.options = companySize
+    expForm.position.options = position
     let res = await getUserInfo().catch(e => l.close())
     if (res.result) {
       // 简历信息
