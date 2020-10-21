@@ -238,7 +238,7 @@ export default {
         nickName, avatarImage, selfIntroduction, skills, totalRate, rateCount
       } = this.info
       let { school, discipline, degree, graduationTime } = this.edus[0]
-      let { industry, company, position, workingYears, duty } = this.works[0]
+      let { industryText, companyText, positionText, workingYears, duty } = this.works[0]
       const p = {
         consumerNickName: this.user.nickName,
         consumerAvatar: this.user.avatar,
@@ -248,7 +248,7 @@ export default {
           avatar: avatarImage,
           readme: selfIntroduction,
           education: { school, discipline, degree, graduationTime },
-          work: { industry, company, position, workingYears, duty, skills },
+          work: { industry:industryText, company:companyText, position: positionText, workingYears, duty, skills },
           evaluationCount: rateCount,
           evaluationPoint: totalRate,
         },

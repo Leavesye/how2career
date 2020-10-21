@@ -33,6 +33,7 @@
                     size="medium"
                     v-model="item.v" :maxLength="100"></el-input>
           <el-button class="op-btn"
+                      plain
                      @click="handleRemoveQuestion(i, index)">删除</el-button>
         </li>
       </ul>
@@ -107,6 +108,10 @@ export default {
   methods: {
     async handleSaveQuestion (o) {
       if (this.isLoading) return false
+      if (o.question.some(q => !q.v)) {
+        this.alert('问题不能为空', 'warning')
+        return false
+      }
       this.isLoading = true
       const res = await orderAddQuestion({
         orderId: o.orderId,
