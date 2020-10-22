@@ -97,7 +97,7 @@ export default {
         limit: "3",
         condition: "status==4:status==5"
       }),
-      getOrdersCount({ condition: "status==1:status==4:status==0:status==7:status==8" }),
+      getOrdersCount({ condition: "status==1:status==4:status==5:status==0:status==7:status==8" }),
       getFavorites(),
       getTop4Consultant(),
       getDicts()
@@ -110,8 +110,8 @@ export default {
     }
     if (res[1].result) {
       const info = res[1].msg
-      this.pannels[0].count = info['2']
-      this.pannels[1].count = info['4']
+      this.pannels[0].count = info['1']
+      this.pannels[1].count = info['4'] + info['5']
       this.pannels[2].count = info['0'] + info['7'] + info['8']
     }
     // 我的收藏

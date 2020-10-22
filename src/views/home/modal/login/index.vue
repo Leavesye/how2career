@@ -119,7 +119,7 @@ export default {
   },
   watch: {
     'type': function (newV, oldV) {
-      console.log(newV, oldV)
+
       this.pageType = newV
       this.tabs = tabsCfg[this.pageType]
     }
@@ -145,7 +145,6 @@ export default {
       this.$refs.form.validateField('userName', (errMsg) => {
         if (!errMsg) {
           sendCode({ userName: this.info.userName }).then(res => {
-            console.log(res)
             this.seconds = 60
             const sid = setInterval(() => {
               if (this.seconds == 0) {
@@ -181,13 +180,13 @@ export default {
       })
     },
     async loginFn () {
+      console.log(process.env.VUE_APP_BASE_API)
       if (this.isLoading) return false
       this.$refs.form.validate((valid) => {
         if (valid) {
           this.isLoading = true
           const info = { ...this.info, role: this.role }
           this.$store.dispatch('user/login', info).then(res => {
-            console.log(res, 888)
             this.isLoading = false
             if (res.result) {
               const roles = res.msg.types

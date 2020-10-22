@@ -6,8 +6,7 @@ import { getToken } from '@/utils/auth'
 
 // create an axios instance
 const service = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
-  // withCredentials: true, // send cookies when cross-domain requests
+  baseURL: process.env.VUE_APP_BASE_API,
   timeout: 60 * 1000 // request timeout
 })
 
@@ -24,7 +23,6 @@ service.interceptors.request.use(
   },
   error => {
     // do something with request error
-    console.log(error) // for debug
     return Promise.reject(error)
   }
 )
@@ -55,10 +53,8 @@ service.interceptors.response.use(
     }
   },
   error => {
-    console.log('err111',error, typeof error) // for debug
     // token不合法或者失效
     if (error.message.includes('403')) {
-      console.log('response111')
       // to re-login
       MessageBox.confirm('您已注销，可以取消以保留在该页面上，或者再次登录', '重新登录', {
         confirmButtonText: '重新登录',

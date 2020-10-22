@@ -37,7 +37,7 @@
     <div class="flex-hc" v-if="!isCollapse" :style="{marginBottom: '20px', paddingBottom: user.role=='consultant'?'50px':'0'}">
       <el-image class="room-btn"
                 :src="user.role=='consumer'?roomGreen:roomBlue"
-                @click="linkTo('/'+user.role+'/room/5f8d9eb875f95fc07b1a80f3')"></el-image>
+                @click="linkTo('/'+user.role+'/room/5f904cbf59d3ec71743a8622')"></el-image>
     </div>
     <section v-if="user.role=='consumer' && !isCollapse">
       <p class="my-code">我的推荐码</p>
@@ -97,7 +97,6 @@ export default {
   },
   mounted () {
     if (this.user.role == 'consumer') {
-      require('@/styles/consumer.scss')
       const qrcode = new QRCode(this.$refs.qrCodeUrl, {
         text: `${process.env.VUE_APP_HOST_NAME}register/consumer?refer=${this.user.userId}`,
         colorDark: '#000000',

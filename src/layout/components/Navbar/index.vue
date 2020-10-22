@@ -62,9 +62,6 @@ export default {
     goHome() {
       this.$router.push('/home')
     }
-  },
-  mounted() {
-    console.log(this.user, 'user')
   }
 }
 </script>

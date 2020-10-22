@@ -53,7 +53,6 @@ export function getUserInfo (params) {
 }
 // 更新 咨询者/咨询师 用户信息
 export function updateUserInfo (data) {
-  console.log()
   return request({
     url: `/user/platform/${store.state.user.role}/user`,
     method: 'put',
@@ -83,7 +82,6 @@ export function getUserInfoSync () {
   xhr.open('GET', process.env.VUE_APP_BASE_API + '/user/platform/consultant/user', false)
   xhr.setRequestHeader("Authorization", getToken())  //设置请求头
   xhr.send()
-  console.log(xhr, 'xhr')
   const res = isJSON(xhr.responseText) ? JSON.parse(xhr.responseText) : {}
   return res
 }

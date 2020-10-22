@@ -59,7 +59,6 @@ export default {
             label: '操作',
             prop: '',
             render (h, scope) {
-              console.log(h, scope.row.a, 8888)
               return (
                 <el-button plain onClick={() => openDetail(scope.row)}>详情</el-button>
               )

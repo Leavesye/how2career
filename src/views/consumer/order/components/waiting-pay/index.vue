@@ -43,7 +43,7 @@
     </el-pagination>
   </div>
   <!-- 取消订单弹框 -->
-  <cancel-modal :isShow="isShow" @close="handleClose" :orderId="orderId"></cancel-modal>
+  <cancel-modal :isShow="isShow" @close="handleClose" :orderId="orderId" :msg="cancelMsg"></cancel-modal>
   <change-modal :isShow="isShowTime" @close="handleCloseTime" :order="order"></change-modal>
 </el-card>
 </template>
@@ -52,7 +52,7 @@
 import SmallAvatar from '@/components/SmallAvatar'
 import CancelModal from './modal/cancel-order'
 import ChangeModal from './modal/change-time'
-import { cancelOrder } from '@/api/order'
+import { cancelOrder, queryCancelMsg } from '@/api/order'
 
 export default {
   name: 'waiting-pay',
@@ -68,12 +68,19 @@ export default {
       isShow: false,
       orderId: '',
       order: '',
+      cancelMsg: ''
     }
   },
   methods: {
-    handelOpenCancel(orderId) {
+    async handelOpenCancel(orderId) {
       this.isShow = true
       this.orderId = orderId
+      const l = this.loading()
+      const res = await queryCancelMsg({ orderId }).catch(e=> l.close())
+      if (res.result) {
+        this.cancelMsg = res.msg
+      }
+      l.close()
     },
     handleClose(isCancel) {
       this.isShow = false

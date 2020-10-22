@@ -66,7 +66,6 @@ export default {
 $color: #36ae82;
 .banner {
   height: 220px;
-  width: 880px;
   margin-bottom: 50px;
   display: block;
   margin: 0 auto;

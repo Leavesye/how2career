@@ -119,7 +119,6 @@ export default {
             isAllDay: false,
           }
         }
-        console.log(event,'event')
         this.$refs.schedule.openEditor(event, args.data.Id ? 'Save' : 'Add')
       }
       // 自定义编辑器空间处理
@@ -213,6 +212,7 @@ export default {
     createEvent (event) {
       if(this.isExist(event.StartTime)) {
         this.alert('该时间段已设置', 'warning')
+        this.$emit('reload')
         return false
       }
       this.events.push(event)

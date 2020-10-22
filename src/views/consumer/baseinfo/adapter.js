@@ -1,26 +1,28 @@
 export function boxing (from) {
   return {
-    "userName": from.userName,
-    "passWord": from.passWord,
-    "basic": {
-      "birthday": from.birthday,
-      "name": from.name,
-      "gender": from.gender,
-      "nickName": from.nickName,
-      "avatarImage": from.avatarImage,
-      "selfIntroduction": from.selfIntroduction,
-      "detailedIntroduction": from.detailedIntroduction,
-      "highestEducation": {
-        "country": from.country,
-        "school": from.school,
-        "discipline": from.discipline,
-        "degree": from.degree,
-        "graduationTime": from.graduationTime,
-        "GPA": from.GPA
+    account: {
+      userName: from.userName,
+      passWord: from.passWord,
+    },
+    basic: {
+      birthday: from.birthday,
+      name: from.name,
+      gender: from.gender,
+      nickName: from.nickName,
+      avatarImage: from.avatarImage,
+      selfIntroduction: from.selfIntroduction,
+      detailedIntroduction: from.detailedIntroduction,
+      highestEducation: {
+        country: from.country,
+        school: from.school,
+        discipline: from.discipline,
+        degree: from.degree,
+        graduationTime: from.graduationTime,
+        GPA: from.GPA
       }
     },
-    "refer": "",
-    "referType": "MGM"
+    refer: "",
+    referType: "MGM"
   }
 }
 export function unBoxing (from, to) {

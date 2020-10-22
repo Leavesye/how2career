@@ -92,7 +92,7 @@ function formatConsumerOrder (list) {
       readme,
       roomId,
       rest,
-      startTime: moment(startTime * 1000).format('YYYY-MM-DD HH:mm:ss'),
+      startTime: startTime ? moment(startTime * 1000).format('YYYY-MM-DD HH:mm:ss'):'',
       cTime: moment(cTime * 1000).format('YYYY-MM-DD HH:mm:ss'),
       consumerTime: consumerTime ? consumerTime.map(v => {
         // 秒转毫秒
@@ -134,16 +134,15 @@ function formatStatus(status) {
   return condition
 }
 function formatFavorites (list, btnName, cb, positions) { 
-  console.log(list, btnName, cb)
   return list.map(o => {
     const { _id: id, publicInfo: { 
-      nickName, avatarImage:avatar, evaluationCount, evaluationPoint,
-      selfIntroduction,resume: { workExperience: work }
-    } } = o
-    const rate = evaluationCount? evaluationPoint/evaluationCount: 0
+      nickName, avatarImage: avatar, evaluationCount, evaluationPoint,
+      selfIntroduction, resume = {} }} = o
+    const { workExperience: work } = resume
+    const rate = evaluationCount ? evaluationPoint/evaluationCount: 0
     return {
-      id,
-      nickName, avatar, rate, position: positions.find(v => v.value == work[0].position).text,
+      id, nickName, avatar, rate,
+      position: work && work.length ? positions.find(v => v.value == work[0].position).text : '',
       evaluationCount, selfIntroduction,
       btn: { name: btnName, cb: cb.bind(this, id)}
     }

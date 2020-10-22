@@ -29,6 +29,6 @@ export default {
 }
 
 .router-view {
-  height: auto;
+  margin: 0 auto
 }
 </style>

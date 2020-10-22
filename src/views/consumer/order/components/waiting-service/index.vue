@@ -48,7 +48,7 @@
       <div class="flex-he btns">
         <el-button plain
                    @click="handleOpenCancel(o)">订单取消</el-button>
-        <el-button type="success"
+        <el-button type="success" v-if="o.status == '5'"
                    @click="handleEnterRoom(o.orderId)">进入房间</el-button>
       </div>
     </el-card>

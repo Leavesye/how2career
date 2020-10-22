@@ -248,7 +248,6 @@ export default {
             const schools = countries.find(v => v.value == o.country).schools
             const schoolText = schools.find(v => v.value == o.school).text
             const disciplineText = o.discipline ? majors.find(v => v.value == o.discipline).text : ''
-            console.log(degrees, o.degree)
             const degreeText = o.degree ? degrees.find(v => v.value == o.degree).text : ''
             return {
               desc: `${schoolText} ${disciplineText} ${degreeText}`

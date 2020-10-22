@@ -279,7 +279,6 @@ export default {
     // 国家联动学校
     handleCountryChange (i, v) {
       if (v) {
-        console.log(dicts.countries, v)
         const f = dicts.countries.find(o => o.value == v)
         this.education[i].school.options = f.schools
       } else {
@@ -297,7 +296,6 @@ export default {
     // 学历操作
     handleAddEducation () {
       if (this.education.length == 10) return false
-      console.log(_.cloneDeep(eduForm), 9090)
       this.education.push(this.bindThis(_.cloneDeep(eduForm), this.education.length))
     },
     handleDelEducation (i) {
@@ -347,7 +345,6 @@ export default {
     },
     // 语言操作
     handleAddLang () {
-      console.log(this.language, 'iiii')
       if (this.language.length == 10) return false
       this.lang && this.language.push(this.lang)
       this.lang = ''
@@ -399,7 +396,6 @@ export default {
       return true
     },
     afterUpload (fileUrl, index, attrs) {
-      console.log(fileUrl, index, attrs)
       if (typeof index == 'number') {
         this[attrs[0]][index][attrs[1]].value = fileUrl
       } else {
@@ -414,7 +410,6 @@ export default {
       }
     },
     async handleSave (type) {
-      console.log(this.$refs, 5555)
       // 社团校验
       let eduv = []
       let expv = []
@@ -446,7 +441,6 @@ export default {
       })
       // 表单校验
       let isValid = true
-      console.log(33333)
       let certV = this.hasCertificates ? this.otherCertificates.map((o, i) => this.$refs['license' + i][0].validate()):[]
       let rewardV = this.getRewarded ? this.rewards.map((o, i) => this.$refs['reward' + i][0].validate()):[]
       const res = await Promise.all([
@@ -468,7 +462,6 @@ export default {
             main.projectHistory = []
             main.ArticleHistory = []
             main.publishArticle = !!org.articles.length
-            console.log(org.articles, 4444)
             main.projectExperience = !!org.projects.length
             if (main.studentOrganization) {
               main.studentOrganizationHistory = org.exps.map((v, i) => {
@@ -485,7 +478,6 @@ export default {
               main.projectHistory = []
             }
             if (main.publishArticle) {
-              console.log(main.publishArticle, org, 333)
               main.ArticleHistory = org.articles.map((v, i) => {
                 return org.$refs['article' + i][0].getFormData()
               })
@@ -510,7 +502,6 @@ export default {
             skills: this.skills,
           },
         }
-        console.log(formData, 'formdata')
         const p = {
           resume: formData
         }
@@ -524,13 +515,9 @@ export default {
         this.alert('表单验证失败', 'warning')
       }
     }
-  },
-  mounted () {
-    console.log(this.$refs, 333)
   }
 }
 </script>
-
 <style lang="scss" scoped>
 .page-title {
   padding: 20px 30px;

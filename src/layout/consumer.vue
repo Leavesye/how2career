@@ -48,6 +48,9 @@ export default {
       ]
     }
   },
+  mounted() {
+    import('@/styles/consumer.scss')
+  }
 }
 </script>
 <style lang="scss" scoped>

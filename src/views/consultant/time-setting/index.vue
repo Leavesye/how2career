@@ -96,7 +96,7 @@ export default {
         this.isLoaded = true
       })
       if (res.result) {
-        const { publicInfo: { availableTime }} = res.msg
+        const { publicInfo: { availableTime=[] }} = res.msg
         this.events = availableTime
       }
       this.isLoaded = true

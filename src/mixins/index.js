@@ -1,7 +1,6 @@
 export default {
   methods: {
     uploadBefore (file) { 
-      console.log(file, 2222)
       if (!this.checkFile(file)) return false
     },
     uploadSuccess (res, file, index, attrs) {

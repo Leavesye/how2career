@@ -67,7 +67,6 @@ export default {
     handleVerified() {
       if (this.isLoading) return false
       const formData = this.$refs.form.getFormData()
-      console.log(formData)
       this.$refs.form.validate((valid) => {
         if (valid) {
           this.isLoading = true

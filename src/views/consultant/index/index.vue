@@ -2,7 +2,7 @@
   <section style="padding: 30px"
            v-if="isLoaded">
     <!-- 未认证简历或者没有填写服务时间 -->
-    <div v-if="!isSettingTime">
+    <div v-if="!isFinishReview || !isSettingTime">
       <el-image class="banner"
                 :src="bannerImg"></el-image>
       <p class="reg-success">你已经成功注册咨询师</p>
@@ -43,8 +43,7 @@
         </div>
         <!-- 步骤2 -->
         <div class="step"
-             :class="{active: isFinishReview}"
-             @click="handleClickStep(2)">
+             :class="{active: isFinishReview}">
           <el-image class="step-num"
                     :src="step2"></el-image>
           <div class="step-setting">
@@ -57,7 +56,7 @@
       </section>
     </div>
     <!-- 已认证 -->
-    <div v-if="isSettingTime">
+    <div v-else>
       <!-- 状态面板 -->
       <div class="pannel flex-hb">
         <div class="p-item"
@@ -217,7 +216,6 @@ export default {
   methods: {
     async handleOpenDetail(order){
       const res = await getDicts()
-      console.log(order, 'order')
       this.order = order
       this.isShow = true
     },
@@ -244,7 +242,8 @@ $color: #15479e;
   height: 244px;
 }
 .step {
-  width: 420px;
+  flex: 1;
+  margin-right: 20px;
   height: 420px;
   background: #ffffff;
   border-radius: 8px;
@@ -253,6 +252,9 @@ $color: #15479e;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+.step:last-child {
+  margin-right: 0
 }
 .step.active {
   border: 1px solid $color;

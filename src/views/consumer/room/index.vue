@@ -204,7 +204,6 @@ export default {
       this.$alert('点击服务确认将结束此次服务，无法再次进入房间', '服务结束确认', {
         confirmButtonText: '确认',
         callback: action => {
-          console.log(action)
           if (action == 'confirm') {
             stopService({ orderId: this.orderId }).then(res => {
               if (res.result) {

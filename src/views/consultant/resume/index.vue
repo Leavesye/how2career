@@ -201,8 +201,8 @@ export default {
       skills: [],
       isShow: false,
       labelWidth: '140px',
-      education: [this.bindThis(eduForm,0)],
-      workExperience: [this.bindThis(expForm, 0)],
+      education: [eduForm],
+      workExperience: [expForm],
       otherCertificates:[licenseForm],
       socialEcurity: socialForm,
       callup: callupForm
@@ -320,7 +320,6 @@ export default {
     // 学历操作
     handleAddEducation () {
       if (this.education.length == 10) return false
-      console.log(_.cloneDeep(eduForm), 9090)
       this.education.push(this.bindThis(_.cloneDeep(eduForm), this.education.length))
     },
     handleDelEducation (i) {
@@ -398,7 +397,6 @@ export default {
       return true
     },
     afterUpload (fileUrl, index, attrs) {
-      console.log(fileUrl, index, attrs)
       if (typeof index == 'number') {
         this[attrs[0]][index][attrs[1]].value = fileUrl
       } else {
@@ -413,7 +411,6 @@ export default {
       }
     },
     async handleSave (type) {
-      console.log(this.$refs)
       // 表单校验
       let isValid = true
       const res = await Promise.all([
@@ -435,7 +432,6 @@ export default {
           language: this.language,
           skills: this.skills
         }
-        console.log(formData, 'formdata')
         this.initPublicInfo.resume = formData
         const p = {
           publicInfo: this.initPublicInfo

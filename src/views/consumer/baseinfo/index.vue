@@ -81,9 +81,10 @@ export default {
     this.refer = this.$route.query.refer
     // 是否是注册页进来
     this.isReg = this.$route.path.includes('/register/consumer')
-    if (this.isReg) {
-      this.baseInfo.passWord.hide = false
+     if (this.isReg) {
       this.layout = { xs: 24, sm:24, md: 20, lg:15, xl:12}
+    } else {
+      this.baseInfo.passWord.hide = true
     }
     // 给上传组件绑定回调
     const avatar = this.baseInfo.avatarImage
@@ -104,7 +105,6 @@ export default {
         const {basic: { highestEducation: { country }}, account } = res.msg
         this.account = account
         if (country) {
-          console.log(country, dicts.countries)
           this.education.school.options = dicts.countries.find(o => o.value == country).schools
         }
         adapter.unBoxing(res.msg, this._data)
@@ -120,8 +120,12 @@ export default {
       this.isShow = false
     },
     handleCountryChange(v) {
-      const f = dicts.countries.find(o => o.value == v )
-      this.education.school.options = f.schools
+       if (v) {
+        const f = dicts.countries.find(o => o.value == v)
+        this.education.school.options = f.schools
+      } else {
+        this.education.school.options = []
+      }
       this.education.school.value = ''
     },
     async handleSave() {
@@ -129,10 +133,8 @@ export default {
       // 校验所有表单
       let isValid = true
       const res = await Promise.all(keys.map(key => this.$refs[key].validate())).catch(e => {
-        console.log(e, 'error')
         isValid = false
       })
-      console.log(res, 333)
       if (isValid) {
         const formData = { 
           userName: this.user.userName,
@@ -144,7 +146,6 @@ export default {
         if (this.isReg && this.refer) {
           p.refer = this.refer
         }
-        console.log(p, '参数')
         const l = this.loading()
         const fn = this.isReg ? register:updateUserInfo
         const ret = await fn(p).catch(e => l.close())
@@ -153,6 +154,11 @@ export default {
           if (this.isReg ) {
             // 缓存token
             setToken(ret.msg.token)
+            this.$store.dispatch('user/setUser', { 
+              nickName: formData.nickName,
+              avatar: formData.avatarImage,
+              completion: 20
+            })
             // 跳转个人首页
             this.$router.replace('/consumer/index')
           } else {
@@ -171,7 +177,6 @@ export default {
       if (this.baseInfo.avatarImage.value) {
         avatarImg = process.env.VUE_APP_HOST_NAME + this.baseInfo.avatarImage.value
       }
-      console.log(avatarImg)
       return (
         <el-Image style="border-radius: 50%;width: 90px; height: 90px;overflow: hidden" src={avatarImg || defaultImg}></el-Image>
       )

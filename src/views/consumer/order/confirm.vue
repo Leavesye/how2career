@@ -19,7 +19,7 @@
           </div>
           <div class="content-r">
             <div class="flex base-info">
-              <span>所属行业: {{info.industryText}}</span>
+              <span>所属行业: {{info.industry}}</span>
               <span>公司名称: {{info.company}}</span>
               <span>职位: {{info.position}}</span>
             </div>
@@ -92,20 +92,15 @@ export default {
   async created () {
     const l = this.loading()
     this.orderId = this.$route.params.id
-    const res = await Promise.all([
-      getDicts(),
-      getOrderById({ orderId: this.orderId })
-    ]).catch(e => l.close())
-    if (res[1].result) {
-      const { industry: industrys } = res[0].msg
-      this.order = res[1].msg
+    const res = await getOrderById({ orderId: this.orderId }).catch(e => l.close())
+    if (res.result) {
+      this.order = res.msg
       const { price, consumerTime, consultant: { avatar, name, evaluationPoint, evaluationCount, 
-      work: { industry, company, position } } } = res[1].msg
+      work: { industry, company, position } } } = this.order
       this.oriTimes = _.cloneDeep(consumerTime)
-      const industryText = industrys.find(o => o.value == industry).text
       let rate = evaluationPoint > 0 ? evaluationPoint / evaluationCount : 0
       this.info = {
-        avatarImage: avatar, nickName: name, rate, industryText, company, position,
+        avatarImage: avatar, nickName: name, rate, industry, company, position,
         times: consumerTime.map(o => {
           return {
             v: o,

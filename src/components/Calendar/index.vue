@@ -1,5 +1,5 @@
 <template>
-  <el-row style="margin-top: 20px">
+  <el-row class="canlender-box">
     <el-col :span="16">
       <scheduler v-if="isLoaded" @reload="handleReloadSchduler" @open-timepicker="openTimepicker"
                  mode="view" :events="events" :consultantId="order.consultantId"></scheduler>
@@ -138,11 +138,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.calender {
-  border: 1px solid #f6f6f6;
-  background: #fff;
-  overflow: auto;
-  height: 500px;
+.canlender-box {
+  margin-top: 20px;
+  background: #f6f6f6;
 }
 .calendar-picker {
   position: absolute;
@@ -202,8 +200,6 @@ export default {
   padding: 20px 15px;
   flex: 1;
   overflow: auto;
-  height: 427px;
-  background: #f6f6f6;
 }
 .time-list > h1 {
   margin-bottom: 18px;

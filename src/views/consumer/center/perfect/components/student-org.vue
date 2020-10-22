@@ -85,7 +85,6 @@ export default {
   },
   watch: {
     'studentOrganization': function(nval,oval) {
-      console.log(nval, 'hahah ')
       if (nval) {
         this.exps = [this.bindThis(_.cloneDeep(exp), 0)]
       } else {
@@ -141,7 +140,6 @@ export default {
       return o
     },
     handleCheckOnBoard (i, v) {
-      console.log(i, v)
       this.exps[i].resignationTime.hide = v
       this.exps[i].resignationTime.value = ''
     },

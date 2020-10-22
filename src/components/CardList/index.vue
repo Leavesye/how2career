@@ -11,8 +11,8 @@
         <div class="user-role">{{item.position}}</div>
         <p class="user-desc">{{item.selfIntroduction}}</p>
         <div class="flex-hbc">
-          <h1 @click="handleShowRateList(item.id)" class="rate-count flex-vc"><i class="iconfont icondianping-01"></i>
-            <div style="margin-left: 4px">{{item.evaluationCount}}</div>
+          <h1 @click="handleShowRateList(item)" class="rate-count flex-vc"><i class="iconfont icondianping-01"></i>
+            <div style="margin-left: 4px">{{item.evaluationCount || 0}}</div>
           </h1>
           <el-button plain
                     @click="handleClick(item.btn.cb)">{{item.btn.name}}</el-button>
@@ -64,10 +64,13 @@ export default {
     handleCloseRateList() {
       this.isShow = false
     },
-    async handleShowRateList (id) {
+    async handleShowRateList (item) {
+      if (!item.evaluationCount) {
+        return false
+      }
       this.isShow = true
       const l = this.loading()
-      const res = await getRateList({ consultantId: id }).catch(e=> l.close())
+      const res = await getRateList({ consultantId: item.id }).catch(e=> l.close())
       if (res.result) {
         this.rateList = res.msg.map(o => {
           const { evaluation: { cTime,content, point, consultantReply } }  = o

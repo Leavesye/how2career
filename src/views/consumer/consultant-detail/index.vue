@@ -17,7 +17,7 @@
                       v-model="info.rate"></el-rate>
             <div class="flex-hb icons">
               <div @click="showRateDetail" class="rate-count flex-vc"><i class="iconfont icondianping-01"></i>
-                <div style="margin-left: 4px">{{info.rateCount}}</div>
+                <div style="margin-left: 4px">{{info.rateCount || 0}}</div>
               </div>
               <div class="favorite flex-vc" @click="handleFavorite">
                 <i class="iconfont" :class="[isFavorite? 'iconyiguanzhu-01 active': 'iconshoucang-01']"></i>
@@ -42,7 +42,7 @@
                   <h1>最高学历</h1>
                   <p>{{ highEdu.desc }}</p>
                 </div>
-                <el-button @click="toggleEdu"
+                <el-button v-if="edus.length > 1" @click="toggleEdu"
                           plain>更多</el-button>
               </li>
               <li class="info-item flex-hbc">
@@ -53,7 +53,7 @@
                 </div>
                 <div>职位: {{lastWork.positionText}}</div>
                 <div>工作年限: {{lastWork.workingYears}}年</div>
-                <el-button @click="toggleWork"
+                <el-button v-if="works.length > 1" @click="toggleWork"
                           plain>更多</el-button>
               </li>
               <li class="info-item">
@@ -172,7 +172,7 @@ export default {
             const disciplineText = majors.find(v => v.value == discipline).text
             const degreeText = degrees.find(v => v.value == degree).text
             return {
-              country, school, discipline, degree, graduationTime,
+              country, school, discipline, degree, graduationTime,schoolText,disciplineText,degreeText,
               desc: `${schoolText} ${disciplineText} ${degreeText} ${moment(graduationTime).format('YYYY年毕业')}`
             }
           })
@@ -237,8 +237,10 @@ export default {
       const {
         nickName, avatarImage, selfIntroduction, skills, totalRate, rateCount
       } = this.info
-      let { school, discipline, degree, graduationTime } = this.edus[0]
-      let { industryText, companyText, positionText, workingYears, duty } = this.works[0]
+      const edu = this.edus[0] || {}
+      let { school = '', discipline = '', degree = '', graduationTime = '' } = edu
+      const wrok = this.works[0] || {}
+      let { industryText = '', companyText = '', positionText = '', workingYears = '', duty = '' } = wrok
       const p = {
         consumerNickName: this.user.nickName,
         consumerAvatar: this.user.avatar,
@@ -254,7 +256,6 @@ export default {
         },
         consumerTime: this.times.map(o => Math.ceil(o.value/1000))
       }
-      console.log(p, '参数')
       const l = this.loading()
       const res = await createOrder(p).catch(e => l.close())
       if (res.result) {
@@ -264,6 +265,9 @@ export default {
       l.close()
     },
     async showRateDetail () {
+      if (!this.info.rateCount) {
+        return false
+      }
       this.isShow = true
       const l = this.loading()
       const res = await getRateList({ consultantId: this.id }).catch(e=> l.close())
