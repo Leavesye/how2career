@@ -57,7 +57,7 @@
     </section>
     <pay :isShow="isShowPay"
          @close="handleClosePay"
-         @confirm="handleConfirmPay" :order="order"></pay>
+         @confirm="handleConfirmPay" :payInfo="payInfo"></pay>
   </div>
 </template>
 
@@ -81,7 +81,7 @@ export default {
       isShow: false,
       checked: false,
       isShowPay: false,
-      order: {},
+      payInfo: {},
     }
   },
   computed: {
@@ -94,9 +94,9 @@ export default {
     this.orderId = this.$route.params.id
     const res = await getOrderById({ orderId: this.orderId }).catch(e => l.close())
     if (res.result) {
-      this.order = res.msg
-      const { price, consumerTime, consultant: { avatar, name, evaluationPoint, evaluationCount, 
-      work: { industry, company, position } } } = this.order
+      const { _id: orderId, price, consumerTime, consultant: { _id: consultantId, avatar, name, evaluationPoint, evaluationCount, 
+      work: { industry, company, position } } } = res.msg
+      this.payInfo = { orderId, consultantId, subject: '咨询费用', type: 'order' }
       this.oriTimes = _.cloneDeep(consumerTime)
       let rate = evaluationPoint > 0 ? evaluationPoint / evaluationCount : 0
       this.info = {

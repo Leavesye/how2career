@@ -10,8 +10,8 @@
              :key="i"
              @click="handleClickPannel(o, i)">
           <p v-if="o.count != 'search'">{{o.name}}</p>
-          <div v-if="o.count != 'search'">{{o.count|num}}</div>
-          <h1 v-else>{{o.name}} <i class="iconfont iconsousuo-01"></i></h1>
+          <div class="order-count" v-if="o.count != 'search'">{{o.count|num}}</div>
+          <h1 v-else><i class="iconfont iconsousuo-01"></i>{{o.name}}</h1>
         </div>
       </div>
       <el-card class="order-card">
@@ -188,6 +188,10 @@ $color: #36ae82;
   box-shadow: 0px 0px 4px 0px rgba(21, 71, 158, 0.5);
   border: 1px solid $color;
   color: $color;
+}
+.order-count {
+  font-weight: 600;
+  font-family: 'notosans-bold,notosans-regular';
 }
 .order-card {
   margin-bottom: 20px;

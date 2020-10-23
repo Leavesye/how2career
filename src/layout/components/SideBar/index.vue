@@ -187,6 +187,7 @@ span {
   text-align: center;
   cursor: pointer;
   margin-bottom: 22px;
+  font-size: 12px;
 }
 .bottom-links {
   width: 154px;

@@ -7,10 +7,10 @@
           <!-- 侧边栏 -->
           <side-bar :menus="menus" />
           <!-- 页面路由 -->
-          <transition name="fade-transform"
+          <router-view style="flex:1" class="router-view" />
+          <!-- <transition name="fade-transform"
                       mode="out-in">
-            <router-view style="flex:1" class="router-view" />
-          </transition>
+          </transition> -->
         </el-row>
       </el-col>
     </el-row>
@@ -57,6 +57,10 @@ export default {
 .app-main {
   margin: 20px 0;
   overflow: hidden;
+  background-image: url('../assets/green-bg.png');
+  background-position: 240px 0px;
+  background-size: 20px 100%;
+  background-repeat: repeat-y;
 }
 
 .router-view {

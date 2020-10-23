@@ -40,7 +40,7 @@ export default {
   border-radius: 8px;
 }
 .item > h1 {
-  font-size: 14px;
+  font-size: 16px;
   color: #7C8EA5;
   font-weight: 600;
   margin: 20px 0 10px 0;
@@ -49,11 +49,11 @@ export default {
   font-weight: 400;
   color: #7C8EA5;
   margin-bottom: 20px;
-  height: 57px;
   display: -webkit-box;    
   -webkit-box-orient: vertical;    
   -webkit-line-clamp: 3;    
   overflow: hidden;
+  font-size: 14px;
 }
 .learn-more {
   margin-left: 100px;

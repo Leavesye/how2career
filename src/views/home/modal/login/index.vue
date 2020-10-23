@@ -81,11 +81,11 @@ import { setToken } from '@/utils/auth'
 const tabsCfg = {
   '1': [
     { name: '登录咨询者', color: '#36AE82', left: 0 },
-    { name: '登录咨询师', color: '#15479E', left: '130px' },
+    { name: '登录咨询师', color: '#15479E', left: '150px' },
   ],
   '2': [
     { name: '注册咨询者', color: '#36AE82', left: 0 },
-    { name: '注册咨询师', color: '#15479E', left: '130px' },
+    { name: '注册咨询师', color: '#15479E', left: '150px' },
   ],
 }
 export default {
@@ -266,7 +266,7 @@ export default {
   margin-bottom: 40px;
 }
 .tab {
-  width: 80px;
+  width: 100px;
   height: 50px;
   line-height: 50px;
   text-align: center;
@@ -279,7 +279,7 @@ export default {
   position: absolute;
   left: 0;
   bottom: 0;
-  width: 80px;
+  width: 100px;
   height: 3px;
   transition: 0.5s all;
 }

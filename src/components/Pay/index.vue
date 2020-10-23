@@ -3,8 +3,8 @@
              :visible.sync="isShow"
              :before-close="handleClose"
              width="430px"
-             s
              center>
+    <slot></slot>
     <section class="modal-main">
       <ul class="flex-hb pay-list">
         <li class="flex-cc"
@@ -23,6 +23,7 @@
                  style="width: 180px"
                  type="success"
                  plain
+                 size="medium"
                  round>确认</el-button>
     </span>
   </el-dialog>
@@ -35,7 +36,7 @@ export default {
   name: 'pays',
   components: {
   },
-  props: ['isShow', 'order'],
+  props: ['isShow', 'payInfo'],
   data () {
     return {
       curPay: '',
@@ -46,16 +47,16 @@ export default {
       ]
     }
   },
+   watch: {
+    'isShow': function(n, o) {
+      this.curPay = ''
+    }
+  },
   methods: {
     async handleClickPay (item, i) {
       this.curPay = item
       if (item.type == 'alipay') {
-        const res = await getAlipayUrl({
-          orderId: this.order._id,
-          amount: this.order.price,
-          subject: '测试商品',
-          type: 'order'
-        })
+        const res = await getAlipayUrl(this.payInfo)
         if (res.result) {
           console.log(decodeURIComponent(res.msg))
           this.alipayReturnUrl = res.msg

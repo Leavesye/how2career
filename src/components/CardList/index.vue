@@ -10,7 +10,7 @@
                 v-model="item.rate"></el-rate>
         <div class="user-role">{{item.position}}</div>
         <p class="user-desc">{{item.selfIntroduction}}</p>
-        <div class="flex-hbc">
+        <div class="flex-hbc bottom-btns">
           <h1 @click="handleShowRateList(item)" class="rate-count flex-vc"><i class="iconfont icondianping-01"></i>
             <div style="margin-left: 4px">{{item.evaluationCount || 0}}</div>
           </h1>
@@ -98,6 +98,7 @@ export default {
   flex-wrap: wrap;
 }
 .favorite-item {
+  flex-basis: 23%;
   padding: 30px 20px;
   width: 205px;
   height: 380px;
@@ -105,30 +106,21 @@ export default {
   box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   margin-bottom: 20px;
-  margin-right: 20px;
-}
-.favorite-item:nth-child(4n) {
-  margin-right: 0;
 }
 .favorite-item:hover {
   border: 1px solid #36ae82;
 }
-.blank-item:nth-child(4n) {
-  margin-right: 0;
-}
 .blank-item {
-  padding: 30px 20px;
-  width: 205px;
+  flex-basis: 23%;
   height: 380px;
-  margin-bottom: 20px;
-  margin-right: 20px;
 }
 .user-name {
   text-align: center;
   color: #7c8ea5;
   font-size: 18px;
   font-weight: 400;
-  margin-top: 25px;
+  margin-top: 30px;
+  margin-bottom: 12px;
 }
 .user-rate {
   text-align: center;
@@ -137,17 +129,18 @@ export default {
   color: #7c8ea5;
   font-size: 14px;
   font-weight: 400;
-  margin: 20px 0;
+  margin: 12px 0 20px 0;
   text-align: center;
 }
 .user-desc {
   color: #7c8ea5;
   margin-bottom: 25px;
-  height: 38px;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   overflow: hidden;
+  font-size: 14px;
+  line-height: 20px;
 }
 .rate-count {
   color: #7c8ea5;

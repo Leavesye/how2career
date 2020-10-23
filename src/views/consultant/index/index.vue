@@ -65,7 +65,7 @@
              :key="i"
              @click="handleClickPannel(o, i)">
           <p>{{o.name}}</p>
-          <div>{{o.count|num}}</div>
+          <div class="order-count">{{o.count|num}}</div>
         </div>
       </div>
       <!-- 表格 -->
@@ -153,7 +153,7 @@ export default {
   },
   computed: {
     bannerImg: function () {
-      return require('../../../assets/cert-top.png')
+      return require('../../../assets/invite.png')
     },
     step1: function () {
       return require('../../../assets/step1.svg')
@@ -244,7 +244,10 @@ export default {
 <style lang="scss" scoped>
 $color: #15479e;
 .banner {
-  height: 244px;
+  height: 220px;
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 40px;
 }
 .step {
   flex: 1;
@@ -344,6 +347,10 @@ $color: #15479e;
   box-shadow: 0px 0px 4px 0px rgba(21, 71, 158, 0.5);
   border: 1px solid $color;
   color: $color;
+}
+.order-count {
+  font-family: 'notosans-bold,notosans-regular';
+  font-weight: 600;
 }
 .order-card {
   padding: 20px;

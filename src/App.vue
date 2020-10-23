@@ -10,7 +10,8 @@ export default {
 }
 </script>
 <style>
+@import "./fonts/font.css";
 #app {
-   background: #EDEEEF;
+  background: #EDEEEF;
 }
 </style>

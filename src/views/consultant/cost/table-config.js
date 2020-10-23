@@ -37,7 +37,7 @@ export default {
   },
   props: {
     headerCellStyle: {
-      background: '#EDEEEF',
+      background: '#F6F6F6',
       fontSize: '14px!important',
       color: '#7C8FA5!important',
       fontWeight: '200',

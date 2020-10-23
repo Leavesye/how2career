@@ -24,5 +24,29 @@ export function getRateList(params) {
     params
   })
 }
+// 获取slots列表
+export function getSlots(params) {
+  return request({
+    url: '/consultant/platform/consultant/slot',
+    method: 'get',
+    params
+  })
+}
+// 咨询师slot关闭
+export function closeSlot(data) {
+  return request({
+    url: '/consultant/platform/consultant/slot',
+    method: 'delete',
+    data
+  })
+}
+// 咨询师slot单价查询
+export function getSlotPrice(params) {
+  return request({
+    url: '/consultant/platform/consultant/slotPrice',
+    method: 'get',
+    params
+  })
+}
 
 
