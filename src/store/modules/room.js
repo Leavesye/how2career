@@ -1,16 +1,16 @@
 const state = {
-  room: {}
+  orderId: ''
 }
 
 const mutations = {
-  SET_ROOM: (state, room) => {
-    state.room = room
+  SET_ROOM: (state, orderId) => {
+    state.orderId = orderId
   }
 }
 
 const actions = {
-  setRoom ({ commit }, room) { 
-    commit('SET_ROOM', room)
+  setRoom ({ commit }, orderId) { 
+    commit('SET_ROOM', orderId)
   }
 }
 

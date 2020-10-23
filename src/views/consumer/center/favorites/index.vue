@@ -10,7 +10,7 @@
 
 <script>
 import CardList from '@/components/CardList'
-import { delFavorite, getFavorites } from '@/api/user'
+import { delFavorite, getFavorites, getDicts } from '@/api/user'
 export default {
   components: {
     CardList,
@@ -25,19 +25,20 @@ export default {
   },
   methods: {
     async query() {
-      const res = await getFavorites()
-      if (res.result) {
-        const l = res.msg.list
+
+      const res = await Promise.all([getFavorites(), getDicts()])
+      if (res[0].result) {
+        const l = res[0].msg.list
         if (l) {
           this.list = l.map(o => {
             const { _id: id, publicInfo: { 
               nickName, avatarImage:avatar, evaluationCount, evaluationPoint,
               selfIntroduction,resume: { workExperience: work }
             } } = o
-            const rate = evaluationCount? Math.floor(evaluationPoint/evaluationCount): 0
+            const rate = evaluationCount? evaluationPoint/evaluationCount: 0
             return {
               id,
-              nickName, avatar, rate, position: work[0].position,
+              nickName, avatar, rate, position: res[1].msg.position.find(v => v.value == work[0].position).text,
               evaluationCount, selfIntroduction,
               btn: { name: '取消收藏', cb: this.handleUnFavorite.bind(this, id)}
             }

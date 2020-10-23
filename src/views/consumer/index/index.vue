@@ -107,6 +107,11 @@ export default {
     }
     if (res[0].result) {
       this.list = tool.formatConsumerOrder(res[0].msg.list)
+      // 缓存status==5服务中订单号
+      const servicing = this.list[0]
+      if (servicing && servicing.status == '5') {
+        this.$store.dispatch('room/setRoom', servicing.orderId)
+      }
     }
     if (res[1].result) {
       const info = res[1].msg
@@ -120,14 +125,12 @@ export default {
     }
     // 经常查看的咨询师top4
     if (res[3].result && res[3].msg.list) {
-      getDicts()
       this.top4 = tool.formatFavorites(res[3].msg.list, '预约', this.handleAppintment, this.dicts.position)
     }
     l.close()
   },
   methods: {
     handleOpenDetail(order){
-      order.industryText = this.dicts.industry.find(o => o.value == order.industry).text
       this.order = order
       this.isShow = true
     },

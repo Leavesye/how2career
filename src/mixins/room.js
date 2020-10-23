@@ -1,7 +1,7 @@
 import TRTC from 'trtc-js-sdk'
 export default {
   methods: {
-    async initRtcClient (roomId, userId, sign, orderId) {
+    async initRtcClient (info) {
       // 检测设备
       const res = await TRTC.checkSystemRequirements()
       if (!res) {
@@ -11,14 +11,18 @@ export default {
       this.client = TRTC.createClient({
         mode: 'rtc',
         sdkAppId: process.env.VUE_APP_SKDAPPID,
-        userId,
-        userSig: sign,
-        streamId: orderId
+        userId: info.userId,
+        userSig: info.sign,
+        streamId: info.orderId
+      })
+      this.client.on('peer-leave', event => {
+        console.log(`${event.userId}已经离开房间`)
+        this.handlePeerLeave()
       })
       //注册远程监听，要放在加入房间前--这里用了发布订阅模式
       this.subscribeStream(this.client)
       //初始化后才能加入房间
-      this.joinRoom(this.client, roomId, userId)
+      this.joinRoom(this.client, info.roomId, info.userId)
     },
     //加入房间
     joinRoom (client, roomId, userId) {

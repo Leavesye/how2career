@@ -164,10 +164,10 @@
       </el-tabs>
     </el-card>
     <!-- 房间状态 -->
-    <!-- <room-status :isShow="isShow"
+    <room-status :isShow="isShow"
                  @start="handleChatStart"
                  :targetTime="info.startTime"
-                 :info="info"></room-status> -->
+                 :info="info"></room-status>
     <div id="local_stream"></div>
     <div v-html="remoteStream">
     </div>
@@ -195,7 +195,7 @@ export default {
   data () {
     return {
       targetTime: 0,
-      isShow: false,
+      isShow: true,
       activeName: 'first',
       rewards: [],
       certs: [],
@@ -223,7 +223,7 @@ export default {
     if (res[1].result) {
       // 订单信息
       const { slotId, roomId, consultant: { _id, }, consumer, consumerAvatar: avatar, consumerNickName: name, startTime, question } = res[1].msg
-      this.initRtcClient(roomId, _id, res[3].msg, orderId)
+      this.roomInfo = { roomId, userId: _id, sign: res[3].msg, orderId }
       if (res[2].result) {
         const { countries, majors, degrees, gender: genders, industry: industrys, workCategory } = res[0].msg
         // 咨询者信息
@@ -291,9 +291,14 @@ export default {
     l.close()
   },
   methods: {
+    handlePeerLeave() {
+      this.alert('对方已离开房间')
+      this.$router.replace('/consultant/index')
+    },
     handleChatStart () {
       this.isShow = false
       // 加入聊天室
+      this.initRtcClient(this.roomInfo)
     },
   },
   mounted () {

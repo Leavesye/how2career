@@ -65,8 +65,8 @@
       </div>
     </el-card>
     <!-- 房间状态 -->
-    <!-- <room-status :isShow="isShow"
-                 @start="handleChatStart" :targetTime="info.startTime" :info="info"></room-status> -->
+    <room-status :isShow="isShow"
+                 @start="handleChatStart" :targetTime="info.startTime" :info="info"></room-status>
     <!-- 更多学历 -->
     <more-edu :isShow="isShowEdu"
                  @close="toggleEdu" :edus="edus"></more-edu>
@@ -129,7 +129,7 @@ export default {
       const { consultant:{ avatar, name,  _id }, consumer, startTime, question, roomId, slotId } = res[0].msg
       const { countries, majors, degrees, industry:industrys, gender:genders, company: companys, position: positions } = res[1].msg
       // 初始化语音聊天
-      this.initRtcClient(roomId, consumer, res[2].msg, this.orderId)
+      this.roomInfo = { roomId, userId: consumer, sign: res[2].msg, orderId: this.orderId }
       // 查询咨询师公共信息
       const ret = await getPublicInfo({ userId: _id }).catch(e=>l.close())
       if (ret.result) {
@@ -185,10 +185,14 @@ export default {
     l.close()
   },
   methods: {
+    handlePeerLeave() {
+      this.alert('对方已离开房间')
+      this.$router.replace('/consumer/index')
+    },
     handleChatStart () {
       this.isShow = false
       // 加入聊天室
-      
+      this.initRtcClient(this.roomInfo)
     },
     toggleEdu() {
       this.isShowEdu = !this.isShowEdu
@@ -199,8 +203,10 @@ export default {
     handleLeaveRoom() {
       // 退出房间
       this.leaveRoom(this.client)
+      this.playState = ''
       this.alert('服务已结束')
-      return
+      this.$router.replace('/consumer/index')
+      return 
       this.$alert('点击服务确认将结束此次服务，无法再次进入房间', '服务结束确认', {
         confirmButtonText: '确认',
         callback: action => {
@@ -211,6 +217,7 @@ export default {
                 this.leaveRoom(this.client)
                 this.playState = ''
                 this.alert('服务已结束')
+                this.$router.replace('/consumer/index')
               }
             })
           }

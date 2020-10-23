@@ -1,6 +1,6 @@
 <template>
   <div class="sider-bar"
-       :style="{minHeight,background: user.role=='consumer'?'#36AE82':'#15479E'}">
+       :style="{background: user.role=='consumer'?'#36AE82':'#15479E'}">
     <div v-if="isCollapse"><i :class="[isCollapse ? 'el-icon-s-unfold': 'el-icon-s-fold']"></i></div>
     <el-menu :collapse="isCollapse"
              @open="handleOpen"
@@ -34,27 +34,29 @@
         </el-submenu>
       </template>
     </el-menu>
-    <div class="flex-hc" v-if="!isCollapse" :style="{marginBottom: '20px', paddingBottom: user.role=='consultant'?'50px':'0'}">
-      <el-image class="room-btn"
-                :src="user.role=='consumer'?roomGreen:roomBlue"
-                @click="linkTo('/'+user.role+'/room/5f904cbf59d3ec71743a8622')"></el-image>
-    </div>
-    <section v-if="user.role=='consumer' && !isCollapse">
-      <p class="my-code">我的推荐码</p>
-      <div class="flex-cc qrcode-box">
-        <div class="qrcode"
-            ref="qrCodeUrl"></div>
+    <section class="bottom-content">
+      <div class="flex-hc" v-if="!isCollapse">
+        <el-image v-if="room.orderId" class="room-btn"
+                  :src="user.role=='consumer'?roomGreen:roomBlue"
+                  @click="linkTo('/'+user.role+'/room/'+ room.orderId)"></el-image>
       </div>
-      <div class="howto" @click="linkTo('/consumer/howto')">如何推荐好友</div>
+      <section v-if="user.role=='consumer' && !isCollapse">
+        <p class="my-code">我的推荐码</p>
+        <div class="flex-cc qrcode-box">
+          <div class="qrcode"
+              ref="qrCodeUrl"></div>
+        </div>
+        <div class="howto" @click="linkTo('/consumer/howto')">如何推荐好友</div>
+      </section>
+      <div class="flex-hbc bottom-links"
+          v-if="!isCollapse">
+        <el-link :underline="false"
+                style="color: #fff">在线客服</el-link>
+        <div>|</div>
+        <el-link :underline="false"
+                style="color: #fff">常见问题</el-link>
+      </div>
     </section>
-    <div class="flex-hbc bottom-links"
-         v-if="!isCollapse">
-      <el-link :underline="false"
-               style="color: #fff">在线客服</el-link>
-      <div>|</div>
-      <el-link :underline="false"
-               style="color: #fff">常见问题</el-link>
-    </div>
   </div>
 </template>
 
@@ -68,7 +70,6 @@ export default {
   data () {
     return {
       activeMenu: '1',
-      minHeight: '700px',
       isCollapse: false,
     }
   },
@@ -83,6 +84,11 @@ export default {
       'room',
       'user'
     ])
+  },
+  watch: {
+    'room.roomId': function(n, o) {
+      console.log(n, o)
+    }
   },
   methods: {
     linkTo (path) {
@@ -104,7 +110,6 @@ export default {
         correctLevel: QRCode.CorrectLevel.H
       })
     }
-    this.minHeight = document.body.clientHeight - (150 + 60 + 20 * 2) + 'px'
     // 刷新页面处理菜单高亮
     const path = this.$route.path
     for (let i = 0; i < this.menus.length; i++) {
@@ -130,6 +135,7 @@ export default {
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
   width: 240px;
+  min-height: 850px;
 }
 i {
   color: #fff;
@@ -141,21 +147,19 @@ span {
 .sub-item {
   padding-left: 50px !important;
 }
-.room-btn {
-  width: 180px;
-  height: 50px;
-  margin-top: 150px;
-  cursor: pointer;
-}
-.bottom-links {
+.bottom-content {
   position: absolute;
   bottom: 28px;
   left: 50%;
   transform: translateX(-50%);
-  width: 154px;
-  font-size: 14px;
-  color: #fff;
 }
+.room-btn {
+  width: 180px;
+  height: 50px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
 .my-code {
   font-size: 14px;
   text-align: center;
@@ -182,6 +186,11 @@ span {
   line-height: 19px;
   text-align: center;
   cursor: pointer;
-  margin-bottom: 60px;
+  margin-bottom: 22px;
+}
+.bottom-links {
+  width: 154px;
+  font-size: 14px;
+  color: #fff;
 }
 </style>

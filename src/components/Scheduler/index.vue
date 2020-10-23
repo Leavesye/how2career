@@ -179,7 +179,7 @@ export default {
             let useds = ret.result ? (ret.msg || []) : []
             const selectDayUseds = useds.filter(o => moment(o).format('YYYY-MM-DD') == selectDate)
             let all = this.events.filter(o => moment(o.StartTime).format('YYYY-MM-DD') == selectDate)
-            let usables = all.filter(o => !useds.includes(moment(o.StartTime).valueOf()))
+            let usables = all.filter(o => !useds.includes(moment(o.StartTime).valueOf()/1000))
             // 可使用的时间列表
             usables = usables.map(o => {
               let s = moment(o.StartTime).format('HH:mm')

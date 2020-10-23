@@ -197,6 +197,11 @@ export default {
       // 待服务订单
       if (ret[0].result) {
         this.serviceOrders = tool.formatConsultantOrder(ret[0].msg.list)
+        // 缓存status==5服务中订单号
+        const servicing = this.serviceOrders[0]
+        if (servicing && servicing.status == '5') {
+          this.$store.dispatch('room/setRoom', servicing.orderId)
+        }
       }
       // 待确认订单
       if (ret[1].result) {
