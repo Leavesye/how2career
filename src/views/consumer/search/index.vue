@@ -42,12 +42,14 @@ export default {
         { name: '向人事咨询', status: 2 },
       ],
       list: [
-        { img: '', name: '马里奥', rate: 3, role: '高级专家', rateCount: '234', btn: { name: '订单详情', cb: this.handleOpenDetail }, desc: '高桥於1994年创立了自己的品牌Undercover，而当时Nigo…' },
-        { img: '', name: '马里奥', rate: 3, role: '高级专家', rateCount: '234', btn: { name: '订单详情', cb: this.handleOpenDetail }, desc: '高桥於1994年创立了自己的品牌Undercover，而当时Nigo…' },
-        { img: '', name: '马里奥', rate: 3, role: '高级专家', rateCount: '234', btn: { name: '订单详情', cb: this.handleOpenDetail }, desc: '高桥於1994年创立了自己的品牌Undercover，而当时Nigo…' },
-        { img: '', name: '马里奥', rate: 3, role: '高级专家', rateCount: '234', btn: { name: '订单详情', cb: this.handleOpenDetail }, desc: '高桥於1994年创立了自己的品牌Undercover，而当时Nigo…' },
-        { img: '', name: '马里奥', rate: 3, role: '高级专家', rateCount: '234', btn: { name: '订单详情', cb: this.handleOpenDetail }, desc: '高桥於1994年创立了自己的品牌Undercover，而当时Nigo…' },
-        { img: '', name: '马里奥', rate: 3, role: '高级专家', rateCount: '234', btn: { name: '订单详情', cb: this.handleOpenDetail }, desc: '高桥於1994年创立了自己的品牌Undercover，而当时Nigo…' },
+        { id: '5f9004c9e7be443d069c1953', 
+          avatar: '/upload/consultant/1603274113微信图片_20200731222259.jpg', 
+          nickName: '马里奥', 
+          rate: 3, 
+          position: '高级专家', 
+          rateCount: '234', 
+          btn: { name: '预约', cb: this.handleOpenDetail }, 
+          selfIntroduction: '高桥於1994年创立了自己的品牌Undercover，而当时Nigo…' },
       ]
     }
   },
@@ -55,8 +57,8 @@ export default {
     this.orderId = this.$route.query.orderId
   },
   methods: {
-    handleOpenDetail () {
-      this.alert('订单详情 ')
+    handleOpenDetail (id) {
+      this.$router.push(`/consumer/consultant-detail/5f9004c9e7be443d069c1953`)
     },
     handlePannelChange (item) {
       this.selPannel = item

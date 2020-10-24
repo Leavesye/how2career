@@ -7,7 +7,7 @@
     <el-col :span="8">
       <div class="time-list">
         <div>
-          <h1 style="margin-bottom: 10px">当前已选择时间</h1>
+          <h1 style="margin-bottom: 20px">当前已选择时间</h1>
           <p v-for="(item, i) in selList"
              :key="i">
             {{item.selText}}
@@ -103,7 +103,7 @@ export default {
       this.$emit('create-order', this.selList)
     },
     handleSelectTime (i, item) {
-      if (this.selList.length == 3) {
+      if (!item.isActive && this.selList.length == 3) {
         this.alert('最多只能选择三个时间', 'warning')
         return false
       }
@@ -165,6 +165,7 @@ export default {
 }
 .time-item {
   margin-bottom: 15px;
+  color: #7C8EA5;
 }
 .time-item:last-child {
   margin-bottom: 0;
@@ -200,11 +201,12 @@ export default {
   padding: 20px 15px;
   flex: 1;
   overflow: auto;
+  color: #7C8EA5;
 }
 .time-list > h1 {
   margin-bottom: 18px;
 }
-.time-list > p {
+.time-list > div> p {
   margin-bottom: 15px;
 }
 </style>

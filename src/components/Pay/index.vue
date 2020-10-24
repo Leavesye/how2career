@@ -58,8 +58,9 @@ export default {
       if (item.type == 'alipay') {
         const res = await getAlipayUrl(this.payInfo)
         if (res.result) {
-          console.log(decodeURIComponent(res.msg))
-          this.alipayReturnUrl = res.msg
+          console.log(decodeURIComponent(res.msg.payUrl))
+          this.alipayReturnUrl = res.msg.payUrl
+          this.serialNumber = res.msg.serialNumber
         }
       }
     },
@@ -77,7 +78,7 @@ export default {
         cancelButtonText: '立即支付',
         type: 'warning'
       }).then(() => {// 点击已完成支付
-        getPayStatus({ orderId: this.order._id }).then(res => {
+        getPayStatus({ serialNumber: this.serialNumber }).then(res => {
           if (res.result) {
             // 已支付
             if (res.msg.payment) {

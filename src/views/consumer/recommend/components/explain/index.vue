@@ -75,7 +75,7 @@ $color: #36ae82;
   font-weight: 600;
   color: #15479e;
   text-align: center;
-  margin-bottom: 50px;
+  margin: 50px 0;
 }
 .item {
   flex: 1;

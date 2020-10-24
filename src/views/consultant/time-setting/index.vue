@@ -197,8 +197,13 @@ export default {
     handleClosePay () {
       this.isShowPay = false
     },
-    handleConfirmPay () {
+    handleConfirmPay (isPayment) {
       this.isShowPay = false
+      if (isPayment) {
+        this.alert('支付成功')
+      } else {
+        this.alert('未完成支付', 'warning')
+      }
     },
     handleReloadSchduler () {
       this.init()
