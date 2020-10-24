@@ -38,7 +38,7 @@ export default {
   },
   computed: {
     banner: function () {
-      return require('@/assets/invite.png')
+      return require('@/assets/invite-banner.png')
     },
   },
   methods: {
@@ -65,7 +65,7 @@ export default {
 <style lang="scss" scoped>
 $color: #36ae82;
 .banner {
-  height: 220px;
+  height: 170px;
   margin-bottom: 50px;
   display: block;
   margin: 0 auto;
@@ -94,7 +94,9 @@ $color: #36ae82;
   height: 30px;
 }
 .item > p{
-  width: 122px;
+  width: 160px;
+  color: #7A7F84;
+  line-height: 24px;
 }
 .join-btn {
   width: 200px;

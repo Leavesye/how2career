@@ -50,7 +50,7 @@ export default {
 }
 .p-item > p {
   font-size: 14px;
-  margin-top: 20px;
+  margin-top: 22px;
   margin-left: 20px;
 }
 .p-item.consultant {

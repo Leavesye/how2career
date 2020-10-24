@@ -11,7 +11,7 @@
              @click="handleClickPannel(o, i)">
           <p v-if="o.count != 'search'">{{o.name}}</p>
           <div class="order-count" v-if="o.count != 'search'">{{o.count|num}}</div>
-          <h1 v-else><i class="iconfont iconsousuo-01"></i>{{o.name}}</h1>
+          <h1 v-else style="font-weight: 400"><i class="iconfont iconsousuo-01"></i>{{o.name}}</h1>
         </div>
       </div>
       <el-card class="order-card">
@@ -178,10 +178,11 @@ $color: #36ae82;
 .p-item > p {
   font-size: 14px;
   margin-top: 20px;
+  font-weight: 400;
 }
 .p-item > div {
   font-size: 26px;
-  margin-top: 20px;
+  margin-top: 26px;
 }
 .p-item:hover,
 .p-item.active {
