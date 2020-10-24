@@ -159,7 +159,8 @@ export default {
         if (this.isReg) {
           ret = await register(p).catch(e => l.close())
         } else {
-          ret = await updateUserInfo(p).catch(e => l.close())
+          const { account, ...params }  = p
+          ret = await updateUserInfo(params).catch(e => l.close())
         }
         if (ret.result) {
           this.alert(this.isReg ? '注册成功' : '保存成功')

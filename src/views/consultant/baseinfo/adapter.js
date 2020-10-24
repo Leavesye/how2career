@@ -10,6 +10,7 @@ export function boxing (from, to) {
   // 基本信息
   to.account.userName = from.userName
   to.account.passWord = from.passWord
+  to.account.oldPassWord = from.passWord
   to.basic.name = from.name
   to.publicInfo.gender = from.gender
   to.publicInfo.birthday = from.birthday

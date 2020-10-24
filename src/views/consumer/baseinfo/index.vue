@@ -141,13 +141,20 @@ export default {
           ...this.$refs.baseInfo.getFormData(),
           ...this.$refs.education.getFormData()
         }
-        const p = adapter.boxing(formData)
+        let p = adapter.boxing(formData)
         // 好友推荐注册
         if (this.isReg && this.refer) {
           p.refer = this.refer
         }
         const l = this.loading()
-        const fn = this.isReg ? register:updateUserInfo
+        let fn = null
+        if (this.isReg) {
+          fn = register
+        } else {
+          const { account, ...params } = p
+          p = params
+          fn = updateUserInfo
+        }
         const ret = await fn(p).catch(e => l.close())
         if (ret.result) {
           this.alert(this.isReg ? '注册成功' : '保存成功')

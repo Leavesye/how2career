@@ -201,6 +201,7 @@ export default {
       this.isShowPay = false
       if (isPayment) {
         this.alert('支付成功')
+        this.querySlots()
       } else {
         this.alert('未完成支付', 'warning')
       }
