@@ -95,9 +95,8 @@ export default {
     height: 100%;
     margin: 0 auto;
     .logo {
-      width: 96px;
+      width: 125px;
       height: 40px;
-      background: #fff;
       cursor: pointer;
     }
   }

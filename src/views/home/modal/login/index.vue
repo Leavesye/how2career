@@ -114,7 +114,7 @@ export default {
   },
   computed: {
     logo: function () {
-      return require('../../../../assets/logo.png')
+      return require('../../../../assets/logo2.png')
     }
   },
   watch: {
@@ -253,8 +253,8 @@ export default {
 
 <style lang="scss" scoped>
 .logo {
-  width: 174px;
-  height: 88px;
+  width: 111px;
+  height: 80px;
   margin: 0 auto;
   margin-bottom: 40px;
   display: block;

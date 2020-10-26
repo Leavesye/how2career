@@ -91,7 +91,7 @@ const actions = {
   // user logout
   loginout({ commit }) {
     commit('SET_TOKEN', '')
-    commit('SET_ROLE', '')
+    // commit('SET_ROLE', '')
     commit('SET_USERNAME', '')
     commit('SET_NICKNAME', '')
     commit('SET_COMPLETION', '')

@@ -61,16 +61,15 @@ export default {
   .inner {
     margin: 0 auto;
     .logo {
-      width: 96px;
+      width: 125px;
       height: 40px;
-      background: #fff;
       cursor: pointer;
+      margin-right: 20px;
     }
     .links {
       padding: 24px 0;
       border-bottom: 1px solid #fff;
       .left {
-        width: 450px;
         font-size: 14px;
         ul {
           width: 322px;

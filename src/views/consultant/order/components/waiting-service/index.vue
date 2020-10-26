@@ -43,10 +43,10 @@
           </li>
           <li>
             <p style="margin-bottom: 10px">创建时间：{{o.cTime}}</p>
-            <div>开始时间：{{o.startTime}}</div>
+            <div style="padding-top: 10px">开始时间：{{o.startTime}}</div>
           </li>
           <li>
-            <div style="margin-top:30px">{{o.serviceCountDown}}</div>
+            <div style="margin-top:35px">{{o.serviceCountDown}}</div>
           </li>
           <li>
             <div style="margin-bottom: 10px; text-align: right">订单金额:{{o.price}} RMB</div>
@@ -142,6 +142,9 @@ export default {
   margin-bottom: 20px;
   font-size: 14px;
   color: #7C8FA5;
+}
+.order-item > li {
+  height: 56px;
 }
 .order-item:last-child {
   margin-bottom: 0

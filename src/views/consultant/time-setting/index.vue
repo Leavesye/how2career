@@ -249,7 +249,7 @@ export default {
   font-family: 'notosans-bold,notosans-regular';
 }
 .slot-desc {
-  width: 620px;
+  width: 640px;
   font-size: 14px;
   color: #7c8fa5;
   background: #f6f6f6;

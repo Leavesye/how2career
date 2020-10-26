@@ -4,6 +4,7 @@
     <!-- 未认证简历或者没有填写服务时间 -->
     <div v-if="!isFinishReview || !isSettingTime">
       <el-image class="banner"
+                fit="contain"
                 :src="bannerImg"></el-image>
       <p class="reg-success">你已经成功注册咨询师</p>
       <p class="condition">只需再完成以下2个步骤即可开始接受咨询</p>

@@ -1,6 +1,7 @@
 <template>
   <section style="padding: 30px">
     <el-image :src="banner"
+              fit="contain"
               class="banner"></el-image>
     <h1 class="title">加入好途职场，邀请好友有奖</h1>
     <div class="flex-hb">

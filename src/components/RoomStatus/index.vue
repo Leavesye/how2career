@@ -3,12 +3,12 @@
   :show-close="false"
   :close-on-click-modal="false"
   :close-on-press-escape="false"
-  :title="isReady && online? '房间状态' : '咨询开始'"
+  :title="isReady && online ? '咨询开始' : '房间状态'"
   :visible.sync="isShow"
   width="530px"
   center>
   <section class="modal-main">
-    <!-- 双方都都准备好倒计时三秒 -->
+    <!-- 双方都准备好倒计时三秒 -->
     <div v-if="isReady && online" class="progress-box">
       <el-progress :show-text="false" :width="250" color="#36AE82" style="position: relative" type="circle" :percentage="percent"></el-progress>
       <div class="number" :class="[o.ani]" v-for="(o, i) in nums" :key="i">{{o.v}}</div>
@@ -18,7 +18,7 @@
       <div class="flex-hc">
         <avatar :imgUrl="info.avatar"></avatar>
       </div>
-      <p class="user-role">咨询师</p>
+      <p class="user-role">{{user.role=='consumer'? '咨询师' : '咨询者'}}</p>
       <p class="user-name">{{info.name}}</p>
       <div class="flex-hbc" style="margin-top: 40px; margin-bottom: 20px">
         <div class="line"></div>

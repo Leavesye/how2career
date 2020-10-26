@@ -42,12 +42,12 @@
       <el-card v-else>
         <p class="no-data">暂无数据</p>
       </el-card>
-      <p class="title">经常查看的咨询师</p>
+      <p class="title" style="margin-top: 0">经常查看的咨询师</p>
       <card-list v-if="top4.length" :list="top4"></card-list>
       <el-card v-else>
         <p class="no-data">暂无数据</p>
       </el-card>
-      <p class="title">更多职业选择</p>
+      <p class="title" style="margin-top: 0">更多职业选择</p>
       <career-list></career-list>
     </div>
     <detail-modal :isShow="isShow" :order="order" @close="handleClose"></detail-modal>
