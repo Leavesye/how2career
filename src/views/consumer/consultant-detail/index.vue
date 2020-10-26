@@ -137,16 +137,12 @@ export default {
   async created() {
     const res = await Promise.all([
       getFavorites(),
-      getDicts(),
       // 收集top4咨询师
       trackViewConsultant({ consultantId: this.id } )
     ])
-    if (res[0].result) {
-      const data = res[0].msg
+    if (res.result) {
+      const data = res.msg
       this.isFavorite = data.list && !!data.list.filter(o => o._id == this.id)
-    }
-    if (res[1].result) {
-      this.dicts = res[1].msg
     }
   },
   methods: {
@@ -157,9 +153,10 @@ export default {
       this.isShowWork = !this.isShowWork
     },
     // 避免重复调用接口 由子组件初始化页面数据
-    handleInitData(res){
+    async handleInitData(res){
+      const ret = await getDicts()
       if (res.result && res.msg.publicInfo) {
-        const { countries, majors, degrees, industry:industrys, company: companys, position: positions  } = this.dicts
+        const { countries, majors, degrees, industry:industrys, company: companys, position: positions  } = ret.msg
         const { publicInfo: { resume }} = res.msg
         if (resume) {
           const { education = [], workExperience = [], skills = [] } = resume

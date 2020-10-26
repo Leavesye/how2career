@@ -32,7 +32,7 @@ router.beforeEach(async(to, from, next) => {
         to: "2601444690",
         page: 0,
         limit: 10,
-        condition: 'status==4:status==5'
+        condition: 'status==5'
       }).then(res => { 
         if (res.result && res.msg.count) {
           const { _id: orderId } = res.msg.list[0]

@@ -177,6 +177,8 @@ export default {
   text-align: center;
   font-size: 12px;
   cursor: pointer;
+  height: 20px;
+  line-height: 20px;
 }
 .sel-btn.consultant.isActive {
   background: #15479e;

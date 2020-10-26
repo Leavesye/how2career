@@ -134,6 +134,7 @@ export default {
 }
 .confirm-time > li {
   margin-right: 60px;
+  padding-bottom: 10px;
 }
 .btns {
   padding-top: 20px;

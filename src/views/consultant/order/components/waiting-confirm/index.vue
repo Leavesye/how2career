@@ -14,7 +14,7 @@
             <small-avatar :imgUrl="o.avatar"></small-avatar>
             <div class="user-name">{{o.name}}</div>
           </div>
-          <div>{{o.confirmCountDown}}</div>
+          <div class="rest-time">{{o.confirmCountDown}}</div>
           <el-button plain
                      @click="handleOpenDetail(o)">订单详情</el-button>
         </div>
@@ -96,5 +96,9 @@ export default {
 }
 .user-name {
   margin-left: 10px;
+}
+.rest-time {
+  padding-left: 26px;
+  margin-top: 7px;
 }
 </style>
