@@ -84,6 +84,13 @@ export default {
   color: #7c8ea5;
   font-size: 14px;
 }
+.list-item > li:nth-child(1) {
+  width: 40%
+}
+.list-item > li:nth-child(2) {
+  width: 40%
+}
+
 .order-amount {
   margin-bottom: 18px;
   text-align: right;

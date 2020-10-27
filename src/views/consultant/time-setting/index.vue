@@ -61,7 +61,7 @@
                :payInfo="payInfo"
                @close="handleClosePay"
                @confirm="handleConfirmPay">
-               <p class="pay-tips">当前所需支付费用为{{payAmout}}RMB,亲选择您的支付方式</p>
+               <p class="pay-tips">当前所需支付费用为{{payAmout}}RMB,请选择您的支付方式</p>
     </pay-modal>
   </div>
 </template>
@@ -203,7 +203,7 @@ export default {
         this.alert('支付成功')
         this.querySlots()
       } else {
-        this.alert('未完成支付', 'warning')
+        this.alert('未支付成功', 'warning')
       }
     },
     handleReloadSchduler () {
@@ -266,11 +266,11 @@ export default {
 }
 .slot-item {
   position: relative;
-  flex-basis: 32%;
+  flex-basis: 32.2%;
   height: 180px;
   background: #ffffff;
   box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.1);
-  border-radius: 4px;
+  border-radius: 8px;
   margin-bottom: 20px;
 }
 .blank-item {

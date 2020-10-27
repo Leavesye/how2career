@@ -8,11 +8,14 @@
   <div class="info">
     <div class="info-item">
       <div class="title">自我介绍</div>
-      <p class="desc">{{order.readme}}</p>
+      <p class="desc">{{order.readme || '暂无介绍'}}</p>
     </div>
     <div class="info-item">
-      <div class="title" v-if="order.question && order.question.length">咨询问题</div>
-      <p class="desc" v-for="(item, i) in order.question" :key="i">{{item.v}}</p>
+      <div class="title">咨询问题</div>
+      <div v-if="order.question && order.question.length">
+        <p class="desc" v-for="(item, i) in order.question" :key="i">{{item.v}}</p>
+      </div>
+      <p class="desc" v-else>暂无问题</p>
     </div>
   </div>
 </div>

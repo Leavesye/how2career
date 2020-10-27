@@ -12,7 +12,7 @@
     </el-card>
     <p class="title">搜索结果</p>
     <card-list :list="list"></card-list>
-    <p class="title">经常查看的咨询师</p>
+    <p class="title" style="margin-top: 0">经常查看的咨询师</p>
     <card-list :list="list"></card-list>
   </section>
 </template>

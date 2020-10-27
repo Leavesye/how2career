@@ -4,6 +4,7 @@
              :before-close="handleClose"
              width="430px"
              center>
+    <confirm-modal :isShow="isShowInner" @close="handleCloseConfirm" @finish="handleFinish" @pay="handlePay"></confirm-modal>
     <slot></slot>
     <section class="modal-main">
       <ul class="flex-hb pay-list">
@@ -21,7 +22,7 @@
           class="dialog-footer">
       <el-button @click="handleConfirm"
                  style="width: 180px"
-                 type="success"
+                 :type="user.role=='consumer'?'success':'primary'"
                  plain
                  size="medium"
                  round>确认</el-button>
@@ -29,17 +30,19 @@
   </el-dialog>
 </template>
 <script>
+import { mapGetters }from 'vuex'
 import { getAlipayUrl } from '@/api/pay'
 import { getPayStatus } from '@/api/order'
+import ConfirmModal from './modal/confirm'
 
 export default {
   name: 'pays',
-  components: {
-  },
   props: ['isShow', 'payInfo'],
+  components:{ ConfirmModal },
   data () {
     return {
       curPay: '',
+      isShowInner: false,
       pays: [
         { type: 'wechat', img: require('@/assets/weixin.png') },
         { type: 'alipay', img: require('@/assets/zhifubao.png') },
@@ -47,7 +50,10 @@ export default {
       ]
     }
   },
-   watch: {
+  computed: {
+    ...mapGetters(['user'])
+  },
+  watch: {
     'isShow': function(n, o) {
       this.curPay = ''
     }
@@ -73,12 +79,12 @@ export default {
     handleConfirm () {
       // 跳转支付
       this.toPay()
-      this.$confirm('支付完成前请不要关闭此窗口，完成支付后根据您的情况点击下面按钮', '请在新页面完成支付', {
-        confirmButtonText: '已完成支付',
-        cancelButtonText: '立即支付',
-        type: 'warning'
-      }).then(() => {// 点击已完成支付
-        getPayStatus({ serialNumber: this.serialNumber }).then(res => {
+      this.isShowInner = true
+    },
+    // 点击已完成支付
+    async handleFinish() {
+      this.isShowInner = false
+      getPayStatus({ serialNumber: this.serialNumber }).then(res => {
           if (res.result) {
             // 已支付
             if (res.msg.payment) {
@@ -88,10 +94,14 @@ export default {
             }
           }
         }).catch(e=> console.log(e))
-      }).catch(() => {// 点击立即支付
-        // 跳转支付
-        this.toPay()
-      })
+    },
+    // 点击立即支付
+    handlePay() {
+      // 跳转支付
+      this.toPay()
+    },
+    handleCloseConfirm () {
+      this.isShowInner = false
     },
     handleClose () {
       this.$emit('close')

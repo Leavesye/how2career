@@ -164,6 +164,7 @@ span {
   font-size: 14px;
   text-align: center;
   color: #fff;
+  margin-bottom: 5px;
 }
 .qrcode-box {
   margin: 0 auto;

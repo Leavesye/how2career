@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :show-close="false"
+  <el-dialog id="login-form" :show-close="false"
              :before-close="handleClose"
              :visible.sync="isShow"
              width="400px"
@@ -114,7 +114,7 @@ export default {
   },
   computed: {
     logo: function () {
-      return require('../../../../assets/logo2.png')
+      return require('../../../../assets/logo1.png')
     }
   },
   watch: {
@@ -250,11 +250,15 @@ export default {
   }
 };
 </script>
-
+<style>
+#login-form .el-dialog__header {
+  padding-top: 10px;
+}
+</style>
 <style lang="scss" scoped>
 .logo {
-  width: 111px;
-  height: 80px;
+  width: 108px;
+  height: 77px;
   margin: 0 auto;
   margin-bottom: 40px;
   display: block;

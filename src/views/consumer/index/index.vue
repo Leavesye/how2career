@@ -116,8 +116,8 @@ export default {
     if (res[1].result) {
       const info = res[1].msg
       this.pannels[0].count = info['1']
-      this.pannels[1].count = info['4'] + info['5']
-      this.pannels[2].count = info['0'] + info['7'] + info['8']
+      this.pannels[1].count = (info['4'] || 0) + (info['5'] || 0)
+      this.pannels[2].count = (info['0'] || 0) + (info['7'] || 0) + (info['8'] || 0)
     }
     // 我的收藏
     if (res[2].result && res[2].msg.list) {

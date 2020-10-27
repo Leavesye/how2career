@@ -12,11 +12,14 @@
     </div>
     <div class="info-item">
       <div class="title">自我简介</div>
-      <p class="desc">{{info.selfIntroduction}}</p>
+      <p class="desc">{{info.selfIntroduction || '暂无简介'}}</p>
     </div>
-    <div class="info-item" v-if="info.question && info.question.length">
+    <div class="info-item">
       <div class="title">咨询问题</div>
-      <p class="desc" v-for="(item, i) in info.question" :key="i">{{item.v}}</p>
+      <div v-if="info.question && info.question.length">
+        <p class="desc" v-for="(item, i) in info.question" :key="i">{{item.v}}</p>
+      </div>
+      <p class="desc" v-else>暂无问题</p>
     </div>
   </div>
 </div>

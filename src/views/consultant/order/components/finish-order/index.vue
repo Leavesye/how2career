@@ -6,7 +6,7 @@
       <!-- 订单列表 -->
       <section v-for="(o ,i) in list"
                :key="i">
-        <ul class="order-item flex-hbc">
+        <ul class="order-item flex-hb">
           <li>
             <p class="order-no">订单号：{{o.orderId}}</p>
             <div class="flex-vc">
@@ -143,11 +143,20 @@ export default {
   font-size: 14px;
   color: #7c8fa5;
 }
+.order-item > li:nth-child(1) {
+  width: 30%
+}
+.order-item > li:nth-child(2) {
+  width: 25%
+}
 .user-name {
   margin-left: 10px;
 }
-.order-no, .create-time {
+.order-no {
   margin-bottom: 10px;
+}
+.create-time {
+  height: 36px;
 }
 .order-amount {
   margin-bottom: 10px; text-align: right

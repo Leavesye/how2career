@@ -25,12 +25,10 @@
               </div>
             </div>
             <p class="motto">{{info.selfIntroduction}}</p>
-            <div class="flex-hb">
-              <p class="cost-item">咨询费用</p>
-              <div class="flex-hc">
-                <div class="num">{{info.price}}</div>
-                <div class="unit">RMB</div>
-              </div>
+            <p class="cost-item">咨询费用</p>
+            <div class="flex-hc cost-num">
+              <div class="num">{{info.price}}</div>
+              <div class="unit">RMB</div>
             </div>
           </el-card>
         </el-col>
@@ -309,6 +307,16 @@ export default {
 .left,.right {
   height: 500px;
   color: #7c8ea5;
+  position: relative;
+}
+.cost-item {
+  position: absolute;
+  bottom: 30px;
+}
+.cost-num {
+  position: absolute;
+  bottom: 26px;
+  right: 30px;
 }
 .icons {
   width: 140px;

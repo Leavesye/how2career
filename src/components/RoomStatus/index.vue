@@ -15,8 +15,11 @@
     </div>
     <div v-else>
       <!-- 头像 -->
-      <div class="flex-hc">
+      <div class="flex-hc room-header">
         <avatar :imgUrl="info.avatar"></avatar>
+        <div class="speak-icon">
+          <i class="iconfont iconlixian"></i>
+        </div>
       </div>
       <p class="user-role">{{user.role=='consumer'? '咨询师' : '咨询者'}}</p>
       <p class="user-name">{{info.name}}</p>
@@ -145,16 +148,36 @@ export default {
   color: #7C8EA5;
   margin: 0 auto;
 }
+.room-header {
+  position: relative;
+}
+.speak-icon {
+  position: absolute;
+  bottom: -13px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  border-radius: 50%;
+  background:#9B9B9B;
+  text-align: center;
+}
+.speak-icon > i {
+  color: #fff;
+  font-size: 22px;
+}
 .user-role {
   text-align: center;
-  margin-top: 14px;
+  margin-top: 20px;
 }
 .user-name {
   text-align: center;
   font-size: 18px;
+  margin-top: 10px;
 }
 .line {
-  width: 172px;
+  width: 190px;
   height: 1px;
   background: #EDEEEF;
 }
