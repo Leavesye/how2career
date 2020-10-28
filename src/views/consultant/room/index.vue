@@ -26,9 +26,9 @@
             style="margin-bottom: 28px">咨询开始时间</p>
           <p>北京时间</p>
           <p>{{info.startText}}</p>
-          <p class="ques-status">咨询中</p>
+          <p class="ques-status">{{isShow ? '等待中' : '咨询中'}}</p>
           <!-- 计时器 -->
-          <count-down bg="#15479e" :targetTime="info.startTime"></count-down>
+          <count-down :timer="timer"></count-down>
         </el-card>
       </el-col>
     </el-row>
@@ -166,7 +166,7 @@
     <!-- 房间状态 -->
     <room-status :isShow="isShow"
                  @start="handleChatStart"
-                 :targetTime="info.startTime"
+                 :timer="timer"
                  :info="info"></room-status>
     <div id="local_stream"></div>
     <div v-html="remoteStream">
@@ -194,7 +194,7 @@ export default {
   mixins: [roomMixin],
   data () {
     return {
-      targetTime: 0,
+      timer: {},
       isShow: true,
       activeName: 'first',
       rewards: [],
@@ -228,6 +228,34 @@ export default {
         const { countries, majors, degrees, gender: genders, industry: industrys, workCategory } = res[0].msg
         // 咨询者信息
         let { basic: { name, gender, birthday, highestEducation = {}, selfIntroduction, detailedIntroduction } } = res[2].msg
+        const now = Math.ceil((moment().valueOf() / 1000))
+        const leftStart = startTime - now
+        const leftEnd = startTime + 90 * 60 - now
+        let targetTime = 0
+        let isStart = false
+        let bg = '#7c8ea5'
+        if (leftStart > 0) {
+          targetTime = leftStart
+          isStart = false
+        } else {
+          targetTime = leftEnd
+          isStart = true
+          bg = '#15479e'
+        }
+        const sid = setInterval(() => {
+          if (targetTime == 0) {
+            this.timer.isStart = true
+            this.timer.bg = '#15479e'
+            clearInterval(sid)
+          }
+          targetTime--
+        }, 1000)
+        // 定时器信息
+        this.timer = {
+          targetTime,
+          isStart,
+          bg,
+        }
         this.info = {
           slotId,
           orderId,

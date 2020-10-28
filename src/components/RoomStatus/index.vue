@@ -25,10 +25,10 @@
       <p class="user-name">{{info.name}}</p>
       <div class="flex-hbc" style="margin-top: 40px; margin-bottom: 20px">
         <div class="line"></div>
-        <p>距离{{targetTime>0? '开始': '结束'}}还有</p>
+        <p>距离{{timer.isStart ? '结束': '开始'}}还有</p>
         <div class="line"></div>
       </div>
-      <count-down bg="#7C8FA5" :targetTime="target"></count-down>
+      <count-down :timer="timer"></count-down>
     </div>
   </section>
   <span slot="footer" class="dialog-footer">
@@ -45,7 +45,7 @@ import CountDown from '@/components/CountDown'
 import { clickReady, getRoomStatus, getRoomStatusAfterReady } from '@/api/room'
 
 export default {
-  props: ['isShow', 'targetTime', 'info'],
+  props: ['isShow', 'timer', 'info'],
   components: {
     Avatar,
     CountDown,
@@ -65,9 +65,6 @@ export default {
   },
   computed: {
     ...mapGetters(['user']),
-    target: function() {
-      return Math.abs(this.targetTime)
-    }
   },
   mounted() {
     // 未准备好轮询
@@ -77,10 +74,16 @@ export default {
   },
   methods: {
     async getRoomStatus() {
-      const res = await getRoomStatus({ roomId: this.info.roomId, roomMate: this.info.consultantId }).catch(e=>{
+      const { roomId, orderId, consultantId, consumerId } = this.info
+      let roomMate = this.user.role == 'consumer' ? consultantId : consumerId
+      const res = await getRoomStatus({ roomId, orderId, roomMate }).catch(e=>{
         console.log(e)
       })
       if (res.result) {
+        if (res.msg == 'orderCancel') {
+          this.alert('咨询超过20分钟未开始,已自动取消', 'warning')
+          this.$router.push(this.user.role == 'consumer'?'/consumer/order?status=6': '/consultant/order?status=0,7,8')
+        }
         // 对方是否在线
         this.online = res.msg.online
         // 对方在线 停止轮询
@@ -91,12 +94,21 @@ export default {
     },
     async getRoomStatusAfterReady() {
       const {roomId, consultantId, consumerId, orderId, slotId } = this.info
-      let roomMate = this.user.rolo == 'consumer' ? consultantId : consumerId
+      let roomMate = this.user.role == 'consumer' ? consultantId : consumerId
       const res = await getRoomStatusAfterReady({ 
         roomId, roomMate, orderId,
         slotId, consultant: consultantId, }).catch(e=>{console.log(e)})
       if (res.result) {
-        
+        if (res.msg == 'orderCancel') {
+          this.alert('咨询超过20分钟未开始,已自动取消', 'warning')
+          this.$router.push(this.user.role == 'consumer'?'/consumer/order?status=6': '/consultant/order?status=0,7,8')
+        }
+        // 对方是否在线
+        this.online = res.msg.online
+        // 对方在线 停止轮询
+        if (this.online) {
+          clearInterval(this.afterTimer)
+        }
       }
     },
     // 点击准备好了
@@ -161,7 +173,7 @@ export default {
   line-height: 30px;
   border-radius: 50%;
   background:#9B9B9B;
-  text-align: center;
+  padding-left: 3px;
 }
 .speak-icon > i {
   color: #fff;

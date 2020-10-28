@@ -3,8 +3,7 @@
     <el-col :xs="24" :sm="24" :md="22" :lg="20" :xl="15" class="inner">
       <section class="flex-hb links">
         <div class="flex-hbc left">
-          <el-image @click="goHome" class="logo"
-                    :src="logoImg"></el-image>
+          <svg-icon icon-class="logo" class="logo"></svg-icon>
           <ul class="flex-hb">
             <li v-for="(o,i) in links"
                 :key="i">
@@ -38,11 +37,6 @@ export default {
         { code: 'iconfont iconweibo' },
         { code: 'iconfont iconTwitter' },
       ],
-    }
-  },
-  computed: {
-    logoImg: function() {
-      return require('../../../assets/logo.png')
     }
   },
   methods: {

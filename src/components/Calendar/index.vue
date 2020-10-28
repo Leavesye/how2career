@@ -32,11 +32,11 @@
         <li class="flex-hb time-item"
             v-for="(item, i) in usables"
             :key="i"
-            @click="handleSelectTime(i, item)">
+            >
           <div>{{item.text}}</div>
-          <div class="sel-btn"
+          <div @click="handleSelectTime(i, item)" v-if="!item.isUsed" class="sel-btn"
                :class="[ user.role, {isActive: item.isActive}]">选择</div>
-          <!-- <div class="sel-btn apointment">已预约</div> -->
+          <div v-else class="sel-btn apointment" :class="[user.role]">已预约</div>
         </li>
       </ul>
     </div>
@@ -192,7 +192,11 @@ export default {
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
   color: #fff;
 }
-.sel-btn.apointment {
+.sel-btn.consumer.apointment {
+  border: 1px solid #36AE82;
+  color: #36AE82;
+}
+.sel-btn.consultant.apointment {
   border: 1px solid #15479e;
   color: #15479e;
 }

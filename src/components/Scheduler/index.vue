@@ -177,18 +177,27 @@ export default {
             // 获取咨询师该天已经被预约的时间列表
             let ret = await getAppointmentedTimes({ userId: this.consultantId })
             let useds = ret.result ? (ret.msg || []) : []
-            const selectDayUseds = useds.filter(o => moment(o*1000).format('YYYY-MM-DD') == selectDate)
             let all = this.events.filter(o => moment(o.StartTime).format('YYYY-MM-DD') == selectDate)
-            let usables = all.filter(o => !useds.includes(moment(o.StartTime).valueOf()/1000 + ''))
             // 可使用的时间列表
-            usables = usables.map(o => {
+            let usables = all.map(o => {
               let s = moment(o.StartTime).format('HH:mm')
               let e = moment(o.EndTime).format('HH:mm')
+              let isUsed = useds.includes(moment(o.StartTime).valueOf() / 1000 + '')
               return {
+                isUsed,
                 text: `${s}-${e}`,
                 selText: `${selectDate} ${s}-${e}`,
                 value: moment(o.StartTime).valueOf(),
               }
+            })
+            usables.sort(function(a, b) {
+              if (a.value < b.value) {
+                return -1
+              }
+              if (a.value > b.value) {
+                return 1
+              }
+              return 0;
             })
             // 显示自定义时间段弹框
             this.$emit('open-timepicker', usables, moment(selectDate).format('YYYY年MM月DD日'))

@@ -1,7 +1,7 @@
 <template>
   <el-row class="navbar" type="flex" justify="center">
     <el-col :xs="24" :sm="24" :md="22" :lg="20" :xl="15" class="menu-container flex-hbc">
-      <el-image  @click="goHome" class="logo" :src="logoImg"></el-image>
+      <svg-icon icon-class="logo" class="logo"></svg-icon>
       <ul class="menu">
         <li v-for="(o, i) in menus" :key="i"><el-link class="link" :underline="false">{{o.name}}</el-link></li>
       </ul>
@@ -42,9 +42,6 @@ export default {
     }
   },
   computed: {
-    logoImg: function() {
-      return require('../../../assets/logo.png')
-    },
     avatar: function() {
       return process.env.VUE_APP_HOST_NAME + this.user.avatar || require('../../../assets/default-avatar.png')
     },

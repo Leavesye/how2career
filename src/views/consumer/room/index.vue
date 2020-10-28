@@ -1,13 +1,16 @@
 <template>
   <div style="padding: 30px">
-    <el-row :gutter="10" type="flex" justify="space-between">
+    <el-row :gutter="10"
+            type="flex"
+            justify="space-between">
       <el-col :span="6">
         <el-card class="card-l">
           <div class="title"
-              style="margin-bottom: 40px">咨询师</div>
+               style="margin-bottom: 40px">咨询师</div>
           <div class="header">
             <avatar :imgUrl="info.avatar"></avatar>
-            <div class="micro" :class="[playState == 'PLAYING'? 'ani': '']"><i class="iconfont iconhuatong"></i></div>
+            <div class="micro"
+                 :class="[playState == 'PLAYING'? 'ani': '']"><i class="iconfont iconhuatong"></i></div>
           </div>
           <p class="user-name">{{info.name}}</p>
         </el-card>
@@ -16,19 +19,21 @@
         <el-card class="card-c">
           <p class="title">咨询问题</p>
           <div class="q-box">
-            <p class="question" v-for="(item, i) in info.question" :key="i">{{item}}?</p>
+            <p class="question"
+               v-for="(item, i) in info.question"
+               :key="i">{{item}}?</p>
           </div>
         </el-card>
       </el-col>
       <el-col :span="6">
         <el-card class="card-r">
           <p class="title"
-            style="margin-bottom: 28px">咨询开始时间</p>
+             style="margin-bottom: 28px">咨询开始时间</p>
           <p>北京时间</p>
           <p>{{info.startText}}</p>
-          <p class="ques-status">咨询中</p>
+          <p class="ques-status">{{isShow ? '等待中' : '咨询中'}}</p>
           <!-- 计时器 -->
-          <count-down bg="#36AE82" :targetTime="info.startTime"></count-down>
+          <count-down :timer="timer"></count-down>
         </el-card>
       </el-col>
     </el-row>
@@ -36,8 +41,10 @@
       <div class="d-item">
         <p class="field-name title">最高学历</p>
         <div class="flex-hbc">
-            <span>{{edu.desc}}</span>
-            <el-button plain v-if="edus.length>1" @click="toggleEdu">更多</el-button>
+          <span>{{edu.desc}}</span>
+          <el-button plain
+                     v-if="edus.length>1"
+                     @click="toggleEdu">更多</el-button>
         </div>
       </div>
       <div class="d-item">
@@ -49,7 +56,9 @@
             <span>职位：{{work.positionText}}</span>
             <span>工作年限：{{work.workingYears}}</span>
           </div>
-          <el-button plain v-if="works.length>1" @click="toggleWork">更多</el-button>
+          <el-button plain
+                     v-if="works.length>1"
+                     @click="toggleWork">更多</el-button>
         </div>
       </div>
       <div class="d-item">
@@ -61,18 +70,24 @@
         <p>{{skills}}</p>
       </div>
       <div class="flex-he">
-        <el-button class="stop-btn" type="success" @click="handleLeaveRoom">结束服务</el-button> 
+        <el-button class="stop-btn"
+                   type="success"
+                   @click="handleLeaveRoom">结束服务</el-button>
       </div>
     </el-card>
     <!-- 房间状态 -->
     <room-status :isShow="isShow"
-                 @start="handleChatStart" :targetTime="info.startTime" :info="info"></room-status>
+                 @start="handleChatStart"
+                 :timer="timer"
+                 :info="info"></room-status>
     <!-- 更多学历 -->
     <more-edu :isShow="isShowEdu"
-                 @close="toggleEdu" :edus="edus"></more-edu>
+              @close="toggleEdu"
+              :edus="edus"></more-edu>
     <!-- 更多工作 -->
     <more-work :isShow="isShowWork"
-                 @close="toggleWork" :works="works"></more-work>
+               @close="toggleWork"
+               :works="works"></more-work>
     <div id="local_stream"></div>
     <div v-html="remoteStream">
     </div>
@@ -103,6 +118,7 @@ export default {
   mixins: [roomMixin],
   data () {
     return {
+      timer: {},
       isShow: true,
       isShowEdu: false,
       isShowWork: false,
@@ -112,28 +128,55 @@ export default {
       edus: [],
       skills: '',
       info: {},
-      targetTime: 0,
       remoteStream: '', // 远方流播放
       playState: '',
     }
   },
-  async created() {
+  async created () {
     this.orderId = this.$route.params.id
     const l = this.loading()
     const res = await Promise.all([
       getOrderById({ orderId: this.orderId }),
       getDicts(),
       getSign()
-    ]).catch(e=> l.close())
+    ]).catch(e => l.close())
     if (res[0].result) {
-      const { consultant:{ avatar, name,  _id }, consumer, startTime, question, roomId, slotId } = res[0].msg
-      const { countries, majors, degrees, industry:industrys, gender:genders, company: companys, position: positions } = res[1].msg
+      const { consultant: { avatar, name, _id }, consumer, startTime, question, roomId, slotId } = res[0].msg
+      const { countries, majors, degrees, industry: industrys, gender: genders, company: companys, position: positions } = res[1].msg
       // 初始化语音聊天
       this.roomInfo = { roomId, userId: consumer, sign: res[2].msg, orderId: this.orderId }
       // 查询咨询师公共信息
-      const ret = await getPublicInfo({ userId: _id }).catch(e=>l.close())
+      const ret = await getPublicInfo({ userId: _id }).catch(e => l.close())
       if (ret.result) {
         const { birthday, gender, selfIntroduction, detailedIntroduction, resume } = ret.msg.publicInfo
+        const now = Math.ceil((moment().valueOf() / 1000))
+        const leftStart = startTime - now
+        const leftEnd = startTime + 90 * 60 - now
+        let targetTime = 0
+        let isStart = false
+        let bg = '#7c8ea5'
+        if (leftStart > 0) {
+          targetTime = leftStart
+          isStart = false
+        } else {
+          targetTime = leftEnd
+          isStart = true
+          bg = '#36ae82'
+        }
+        const sid = setInterval(() => {
+          if (targetTime == 0) {
+            this.timer.isStart = true
+            this.timer.bg = '#36ae82'
+            clearInterval(sid)
+          }
+          targetTime--
+        }, 1000)
+        // 定时器信息
+        this.timer = {
+          targetTime,
+          isStart,
+          bg,
+        }
         // 基本信息
         this.info = {
           slotId,
@@ -141,12 +184,12 @@ export default {
           consumerId: consumer,
           orderId: this.orderId,
           roomId,
-          birthday, 
+          birthday,
           detailedIntroduction,
           selfIntroduction,
-          gender: genders.find(o=> o.value == gender).text,
-          startTime, question,avatar,name,
-          startText: moment(startTime*1000).format('MM月DD日 HH:mm') + '~' + moment(startTime*1000).subtract('-90', 'minutes').format('HH:mm'),
+          gender: genders.find(o => o.value == gender).text,
+          startTime, question, avatar, name,
+          startText: moment(startTime * 1000).format('MM月DD日 HH:mm') + '~' + moment(startTime * 1000).subtract('-90', 'minutes').format('HH:mm'),
         }
         if (resume) {
           const { education = [], workExperience = [], skills = [] } = resume
@@ -163,10 +206,10 @@ export default {
           })
           this.edu = this.edus[0]
           // 工作列表
-          this.works =  workExperience.map(o => {
+          this.works = workExperience.map(o => {
             // 工作年限
             let lastTime = o.resignationTime ? moment(o.resignationTime).valueOf() : moment().valueOf()
-            let workingYears = Math.ceil((lastTime - moment(o.entryTime).valueOf()) / (365*24*60*60*1000))
+            let workingYears = Math.ceil((lastTime - moment(o.entryTime).valueOf()) / (365 * 24 * 60 * 60 * 1000))
             return {
               company: o.company,
               companyText: companys.find(v => v.value == o.company).text,
@@ -174,7 +217,7 @@ export default {
               industryText: industrys.find(v => v.value == o.industry).text,
               position: o.position,
               positionText: positions.find(v => v.value == o.position).text,
-              workingYears: workingYears?`${workingYears}年`: '',
+              workingYears: workingYears ? `${workingYears}年` : '',
               duty: o.duty
             }
           })
@@ -185,7 +228,7 @@ export default {
     l.close()
   },
   methods: {
-    handlePeerLeave() {
+    handlePeerLeave () {
       this.alert('对方已离开房间')
       this.$router.replace('/consumer/index')
     },
@@ -194,19 +237,19 @@ export default {
       // 加入聊天室
       this.initRtcClient(this.roomInfo)
     },
-    toggleEdu() {
+    toggleEdu () {
       this.isShowEdu = !this.isShowEdu
     },
-    toggleWork() {
+    toggleWork () {
       this.isShowWork = !this.isShowWork
     },
-    handleLeaveRoom() {
+    handleLeaveRoom () {
       // 退出房间
       this.leaveRoom(this.client)
       this.playState = ''
       this.alert('服务已结束')
       this.$router.replace('/consumer/index')
-      return 
+      return
       this.$alert('点击服务确认将结束此次服务，无法再次进入房间', '服务结束确认', {
         confirmButtonText: '确认',
         callback: action => {

@@ -7,7 +7,7 @@ import '../theme/index.css'
 import * as elementApi from './utils/element-api'
 
 import '@/styles/index.scss' // global css
-
+import './icons'
 import App from './App'
 import store from './store'
 import router from './router'
