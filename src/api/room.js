@@ -12,7 +12,7 @@ export function getRoomStatus(params) {
 // 点击"准备好了"心跳 - 获取同房状态且发送自己状态
 export function getRoomStatusAfterReady(data) {
   return request({
-    url: `/timer/platform/waitingRoomStatus`,
+    url: `/timer/platform/roomHeart`,
     method: 'post',
     data
   })

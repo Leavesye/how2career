@@ -138,9 +138,10 @@ export default {
       // 收集top4咨询师
       trackViewConsultant({ consultantId: this.id } )
     ])
-    if (res.result) {
-      const data = res.msg
+    if (res[0].result) {
+      const data = res[0].msg
       this.isFavorite = data.list && !!data.list.filter(o => o._id == this.id)
+      console.log(this.isFavorite, 'this.isFavorite')
     }
   },
   methods: {

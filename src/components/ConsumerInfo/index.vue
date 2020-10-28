@@ -3,7 +3,7 @@
   <div class="head">
     <avatar :imgUrl="info.avatarImage"></avatar>
     <p class="role">咨询者</p>
-    <p class="name">{{info.name}}</p>
+    <p class="name">{{info.nickName}}</p>
   </div>
   <div class="info">
     <div class="info-item">

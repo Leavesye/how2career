@@ -3,7 +3,7 @@
   <div class="head">
     <avatar :imgUrl="order.avatarImage"></avatar>
     <p class="role">咨询师</p>
-    <p class="name">{{order.name}}</p>
+    <p class="name">{{order.nickName}}</p>
   </div>
   <div class="info">
     <div class="info-item">

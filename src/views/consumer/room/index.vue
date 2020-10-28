@@ -78,6 +78,7 @@
     <!-- 房间状态 -->
     <room-status :isShow="isShow"
                  @start="handleChatStart"
+                 @reopen="reOpen"
                  :timer="timer"
                  :info="info"></room-status>
     <!-- 更多学历 -->
@@ -230,12 +231,7 @@ export default {
   methods: {
     handlePeerLeave () {
       this.alert('对方已离开房间')
-      this.$router.replace('/consumer/index')
-    },
-    handleChatStart () {
-      this.isShow = false
-      // 加入聊天室
-      this.initRtcClient(this.roomInfo)
+      this.$router.replace('/consumer/order?status=6')
     },
     toggleEdu () {
       this.isShowEdu = !this.isShowEdu
@@ -244,12 +240,6 @@ export default {
       this.isShowWork = !this.isShowWork
     },
     handleLeaveRoom () {
-      // 退出房间
-      this.leaveRoom(this.client)
-      this.playState = ''
-      this.alert('服务已结束')
-      this.$router.replace('/consumer/index')
-      return
       this.$alert('点击服务确认将结束此次服务，无法再次进入房间', '服务结束确认', {
         confirmButtonText: '确认',
         callback: action => {
@@ -260,7 +250,7 @@ export default {
                 this.leaveRoom(this.client)
                 this.playState = ''
                 this.alert('服务已结束')
-                this.$router.replace('/consumer/index')
+                this.$router.replace('/consumer/order?status=6')
               }
             })
           }

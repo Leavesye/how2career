@@ -11,7 +11,10 @@
       <el-button size="large" class="search-btn" round plain type="success" >搜索</el-button>
     </el-card>
     <p class="title">搜索结果</p>
-    <card-list :list="list"></card-list>
+    <card-list v-if="list.length" :list="list"></card-list>
+    <el-card v-else style="margin-bottom: 20px">
+      <p class="no-data">暂无数据</p>
+    </el-card>
     <p class="title" style="margin-top: 0">经常查看的咨询师</p>
     <card-list :list="list"></card-list>
   </section>
@@ -82,5 +85,10 @@ export default {
   width: 180px;
   margin: 0 auto;
   display: block;
+}
+.no-data {
+  text-align: center;
+  font-size: 14px;
+  color: #7c8ea5;
 }
 </style>

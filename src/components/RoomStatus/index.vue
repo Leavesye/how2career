@@ -93,11 +93,11 @@ export default {
       }
     },
     async getRoomStatusAfterReady() {
-      const {roomId, consultantId, consumerId, orderId, slotId } = this.info
+      const {roomId, consultantId, consumerId, orderId, slotId, startTime } = this.info
       let roomMate = this.user.role == 'consumer' ? consultantId : consumerId
       const res = await getRoomStatusAfterReady({ 
         roomId, roomMate, orderId,
-        slotId, consultant: consultantId, }).catch(e=>{console.log(e)})
+        slotId, consultant: consultantId, startTime }).catch(e=>{console.log(e)})
       if (res.result) {
         if (res.msg == 'orderCancel') {
           this.alert('咨询超过20分钟未开始,已自动取消', 'warning')
@@ -105,9 +105,9 @@ export default {
         }
         // 对方是否在线
         this.online = res.msg.online
-        // 对方在线 停止轮询
-        if (this.online) {
-          clearInterval(this.afterTimer)
+        // 对方掉线
+        if (!res.msg.online && !this.isShow) {
+          this.$emit('reopen')
         }
       }
     },
@@ -121,16 +121,16 @@ export default {
       this.isLoaded = false
       if (res.result) {
         this.isReady = true
-        if (this.isReady && this.online) {
-          // 3 2 1倒计时
-          this.go()
-        }
         // 销毁准备前定时器
         clearInterval(this.beforeTimer)
         // 启动准备后定时器轮询对方状态
         this.afterTimer = setInterval(() => {
           this.getRoomStatusAfterReady()
         }, 5000)
+        if (this.isReady && this.online) {
+          // 3 2 1倒计时
+          this.go()
+        }
       }
     },
     go() {

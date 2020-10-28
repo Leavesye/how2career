@@ -1,6 +1,14 @@
 import TRTC from 'trtc-js-sdk'
 export default {
   methods: {
+    reOpen() {
+      this.isShow = true
+    },
+    handleChatStart () {
+      this.isShow = false
+      // 加入聊天室
+      this.initRtcClient(this.roomInfo)
+    },
     async initRtcClient (info) {
       // 检测设备
       const res = await TRTC.checkSystemRequirements()

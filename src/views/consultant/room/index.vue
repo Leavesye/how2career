@@ -166,6 +166,7 @@
     <!-- 房间状态 -->
     <room-status :isShow="isShow"
                  @start="handleChatStart"
+                 @reopen="reOpen"
                  :timer="timer"
                  :info="info"></room-status>
     <div id="local_stream"></div>
@@ -321,15 +322,8 @@ export default {
   methods: {
     handlePeerLeave() {
       this.alert('对方已离开房间')
-      this.$router.replace('/consultant/index')
+      this.$router.replace('/consultant/order?status=0,7,8')
     },
-    handleChatStart () {
-      this.isShow = false
-      // 加入聊天室
-      this.initRtcClient(this.roomInfo)
-    },
-  },
-  mounted () {
   }
 }
 </script>
@@ -426,7 +420,7 @@ export default {
     background: #36ae82;
   }
   to {
-    background: #15479e;
+    background: #15ca83;
   }
 }
 .ani {

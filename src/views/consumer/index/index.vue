@@ -39,12 +39,12 @@
       </el-card>
       <p class="title">我的收藏</p>
       <card-list v-if="favorites.length" :list="favorites"></card-list>
-      <el-card v-else>
+      <el-card v-else style="margin-bottom: 20px">
         <p class="no-data">暂无数据</p>
       </el-card>
       <p class="title" style="margin-top: 0">经常查看的咨询师</p>
       <card-list v-if="top4.length" :list="top4"></card-list>
-      <el-card v-else>
+      <el-card v-else style="margin-bottom: 20px">
         <p class="no-data">暂无数据</p>
       </el-card>
       <p class="title" style="margin-top: 0">更多职业选择</p>
