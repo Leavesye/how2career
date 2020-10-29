@@ -12,18 +12,18 @@
     </div>
     <div v-if="order.complaint">
       <div class="flex-vc rate">
-        <p class="order-no">投诉: {{order.complaint.titleText}}</p>
+        <p class="order-no">投诉: {{order.complaintTitle}}</p>
         <el-button size="small" @click="handleApply">申请仲裁</el-button>
       </div>
-      <p class="desc-p">投诉说明：{{order.complaint.content}}</p>
+      <p class="desc-p">投诉说明：{{order.complaintContent}}</p>
     </div>
     <div v-if="order.evaluation">
       <div class="flex-vc rate">
         <p style="margin-right: 10px">评价:</p>
-        <el-rate style="margin-right: 40px" v-model="order.evaluation.point" disabled></el-rate>
+        <el-rate style="margin-right: 40px" v-model="order.rateVal" disabled></el-rate>
         <el-button size="small" @click="handleFeedback">评价反馈</el-button>
       </div>
-      <p class="desc-p">评价说明：{{order.evaluation.content}}</p>
+      <p class="desc-p">评价说明：{{order.rateContent}}</p>
     </div>
     <!-- 咨询者详情 -->
     <consumer-info v-if="isShowDetail" :order="order"></consumer-info>

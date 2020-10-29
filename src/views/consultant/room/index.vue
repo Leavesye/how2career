@@ -323,7 +323,7 @@ export default {
   },
   methods: {
     handlePeerLeave() {
-      this.alert('对方已离开房间')
+      this.alert('咨询结束')
       this.$router.replace('/consultant/order?status=0,7,8')
     },
   }
@@ -411,7 +411,7 @@ export default {
   height: 30px;
   line-height: 30px;
   border-radius: 50%;
-  background: #15479e;
+  background: #36ae82;
 }
 .micro i {
   color: #fff;

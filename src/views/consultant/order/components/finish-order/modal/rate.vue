@@ -12,9 +12,9 @@
     </div>
     <div class="flex rate">
       <p style="margin-right: 10px">评价:</p>
-      <el-rate disabled v-model="order.point"></el-rate>
+      <el-rate disabled v-model="order.rateVal"></el-rate>
     </div>
-    <p class="desc">评价说明：order.content</p>
+    <p class="desc">评价说明：{{order.rateContent}}</p>
     <p class="explain">反馈说明:</p>
     <el-input
       type="textarea"

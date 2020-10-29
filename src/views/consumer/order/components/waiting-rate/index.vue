@@ -24,7 +24,7 @@
         <h-title>咨询的问题</h-title>
         <ul class="question-list">
           <li class="flex-vc" v-for="(item, index) in o.question" :key="index">
-            {{item}}
+            {{item.v}}
           </li>
         </ul>
       </div>

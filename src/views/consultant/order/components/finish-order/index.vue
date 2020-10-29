@@ -3,8 +3,10 @@
     <el-card>
       <!-- 搜索条件 -->
       <search-form @search="handleSearch"></search-form>
+      <!-- 无订单数据 -->
+      <p v-if="list.length==0" class="no-order">暂无订单数据</p>
       <!-- 订单列表 -->
-      <section v-for="(o ,i) in list"
+      <section v-if="list.length" v-for="(o ,i) in list"
                :key="i">
         <ul class="order-item flex-hb">
           <li>
@@ -103,7 +105,10 @@ export default {
       const res = await getDicts()
       if (res.result) {
         if (order.complaint) {
-          order.complaint.titleText = res.msg.complaint.find(o => o.value == order.complaint.title).text
+          order.complaintTitle = res.msg.complaint.find(o => o.value == order.complaint.title).text
+          order.complaintContent = order.complaint.content
+          order.rateVal = order.evaluation.point
+          order.rateContent = order.evaluation.content
         }
       }
       this.order = order
@@ -160,5 +165,11 @@ export default {
 }
 .order-amount {
   margin-bottom: 10px; text-align: right
+}
+.no-order {
+  margin-top: 30px;
+  text-align: center;
+  color: #7c8ea5;
+  font-size: 16px;
 }
 </style>

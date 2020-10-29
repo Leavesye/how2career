@@ -34,12 +34,12 @@
         </el-submenu>
       </template>
     </el-menu>
+    <div class="flex-hc" v-if="!isCollapse" style="margin-top: 100px">
+      <el-image v-if="room.orderId" class="room-btn"
+                :src="user.role=='consumer'?roomGreen:roomBlue"
+                @click="linkTo('/'+user.role+'/room/'+ room.orderId)"></el-image>
+    </div>
     <section class="bottom-content">
-      <div class="flex-hc" v-if="!isCollapse">
-        <el-image v-if="room.orderId" class="room-btn"
-                  :src="user.role=='consumer'?roomGreen:roomBlue"
-                  @click="linkTo('/'+user.role+'/room/'+ room.orderId)"></el-image>
-      </div>
       <section v-if="user.role=='consumer' && !isCollapse">
         <p class="my-code">我的推荐码</p>
         <div class="flex-cc qrcode-box">
@@ -135,7 +135,7 @@ export default {
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
   width: 240px;
-  min-height: 850px;
+  min-height: 920px;
 }
 i {
   color: #fff;

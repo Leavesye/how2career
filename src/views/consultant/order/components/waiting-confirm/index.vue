@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-card>
+    <el-card v-if="list.length">
       <!-- 订单列表 -->
       <section v-for="(o ,i) in list"
                :key="i" class="order-item">
@@ -19,6 +19,11 @@
                      @click="handleOpenDetail(o)">订单详情</el-button>
         </div>
       </section>
+    </el-card>
+    <!-- 无订单数据 -->
+    <el-card v-if="list.length==0"
+             class="no-order">
+      <p>暂无订单数据</p>
     </el-card>
     <!-- 分页 -->
     <div class="flex-he"
@@ -100,5 +105,10 @@ export default {
 .rest-time {
   padding-left: 26px;
   margin-top: 7px;
+}
+.no-order p {
+  text-align: center;
+  color: #7c8ea5;
+  font-size: 16px;
 }
 </style>

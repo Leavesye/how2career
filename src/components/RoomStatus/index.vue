@@ -17,8 +17,8 @@
       <!-- 头像 -->
       <div class="flex-hc room-header">
         <avatar :imgUrl="info.avatar"></avatar>
-        <div class="speak-icon">
-          <i class="iconfont iconlixian"></i>
+        <div class="speak-icon" :style="{ backgroundColor: online?'#36ae82':'#9B9B9B' }">
+          <i class="iconfont" :class="[online? 'icontonghuazhong': 'iconlixian']"></i>
         </div>
       </div>
       <p class="user-role">{{user.role=='consumer'? '咨询师' : '咨询者'}}</p>
@@ -32,7 +32,7 @@
     </div>
   </section>
   <span slot="footer" class="dialog-footer">
-    <el-button :loading="isLoaded" style="width: 180px" :type="user.role=='consumer' ? 'success':'primary'" plain round @click="handleConfirm">
+    <el-button v-if="!(isReady && online)" :loading="isLoaded" style="width: 180px" :type="user.role=='consumer' ? 'success':'primary'" plain round @click="handleConfirm">
       {{isReady ? '等待对方加入': '我已经准备好了'}}</el-button>
   </span>
 </el-dialog>
@@ -86,10 +86,6 @@ export default {
         }
         // 对方是否在线
         this.online = res.msg.online
-        // 对方在线 停止轮询
-        if (this.online) {
-          clearInterval(this.beforeTimer)
-        }
       }
     },
     async getRoomStatusAfterReady() {
@@ -105,6 +101,11 @@ export default {
         }
         // 对方是否在线
         this.online = res.msg.online
+        // 双方准备好且已经到时间开始倒计时3秒进房
+        if (this.isReady && this.online && this.timer.isStart) {
+          // 3 2 1倒计时
+          this.go()
+        }
         // 对方掉线
         if (!res.msg.online && !this.isShow) {
           this.$emit('reopen')
@@ -113,7 +114,7 @@ export default {
     },
     // 点击准备好了
     async handleConfirm() {
-      if (this.isLoaded) return false
+      if (this.isLoaded || this.isReady) return false
       this.isLoaded = true
       const res = await clickReady({
         orderId: this.info.orderId
@@ -127,7 +128,7 @@ export default {
         this.afterTimer = setInterval(() => {
           this.getRoomStatusAfterReady()
         }, 5000)
-        if (this.isReady && this.online) {
+        if (this.isReady && this.online && this.timer.isStart) {
           // 3 2 1倒计时
           this.go()
         }
@@ -173,11 +174,11 @@ export default {
   line-height: 30px;
   border-radius: 50%;
   background:#9B9B9B;
-  padding-left: 3px;
+  padding-left: 4px;
 }
 .speak-icon > i {
   color: #fff;
-  font-size: 22px;
+  font-size: 18px;
 }
 .user-role {
   text-align: center;

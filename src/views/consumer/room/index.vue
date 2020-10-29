@@ -231,7 +231,7 @@ export default {
   },
   methods: {
     handlePeerLeave () {
-      this.alert('对方已离开房间')
+      this.alert('咨询结束,请给此次服务评价')
       this.$router.replace('/consumer/order?status=6')
     },
     toggleEdu () {

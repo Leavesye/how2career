@@ -11,13 +11,7 @@
               :query="query"
               :immediatelyOrder="immediatelyOrder"
               @condition-query="handleQueryByCondition"
-              v-if="list.length"
               :list="list" />
-    <!-- 无订单数据 -->
-    <el-card v-if="list.length==0"
-             class="no-order">
-      <p>暂无订单数据</p>
-    </el-card>
   </section>
 </template>
 
