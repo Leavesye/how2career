@@ -25,6 +25,14 @@ export function clickReady(data) {
     data
   })
 }
+// 获取服务器当前时间
+export function getServiceTime(params) {
+  return request({
+    url: `/timer/platform/timeStamp`,
+    method: 'get',
+    params
+  })
+}
 // 获取语音客户端签名
 export function getSign(params) {
   return request({

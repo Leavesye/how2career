@@ -105,7 +105,7 @@ import MoreEdu from './modal/more-edu'
 import MoreWork from './modal/more-work'
 import { getOrderById, stopService } from '@/api/order'
 import { getPublicInfo, getDicts } from '@/api/user'
-import { getSign } from '@/api/room'
+import { getSign, getServiceTime } from '@/api/room'
 
 export default {
   name: 'room',
@@ -139,7 +139,8 @@ export default {
     const res = await Promise.all([
       getOrderById({ orderId: this.orderId }),
       getDicts(),
-      getSign()
+      getSign(),
+      getServiceTime()
     ]).catch(e => l.close())
     if (res[0].result) {
       const { consultant: { avatar, name, _id }, consumer, startTime, question, roomId, slotId } = res[0].msg
@@ -150,7 +151,7 @@ export default {
       const ret = await getPublicInfo({ userId: _id }).catch(e => l.close())
       if (ret.result) {
         const { birthday, gender, selfIntroduction, detailedIntroduction, resume } = ret.msg.publicInfo
-        const now = Math.ceil((moment().valueOf() / 1000))
+        const now = res[3].msg || Math.ceil((moment().valueOf() / 1000))
         const leftStart = startTime - now
         const leftEnd = startTime + 90 * 60 - now
         let targetTime = 0

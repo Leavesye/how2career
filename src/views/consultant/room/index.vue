@@ -183,7 +183,7 @@ import RoomStatus from '@/components/RoomStatus'
 import roomMixin from '@/mixins/room'
 import { getOrderById, queryConsumerByOrderId } from '@/api/order'
 import { getDicts } from '@/api/user'
-import { getSign } from '@/api/room'
+import { getSign, getServiceTime } from '@/api/room'
 
 export default {
   name: 'room',
@@ -219,7 +219,8 @@ export default {
       getDicts(),
       getOrderById({ orderId }),
       queryConsumerByOrderId({ orderId }),
-      getSign()
+      getSign(),
+      getServiceTime()
     ]).catch(e => l.close())
     if (res[1].result) {
       // 订单信息
@@ -229,7 +230,8 @@ export default {
         const { countries, majors, degrees, gender: genders, industry: industrys, workCategory } = res[0].msg
         // 咨询者信息
         let { basic: { name, gender, birthday, highestEducation = {}, selfIntroduction, detailedIntroduction } } = res[2].msg
-        const now = Math.ceil((moment().valueOf() / 1000))
+        // 优先取服务器当前时间
+        const now = res[4].msg || Math.ceil((moment().valueOf() / 1000))
         const leftStart = startTime - now
         const leftEnd = startTime + 90 * 60 - now
         let targetTime = 0

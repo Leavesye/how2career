@@ -99,8 +99,8 @@ export default {
         roomId, roomMate, orderId,
         slotId, consultant: consultantId, startTime }).catch(e=>{console.log(e)})
       if (res.result) {
-        if (res.msg == 'orderCancel') {
-          this.alert('咨询超过20分钟未开始,已自动取消', 'warning')
+        if (res.msg == 'orderCancel' || res.msg == 'orderExpire') {
+          this.alert(res.msg == 'orderExpire'?'咨询时间结束,请给此次服务评价':'咨询超过20分钟未开始,已自动取消', 'warning')
           this.$router.push(this.user.role == 'consumer'?'/consumer/order?status=6': '/consultant/order?status=0,7,8')
         }
         // 对方是否在线
