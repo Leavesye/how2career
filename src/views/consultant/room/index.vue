@@ -320,12 +320,6 @@ export default {
       }
     }
     l.close()
-  },
-  methods: {
-    handlePeerLeave() {
-      this.alert('咨询结束')
-      this.$router.replace('/consultant/order?status=0,7,8')
-    },
   }
 }
 </script>

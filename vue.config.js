@@ -39,7 +39,7 @@ module.exports = {
     },
     proxy: {
       '/api': {
-        target: 'http://intocareer.cn/api',
+        target: 'https://intocareer.cn/api',
         changeOrigin: true,
         ws: true,
         pathRewrite: {

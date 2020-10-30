@@ -53,7 +53,7 @@ export default {
       if (this.isLoading) return
       this.isLoading = true
       const res = await rateOrder({ 
-        content: this.consultantReply,
+        consultantReply: this.consultantReply,
         orderId: this.order.orderId
       }).catch(e=> this.isLoading = false)
       this.isLoading = false

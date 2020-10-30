@@ -23,10 +23,10 @@ export default {
         userSig: info.sign,
         streamId: info.orderId
       })
-      this.client.on('peer-leave', event => {
-        console.log(`${event.userId}已经离开房间`)
-        this.handlePeerLeave()
-      })
+      // this.client.on('peer-leave', event => {
+      //   console.log(`${event.userId}已经离开房间`)
+      //   this.handlePeerLeave()
+      // })
       //注册远程监听，要放在加入房间前--这里用了发布订阅模式
       this.subscribeStream(this.client)
       //初始化后才能加入房间

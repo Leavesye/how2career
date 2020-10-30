@@ -40,6 +40,7 @@
     </el-card>
     <!-- 分页 -->
     <div class="flex-he"
+          v-if="list.length" 
          style="margin-top: 20px">
       <el-pagination id="pagin"
                      :page-sizes="pagination.pageSizes || [10, 20, 30, 40]"
@@ -107,8 +108,11 @@ export default {
         if (order.complaint) {
           order.complaintTitle = res.msg.complaint.find(o => o.value == order.complaint.title).text
           order.complaintContent = order.complaint.content
+        }
+        if (order.evaluation) {
           order.rateVal = order.evaluation.point
           order.rateContent = order.evaluation.content
+          order.consultantReply = order.evaluation.consultantReply
         }
       }
       this.order = order

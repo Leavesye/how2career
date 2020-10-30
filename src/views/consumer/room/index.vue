@@ -49,7 +49,7 @@
       </div>
       <div class="d-item">
         <p class="field-name title">工作信息</p>
-        <p>所属行业：{{work.industryText}}</p>
+        <p style="margin-bottom: 10px;">所属行业：{{work.industryText}}</p>
         <div class="flex-hbc">
           <div class="flex work-item">
             <span>公司名称：{{work.companyText}}</span>
@@ -230,10 +230,6 @@ export default {
     l.close()
   },
   methods: {
-    handlePeerLeave () {
-      this.alert('咨询结束,请给此次服务评价')
-      this.$router.replace('/consumer/order?status=6')
-    },
     toggleEdu () {
       this.isShowEdu = !this.isShowEdu
     },
@@ -306,7 +302,6 @@ export default {
   margin-top: 30px;
   font-size: 14px;
   color: #7c8ea5;
-  height: 495px;
   overflow: auto;
 }
 .d-item {
@@ -330,7 +325,6 @@ export default {
   margin-top: 20px;
 }
 .duty {
-  height: 40px;
   overflow: auto;
 }
 .micro {

@@ -3,13 +3,13 @@
   :show-close="false"
   :close-on-click-modal="false"
   :close-on-press-escape="false"
-  :title="isReady && online ? '咨询开始' : '房间状态'"
+  :title="isReady && online && timer.isStart ? '咨询开始' : '房间状态'"
   :visible.sync="isShow"
   width="530px"
   center>
   <section class="modal-main">
     <!-- 双方都准备好倒计时三秒 -->
-    <div v-if="isReady && online" class="progress-box">
+    <div v-if="isReady && online && timer.isStart" class="progress-box">
       <el-progress :show-text="false" :width="250" color="#36AE82" style="position: relative" type="circle" :percentage="percent"></el-progress>
       <div class="number" :class="[o.ani]" v-for="(o, i) in nums" :key="i">{{o.v}}</div>
     </div>
@@ -102,12 +102,13 @@ export default {
         // 对方是否在线
         this.online = res.msg.online
         // 双方准备好且已经到时间开始倒计时3秒进房
-        if (this.isReady && this.online && this.timer.isStart) {
+        if (this.isReady && this.online && this.timer.isStart && !this.isGo) {
           // 3 2 1倒计时
           this.go()
         }
         // 对方掉线
         if (!res.msg.online && !this.isShow) {
+          this.isGo = false
           this.$emit('reopen')
         }
       }
@@ -128,7 +129,7 @@ export default {
         this.afterTimer = setInterval(() => {
           this.getRoomStatusAfterReady()
         }, 5000)
-        if (this.isReady && this.online && this.timer.isStart) {
+        if (this.isReady && this.online && this.timer.isStart && !this.isGo) {
           // 3 2 1倒计时
           this.go()
         }
@@ -141,6 +142,7 @@ export default {
           o.ani="animate"
           this.percent += 100/3
           if (j==2) {
+            this.isGo = true
             setTimeout(() => this.$emit('start'), 500)
           }
         }, 1000 * j)

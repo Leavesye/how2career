@@ -21,7 +21,7 @@
       <div class="flex-vc rate">
         <p style="margin-right: 10px">评价:</p>
         <el-rate style="margin-right: 40px" v-model="order.rateVal" disabled></el-rate>
-        <el-button size="small" @click="handleFeedback">评价反馈</el-button>
+        <el-button plain v-if="!order.consultantReply" @click="handleFeedback">评价反馈</el-button>
       </div>
       <p class="desc-p">评价说明：{{order.rateContent}}</p>
     </div>

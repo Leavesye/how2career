@@ -7,6 +7,7 @@
     <el-select v-if="!title" class="order-status"
                 v-model="search.status"
                 placeholder=""
+                clearable 
                 size="small">
       <el-option v-for="item in orderStates"
                   :key="item.value"
