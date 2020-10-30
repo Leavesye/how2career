@@ -161,6 +161,8 @@ export default {
   background: #f6f6f6;
 }
 .time-box {
+  height: 155px;
+  overflow: auto;
   padding: 15px;
 }
 .time-item {

@@ -432,7 +432,7 @@ export default {
   margin-top: 40px;
 }
 .work-duty {
-  height: 40px;
+  max-height: 40px;
   overflow: auto;
 }
 .rate-count {

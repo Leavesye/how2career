@@ -272,6 +272,11 @@ export default {
   box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   margin-bottom: 20px;
+  transition: box-shadow .3s,border-color .3s;
+}
+.slot-item:hover {
+    border-color: transparent;
+    box-shadow: 0 1px 2px -2px rgba(0,0,0,.16), 0 3px 6px 0 rgba(0,0,0,.12), 0 5px 12px 4px rgba(0,0,0,.09)
 }
 .blank-item {
   flex-basis: 32%;

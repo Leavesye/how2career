@@ -6,37 +6,39 @@
       <!-- 无订单数据 -->
       <p v-if="list.length==0" class="no-order">暂无订单数据</p>
       <!-- 订单列表 -->
-      <section v-if="list.length" v-for="(o ,i) in list"
-               :key="i">
-        <ul class="order-item flex-hb">
-          <li>
-            <p class="order-no">订单号：{{o.orderId}}</p>
-            <div class="flex-vc">
-              <small-avatar :imgUrl="o.avatar"></small-avatar>
-              <div class="user-name">{{o.name}}</div>
-            </div>
-          </li>
-          <li>
-            <p class="create-time">创建时间：{{o.cTime}}</p>
-            <div>开始时间：{{o.startTime}}</div>
-          </li>
-          <li class="flex-hbc"
-              style="margin-top:30px">
-            <p style="margin-right: 10px">评价</p>
-            <el-rate v-model="o.rate"
-                     disabled></el-rate>
-          </li>
+      <div v-if="list.length">
+        <section v-for="(o ,i) in list"
+                :key="i">
+          <ul class="order-item flex-hb">
+            <li>
+              <p class="order-no">订单号：{{o.orderId}}</p>
+              <div class="flex-vc">
+                <small-avatar :imgUrl="o.avatar"></small-avatar>
+                <div class="user-name">{{o.name}}</div>
+              </div>
+            </li>
+            <li>
+              <p class="create-time">创建时间：{{o.cTime}}</p>
+              <div>开始时间：{{o.startTime}}</div>
+            </li>
+            <li class="flex-hbc"
+                style="margin-top:30px">
+              <p style="margin-right: 10px">评价</p>
+              <el-rate v-model="o.rate"
+                      disabled></el-rate>
+            </li>
 
-          <li>{{o.rest}}</li>
-          <li>
-            <div class="order-amount">订单金额:{{o.price}} RMB</div>
-            <div class="flex-he">
-              <el-button plain
-                         @click="handleOpenDetail(o)">订单详情</el-button>
-            </div>
-          </li>
-        </ul>
-      </section>
+            <li>{{o.rest}}</li>
+            <li>
+              <div class="order-amount">订单金额:{{o.price}} RMB</div>
+              <div class="flex-he">
+                <el-button plain
+                          @click="handleOpenDetail(o)">订单详情</el-button>
+              </div>
+            </li>
+          </ul>
+        </section>
+      </div>
     </el-card>
     <!-- 分页 -->
     <div class="flex-he"
