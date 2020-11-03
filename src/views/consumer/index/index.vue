@@ -171,6 +171,8 @@ $color: #36ae82;
   box-sizing: border-box;
   color: #7c8ea5;
   cursor: pointer;
+  border:1px solid transparent;
+  transition: all .3s;
 }
 .p-item:last-child {
   margin-right: 0;

@@ -1,4 +1,8 @@
-{
+const plugins = []
+if (process.env.NODE_ENV === 'production') {
+  plugins.push('transform-remove-console');
+}
+module.exports = {
   "presets": [
     // https://github.com/vuejs/vue-cli/tree/master/packages/@vue/babel-preset-app
     "@vue/cli-plugin-babel/preset"
@@ -11,7 +15,5 @@
       "plugins": ["dynamic-import-node"]
     }
   },
-  "plugins": [
-    ["import", { "libraryName": "ant-design-vue", "libraryDirectory": "es", "style": "css" }] 
-  ]
+  "plugins": plugins
 }

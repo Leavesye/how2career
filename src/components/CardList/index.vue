@@ -106,6 +106,8 @@ export default {
   box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   margin-bottom: 20px;
+  border:1px solid transparent;
+  transition: box-shadow .3s,border-color .5s;
 }
 .favorite-item:hover {
   border: 1px solid #36ae82;

@@ -7,7 +7,8 @@ export function loading () {
 }
 
 export function alert (message, type = 'success') {
-  Vue.prototype.$message({
+  Vue.prototype.$notify({
+    title: '提示',
     message,
     type
   })

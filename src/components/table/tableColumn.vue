@@ -1,5 +1,5 @@
 <template lang="html">
-  <el-table-column :label="column.label" v-bind="column" v-if="column.render">
+  <el-table-column :show-overflow-tooltip="true" :label="column.label" v-bind="column" v-if="column.render">
     <!-- 自定义表格内容 -->
     <template slot-scope="scope">
       <column-template :template="column.render" :data="scope"></column-template>

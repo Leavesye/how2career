@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import axios from 'axios'
-import { MessageBox, Message } from 'element-ui'
+import { MessageBox, Notification } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
 
@@ -42,7 +42,8 @@ service.interceptors.response.use(
   response => {
     const res = response.data
     if (!res.result) {
-      Message({
+      Notification({
+        title: '提示',
         message: res.msg || 'Error',
         type: 'error',
         duration: 5 * 1000
@@ -67,7 +68,8 @@ service.interceptors.response.use(
       })
       return false
     }
-    Message({
+    Notification({
+      title: '提示',
       message: error.message,
       type: 'error',
       duration: 5 * 1000
