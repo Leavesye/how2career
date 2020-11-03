@@ -121,7 +121,7 @@ export default {
         }
         this.$refs.schedule.openEditor(event, args.data.Id ? 'Save' : 'Add')
       }
-      // 自定义编辑器空间处理
+      // 自定义编辑器控件处理
       if (args.type === 'Editor') {
         let startElement = args.element.querySelector('#StartTime')
         if (!startElement.classList.contains('e-datetimepicker')) {
@@ -155,7 +155,6 @@ export default {
           recurrObject.appendTo(recurElement)
           scheduleObj.eventWindow.recurrenceEditor = recurrObject
         }
-        //document.getElementById('RecurrenceEditor').style.display = (scheduleObj.currentAction == 'EditOccurrence') ? 'none' : 'block'
       }
       // 只读模式选择时间
       if (this.mode == 'view') {
@@ -178,6 +177,12 @@ export default {
             let ret = await getAppointmentedTimes({ userId: this.consultantId })
             let useds = ret.result ? (ret.msg || []) : []
             let all = this.events.filter(o => moment(o.StartTime).format('YYYY-MM-DD') == selectDate)
+            // 排除循环事件
+            all = all.filter(o => !o.RecurrenceRule)
+            console.log(args, 'args')
+            if (args.data && args.data.RecurrenceRule) {
+              all.push(args.data)
+            }
             // 可使用的时间列表
             let usables = all.map(o => {
               let s = moment(o.StartTime).format('HH:mm')
