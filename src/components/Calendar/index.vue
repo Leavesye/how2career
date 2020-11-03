@@ -44,6 +44,7 @@
 </template>
 
 <script>
+import moment from 'moment'
 import { mapGetters } from 'vuex'
 import Scheduler from '@/components/Scheduler'
 import { getPublicInfo } from '@/api/user'
@@ -84,7 +85,7 @@ export default {
         this.isLoaded = true
       })
       if (res.result) {
-        const { publicInfo: { availableTime }} = res.msg
+        const { publicInfo: { availableTime=[] }} = res.msg
         this.events = availableTime
         this.$emit('init-data', res)
       }

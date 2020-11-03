@@ -1,5 +1,6 @@
 <template>
-  <div id='app'>
+  <div element-loading-spinner="el-icon-loading"
+       v-loading="isLoading">
     <ejs-schedule ref='schedule'
                   currentView="Month"
                   :popupOpen="onPopupOpen"
@@ -8,8 +9,8 @@
                   :editorTemplate='editorTemplate'
                   :showQuickInfo="showQuickInfo"
                   :views="views"
-                  :dataBound="onDataBound"
-                  ></ejs-schedule>
+                  :minDate="minDate"
+                  :maxDate="maxDate"></ejs-schedule>
   </div>
 </template>
 <script>
@@ -18,7 +19,7 @@ import { mapGetters } from 'vuex'
 import moment from 'moment'
 import zh from './zh.json'
 import EventEdit from './modal/edit'
-import { L10n, setCulture, loadCldr } from '@syncfusion/ej2-base'
+import { L10n, setCulture, loadCldr, createElement } from '@syncfusion/ej2-base'
 import { SchedulePlugin, Day, Week, WorkWeek, Month, RecurrenceEditor } from '@syncfusion/ej2-vue-schedule'
 import { DateTimePicker } from '@syncfusion/ej2-calendars'
 import { getUserInfoSync, getAppointmentedTimes } from '@/api/user'
@@ -33,23 +34,25 @@ loadCldr(
   require('cldr-data/main/zh/numbers.json'),
   require('cldr-data/main/zh/timeZoneNames.json')
 )
+const start = moment().subtract(-7, 'day').startOf('day').valueOf()
+const end = moment().subtract(-14, 'day').endOf('day').valueOf()
 export default {
   name: 'scheduler',
   props: ['mode', 'events', 'consultantId'],
   provide: {
     schedule: [Day, Week, WorkWeek, Month]
   },
-  // created() {
-  //   publicinfo.availableTime = []
-  //   this.saveEvent({ publicInfo: publicinfo })
-  // },
   data () {
     let views = ['Day', 'Week', 'WorkWeek', 'Month']
+    let minDate = new Date(start)
+    let maxDate = new Date(2050, 12, 31)
     // 查看模式显示月份视图
     if (this.mode == 'view') {
       views = ['Month']
+      maxDate = new Date(end)
     }
     return {
+      isLoading: false,
       views,
       editorTemplate: function (e) {
         return {
@@ -57,6 +60,8 @@ export default {
         }
       },
       showQuickInfo: true,
+      minDate,
+      maxDate,
       eventSettings: {
         dataSource: this.events,
         fields: {
@@ -72,10 +77,6 @@ export default {
     ])
   },
   methods: {
-    // 获取所有事件
-    onDataBound: function (args){
-      let event = this.$refs.schedule.ej2Instances.getEvents();
-    },
     // 新增 编辑 删除监听
     handleActionBegin (e) {
       console.log(e, 'ActionBegin')
@@ -91,10 +92,10 @@ export default {
         this.deleteEvent(e)
       }
     },
-    isExist(v) {
-      return !!this.events.find(o => moment(o.StartTime).valueOf()==moment(v).valueOf())
+    isExist (v) {
+      return !!this.events.find(o => moment(o.StartTime).valueOf() == moment(v).valueOf())
     },
-    handleStartChange(v) {
+    handleStartChange (v) {
       if (this.isExist(v.value)) {
         this.alert('该时间段已设置', 'warning')
         return false
@@ -104,7 +105,7 @@ export default {
     async onPopupOpen (args) {
       console.log(args, 'onPopupOpen')
       // 单击出编辑框处理
-      if (args.type=='QuickInfo') {
+      if (args.type == 'QuickInfo') {
         // 屏蔽快捷弹框
         args.cancel = true
         // 编辑
@@ -112,10 +113,10 @@ export default {
         if (args.data.Id) {
           event = args.data
         } else {
-          let start = new Date(moment(args.data.StartTime).startOf('day').subtract('-8','hours').valueOf())
+          let startTime = new Date(moment(args.data.StartTime).startOf('day').subtract('-9', 'hours').valueOf())
           event = {
-            startTime: start,
-            endTime: new Date(moment(start).subtract('-90','minutes').valueOf()),
+            startTime,
+            endTime: new Date(moment(startTime).subtract('-90', 'minutes').valueOf()),
             isAllDay: false,
           }
         }
@@ -125,8 +126,8 @@ export default {
       if (args.type === 'Editor') {
         let startElement = args.element.querySelector('#StartTime')
         if (!startElement.classList.contains('e-datetimepicker')) {
-          this.startTimePicker= new DateTimePicker(
-            { 
+          this.startTimePicker = new DateTimePicker(
+            {
               value: args.data.StartTime,
               step: 90,// 间隔90分钟
               allowEdit: false,// 禁用输入
@@ -139,16 +140,16 @@ export default {
         let endElement = args.element.querySelector('#EndTime')
         if (!endElement.classList.contains('e-datetimepicker')) {
           this.endTimePicker = new DateTimePicker(
-            { 
+            {
               value: args.data.EndTime,
-              enabled: false 
+              enabled: false
             },
             endElement
           )
         }
         // 重复事件编辑器设置
         let scheduleObj = this.$refs.schedule.ej2Instances
-        console.log(scheduleObj, 'scheduleObj')
+        console.log(scheduleObj, 'scheduleObj', scheduleObj.openEditor)
         let recurElement = args.element.querySelector('#RecurrenceEditor')
         if (!recurElement.classList.contains('e-recurrenceeditor')) {
           let recurrObject = new RecurrenceEditor({})
@@ -161,52 +162,50 @@ export default {
         if (['EventContainer', 'Editor'].includes(args.type)) {
           // 禁用弹框
           args.cancel = true
+          this.isLoading = true
+          // 获取咨询师该天已经被预约的时间列表
+          let ret = await getAppointmentedTimes({ userId: this.consultantId }).catch(e => this.isLoading = false)
+          this.isLoading = false
+          let useds = ret.result ? (ret.msg || []) : []
+          let all = []
+          let selectDate = ''
           // 选值 弹自定义弹框
-          if (args.data.Id || args.data.date) { // 单选/点击更多
-            const currentDate = args.data.StartTime || args.data.date
-            const start = moment().subtract(-7, 'day').startOf('day').valueOf()
-            const end = moment().subtract(-14, 'day').endOf('day').valueOf()
-            const current = moment(currentDate).valueOf()
-            // 只能预约未来7-14天的服务
-            if (current < start || current > end) {
-              this.alert('只能预约未来7-14天的服务', 'warning')
-              return false
-            }
-            const selectDate = moment(currentDate).format('YYYY-MM-DD')
-            // 获取咨询师该天已经被预约的时间列表
-            let ret = await getAppointmentedTimes({ userId: this.consultantId })
-            let useds = ret.result ? (ret.msg || []) : []
-            let all = this.events.filter(o => moment(o.StartTime).format('YYYY-MM-DD') == selectDate)
+          if (args.type == 'EventContainer') {// 点击更多
+            all = args.data.event
+            selectDate = moment(args.data.date).format('YYYY-MM-DD')
+          } else { // 单击
+            selectDate = moment(args.data.StartTime).format('YYYY-MM-DD')
+            // all = this.events.filter(o => moment(o.StartTime).format('YYYY-MM-DD') == selectDate)
+            all = [args.data]
             // 排除循环事件
-            all = all.filter(o => !o.RecurrenceRule)
-            console.log(args, 'args')
-            if (args.data && args.data.RecurrenceRule) {
-              all.push(args.data)
-            }
-            // 可使用的时间列表
-            let usables = all.map(o => {
-              let s = moment(o.StartTime).format('HH:mm')
-              let e = moment(o.EndTime).format('HH:mm')
-              let isUsed = useds.includes(moment(o.StartTime).valueOf() / 1000 + '')
-              return {
-                isUsed,
-                text: `${s}-${e}`,
-                selText: `${selectDate} ${s}-${e}`,
-                value: moment(o.StartTime).valueOf(),
-              }
-            })
-            usables.sort(function(a, b) {
-              if (a.value < b.value) {
-                return -1
-              }
-              if (a.value > b.value) {
-                return 1
-              }
-              return 0;
-            })
-            // 显示自定义时间段弹框
-            this.$emit('open-timepicker', usables, moment(selectDate).format('YYYY年MM月DD日'))
+            // all = all.filter(o => !o.RecurrenceRule)
+            // if (args.data && args.data.RecurrenceRule) {
+            //   all.push(args.data)
+            // }
           }
+          // 可使用的时间列表
+          let usables = all.map(o => {
+            let s = moment(o.StartTime).format('HH:mm')
+            let e = moment(o.EndTime).format('HH:mm')
+            let isUsed = useds.includes(moment(o.StartTime).valueOf() / 1000 + '')
+            return {
+              isUsed,
+              text: `${s}-${e}`,
+              selText: `${selectDate} ${s}-${e}`,
+              value: moment(o.StartTime).valueOf(),
+            }
+          })
+          usables.sort(function (a, b) {
+            if (a.value < b.value) {
+              return -1
+            }
+            if (a.value > b.value) {
+              return 1
+            }
+            return 0
+          })
+          // 显示自定义时间段弹框
+          this.$emit('open-timepicker', usables, moment(selectDate).format('YYYY年MM月DD日'))
         }
       } else { // 编辑模式
         if (args.type == 'QuickInfo' && !args.data.Id) {
@@ -224,7 +223,7 @@ export default {
       l.close()
     },
     createEvent (event) {
-      if(this.isExist(event.StartTime)) {
+      if (this.isExist(event.StartTime)) {
         this.alert('该时间段已设置', 'warning')
         this.$emit('reload')
         return false
@@ -307,8 +306,6 @@ export default {
       this.events = list
       this.saveEvent(this.events)
     },
-  },
-  mounted () {
   }
 }
 </script>
@@ -321,7 +318,11 @@ export default {
 }
 .e-location-container,
 .e-description-container,
-.e-header-date.e-navigate {
+.e-header-date.e-navigate,
+.e-block-indicator {
   display: none;
+}
+.e-schedule .e-month-view .e-work-cells.e-disable-dates {
+  background-color: #fff;
 }
 </style>
