@@ -18,11 +18,11 @@ export default {
   },
   methods: {
     test() {
-      alert(111)
+      alert(11111)
     }
   },
   mounted() {
-    
+    console.log(222)
   }
 }
 </script>
