@@ -5,7 +5,7 @@
       <column-template :template="column.render" :data="scope"></column-template>
     </template>
   </el-table-column>
-  <el-table-column :label="column.label" v-bind="column" v-else>
+  <el-table-column :show-overflow-tooltip="true" :label="column.label" v-bind="column" v-else>
   </el-table-column>
 </template>
 

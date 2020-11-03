@@ -53,7 +53,7 @@ export default {
           },
           {
             label: '内容',
-            prop: 'content'
+            prop: 'content',
           },
           {
             label: '操作',
