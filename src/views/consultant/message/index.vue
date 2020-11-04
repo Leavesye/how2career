@@ -28,7 +28,7 @@
 <script>
 import moment from 'moment'
 import QuickTable from '@/components/QuickTable'
-import DetailModal from './modal/detail'
+import DetailModal from '@/views/consumer/center/message/modal/detail'
 import { getMessage } from '@/api/user'
 
 export default {
