@@ -49,7 +49,7 @@ export default {
       selPannel: { name: '待付款订单', status: '1', component: 'waiting-pay' },
       pannels: [
         { name: '待付款订单', status: '1', component: 'waiting-pay' },
-        { name: '待确认订单', status: '2,3', component: 'waiting-confirm' },//2：待咨询师确认 3：待咨询者确认
+        { name: '待确认订单', status: '2,3,12', component: 'waiting-confirm' },//2：待咨询师确认 3：待咨询者确认
         { name: '待服务订单', status: '4,5', component: 'waiting-service' }, // 待服务/服务中
         { name: '待评价订单', status: '6', component: 'waiting-rate' },
         { name: '已完成订单', status: '0,7,8', component: 'finish-order' },// 0已取消 7已完成 8投诉

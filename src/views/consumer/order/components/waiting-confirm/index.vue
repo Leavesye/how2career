@@ -15,24 +15,24 @@
       <li>
         <div class="order-amount">订单金额：{{o.price}}RMB</div>
         <div class="flex-he">
-          <el-link type="success" :underline="false">{{o.status =='2' ? '待咨询师确认': '待咨询者确认'}}</el-link> 
+          <el-link type="success" :underline="false">{{getStatusText(o.status)}}</el-link> 
         </div>
       </li>
     </ul>
-    <h-title>待确认时间(北京时间)</h-title>
-    <ul class="flex confirm-time">
-      <li>
-        <template v-if="o.status=='3'">
-          <el-radio v-for="(item, j) in o.consultantTime" :key="j" v-model="radio" :label="j">{{item.text}}</el-radio>
-        </template>
-        <span style="margin-right: 10px" v-else v-for="(item, j) in o.consumerTime" :key="j">{{item.text}}</span>
-      </li>
-    </ul>
-    <div class="flex-he btns" v-if="o.status=='3'">
-      <!-- 后台自动赔偿  暂时不用 -->
-      <!-- <el-button size="small" type="success" plain>获取补偿金</el-button> -->
+    <div v-if="o.status!='12'" class="confirm-time-box">
+      <h-title>待确认时间(北京时间)</h-title>
+      <ul class="flex confirm-time">
+        <li>
+          <template v-if="o.status=='3'">
+            <el-radio v-for="(item, j) in o.consultantTime" :key="j" v-model="radio" :label="j">{{item.text}}</el-radio>
+          </template>
+          <span style="margin-right: 10px" v-else v-for="(item, j) in o.consumerTime" :key="j">{{item.text}}</span>
+        </li>
+      </ul>
+    </div>
+    <div class="flex-he btns" v-if="o.status=='3' || o.status=='12'">
       <el-button :loading="isLoading" plain @click="handleOpenChange(o)">更换咨询师</el-button>
-      <el-button :loading="isLoading"  plain @click="handleConfirmTime(o)">接受时间调整</el-button>
+      <el-button :loading="isLoading" v-if="o.status=='3'" plain @click="handleConfirmTime(o)">接受时间调整</el-button>
     </div>
   </el-card>
   <!-- 分页 -->
@@ -75,6 +75,17 @@ export default {
     ChangeConsultant
   },
   methods: {
+    getStatusText(status) {
+      let str = ''
+      if (status == '2') {
+        str = '待咨询师确认'
+      } else if (status == '3'){
+        str = '待咨询者确认'
+      } else if (status == '12') {
+        str = '咨询师时间确认超时'
+      }
+      return str
+    },
     handleClose(isConfirm) {
       this.isShow = false
       if (isConfirm) {
@@ -117,16 +128,19 @@ export default {
   margin-bottom: 20px;
 }
 .list-item {
-  border-bottom: 1px solid #edeeef;
   color: #7C8EA5;
   font-size: 14px;
   padding-bottom: 20px;
-  margin-bottom: 20px;
 }
 .order-amount {
   margin-bottom: 10px;
   text-align: right
 }
+.confirm-time-box {
+  border-top: 1px solid #edeeef;
+  padding-top: 10px;
+}
+
 .confirm-time {
   margin-top: 15px;
   color: #7C8EA5;

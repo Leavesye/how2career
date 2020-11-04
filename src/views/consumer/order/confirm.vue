@@ -139,7 +139,7 @@ export default {
     handleConfirmPay (isPayment) {
       this.isShowPay = false
       if (isPayment) {
-        this.$router.push('/consumer/order?status=2,3')
+        this.$router.push('/consumer/order?status=2,3,12')
       } else {
         this.alert('订单未支付成功', 'warning')
       }

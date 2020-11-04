@@ -5,7 +5,7 @@
   width="430px"
   center>
   <span slot="title">
-    <div class="icon"><i class="iconfont iconbianzu18"></i></div>
+    <div class="icon"><i class="iconfont" :class="[item.error ? 'iconbianzu20':'iconbianzu18']"></i></div>
   </span>
   <section class="modal-main">
     <p class="title">{{item.title}}</p>

@@ -7,7 +7,7 @@
   center>
   <section class="modal-main">
     <div v-if="!isRefuse" class="">
-      <p>很遗憾你们时间不合适</p>
+      <p style="margin-bottom: 6px;">很遗憾你们时间不合适</p>
       <p>你可以选择更换同类型其他咨询师</p>
     </div>
     <p v-else class="">你可以取消订单退还全款</p>
