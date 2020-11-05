@@ -50,8 +50,6 @@
           <el-button type="success"
                      @click="handleClickPay">确认付款</el-button>
                      <!-- 如果是更换咨询师显示订单确认无须再支付 -->
-          <el-button v-if="false" type="success"
-                     @click="handleClickPay">订单确认</el-button>
         </div>
       </el-card>
     </section>

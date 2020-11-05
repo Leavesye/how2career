@@ -51,7 +51,15 @@ export default {
           rate: 3, 
           position: '高级专家', 
           rateCount: '234', 
-          btn: { name: '预约', cb: this.handleOpenDetail }, 
+          btn: { name: '预约', cb: () =>this.handleOpenDetail.bind(this, '5f9004c9e7be443d069c1953') }, 
+          selfIntroduction: '高桥於1994年创立了自己的品牌Undercover，而当时Nigo…' },
+        { id: '5f532bdb15d031b7520a493d', 
+          avatar: '/upload/consultant/1603274113微信图片_20200731222259.jpg', 
+          nickName: '奥利奥', 
+          rate: 3, 
+          position: '高级专家', 
+          rateCount: '234', 
+          btn: { name: '预约', cb: this.handleOpenDetail.bind(this, '5f532bdb15d031b7520a493d')  }, 
           selfIntroduction: '高桥於1994年创立了自己的品牌Undercover，而当时Nigo…' },
       ]
     }
@@ -61,7 +69,11 @@ export default {
   },
   methods: {
     handleOpenDetail (id) {
-      this.$router.push(`/consumer/consultant-detail/5f9004c9e7be443d069c1953`)
+      let url = `/consumer/consultant-detail/${id}`
+      if (this.orderId) {
+        url = `/consumer/consultant-detail/${id}?orderId=${this.orderId}`
+      }
+      this.$router.push(url)
     },
     handlePannelChange (item) {
       this.selPannel = item

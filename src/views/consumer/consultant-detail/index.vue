@@ -98,6 +98,7 @@ import { createOrder } from '@/api/order'
 import moment from 'moment'
 import { mapGetters } from 'vuex'
 import { getRateList } from '@/api/consultant'
+import { changeConsultant } from '@/api/order'
 import { getPublicInfo, favorite, delFavorite, getFavorites, getDicts, trackViewConsultant } from '@/api/user'
 
 export default {
@@ -237,26 +238,41 @@ export default {
       let { school = '', discipline = '', degree = '', graduationTime = '' } = edu
       const wrok = this.works[0] || {}
       let { industryText = '', companyText = '', positionText = '', workingYears = '', duty = '' } = wrok
-      const p = {
-        consumerNickName: this.user.nickName,
-        consumerAvatar: this.user.avatar,
-        consultant: {
-          _id: this.$route.params.id,
-          name: nickName,
-          avatar: avatarImage,
-          readme: selfIntroduction,
-          education: { school, discipline, degree, graduationTime },
-          work: { industry:industryText, company:companyText, position: positionText, workingYears, duty, skills },
-          evaluationCount: rateCount,
-          evaluationPoint: totalRate,
-        },
-        consumerTime: this.times.map(o => Math.ceil(o.value/1000))
+      const consumerTime = this.times.map(o => Math.ceil(o.value/1000))
+      const consultant = {
+        _id: this.$route.params.id,
+        name: nickName,
+        avatar: avatarImage,
+        readme: selfIntroduction,
+        education: { school, discipline, degree, graduationTime },
+        work: { industry:industryText, company:companyText, position: positionText, workingYears, duty, skills },
+        evaluationCount: rateCount,
+        evaluationPoint: totalRate,
       }
       const l = this.loading()
-      const res = await createOrder(p).catch(e => l.close())
-      if (res.result) {
-        this.alert('订单已生成')
-        this.$router.push(`/consumer/order-confirm/${res.msg}`)
+      // 更换咨询师
+      if (this.$route.query.orderId) {
+        const res = await changeConsultant({
+          consumerTime,
+          consultant,
+          orderId: this.$route.query.orderId,
+        })
+        if (res.result) {
+          this.alert('咨询师更换成功')
+          this.$router.push(`/consumer/order?status=2,3,12`)
+        }
+      } else {
+        const p = {
+          consumerNickName: this.user.nickName,
+          consumerAvatar: this.user.avatar,
+          consultant,
+          consumerTime
+        }
+        const res = await createOrder(p).catch(e => l.close())
+        if (res.result) {
+          this.alert('订单已生成')
+          this.$router.push(`/consumer/order-confirm/${res.msg}`)
+        }
       }
       l.close()
     },
