@@ -196,12 +196,12 @@ export default {
           this.lastWork = this.works[0]
         }
         const { publicInfo: { evaluationPoint: point, evaluationCount: count,
-        nickName, avatarImage, selfIntroduction }} = res.msg
+        nickName, avatarImage, selfIntroduction }, price} = res.msg
         // 评分
         let rate = point > 0 ? point / count : 0
         // 基本信息
         this.info = {
-          price: res.msg.price,
+          price,
           nickName,
           avatarImage,
           selfIntroduction,

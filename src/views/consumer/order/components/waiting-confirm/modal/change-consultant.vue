@@ -10,25 +10,26 @@
       <p style="margin-bottom: 6px;">很遗憾你们时间不合适</p>
       <p>你可以选择更换同类型其他咨询师</p>
     </div>
-    <p v-else class="">你可以取消订单退还全款</p>
+    <p v-else class="">{{cancelMsg}}</p>
   </section>
   <span slot="footer" class="dialog-footer">
-    <el-button v-if="!isRefuse" size="small" @click="handleRefuseChange">拒绝更换</el-button>
-    <el-button v-else :loading="isLoading" size="small" @click="handleCancel">订单取消</el-button>
-    <el-button :loading="isLoading" size="small" type="success" @click="handleChange">更换咨询师</el-button>
+    <el-button v-if="!isRefuse" plain @click="handleRefuseChange">拒绝更换</el-button>
+    <el-button v-else plain :loading="isLoading" @click="handleCancel">订单取消</el-button>
+    <el-button :loading="isLoading" type="success" @click="handleChange">更换咨询师</el-button>
   </span>
 </el-dialog>
 </template>
 
 <script>
-import { cancelOrder } from '@/api/order'
+import { cancelOrder, queryCancelMsg } from '@/api/order'
 
 export default {
   props: ['isShow', 'order'],
   data () {
     return {
       isLoading: false,
-      isRefuse: false
+      isRefuse: false,
+      cancelMsg: '',
     }
   },
   watch: {
@@ -42,7 +43,11 @@ export default {
     handleClose() {
       this.$emit('close')
     },
-    handleRefuseChange() {
+    async handleRefuseChange() {
+      const res = await queryCancelMsg({ orderId: this.order.orderId }).catch(e=> l.close())
+      if (res.result) {
+        this.cancelMsg = res.msg
+      }
       this.isRefuse = true
     },
     async handleCancel() {

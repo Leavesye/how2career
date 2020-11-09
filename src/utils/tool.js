@@ -1,6 +1,6 @@
 import moment from 'moment'
 
-function getCountDown (target) { 
+function getCountDown (target, text) { 
   if (!target) return false
   let str = ''
   // 倒计时时间计算
@@ -10,7 +10,7 @@ function getCountDown (target) {
         let times = countdown/(3600*1000)
         let hours = Math.floor(times)
         let mintus = Math.ceil((times - hours)*60)
-        str = `还有${hours}小时${mintus}分开始`
+        str = `还有${hours}小时${mintus}分${text}`
       } else {
         str = '已过期'
       }
@@ -33,8 +33,8 @@ function formatConsultantOrder (list) {
   return list.map(o => {
     const { _id: consultantId } =  o.consultant
     // 倒计时时间计算
-    let confirmCountDown = getCountDown(o.confirmTimeout)
-    let serviceCountDown = getCountDown(o.startTime)
+    let confirmCountDown = getCountDown(o.confirmTimeout, '超时')
+    let serviceCountDown = getCountDown(o.startTime, '开始')
     
     return {
       consultantId,
@@ -62,7 +62,7 @@ function formatConsultantOrder (list) {
           value: v
         }
       }) : [],
-      price: o.price,
+      price: o.rPrice,
       status: o.status,
       rate: o.evaluation ? o.evaluation.point : 0,
       complaint: o.complaint,
@@ -78,9 +78,9 @@ function formatConsultantOrder (list) {
 function formatConsumerOrder (list) {
   return list.map(o => {
     const { _id, roomId, cTime, startTime, consumerTime, consultantTime,
-      price, status, evaluation, question, consultant:
+      rPrice: price, status, evaluation, question, consultant:
       { name, readme, work, education, _id: consultantId, avatar } } = o
-    let rest = getCountDown(o.startTime)
+    let rest = getCountDown(o.startTime, '开始')
     return {
       ...work,
       ...education,
@@ -110,7 +110,7 @@ function formatConsumerOrder (list) {
           value: v
         }
       }) : [],
-      price: price,
+      price,
       status: status,
       rate: evaluation ? evaluation.point : 0,
       question: question ? question.map(v => {

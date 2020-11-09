@@ -11,7 +11,7 @@
     <p><el-link type="success">点击了解更多规则</el-link></p>
   </section>
   <span slot="footer" class="dialog-footer">
-    <el-button :loading="isLoading" size="small" type="success" plain @click="confirm">确认退款</el-button>
+    <el-button :loading="isLoading" size="small" type="success" plain @click="confirm">确认取消</el-button>
   </span>
 </el-dialog>
 </template>

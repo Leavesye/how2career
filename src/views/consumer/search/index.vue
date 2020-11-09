@@ -17,6 +17,7 @@
     </el-card>
     <p class="title" style="margin-top: 0">经常查看的咨询师</p>
     <card-list :list="list"></card-list>
+    <async-example></async-example>
   </section>
 </template>
 
@@ -25,7 +26,7 @@ import QuickForm from '@/components/QuickForm'
 import Pannel from '@/components/Pannel'
 import CardList from '@/components/CardList'
 import form from './form'
-
+import Vue from 'vue'
 export default {
   name: 'consumer-search',
   components: {
@@ -66,6 +67,16 @@ export default {
   },
   created() {
     this.orderId = this.$route.query.orderId
+  },
+  mounted() {
+    Vue.component('async-example', function (resolve, reject) {
+      setTimeout(function () {
+        // 向 `resolve` 回调传递组件定义
+        resolve({
+          template: '<div><div v-for="item in [1,2,3]">{{item}}</div></div>'
+        })
+      }, 1000)
+    })
   },
   methods: {
     handleOpenDetail (id) {

@@ -92,7 +92,7 @@ export default {
     this.orderId = this.$route.params.id
     const res = await getOrderById({ orderId: this.orderId }).catch(e => l.close())
     if (res.result) {
-      const { _id: orderId, price, consumerTime, consultant: { _id: consultantId, avatar, name, evaluationPoint, evaluationCount, 
+      const { _id: orderId, rPrice: price, consumerTime, consultant: { _id: consultantId, avatar, name, evaluationPoint, evaluationCount, 
       work: { industry, company, position } } } = res.msg
       this.payInfo = { orderId, consultantId, subject: '咨询费用', type: 'order' }
       this.oriTimes = _.cloneDeep(consumerTime)
