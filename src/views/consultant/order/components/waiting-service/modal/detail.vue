@@ -20,8 +20,8 @@
     <consumer-info v-if="isShow" :order="order"></consumer-info>
   </section>
   <span slot="footer" class="dialog-footer">
-    <el-button :loading="isLoading" size="small" type="primary" @click="handleOpenCancel(order)">订单取消</el-button>
-    <el-button :loading="isLoading" size="small" type="primary" @click="handleChangeTime">时间调整</el-button>
+    <el-button :loading="isLoading" plain @click="handleOpenCancel(order)">订单取消</el-button>
+    <el-button :loading="isLoading" type="primary" @click="handleChangeTime">时间调整</el-button>
   </span>
   <!-- 取消订单弹框 -->
   <cancel-modal :isShow="isShowCancel"

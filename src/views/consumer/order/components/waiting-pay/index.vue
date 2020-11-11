@@ -6,7 +6,7 @@
         <span class="order-no">订单号:{{o.orderId}}</span>
         <span>创建时间:{{o.cTime}}</span>
       </div>
-      <div>订单金额:{{o.price}} RMB</div>
+      <div>待付款金额:{{o.rprice}} RMB</div>
     </div>
     <div class="flex-hb row">
       <div class="flex">

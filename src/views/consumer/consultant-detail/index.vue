@@ -380,6 +380,8 @@ export default {
   font-size: 26px;
   margin-right: 10px;
   color: #7c8fa5;
+  font-family: "notosans-bold,notosans-regular";
+  font-weight: 600;
 }
 .confirm-num {
   font-size: 26px;
@@ -391,6 +393,8 @@ export default {
   color: #7c8fa5;
   font-size: 18px;
   margin-top: 7px;
+  font-family: "notosans-bold,notosans-regular";
+  font-weight: 600;
 }
 .info-item {
   padding: 20px 0;

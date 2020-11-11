@@ -62,7 +62,8 @@ function formatConsultantOrder (list) {
           value: v
         }
       }) : [],
-      price: o.rPrice,
+      price: o.price,
+      rprice: o.rPrice,
       status: o.status,
       rate: o.evaluation ? o.evaluation.point : 0,
       complaint: o.complaint,
@@ -78,7 +79,7 @@ function formatConsultantOrder (list) {
 function formatConsumerOrder (list) {
   return list.map(o => {
     const { _id, roomId, cTime, startTime, consumerTime, consultantTime,
-      rPrice: price, status, evaluation, question, consultant:
+      rPrice: rprice, price, status, evaluation, question, consultant:
       { name, readme, work, education, _id: consultantId, avatar } } = o
     let rest = getCountDown(o.startTime, '开始')
     return {
@@ -110,7 +111,7 @@ function formatConsumerOrder (list) {
           value: v
         }
       }) : [],
-      price,
+      price, rprice,
       status: status,
       rate: evaluation ? evaluation.point : 0,
       question: question ? question.map(v => {

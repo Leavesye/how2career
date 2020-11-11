@@ -30,7 +30,7 @@ export default {
   height: 90px;
   background: #D8D8D8;
   box-shadow: 0px 2px 8px 0px rgba(21, 71, 159, 0.4);
-  border: 6px solid #FFFFFF;
+  border: 3px solid #FFFFFF;
   border-radius: 50%;
   display: block;
   margin: 0 auto;

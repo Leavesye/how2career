@@ -43,12 +43,6 @@ export default {
   text-align: center;
 }
 .head > div {
-  width: 90px;
-  height: 90px;
-  background: #D8D8D8;
-  box-shadow: 0px 2px 8px 0px rgba(21, 71, 159, 0.4);
-  border: 6px solid #FFFFFF;
-  border-radius: 50%;
   margin-bottom: 10px;
 }
 .info {

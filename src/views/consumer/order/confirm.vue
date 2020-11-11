@@ -40,7 +40,7 @@
         <div class="flex-hec cost-box">
           <span class="cost-item"
                 style="margin-right: 20px">咨询费用</span>
-          <div class="confirm-num">{{info.price}}</div>
+          <div class="confirm-num">{{info.rPrice}}</div>
           <div class="unit">RMB</div>
         </div>
         <div class="flex-hec terms">
@@ -92,7 +92,7 @@ export default {
     this.orderId = this.$route.params.id
     const res = await getOrderById({ orderId: this.orderId }).catch(e => l.close())
     if (res.result) {
-      const { _id: orderId, rPrice: price, consumerTime, consultant: { _id: consultantId, avatar, name, evaluationPoint, evaluationCount, 
+      const { _id: orderId, rPrice, consumerTime, consultant: { _id: consultantId, avatar, name, evaluationPoint, evaluationCount, 
       work: { industry, company, position } } } = res.msg
       this.payInfo = { orderId, consultantId, subject: '咨询费用', type: 'order' }
       this.oriTimes = _.cloneDeep(consumerTime)
@@ -105,7 +105,7 @@ export default {
             text: `${moment(o*1000).format('YYYY-MM-DD')} ${moment(o*1000).format('HH:mm:ss')}-${moment(o*1000).subtract(-90, 'minutes').format('HH:mm:ss')}`
           }
         }),
-        price,
+        rPrice,
       }
     }
     l.close()
@@ -122,7 +122,7 @@ export default {
       }
       this.isShowPay = true
       // 时间有变动  更新服务时间
-      if (this.oriTimes.length != this.info.times) {
+      if (this.oriTimes.length != this.info.times.length) {
         const l = this.loading()
         const res = await updateTime({
           orderId: this.orderId,
@@ -208,11 +208,15 @@ export default {
   margin-right: 10px;
   color: #7c8fa5;
   padding-top: 8px;
+  font-family: "notosans-bold,notosans-regular";
+  font-weight: 600;
 }
 .unit {
   color: #7c8fa5;
   font-size: 18px;
-  margin-top: 7px;
+  margin-top: 10px;
+  font-family: "notosans-bold,notosans-regular";
+  font-weight: 600;
 }
 .info-item {
   padding: 20px 0;
@@ -278,7 +282,7 @@ export default {
   border-radius: 3px;
 }
 .cost-box {
-  padding-bottom: 18px;
+  padding-bottom: 10px;
   border-bottom: 1px solid #edeeef;
 }
 .terms {
