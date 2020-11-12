@@ -6,7 +6,8 @@
                @click="action(2)">注册</el-button>
     <login @close="handleCloseLogin"
            :isShow="isShow"
-           :type="type"></login>
+           :type="type"
+           :refer="refer"></login>
   </div>
 </template>
 
@@ -24,7 +25,8 @@ export default {
   data () {
     return {
       isShow: false,
-      type: 1
+      type: 1,
+      refer: ''
     }
   },
   methods: {
@@ -42,7 +44,13 @@ export default {
       this.type = type
     },
   },
-  mounted () {
+  created () {
+    this.refer = this.$route.query.refer
+    // 好友推荐注册过来显示注册弹框
+    if (this.refer) {
+      this.isShow = true
+      this.type = 2
+    }
   }
 }
 </script>

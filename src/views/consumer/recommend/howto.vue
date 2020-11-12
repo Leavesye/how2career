@@ -38,7 +38,7 @@ import QRCode from 'qrcodejs2'
 export default {
    computed: {
      url: function() {
-       return `${process.env.VUE_APP_HOST_NAME}register/consumer?refer=${this.user.userId}`
+       return `${process.env.VUE_APP_HOST_NAME}home?refer=${this.user.userId}`
      },
      pcIcon: function() {
        return require('@/assets/pc-icon.png')

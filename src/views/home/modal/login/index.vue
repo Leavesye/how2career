@@ -90,19 +90,19 @@ const tabsCfg = {
 }
 export default {
   name: 'login-modal',
-  props: ['isShow', 'type'],
+  props: ['isShow', 'type', 'refer'],
   data () {
     const r = this.$rules
     this.role = 'consumer'
     return {
       isLoading: false,
-      pageType: 1, // 1 登入  2. 验证手机注册
+      pageType: this.type, // 1 登入  2. 验证手机注册
       seconds: 0,
       curTab: 0,
-      tabs: tabsCfg['1'],
+      tabs: tabsCfg[this.type],
       info: {
-        userName: '18566070441',
-        passWord: '123456',
+        userName: '',
+        passWord: '',
         vCode: ''
       },
       rules: {
@@ -119,7 +119,6 @@ export default {
   },
   watch: {
     'type': function (newV, oldV) {
-
       this.pageType = newV
       this.tabs = tabsCfg[this.pageType]
     }
@@ -164,7 +163,7 @@ export default {
       const res = await checkUser(this.info)
       if (res.result) {
         this.$store.dispatch('user/setUser', { role: this.role, userName: this.info.userName })
-        const path = this.role == 'consultant' ? '/register/consultant' : '/register/consumer'
+        const path = this.role == 'consultant' ? '/register/consultant' : `/register/consumer?refer=${this.refer}`
         this.$router.push(path)
       }
       this.isLoading = false
