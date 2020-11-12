@@ -76,9 +76,9 @@ export default {
       isShow: false,
       isActive: false,
       pannels: [
-        { name: '待付款订单', count: 0, path: '/consumer/order?status=1' },
-        { name: '待服务订单', count: 0, path: '/consumer/order?status=4,5' },
-        { name: '已完成订单', count: 0, path: '/consumer/order?status=0,7,8' },
+        { name: '待付款订单', count: 0, path: '/consumer/order/1' },
+        { name: '待服务订单', count: 0, path: '/consumer/order/4,5' },
+        { name: '已完成订单', count: 0, path: '/consumer/order/0,7,8' },
         { name: '开始查找咨询师', count: 'search', path: '/consumer/search' }
       ],
       list: [],

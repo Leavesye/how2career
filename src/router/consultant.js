@@ -4,11 +4,11 @@ export default [
     component: () => import('@/views/consultant/index'),
   },
   {
-    path: '/consultant/order',
+    path: '/consultant/order/:status',
     component: () => import('@/views/consultant/order'),
   },
   {
-    path: '/consultant/cost',
+    path: '/consultant/cost/:status',
     component: () => import('@/views/consultant/cost'),
   },
   {
@@ -24,7 +24,7 @@ export default [
     component: () => import('@/views/consultant/room'),
   },
   {
-    path: '/consultant/setting',
+    path: '/consultant/setting/:status',
     component: () => import('@/views/consultant/time-setting'),
   },
   {

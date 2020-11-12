@@ -7,7 +7,7 @@
   width="430px"
   center>
   <section class="modal-main">
-    <p style="margin-bottom: 20px">{{msg}}</p>
+    <p style="margin-bottom: 20px; line-height: 22px;">{{msg}}</p>
     <p><el-link type="success">点击了解更多规则</el-link></p>
   </section>
   <span slot="footer" class="dialog-footer">

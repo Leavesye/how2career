@@ -259,7 +259,7 @@ export default {
         })
         if (res.result) {
           this.alert('咨询师更换成功')
-          this.$router.push(`/consumer/order?status=2,3,12`)
+          this.$router.push(`/consumer/order/2,3,12`)
         }
       } else {
         const p = {

@@ -11,18 +11,22 @@
     <p>完成支付后根据您的情况点击下面按钮</p>
   </section>
   <span slot="footer" class="dialog-footer">
-    <el-button type="primary" @click="handlePay">立即支付</el-button>
+    <el-button :type="user.role=='consultant'? 'primary': 'success'" @click="handlePay">立即支付</el-button>
     <el-button plain @click="handleFinish">已完成支付</el-button>
   </span>
 </el-dialog>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   props: ['isShow'],
   data () {
     return {
     }
+  },
+  computed: {
+    ...mapGetters(['user'])
   },
   methods: {
     handleClose() {

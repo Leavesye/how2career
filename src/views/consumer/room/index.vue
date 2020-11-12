@@ -247,7 +247,7 @@ export default {
                 this.leaveRoom(this.client)
                 this.playState = ''
                 this.alert('服务已结束')
-                this.$router.replace('/consumer/order?status=6')
+                this.$router.replace('/consumer/order/6')
               }
             })
           }

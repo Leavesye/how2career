@@ -32,8 +32,8 @@
     <el-card v-if="list.length">
       <!-- 订单列表 -->
       <section v-for="(o ,i) in list"
-               :key="i">
-        <ul class="order-item flex-hbc">
+               :key="i" class="order-item">
+        <ul class="flex-hbc">
           <li>
             <p style="margin-bottom: 10px">订单号：{{o.orderId}}</p>
             <div class="flex-vc">
@@ -92,7 +92,7 @@ import { queryUpdateTimeMsg } from '@/api/order'
 
 export default {
   name: 'waiting-service',
-  props: ['list', 'pagination', 'immediatelyOrder', 'query'],
+  props: ['list','pagination', 'immediatelyOrder', 'query'],
   components: {
     DetailModal,
     SmallAvatar
@@ -143,12 +143,12 @@ export default {
 }
 .order-item {
   padding-bottom: 20px;
-  border-bottom: 1px solid #EDEEEF;
   margin-bottom: 20px;
+  border-bottom: 1px solid #EDEEEF;
   font-size: 14px;
   color: #7C8FA5;
 }
-.order-item > li {
+.order-item > ul > li {
   height: 56px;
 }
 .order-item:last-child {

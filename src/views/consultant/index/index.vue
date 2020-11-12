@@ -91,7 +91,7 @@
         </ul>
         <div class="more"
              v-if="serviceOrders && serviceOrders.length"
-             @click="linkTo('/consultant/order?status=4,5')">更多订单<i class="el-icon-arrow-right"></i></div>
+             @click="linkTo('/consultant/order/4,5')">更多订单<i class="el-icon-arrow-right"></i></div>
         <p v-else class="no-data">暂无数据</p>
       </section>
       <section class="order-card">
@@ -112,7 +112,7 @@
         </ul>
         <div class="more"
              v-if="serviceOrders && confirmOrders.length"
-             @click="linkTo('/consultant/order?status=2')">更多订单<i class="el-icon-arrow-right"></i></div>
+             @click="linkTo('/consultant/order/2')">更多订单<i class="el-icon-arrow-right"></i></div>
         <p v-else class="no-data">暂无数据</p>
       </section>
     </div>
@@ -143,10 +143,10 @@ export default {
       isActive: false,
       curStep: 1,
       pannels: [
-        { name: '待确认订单', count: 0, path: '/consultant/order?status=2' },
-        { name: '待服务订单', count: 0, path: '/consultant/order?status=4,5' },
-        { name: '已完成订单', count: 0, path: '/consultant/order?status=0,7,8' },
-        { name: '待结算订单', count: 0, path: '/consultant/cost?status=2' }
+        { name: '待确认订单', count: 0, path: '/consultant/order/2' },
+        { name: '待服务订单', count: 0, path: '/consultant/order/4,5' },
+        { name: '已完成订单', count: 0, path: '/consultant/order/0,7,8' },
+        { name: '待结算订单', count: 0, path: '/consultant/cost/2' }
       ],
       serviceOrders: [],
       confirmOrders: []

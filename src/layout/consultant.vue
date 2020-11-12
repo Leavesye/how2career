@@ -32,13 +32,13 @@ export default {
     return {
       menus: [
         { name: '我的首页', icon: 'iconshouye-01', path: '/consultant/index' },
-        { name: '订单管理', icon: 'icondingdan-01', path: '/consultant/order' },
-        { name: '费用管理', icon: 'iconfeiyong-01', path: '/consultant/cost' },
+        { name: '订单管理', icon: 'icondingdan-01', path: '/consultant/order/2' },
+        { name: '费用管理', icon: 'iconfeiyong-01', path: '/consultant/cost/9' },
         {
           name: '个人中心', icon: 'icongerenzhongxin-01', children: [
             { name: '基本信息', path: '/consultant/baseinfo' },
             { name: '资质信息', path: '/consultant/resume' },
-            { name: '服务时间', path: '/consultant/setting' },
+            { name: '服务时间', path: '/consultant/setting/1' },
             { name: '消息通知', path: '/consultant/message' },
           ]
         },

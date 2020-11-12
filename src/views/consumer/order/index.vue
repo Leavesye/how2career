@@ -69,7 +69,7 @@ export default {
   async created () {
     let condition = 'status==1'
     // 处理带参跳转
-    let status = this.$route.query.status
+    let status = this.$route.params.status
     if (status) {
       condition = tool.formatStatus(status)
       this.selPannel = this.pannels.find(o => o.status == status)
@@ -109,6 +109,7 @@ export default {
     handlePannelChange (item) {
       const { status } = this.selPannel
       if (item.status == status) return false
+      this.$router.push(`/consumer/order/${item.status}`)
       this.selPannel = item
       // 参数重置
       this.list = []

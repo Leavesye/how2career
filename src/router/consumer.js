@@ -6,7 +6,7 @@ export default [
   },
   // 订单中心
   {
-    path: '/consumer/order',
+    path: '/consumer/order/:status',
     component: () => import('@/views/consumer/order'),
   },
   // 订单确认

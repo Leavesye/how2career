@@ -33,7 +33,7 @@ export default {
     return {
       menus: [
         { name: '我的首页', icon: 'iconshouye-01', path: '/consumer/index' },
-        { name: '我的订单', icon: 'icondingdan-01', path: '/consumer/order' },
+        { name: '我的订单', icon: 'icondingdan-01', path: '/consumer/order/1' },
         { name: '咨询师搜索', icon: 'iconsousuo-01', path: '/consumer/search' },
         { name: '好友推荐', icon: 'iconhaoyouyaoqing-01', path: '/consumer/recommend' },
         {

@@ -122,9 +122,12 @@ export default {
       if (this.selPannel.name == item.name) {
         return false
       }
+      this.$router.push(`/consultant/setting/${item.status}`)
       this.selPannel = item
       if (item.status == 2) {
         this.querySlots()
+      } else {
+        this.getSchdulerData()
       }
     },
     async querySlots() {
@@ -207,9 +210,9 @@ export default {
       }
     },
     handleReloadSchduler () {
-      this.init()
+      this.getSchdulerData()
     },
-    async init () {
+    async getSchdulerData () {
       this.isLoaded = false
       const l = this.loading()
       const res = await getUserInfo().catch(e => {
@@ -225,7 +228,14 @@ export default {
     }
   },
   async created () {
-    this.init()
+    // 处理带参跳转
+    let status = this.$route.params.status
+    this.selPannel = this.pannels.find(o => o.status == status)
+    if (status == '1') {
+      this.getSchdulerData()
+    } else {
+      this.querySlots()
+    }
   },
 }
 </script>

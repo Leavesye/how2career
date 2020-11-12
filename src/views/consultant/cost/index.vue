@@ -66,7 +66,7 @@ export default {
   created() {
     let condition = 'status==9'
     // 处理带参跳转
-    let status = this.$route.query.status
+    let status = this.$route.params.status
     if (status) {
       condition = tool.getCondition(status)
       this.selPannel = this.pannels.find(o => o.status == status)
@@ -155,6 +155,7 @@ export default {
     handlePannelChange (item) {
       const { status } = this.selPannel
       if (item.status == status) return false
+      this.$router.push(`/consultant/cost/${item.status}`)
       this.selPannel = item
       this.setColumns(this.selPannel.status)
       // 参数重置
