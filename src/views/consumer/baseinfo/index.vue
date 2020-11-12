@@ -6,7 +6,7 @@
         <section class="form-box"
                 style="margin-top: 30px">
           <el-card class="form-card">
-            <div class="flex-vc form-name" v-if="!refer">
+            <div class="flex-vc form-name">
               <label for="">手机号</label>
               <p>{{user.userName}}</p>
             </div>
@@ -80,8 +80,6 @@ export default {
   async created() {
     // 好友推荐带过来的用户id
     this.refer = this.$route.query.refer
-    // 显示手机号输入框
-    this.baseInfo.userName.hide = !this.refer
     // 是否是注册页进来
     this.isReg = this.$route.path.includes('/register/consumer')
      if (this.isReg) {
