@@ -46,7 +46,7 @@
             </div>
             <div class="slot-btns">
               <el-button plain v-if="!item.active" @click="handlePayBack(item)">补缴费用</el-button>
-              <el-button plain @click="handleCloseSlot(item)">关闭</el-button>
+              <el-button plain v-if="item.status!='占用'" @click="handleCloseSlot(item)">关闭</el-button>
             </div>
           </li>
           <li :key="i" v-else class="blank-item"></li>

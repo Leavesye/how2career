@@ -52,7 +52,7 @@
             <p>以便通过审核后立即开始接受订单</p>
           </div>
           <div class="step-btn"
-               @click="linkTo('/consultant/setting')">服务时间设置</div>
+               @click="linkTo('/consultant/setting/1')">服务时间设置</div>
         </div>
       </section>
     </div>

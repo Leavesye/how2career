@@ -16,7 +16,7 @@
               <el-button plain @click="handleClickChangePwd">修改密码</el-button>
             </div>
             <quick-form :model="baseInfo"
-                        labelWidth="80px"
+                        labelWidth="90px"
                         ref="baseInfo"></quick-form>
           </el-card>
         </section>
@@ -26,7 +26,7 @@
         <section class="form-box">
           <el-card class="form-card">
             <quick-form :model="education"
-                        labelWidth="80px"
+                        labelWidth="90px"
                         ref="education"></quick-form>
           </el-card>
         </section>
@@ -248,7 +248,7 @@ export default {
 }
 .form-name > label {
   color: #7c8ea5;
-  width: 80px;
+  width: 90px;
   text-align: right;
   padding-right: 10px;
   font-weight: 500;

@@ -105,6 +105,11 @@ export default {
       changeMsg: '',
     }
   },
+  watch: {
+    'list': function() {
+      this.orderList = this.list
+    }
+  },
   methods: {
     async handleSaveQuestion (o) {
       if (this.isLoading) return false
