@@ -1,10 +1,11 @@
 <template>
-  <component v-bind:is="view" />
+  <component v-bind:is="view" @finsh-sign="handleFinishSign" :step="curStep" />
 </template>
 
 <script>
 import CostList from './list'
 import SignInfo from './sign'
+import { getSignStatus } from '@/api/consultant'
 
 export default {
   components: {
@@ -13,14 +14,23 @@ export default {
   },
   data () {
     return {
-      view: 'sign-info'
+      view: '',
+      curStep: 0,
     }
   },
-  created() {
-    this.view = true? 'sign-info': 'cost-list'
+  async created() {
+    const l = this.loading()
+    const res = await getSignStatus().catch(e=> l.close())
+    if (res.result) {
+      this.view = !res.msg.contractSign ? 'sign-info': 'cost-list'
+      this.curStep = res.msg.contractSignStep - 1
+    }
+    l.close()
   },
   methods: {
-    
+    handleFinishSign() {
+      this.view = 'cost-list'
+    }
   }
 }
 </script>

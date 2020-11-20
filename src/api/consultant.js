@@ -81,5 +81,13 @@ export function sign(data) {
     data
   })
 }
+// 咨询师劳务合同签署-获取状态
+export function getSignStatus(params) {
+  return request({
+    url: '/consultant/platform/consultant/contract/signStatus',
+    method: 'get',
+    params
+  })
+}
 
 

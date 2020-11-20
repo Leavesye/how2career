@@ -7,6 +7,8 @@ const state = {
   token: getToken(),
   userName: Cookies.get('userName'),
   nickName: Cookies.get('nickName'),
+  name: Cookies.get('name'),
+  idCard: Cookies.get('idCard'),
   completion: +Cookies.get('completion'),
   avatar: Cookies.get('avatar'),
   role: Cookies.get('role'),
@@ -24,6 +26,14 @@ const mutations = {
   SET_NICKNAME: (state, nickName) => {
     state.nickName = nickName
     Cookies.set('nickName', nickName)
+  },
+  SET_IDCARD: (state, idCard) => {
+    state.idCard = idCard
+    Cookies.set('idCard', idCard)
+  },
+  SET_NAME: (state, name) => {
+    state.name = name
+    Cookies.set('name', name)
   },
   SET_COMPLETION: (state, completion) => {
     state.completion = completion
@@ -62,6 +72,8 @@ const actions = {
           commit('SET_USERID', data.id)
           commit('SET_AVATAR', data.avatarImage)
           commit('SET_NICKNAME', data.nickName)
+          commit('SET_NAME', data.name)
+          commit('SET_IDCARD', data.idCard)
           commit('SET_COMPLETION', data.completion)
           
         }
@@ -94,6 +106,8 @@ const actions = {
     // commit('SET_ROLE', '')
     commit('SET_USERNAME', '')
     commit('SET_NICKNAME', '')
+    commit('SET_NAME', '')
+    commit('SET_IDCARD', '')
     commit('SET_COMPLETION', '')
     commit('SET_AVATAR', '')
     commit('SET_USERID', '')
@@ -101,6 +115,8 @@ const actions = {
     Cookies.remove('token')
     Cookies.remove('userName')
     Cookies.remove('nickName')
+    Cookies.remove('name')
+    Cookies.remove('idCard')
     Cookies.remove('avatar')
     Cookies.remove('role')
     Cookies.remove('userId')
@@ -124,6 +140,7 @@ const actions = {
     info.userName && commit('SET_USERNAME', info.userName)
     info.role && commit('SET_ROLE', info.role)
     info.completion && commit('SET_COMPLETION', info.completion)
+    info.idCard && commit('SET_IDCARD', info.idCard)
   },
 }
 

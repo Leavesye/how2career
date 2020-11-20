@@ -136,6 +136,10 @@ export default {
       const res = await realVerify({ name: bFormdata.name, ...rFormdata }).catch(e=> l.close())
       if (res.result) {
         this.alert('认证成功')
+        // 更新缓存
+        this.$store.dispatch('user/setUser', { 
+          idCard: rFormdata.idCard,
+        })
       }
       l.close()
     },
