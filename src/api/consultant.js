@@ -48,5 +48,38 @@ export function getSlotPrice(params) {
     params
   })
 }
+// 咨询师劳务合同签署-身份证上传
+export function identity(data) {
+  return request({
+    url: '/consultant/platform/consultant/contract/identity',
+    method: 'post',
+    data
+  })
+}
+// 咨询师劳务合同签署-信息同步
+export function syncInfo(data) {
+  return request({
+    url: '/consultant/platform/consultant/contract/info',
+    method: 'post',
+    data
+  })
+}
+
+// 咨询师劳务合同签署-获取短信口令
+export function getCode(params) {
+  return request({
+    url: '/consultant/platform/consultant/contract/sms',
+    method: 'get',
+    params
+  })
+}
+// 咨询师劳务合同签署-合同签署
+export function sign(data) {
+  return request({
+    url: '/consultant/platform/consultant/contract/sign',
+    method: 'post',
+    data
+  })
+}
 
 
