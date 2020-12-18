@@ -8,7 +8,7 @@
       <quick-form :model="form"
                   labelWidth="140px"
                   ref="form"></quick-form>
-      <el-button size="large" class="search-btn" round plain type="success" >搜索</el-button>
+      <el-button size="large" class="search-btn" round plain type="success" @click="handleSearch" :loading="isLoading">搜索</el-button>
     </el-card>
     <p class="title">搜索结果</p>
     <card-list v-if="list.length" :list="list"></card-list>
@@ -16,8 +16,7 @@
       <p class="no-data">暂无数据</p>
     </el-card>
     <p class="title" style="margin-top: 0">经常查看的咨询师</p>
-    <card-list :list="list"></card-list>
-    <async-example></async-example>
+    <card-list :list="top4"></card-list>
   </section>
 </template>
 
@@ -26,7 +25,10 @@ import QuickForm from '@/components/QuickForm'
 import Pannel from '@/components/Pannel'
 import CardList from '@/components/CardList'
 import form from './form'
-import Vue from 'vue'
+import { getDicts, getTop4Consultant } from '@/api/user'
+import { queryConsultant } from '@/api/consultant'
+import tool from '@/utils/tool'
+
 export default {
   name: 'consumer-search',
   components: {
@@ -36,49 +38,51 @@ export default {
   },
   data () {
     return {
+      isLoading: false,
       form,
       datetime: '',
       isShow: false,
-      selPannel: '',
+      selPannel: { name: '向专业对象咨询', status: 'pro' },
       curTime: '',
       pannels: [
-        { name: '向专业对象咨询', status: 1 },
-        { name: '向人事咨询', status: 2 },
+        { name: '向专业对象咨询', status: 'pro' },
+        { name: '向人事咨询', status: 'hr' },
       ],
-      list: [
-        { id: '5f9004c9e7be443d069c1953', 
-          avatar: '/upload/consultant/1603274113微信图片_20200731222259.jpg', 
-          nickName: '马里奥', 
-          rate: 3, 
-          position: '高级专家', 
-          rateCount: '234', 
-          btn: { name: '预约', cb: () =>this.handleOpenDetail.bind(this, '5f9004c9e7be443d069c1953') }, 
-          selfIntroduction: '高桥於1994年创立了自己的品牌Undercover，而当时Nigo…' },
-        { id: '5f532bdb15d031b7520a493d', 
-          avatar: '/upload/consultant/1603274113微信图片_20200731222259.jpg', 
-          nickName: '奥利奥', 
-          rate: 3, 
-          position: '高级专家', 
-          rateCount: '234', 
-          btn: { name: '预约', cb: this.handleOpenDetail.bind(this, '5f532bdb15d031b7520a493d')  }, 
-          selfIntroduction: '高桥於1994年创立了自己的品牌Undercover，而当时Nigo…' },
-      ]
+      list: [],
+      top4: []
     }
   },
-  created() {
+  async created() {
     this.orderId = this.$route.query.orderId
-  },
-  mounted() {
-    Vue.component('async-example', function (resolve, reject) {
-      setTimeout(function () {
-        // 向 `resolve` 回调传递组件定义
-        resolve({
-          template: '<div><div v-for="item in [1,2,3]">{{item}}</div></div>'
-        })
-      }, 1000)
-    })
+    this.consultantId = this.$route.query.consultantId
+    const l = this.loading()
+    const res = await getDicts()
+    if (res.result) {
+      this.dicts = res.msg
+      this.form.industry.options = res.msg.industry
+      this.form.position.options = res.msg.position
+      this.form.company.options = res.msg.company
+      this.form.company.props.remoteMethod = this.getRemoteCompany
+    }
+    this.handleSearch()
+    const ret = await getTop4Consultant()
+    // 经常查看的咨询师top4
+    if (ret.result && ret.msg.list) {
+      this.top4 = tool.formatFavorites(ret.msg.list, '预约', this.handleOpenDetail, this.dicts.position)
+    }
+    l.close()
   },
   methods: {
+    getRemoteCompany(query) {
+      if (query) {
+        this.form.company.options = this.dicts.company.filter(item => {
+          return item.text.toLowerCase()
+            .indexOf(query.toLowerCase()) > -1;
+        });
+      } else {
+        this.form.company.options = this.dicts.company
+      }
+    },
     handleOpenDetail (id) {
       let url = `/consumer/consultant-detail/${id}`
       if (this.orderId) {
@@ -89,6 +93,19 @@ export default {
     handlePannelChange (item) {
       this.selPannel = item
     },
+    async handleSearch() {
+      let p = {
+        serviceType: this.selPannel.status,
+        prevConsultant: this.consultantId ? [this.consultantId]:[],
+        ...this.$refs.form.getFormData()
+      }
+      this.isLoading = true
+      const res = await queryConsultant(p).catch(e=> this.isLoading = false)
+      if (res.result) {
+        this.list = tool.formatFavorites(res.msg.list, '预约', this.handleOpenDetail, this.dicts.position)
+      }
+      this.isLoading = false
+    }
   }
 }
 </script>

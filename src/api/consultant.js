@@ -89,5 +89,13 @@ export function getSignStatus(params) {
     params
   })
 }
+// 搜索咨询师
+export function queryConsultant(data) {
+  return request({
+    url: '/consultant/platform/consultant/search',
+    method: 'post',
+    data
+  })
+}
 
 

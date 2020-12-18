@@ -61,7 +61,7 @@ export default {
       this.isLoading=false
     },
     handleChange() {
-      this.$router.push(`/consumer/search?orderId=${this.order.orderId}`)
+      this.$router.push(`/consumer/search?orderId=${this.order.orderId}&consultantId=${this.order.consultantId}`)
     }
   }
 };

@@ -141,9 +141,11 @@ function formatFavorites (list, btnName, cb, positions) {
       selfIntroduction, resume = {} }} = o
     const { workExperience: work } = resume
     const rate = evaluationCount ? evaluationPoint/evaluationCount: 0
+    const f = positions.find(v => v.value == (work && work.length? work[0].position: '-1'))
+    let position = f ? f.text : ''
     return {
       id, nickName, avatar, rate,
-      position: work && work.length ? positions.find(v => v.value == work[0].position).text : '',
+      position,
       evaluationCount, selfIntroduction,
       btn: { name: btnName, cb: cb.bind(this, id)}
     }
