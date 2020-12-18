@@ -13,9 +13,10 @@ export default {
   position: {
     layout: { span: 20 },
     type: 'select',
-    value: '',
+    value: [],
     label: '职位选择',
     props: { props: { label: 'text', value: 'value' },multiple: true },
+    rules: [r.required()],
     options: []
   },
   company: {

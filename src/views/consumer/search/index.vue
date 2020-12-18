@@ -64,7 +64,6 @@ export default {
       this.form.company.options = res.msg.company
       this.form.company.props.remoteMethod = this.getRemoteCompany
     }
-    this.handleSearch()
     const ret = await getTop4Consultant()
     // 经常查看的咨询师top4
     if (ret.result && ret.msg.list) {
@@ -91,20 +90,31 @@ export default {
       this.$router.push(url)
     },
     handlePannelChange (item) {
+      if (item.status == this.selPannel.status) {
+        return false
+      }
       this.selPannel = item
+      this.form.industry.value = []
+      this.form.position.value = []
+      this.form.company.value = []
     },
     async handleSearch() {
-      let p = {
-        serviceType: this.selPannel.status,
-        prevConsultant: this.consultantId ? [this.consultantId]:[],
-        ...this.$refs.form.getFormData()
-      }
-      this.isLoading = true
-      const res = await queryConsultant(p).catch(e=> this.isLoading = false)
-      if (res.result) {
-        this.list = tool.formatFavorites(res.msg.list, '预约', this.handleOpenDetail, this.dicts.position)
-      }
-      this.isLoading = false
+      this.$refs.form.validate((valid) => {
+        if (valid) {
+          let p = {
+            serviceType: this.selPannel.status,
+            prevConsultant: this.consultantId ? [this.consultantId]:[],
+            ...this.$refs.form.getFormData()
+          }
+          this.isLoading = true
+          queryConsultant(p).then(res => {
+            if (res.result) {
+              this.list = tool.formatFavorites(res.msg.list, '预约', this.handleOpenDetail, this.dicts.position)
+            }
+            this.isLoading = false
+          }).catch(e=> this.isLoading = false)
+        }
+      })
     }
   }
 }
