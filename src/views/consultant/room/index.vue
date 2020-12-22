@@ -213,6 +213,10 @@ export default {
       playState: ''
     }
   },
+  beforeDestroy() {
+    // 销毁定时器
+    clearInterval(this.timer)
+  },
   async created () {
     const orderId = this.$route.params.id
     const l = this.loading()
@@ -233,33 +237,45 @@ export default {
         let { basic: { name, gender, birthday, highestEducation = {}, selfIntroduction, detailedIntroduction } } = res[2].msg
         // 优先取服务器当前时间
         const now = res[4].msg || Math.ceil((moment().valueOf() / 1000))
-        const leftStart = startTime - now
-        const leftEnd = startTime + 90 * 60 - now
-        let targetTime = 0
-        let isStart = false
-        let bg = '#7c8ea5'
-        if (leftStart > 0) {
-          targetTime = leftStart
-          isStart = false
-        } else {
-          targetTime = leftEnd
-          isStart = true
-          bg = '#15479e'
+        function getTimerInfo(now, startTime) {
+          const leftStart = startTime - now
+          const leftEnd = startTime + 90 * 60 - now
+          let targetTime = 0
+          let isStart = false
+          let bg = '#7c8ea5'
+          if (leftStart > 0) {
+            // 距离开始时间
+            targetTime = leftStart
+            isStart = false
+          } else {
+            // 距离结束时间
+            targetTime = leftEnd
+            isStart = true
+            bg = '#15479e'
+          }
+          return {
+            targetTime,
+            isStart,
+            bg
+          }
         }
+        // 定时器信息
+        this.timer = getTimerInfo(now, startTime)
+        // 每1分钟同步服务端当前时间（尽量规避浏览器定时器误差）
+        this.timerId = setInterval(async () => {
+          const systemInfo = await getServiceTime()
+          this.timer = getTimerInfo(systemInfo.msg, startTime)
+        }, 60*1000)
+        let ttime = this.timer.targetTime
         const sid = setInterval(() => {
-          if (targetTime == 0) {
+          if (ttime == 0) {
             this.timer.isStart = true
             this.timer.bg = '#15479e'
             clearInterval(sid)
           }
-          targetTime--
+          ttime--
         }, 1000)
-        // 定时器信息
-        this.timer = {
-          targetTime,
-          isStart,
-          bg,
-        }
+
         this.info = {
           slotId,
           orderId,

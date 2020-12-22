@@ -165,7 +165,7 @@ export default {
           this.edus = education.map(o => {
             let { country, school, discipline, degree, graduationTime } = o
             const schools = countries.find(v => v.value == country).schools
-            const schoolText = schools.find(v => v.value == school).text
+            const schoolText = schools.find(v => v.value == school).school
             const disciplineText = majors.find(v => v.value == discipline).text
             const degreeText = degrees.find(v => v.value == degree).text
             return {

@@ -30,6 +30,7 @@ export default {
     'timer.targetTime': function(n, o) {
       this.secondsLeft = n
       this.getCountdown()
+      clearInterval(this.sid)
       this.sid = setInterval(this.getCountdown, 1000)
     }
   },

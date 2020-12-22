@@ -104,10 +104,11 @@ export default {
     },
     renderHeader() {
       const status = this.selPannel.status
+      const len = this.list.length
       return (
         <div class="flex-vc">
           <div style="margin-right: 14px">{status=='9'?'全选':'订单号'}</div>
-          { status=='9'&&<el-button plain>批量提现</el-button>}
+          { status=='9' && len ? <el-button plain>批量提现</el-button> : ''}
         </div>
       )
     },

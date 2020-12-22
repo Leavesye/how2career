@@ -26,7 +26,7 @@ router.beforeEach(async(to, from, next) => {
   if (hasToken) {
     // 切换页面查询即将开始服务的订单
     // 避免连续查询订单的保护
-    if (!['consumer/index', 'consumer/order', 'consultant/index', 'consultant/order'].find(o => to.path.includes(o))) { 
+    // if (!['consumer/index', 'consumer/order', 'consultant/index', 'consultant/order'].find(o => to.path.includes(o))) { 
       getOrders({
         from: "0",
         to: "2601444690",
@@ -41,7 +41,7 @@ router.beforeEach(async(to, from, next) => {
           store.dispatch('room/setRoom', '')
         }
       })
-    }
+    // }
     next()
     NProgress.done()
   } else {

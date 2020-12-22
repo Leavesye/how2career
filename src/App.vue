@@ -11,6 +11,7 @@ export default {
 </script>
 <style>
 @import "./fonts/font.css";
+@import "./fonts/iconfont.css";
 #app {
   background: #EDEEEF;
 }
