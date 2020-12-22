@@ -96,6 +96,10 @@ export default {
         slotId, consultant: consultantId, startTime }).catch(e=>{console.log(e)})
       if (res.result) {
         if (res.msg == 'orderCancel' || res.msg == 'orderExpire') {
+          // 关闭麦克风访问权限
+          this.$emit('end')
+          // 隐藏进房间按钮
+          this.$store.dispatch('room/setRoom', '')
           this.alert(res.msg == 'orderExpire'?'咨询时间结束,请给此次服务评价':'咨询超过20分钟未开始,已自动取消', 'warning')
           this.$router.push(this.user.role == 'consumer'?'/consumer/order/6': '/consultant/order/0,7,8')
         }

@@ -24,8 +24,10 @@ export default {
     this.query()
   },
   methods: {
+    handleAppintment (id) {
+      this.$router.push(`/consumer/consultant-detail/${id}`)
+    },
     async query() {
-
       const res = await Promise.all([getFavorites(), getDicts()])
       if (res[0].result) {
         const l = res[0].msg.list
@@ -40,7 +42,8 @@ export default {
               id,
               nickName, avatar, rate, position: res[1].msg.position.find(v => v.value == work[0].position).text,
               evaluationCount, selfIntroduction,
-              btn: { name: '取消收藏', cb: this.handleUnFavorite.bind(this, id)}
+              btnBook: { name: '预约', cb: this.handleAppintment.bind(this, id)},
+              btn: { name: '取消收藏', cb: this.handleUnFavorite.bind(this, id)},
             }
           })
         } else {

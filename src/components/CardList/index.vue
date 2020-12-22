@@ -14,8 +14,12 @@
           <h1 @click="handleShowRateList(item)" class="rate-count flex-vc"><i class="iconfont icondianping-01"></i>
             <div style="margin-left: 4px">{{item.evaluationCount || 0}}</div>
           </h1>
-          <el-button plain
-                    @click="handleClick(item.btn.cb)">{{item.btn.name}}</el-button>
+          <div>
+            <el-button plain v-if="item.btnBook"
+                      @click="handleClick(item.btnBook.cb)">{{item.btnBook.name}}</el-button>
+            <el-button plain style="margin-left:10px"
+                      @click="handleClick(item.btn.cb)">{{item.btn.name}}</el-button>
+          </div>
         </div>
       </li>
       <li :key="i" v-else class="blank-item"></li>
@@ -99,7 +103,7 @@ export default {
 }
 .favorite-item {
   flex-basis: 23%;
-  padding: 30px 20px;
+  padding: 30px 18px;
   width: 205px;
   height: 380px;
   background: #ffffff;

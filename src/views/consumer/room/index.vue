@@ -79,6 +79,7 @@
     <room-status :isShow="isShow"
                  @start="handleChatStart"
                  @reopen="reOpen"
+                 @end="leaveRoom"
                  :timer="timer"
                  :info="info"></room-status>
     <!-- 更多学历 -->
@@ -244,8 +245,9 @@ export default {
             stopService({ orderId: this.orderId }).then(res => {
               if (res.result) {
                 // 退出房间
-                this.leaveRoom(this.client)
+                this.leaveRoom()
                 this.playState = ''
+                this.$store.dispatch('room/setRoom', '')
                 this.alert('服务已结束')
                 this.$router.replace('/consumer/order/6')
               }

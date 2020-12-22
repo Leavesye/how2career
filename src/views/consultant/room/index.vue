@@ -167,6 +167,7 @@
     <room-status :isShow="isShow"
                  @start="handleChatStart"
                  @reopen="reOpen"
+                 @end="leaveRoom"
                  :timer="timer"
                  :info="info"></room-status>
     <div id="local_stream"></div>

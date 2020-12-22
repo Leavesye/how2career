@@ -111,8 +111,8 @@ export default {
     },
 
     //退出音视频
-    leaveRoom (client) {
-      client
+    leaveRoom () {
+      this.client
         .leave()
         .then(() => {
             console.log('退房成功')
