@@ -96,11 +96,12 @@ export default {
   methods: {
     async query() {
       const l = this.loading()
+      const { pageIndex, pageSize } = this.pagination
       const res = await getMessage({
         from: 0,
         to: 2601444690,
-        page: 0,
-        limit: 10,
+        page: pageIndex || 0,
+        limit: pageSize || 10,
       }).catch(e => l.close)
       if (res.result) {
         this.pagination.total = res.msg.count
