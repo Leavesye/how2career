@@ -97,7 +97,7 @@
                    round
                    size="large"
                    style="width: 180px;"
-                   @click="handleStep">{{curStep < 2 ? '下一步': '完成部署'}}</el-button>
+                   @click="handleStep">{{ 2 > curStep ? '下一步': '完成部署'}}</el-button>
       </div>
     </section>
   </div>
