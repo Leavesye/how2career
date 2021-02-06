@@ -12,12 +12,15 @@ const state = {
   completion: +Cookies.get('completion'),
   avatar: Cookies.get('avatar'),
   role: Cookies.get('role'),
-  userId: Cookies.get('userId')
+  userId: Cookies.get('userId'),
+  sales: Cookies.get('sales'),
+  refer: Cookies.get('refer'),
 }
 
 const mutations = {
   SET_TOKEN: (state, token) => {
     state.token = token
+    setToken(token)
   },
   SET_USERNAME: (state, userName) => {
     state.userName = userName
@@ -50,7 +53,15 @@ const mutations = {
   SET_USERID: (state, userId) => {
     state.userId = userId
     Cookies.set('userId', userId)
-  }
+  },
+  SET_SALES: (state, sales) => {
+    state.sales = sales
+    Cookies.set('sales', sales)
+  },
+  SET_REFER: (state, refer) => {
+    state.refer = refer
+    Cookies.set('refer', refer)
+  },
 }
 
 const actions = {
@@ -75,7 +86,12 @@ const actions = {
           commit('SET_NAME', data.name)
           commit('SET_IDCARD', data.idCard)
           commit('SET_COMPLETION', data.completion)
-          
+          if (data.refer) {
+            commit('SET_REFER', data.refer)
+          }
+          if (data.sales) {
+            commit('SET_SALES', data.sales)
+          }
         }
         resolve(res)
       }).catch(error => {
@@ -111,6 +127,7 @@ const actions = {
     commit('SET_COMPLETION', '')
     commit('SET_AVATAR', '')
     commit('SET_USERID', '')
+    commit('SET_SALES', '')
     removeToken()
     Cookies.remove('token')
     Cookies.remove('userName')
@@ -121,6 +138,7 @@ const actions = {
     Cookies.remove('role')
     Cookies.remove('userId')
     Cookies.remove('completion')
+    Cookies.remove('sales')
     location.href = '/'
   },
   // remove token
@@ -142,6 +160,10 @@ const actions = {
     info.completion && commit('SET_COMPLETION', info.completion)
     info.idCard && commit('SET_IDCARD', info.idCard)
   },
+  setQyuser({ commit }, info) {
+    info.sales && commit('SET_SALES', info.sales)
+    info.token && commit('SET_TOKEN', info.token)
+  }
 }
 
 export default {

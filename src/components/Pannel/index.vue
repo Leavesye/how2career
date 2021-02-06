@@ -53,7 +53,7 @@ export default {
   margin-top: 22px;
   margin-left: 20px;
 }
-.p-item.consultant {
+.p-item.consultant, .p-item.sales{
   width: 205px;
 }
 .p-item.search {
@@ -71,6 +71,10 @@ export default {
 }
 .p-item.consumer.active {  
   background: linear-gradient(122deg, #36AE82 0%, #50E3A3 100%);
+  color: #fff;
+}
+.p-item.sales.active {  
+  background-image: linear-gradient(122deg, #3464ae, #41ab83);
   color: #fff;
 }
 .p-item.search.active {  

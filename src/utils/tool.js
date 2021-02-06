@@ -151,10 +151,26 @@ function formatFavorites (list, btnName, cb, positions) {
     }
   })
 }
+
+function getShareQuery(refer, sales, userId) {
+  let query = ''
+  // 如果这个人 又有sales又有refer, 那么这个人好友分享出去的,sales不传.   
+  // 如果只有sales,那么他好友分享出去的有sales和refer
+  // 销售分享带(sales) -> A用户分享(sales+refer) -> B用户分享(refer)
+  if (refer && sales) {
+    query = `refer=${userId}`
+  } else if (!refer && sales) {
+    query = `refer=${userId}&growth=${sales}`
+  } else {
+    query = `refer=${userId}`
+  }
+  return query
+}
 export default { 
   getCondition,
   formatConsultantOrder,
   formatConsumerOrder,
   formatStatus,
-  formatFavorites
+  formatFavorites,
+  getShareQuery
 }

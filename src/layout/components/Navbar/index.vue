@@ -5,12 +5,12 @@
       <ul class="menu">
         <li v-for="(o, i) in menus" :key="i"><el-link class="link" :underline="false">{{o.name}}</el-link></li>
       </ul>
-      <el-dropdown style="margin-top: 7px;cursor: pointer" v-if="user.avatar">
+      <el-dropdown style="margin-top: 7px;cursor: pointer" v-if="user.nickName || user.sales">
         <el-image class="avatar-img el-dropdown-link" :src="avatar"></el-image>
         <el-dropdown-menu slot="dropdown">
           <div class="user-info">
             <div class="flex-hbc nick-name">
-              <span>{{user.nickName}}</span>
+              <span>{{user.nickName || user.sales }}</span>
               <span @click="loginOut" style="cursor: pointer">退出</span>
             </div>
             <!-- 咨询者才有 -->
@@ -43,7 +43,7 @@ export default {
   },
   computed: {
     avatar: function() {
-      return process.env.VUE_APP_HOST_NAME + this.user.avatar || require('../../../assets/default-avatar.png')
+      return this.user.avatar ? process.env.VUE_APP_HOST_NAME + this.user.avatar : require('../../../assets/default-avatar.png')
     },
     ...mapGetters([
       'user'

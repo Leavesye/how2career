@@ -7,14 +7,12 @@
     <login @close="handleCloseLogin"
            :isShow="isShow"
            :type="type"
-           :refer="refer"></login>
+           :refer="refer"
+           :sales="sales"></login>
   </div>
 </template>
 
 <script>
-
-import { createOrder } from '@/api/order'
-import { setToken } from '@/utils/auth'
 import Login from './modal/login'
 
 export default {
@@ -26,7 +24,8 @@ export default {
     return {
       isShow: false,
       type: 1,
-      refer: ''
+      refer: '',
+      sales: ''
     }
   },
   methods: {
@@ -34,20 +33,15 @@ export default {
       this.isShow = false
     },
     async action (type) {
-      // const res = await login({
-      //   "userName": "18602113265",
-      //   "passWord": "123"
-      // })
-      // setToken(res.msg.token)
-      // const ret = await getUserInfo()
       this.isShow = true
       this.type = type
     },
   },
   created () {
     this.refer = this.$route.query.refer
+    this.sales = this.$route.query.growth
     // 好友推荐注册过来显示注册弹框
-    if (this.refer) {
+    if (this.refer || this.sales) {
       this.isShow = true
       this.type = 2
     }

@@ -99,7 +99,7 @@ import moment from 'moment'
 import { mapGetters } from 'vuex'
 import { getRateList } from '@/api/consultant'
 import { changeConsultant } from '@/api/order'
-import { getPublicInfo, favorite, delFavorite, getFavorites, getDicts, trackViewConsultant } from '@/api/user'
+import { favorite, delFavorite, getFavorites, getDicts, trackViewConsultant } from '@/api/user'
 
 export default {
   name: 'consultant-detail',
@@ -267,6 +267,12 @@ export default {
           consumerAvatar: this.user.avatar,
           consultant,
           consumerTime
+        }
+        if (this.user.refer) {
+          p.refer = this.user.refer
+        }
+        if (this.user.sales) {
+          p.sales = this.user.sales
         }
         const res = await createOrder(p).catch(e => l.close())
         if (res.result) {

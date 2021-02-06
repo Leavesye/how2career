@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vue-cli-service serve",
     "build:prod": "vue-cli-service build",
-    "build:stage": "vue-cli-service build --mode staging",
+    "build:sales": "vue-cli-service build --mode sales_prod",
     "push": "vue-cli-service build && git add . && git ci -m'提交' && git push",
     "preview": "node build/index.js --preview",
     "svgo": "svgo -f src/icons/svg --config=src/icons/svgo.yml",
@@ -54,6 +54,7 @@
     "chalk": "2.4.2",
     "compression-webpack-plugin": "^6.0.3",
     "connect": "3.6.6",
+    "copy-webpack-plugin": "^7.0.0",
     "element-theme-chalk": "^2.13.2",
     "eslint": "6.7.2",
     "eslint-plugin-vue": "6.2.2",

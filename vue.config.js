@@ -1,7 +1,7 @@
 'use strict'
 const path = require('path')
 const defaultSettings = require('./src/settings.js')
-const CompressionPlugin = require("compression-webpack-plugin")
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 function resolve(dir) {
   return path.join(__dirname, dir)
@@ -59,13 +59,8 @@ module.exports = {
       }
     },
     // plugins: [
-    //   new CompressionPlugin({
-    //     algorithm: 'gzip',
-    //     test: new RegExp('\\.(js|css)$'),
-    //     threshold: 10240,
-    //     minRatio: 0.8,
-    //   })
-    // ]
+    //   new CopyWebpackPlugin( [{ from: "qy-reset", to: "dist" }] )
+    // ],
   },
   runtimeCompiler: true,
   chainWebpack(config) {
@@ -101,7 +96,7 @@ module.exports = {
       .end()
 
     config
-      .when(process.env.NODE_ENV !== 'development',
+      .when(process.env.ENV !== 'development',
         config => {
           config
             .plugin('ScriptExtHtmlWebpackPlugin')

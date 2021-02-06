@@ -11,7 +11,7 @@ NProgress.configure({ showSpinner: false }) // NProgress Configuration
 // 登录咨询师跳咨询者链接处理
 
 // 跳转白名单
-const whiteList = ['/home', '/register']
+const whiteList = ['/home', '/register', '/sales-login', '/sales/qylogin']
 
 router.beforeEach(async(to, from, next) => {
   // start progress bar
@@ -24,9 +24,8 @@ router.beforeEach(async(to, from, next) => {
   const hasToken = getToken()
   // 有登录态直接跳转
   if (hasToken) {
-    // 切换页面查询即将开始服务的订单
-    // 避免连续查询订单的保护
-    // if (!['consumer/index', 'consumer/order', 'consultant/index', 'consultant/order'].find(o => to.path.includes(o))) { 
+    if (process.env.VUE_APP_ROLE != 'sales') { 
+      // 切换页面查询即将开始服务的订单
       getOrders({
         from: "0",
         to: "2601444690",
@@ -41,16 +40,22 @@ router.beforeEach(async(to, from, next) => {
           store.dispatch('room/setRoom', '')
         }
       })
-    // }
+    }
     next()
     NProgress.done()
   } else {
     const f = whiteList.find(o => to.path.includes(o))
+    console.log(to, 1111)
     if (f) {
+      console.log(to, 2222)
       next()
       NProgress.done()
     } else {
-      next(`/home?redirect=${to.path}`)
+      if (process.env.VUE_APP_ROLE == 'sales') {
+        next(`/sales-login?redirect=${to.path}`)
+      } else {
+        next(`/home?redirect=${to.path}`)
+      }
       NProgress.done()
     }
   }

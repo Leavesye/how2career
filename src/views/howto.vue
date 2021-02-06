@@ -34,11 +34,21 @@
 <script>
 import { mapGetters } from 'vuex'
 import QRCode from 'qrcodejs2'
+import tool from '@/utils/tool'
 
 export default {
    computed: {
      url: function() {
-       return `${process.env.VUE_APP_HOST_NAME}home?refer=${this.user.userId}`
+      let query = ''
+      const { path } = this.$route
+      const { refer, sales, userId } = this.user
+      // 咨询者分享
+      if (path == '/consumer/howto') {
+          query = tool.getShareQuery(refer, sales, userId)
+       } else { // 销售分享
+         query = `growth=${sales}`
+       }
+       return `${process.env.VUE_APP_HOST_NAME}/home?${query}`
      },
      pcIcon: function() {
        return require('@/assets/pc-icon.png')
@@ -106,10 +116,10 @@ export default {
   border: 1px solid #E0E0E0;
 }
 .left {
-  background-image: url('../../../assets/howto-1.png');
+  background-image: url('../assets/howto-1.png');
 }
 .right {
-  background-image: url('../../../assets/howto-2.png');
+  background-image: url('../assets/howto-2.png');
 }
 .left .inner,
 .right .inner {

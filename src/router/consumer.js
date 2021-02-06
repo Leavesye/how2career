@@ -31,7 +31,7 @@ export default [
   },
   {
     path: '/consumer/howto',
-    component: () => import('@/views/consumer/recommend/howto'),
+    component: () => import('@/views/howto'),
   },
   // 咨询房间
   {

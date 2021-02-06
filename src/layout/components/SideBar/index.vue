@@ -1,13 +1,11 @@
 <template>
   <div class="sider-bar"
-       :style="{background: user.role=='consumer'?'#36AE82':'#15479E'}">
+       :style="getStyle()">
     <div v-if="isCollapse"><i :class="[isCollapse ? 'el-icon-s-unfold': 'el-icon-s-fold']"></i></div>
     <el-menu :collapse="isCollapse"
-             @open="handleOpen"
-             @close="handleClose"
              :default-active="activeMenu"
              text-color="#fff"
-             :style="{background: user.role=='consumer'?'#36AE82':'#15479E'}"
+             :style="getStyle(1)"
              active-text-color="#fff">
       <template v-for="(item, index) in menus">
         <el-menu-item :key="index"
@@ -40,13 +38,13 @@
                 @click="linkTo('/'+user.role+'/room/'+ room.orderId)"></el-image>
     </div>
     <section class="bottom-content">
-      <section v-if="user.role=='consumer' && !isCollapse">
-        <p class="my-code">我的推荐码</p>
+      <section v-show="user.role=='consumer' || user.sales">
+        <p class="my-code">{{user.role=='consumer' ? '我的推荐码' : '我的销售码'}}</p>
         <div class="flex-cc qrcode-box">
           <div class="qrcode"
               ref="qrCodeUrl"></div>
         </div>
-        <div class="howto" @click="linkTo('/consumer/howto')">如何推荐好友</div>
+        <div class="howto" v-if="user.role=='consumer'" @click="linkTo('/consumer/howto')">如何推荐好友</div>
       </section>
       <div class="flex-hbc bottom-links"
           v-if="!isCollapse">
@@ -63,6 +61,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import QRCode from 'qrcodejs2'
+import tool from '@/utils/tool'
 
 export default {
   name: 'sidebar',
@@ -94,22 +93,40 @@ export default {
     linkTo (path) {
       this.$router.push(path)
     },
-    handleOpen () {
-
+    getStyle (type) {
+      const cfg = {
+        'consumer': { background: '#36AE82' },
+        'consultant': { background: '#15479E' },
+        'sales': type == 1 ?{ background: 'transparent'} : { backgroundImage: 'linear-gradient(#3464ae, #41ab83)' },
+      }
+      let role = this.user.role ? this.user.role : this.user.sales ? 'sales' : ''
+      return cfg[role]
     },
-    handleClose () {
-
-    }
+    createQrcode() {
+      const { refer, sales, userId, role } = this.user
+      if (role == 'consumer' || sales) {
+        let url = `${process.env.VUE_APP_HOST_NAME}/register/consumer?`
+        let query = ''
+        if (role) {
+          query = tool.getShareQuery(refer, sales, userId)
+        } else { // 销售码
+          query = `growth=${sales}`
+        }
+        url = `${url}${query}`
+        new QRCode(this.$refs.qrCodeUrl, {
+          text: url,
+          colorDark: '#000000',
+          colorLight: '#ffffff',
+          correctLevel: QRCode.CorrectLevel.H
+        })
+      }
+    },
+  },
+  updated() {
+    this.createQrcode()
   },
   mounted () {
-    if (this.user.role == 'consumer') {
-      const qrcode = new QRCode(this.$refs.qrCodeUrl, {
-        text: `${process.env.VUE_APP_HOST_NAME}register/consumer?refer=${this.user.userId}`,
-        colorDark: '#000000',
-        colorLight: '#ffffff',
-        correctLevel: QRCode.CorrectLevel.H
-      })
-    }
+    this.createQrcode()
     // 刷新页面处理菜单高亮
     const path = this.$route.path
     for (let i = 0; i < this.menus.length; i++) {
@@ -179,7 +196,7 @@ span {
 .howto {
   margin: 0 auto;
   margin-top: 10px;
-  width: 90px;
+  width: 100px;
   height: 20px;
   border-radius: 13px;
   border: 1px solid #ffffff;
@@ -191,6 +208,7 @@ span {
   font-size: 12px;
 }
 .bottom-links {
+  margin-top: 20px;
   width: 154px;
   font-size: 14px;
   color: #fff;

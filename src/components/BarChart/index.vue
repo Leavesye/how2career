@@ -1,5 +1,5 @@
 <template>
-  <v-charts :options="options"></v-charts>
+  <v-charts ref="chart" :options="options"></v-charts>
 </template>
 
 <script>
@@ -12,7 +12,15 @@ require("echarts/lib/component/dataZoomInside")
 require("echarts/lib/component/dataZoomSlider")
 
 export default {
+  props: ['d'],
   components: { VCharts },
+  watch: {
+    'd': function(n, o) {
+      this.options.xAxis.data = n.x
+      this.options.series[0].data = n.y
+      this.$refs.chart.resize();
+    }
+  },
   data () {
     return {
       options: {
@@ -32,7 +40,7 @@ export default {
         },
         xAxis: {
           type: 'category',
-          data: [1, 2, 3, 4, 6, 6, 7],
+          data: [],
           axisTick: {
             show: false
           },
@@ -56,7 +64,7 @@ export default {
           }
         },
         series: [{
-          data: [120, 200, 150, 80, 70, 110, 130],
+          data: [],
           type: 'bar',
           itemStyle: {
             color: '#36AE82'
@@ -70,6 +78,9 @@ export default {
       }
     }
   },
+  mounted() {
+    window.addEventListener("resize", this.$refs.chart.resize)
+  }
 };
 </script>
 

@@ -62,7 +62,6 @@ export default {
   },
   data () {
     return {
-      refer: false,
       account: {},
       isShow: false,
       layout: {
@@ -80,6 +79,8 @@ export default {
   async created() {
     // 好友推荐带过来的用户id
     this.refer = this.$route.query.refer
+    // 销售邀请
+    this.sales = this.$route.query.growth
     // 是否是注册页进来
     this.isReg = this.$route.path.includes('/register/consumer')
      if (this.isReg) {
@@ -146,6 +147,10 @@ export default {
         // 好友推荐注册
         if (this.isReg && this.refer) {
           p.refer = this.refer
+        }
+        // 销售码
+        if (this.isReg && this.sales) {
+          p.sales = this.sales
         }
         const l = this.loading()
         let fn = null

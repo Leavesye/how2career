@@ -90,7 +90,7 @@ const tabsCfg = {
 }
 export default {
   name: 'login-modal',
-  props: ['isShow', 'type', 'refer'],
+  props: ['isShow', 'type', 'refer', 'sales'],
   data () {
     const r = this.$rules
     this.role = 'consumer'
@@ -163,7 +163,15 @@ export default {
       const res = await checkUser(this.info)
       if (res.result) {
         this.$store.dispatch('user/setUser', { role: this.role, userName: this.info.userName })
-        const path = this.role == 'consultant' ? '/register/consultant' : `/register/consumer?refer=${this.refer}`
+        let query = ''
+        if (this.refer && this.sales) {
+          query = `?refer=${this.refer}&sales=${this.sales}`
+        } else if (this.refer && !this.sales) {
+          query = `?refer=${this.refer}`
+        } else if (!this.refer && this.sales) {
+          query = `?sales=${this.sales}`
+        }
+        const path = this.role == 'consultant' ? '/register/consultant' : `/register/consumer${query}`
         this.$router.push(path)
       }
       this.isLoading = false
