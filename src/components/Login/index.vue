@@ -75,8 +75,7 @@
 </template>
 
 <script>
-import { sendCode, checkUser, login } from '@/api/user'
-import { setToken } from '@/utils/auth'
+import { sendCode, checkUser } from '@/api/user'
 
 const tabsCfg = {
   '1': [
@@ -114,7 +113,7 @@ export default {
   },
   computed: {
     logo: function () {
-      return require('../../../../assets/logo1.png')
+      return require('@/assets/logo1.png')
     }
   },
   watch: {

@@ -48,6 +48,14 @@ export let constantRoutes = [
     component: () => import('@/views/home/index'),
   },
   {
+    path: '/service',
+    component: () => import('@/views/home/service'),
+  },
+  {
+    path: '/about',
+    component: () => import('@/views/home/about'),
+  },
+  {
     path: '/sales-login',
     component: () => import('@/views/home/sales'),
   },

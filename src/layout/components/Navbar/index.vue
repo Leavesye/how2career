@@ -62,7 +62,7 @@ export default {
   }
 }
 </script>
-<style>
+<style lang="scss">
 .menu {
   width: 504px;
   display: flex;

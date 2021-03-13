@@ -3,9 +3,9 @@
     <el-col :xs="24" :sm="24" :md="22" :lg="20" :xl="15" class="inner">
       <section class="flex-hb links">
         <div class="flex-hbc left">
-          <svg-icon icon-class="logo" class="logo"></svg-icon>
+          <svg-icon @click="linkTo('/home')" icon-class="logo" class="logo"></svg-icon>
           <ul class="flex-hb">
-            <li v-for="(o,i) in links"
+            <li v-for="(o,i) in links" @click="linkTo(o.path)"
                 :key="i">
               <el-link class="link" :underline="false">{{o.name}}</el-link>
             </li>
@@ -27,9 +27,8 @@ export default {
   data () {
     return {
       links: [
-        { name: '我们的服务', path: '' },
-        { name: '关于我们', path: '' },
-        { name: '联系我们', path: '' },
+        { name: '我们的服务', path: '/service' },
+        { name: '关于我们', path: '/about' },
         { name: '在线客服', path: '' },
       ],
       icons: [
@@ -40,9 +39,9 @@ export default {
     }
   },
   methods: {
-    goHome() {
-      this.$router.push('/home')
-    }
+    linkTo(path) {
+      this.$router.push(path)
+    },
   }
 };
 </script>
