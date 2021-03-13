@@ -118,7 +118,6 @@ export default {
     }
   },
   mounted() {
-    const bodyHeight = document.documentElement.clientHeight || window.innerHeight
     window.addEventListener('scroll', this.onScroll)
   }
 };
