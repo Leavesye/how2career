@@ -107,13 +107,19 @@ export default {
       return require("@/assets/service-bottom.png");
     }
   },
-  methods: {},
-  mounted() {
-    const bodyHeight = document.documentElement.clientHeight || window.innerHeight
-    window.addEventListener('scroll', () => {
+  destroyed() {
+    window.removeEventListener('scroll', this.onScroll)
+  },
+  methods: {
+    onScroll() {
+      const bodyHeight = document.documentElement.clientHeight || window.innerHeight
       const top = document.querySelector('.tongji').getBoundingClientRect().top
       this.isShow = top < bodyHeight
-    })
+    }
+  },
+  mounted() {
+    const bodyHeight = document.documentElement.clientHeight || window.innerHeight
+    window.addEventListener('scroll', this.onScroll)
   }
 };
 </script>

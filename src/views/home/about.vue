@@ -44,32 +44,17 @@
 <script>
 import FootBar from "@/layout/components/FootBar";
 import TopNavbar from "@/components/TopNavbar";
-import CountTo from "vue-count-to";
 
 export default {
   components: {
     FootBar,
     TopNavbar,
-    CountTo
   },
   data() {
     return {
       isShow: false
     };
   },
-  computed: {
-    serviceBottom: function() {
-      return require("@/assets/service-bottom.png");
-    }
-  },
-  methods: {},
-  mounted() {
-    const bodyHeight = document.documentElement.clientHeight || window.innerHeight;
-    window.addEventListener("scroll", () => {
-      const top = document.querySelector(".tongji").getBoundingClientRect().top;
-      this.isShow = top < bodyHeight;
-    });
-  }
 };
 </script>
 

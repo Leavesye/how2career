@@ -201,6 +201,7 @@ export default {
   background-position: center;
   background-size: 1920px 500px;
   padding: 1px;
+  min-width: 1180px;
 }
 .inner-home {
   width: 1180px;
