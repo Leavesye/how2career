@@ -20,15 +20,16 @@
       <div class="contact-us">
         <h1>联系我们</h1>
         <p class="flex">
-          <i class="iconfont icondingdan-01"></i
-          ><span>公司地址：上海市浦东新区/深圳市南山区</span>
+          <svg-icon icon-class="map-pin" class="svg-i"></svg-icon>
+          <span>公司地址：上海市浦东新区/深圳市南山区</span>
         </p>
         <p class="flex">
-          <i class="iconfont icondingdan-01"></i
-          ><span>联系电话：021-12345678</span>
+          <svg-icon icon-class="phone-call" class="svg-i"></svg-icon>
+          <span>联系电话：021-12345678</span>
         </p>
         <p class="flex">
-          <i class="iconfont icondingdan-01"></i><span>联系邮箱：TBD</span>
+          <svg-icon icon-class="mail" class="svg-i"></svg-icon>
+          <span>联系邮箱：TBD</span>
         </p>
       </div>
       <div class="wx-qrcode">
@@ -75,7 +76,7 @@ export default {
   line-height: 380px;
   text-align: center;
   font-size: 40px;
-  font-weight: 500;
+  font-weight: 600;
   color: #ffffff;
   letter-spacing: 1px;
 }
@@ -133,5 +134,11 @@ export default {
 }
 .bottom {
   padding-bottom: 120px;
+}
+.svg-i {
+  width: 18px;
+  height: 18px;
+  margin-right: 10px;
+  margin-top: 2px;
 }
 </style>

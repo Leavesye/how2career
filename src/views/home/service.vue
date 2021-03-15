@@ -140,7 +140,7 @@ export default {
   line-height: 380px;
   text-align: center;
   font-size: 40px;
-  font-weight: 500;
+  font-weight: 600;
   color: #ffffff;
   letter-spacing: 1px;
 }

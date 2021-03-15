@@ -80,13 +80,13 @@
         </li>
       </ul>
     </section>
-    <section class="industrys">
+    <!-- <section class="industrys">
       <h1>覆盖行业</h1>
       <ul class="industry-types flex-hbc">
         <li :class="{active: cidx==i}" @click="handleClickIndustry(i)" v-for="(item, i) in industrys" :key="i">{{ item }}</li>
       </ul>
       <img class="logobj" :src="logobj" alt="" />
-    </section>
+    </section> -->
     <foot-bar />
   </div>
 </template>
@@ -193,6 +193,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.home {
+  background: #fff;
+}
 .home-top {
   width: 100%;
   height: 500px;
@@ -211,7 +214,7 @@ export default {
   margin-top: 90px;
 }
 .content p {
-  font-weight: 500;
+  font-weight: 600;
   color: #ffffff;
   line-height: 65px;
   font-size: 46px;
