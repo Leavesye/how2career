@@ -1,9 +1,9 @@
 <template>
   <el-row class="navbar" type="flex" justify="center">
     <el-col :xs="24" :sm="24" :md="22" :lg="20" :xl="15" class="menu-container flex-hbc">
-      <svg-icon icon-class="logo" class="logo"></svg-icon>
+      <svg-icon @click="linkTo('/home')" icon-class="logo" class="logo"></svg-icon>
       <ul class="menu">
-        <li v-for="(o, i) in menus" :key="i"><el-link class="link" :underline="false">{{o.name}}</el-link></li>
+        <li @click="linkTo(o.path)" v-for="(o, i) in menus" :key="i"><el-link class="link" :underline="false">{{o.name}}</el-link></li>
       </ul>
       <el-dropdown style="margin-top: 7px;cursor: pointer" v-if="user.nickName || user.sales">
         <el-image class="avatar-img el-dropdown-link" :src="avatar"></el-image>
@@ -34,10 +34,10 @@ export default {
     return {
       isShow: false,
       menus :[
-        {name: '首页', path: ''},
-        {name: '我们的服务', path: ''},
-        {name: '关于我们', path: ''},
-        {name: '联系我们', path: ''},
+        {name: '首页', path: '/home'},
+        {name: '我们的服务', path: '/service'},
+        {name: '关于我们', path: '/about'},
+        {name: '在线客服', path: ''},
       ]
     }
   },
@@ -56,8 +56,8 @@ export default {
     loginOut() {
       this.$store.dispatch('user/loginout')
     },
-    goHome() {
-      this.$router.push('/home')
+    linkTo(path) {
+      this.$router.push(path)
     }
   }
 }
