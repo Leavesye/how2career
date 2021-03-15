@@ -2,10 +2,10 @@
   <div class="about">
     <section class="about-top">
       <top-navbar />
-      <div class="about-banner">
-        求职信息咨询领域的开拓者和引领者
-      </div>
     </section>
+    <div class="about-banner">
+      求职信息咨询领域的开拓者和引领者
+    </div>
     <section class="bottom">
       <div class="about-us">
         <h1>关于我们</h1>
@@ -65,15 +65,17 @@ export default {
 }
 .about-top {
   background: #292e3d;
+  position: sticky;
+  top: 0px;
 }
 .about-banner {
   width: 100%;
-  height: 380px;
+  height: 440px;
   background-image: url(../../assets/about-banner.jpg);
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 1920px 380px;
-  line-height: 380px;
+  background-size: 1920px 440px;
+  line-height: 440px;
   text-align: center;
   font-size: 40px;
   font-weight: 600;

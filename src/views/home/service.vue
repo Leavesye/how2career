@@ -2,10 +2,10 @@
   <div class="service">
     <section class="service-top">
       <top-navbar />
-      <div class="service-banner">
-        我们的服务与支持
-      </div>
     </section>
+    <div class="service-banner">
+      我们的服务与支持
+    </div>
     <section class="service-desc">
       <p>
         在IntoCareer平台，每天都有来自各个行业领域的职场达人和资深HR成为咨询师，他们共同构建成IntoCareer职场达人网络，以及IntoCareer职场知识矩阵。
@@ -129,15 +129,17 @@ export default {
 }
 .service-top {
   background: #292e3d;
+  position: sticky;
+  top: 0px;
 }
 .service-banner {
   width: 100%;
-  height: 380px;
+  height: 440px;
   background-image: url(../../assets/service-top.jpg);
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 1920px 380px;
-  line-height: 380px;
+  background-size: 1920px 440px;
+  line-height: 440px;
   text-align: center;
   font-size: 40px;
   font-weight: 600;
