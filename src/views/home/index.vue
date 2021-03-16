@@ -222,7 +222,7 @@ export default {
 <style lang="scss" scoped>
 .top-bar {
   position: fixed;
-  z-index: 10000;
+  z-index: 3200;
   width: 100%;
   top: 0px;
   display: flex;

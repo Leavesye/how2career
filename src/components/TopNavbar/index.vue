@@ -6,11 +6,28 @@
       {{ o.name }}
     </li>
   </ul>
-  <div class="top-btns flex-hbc">
+  <el-dropdown style="margin-top: 7px;cursor: pointer" v-if="user.nickName || user.sales" @visible-change="handleOnDropdownShow">
+    <el-image class="avatar-img el-dropdown-link" :src="avatar"></el-image>
+    <el-dropdown-menu slot="dropdown" class="top-dropdown">
+      <div class="user-info">
+        <div class="flex-hbc nick-name">
+          <span>{{user.nickName || user.sales }}</span>
+          <span @click="loginOut" style="cursor: pointer">退出</span>
+        </div>
+        <!-- 咨询者才有 -->
+        <div v-if="user.role == 'consumer'">
+          <p class="info-percent">信息完成度</p>
+          <el-progress :percentage="user.completion" color="#FF5F5E" style="width: 170px"></el-progress>
+        </div>
+      </div>
+    </el-dropdown-menu>
+  </el-dropdown>
+  <div class="top-btns flex-hbc" v-else>
     <div class="sign-in" @click="action(1)">登录</div>
     <div class="sign-up" @click="action(2)">免费注册</div>
   </div>
   <login
+    id="login"
     @close="handleCloseLogin"
     :isShow="isShow"
     :type="type"
@@ -21,6 +38,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex"
 import Login from "@/components/Login";
 export default {
   components: {
@@ -50,6 +68,14 @@ export default {
       ],
     }
   },
+  computed: {
+    avatar: function() {
+      return this.user.avatar ? process.env.VUE_APP_HOST_NAME + this.user.avatar : require('@/assets/default-avatar.png')
+    },
+    ...mapGetters([
+      'user'
+    ])
+  },
   watch: {
     'refer': function(n, o) {
       this.$nextTick(() => {
@@ -75,10 +101,17 @@ export default {
       this.isShow = true;
       this.type = type;
     },
+    loginOut() {
+      this.$store.dispatch('user/loginout')
+    },
+    handleOnDropdownShow(isShow) {
+      if (isShow) {
+        document.querySelector('.top-bar').style.zIndex = 1000
+      }
+    }
   }
 };
 </script>
-
 <style lang="scss" scoped>
 .nav-bar {
   margin: 0 auto;
@@ -122,5 +155,25 @@ export default {
 .sign-up:hover {
   color: #226f9b;
   background: #ffffff;
+}
+.avatar-img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+.user-info {
+  padding: 0 15px;
+  width: 200px;
+  background: #FFFFFF;
+
+}
+.nick-name {
+  font-size: 14px;
+  color: #292E3D;
+}
+.info-percent {
+  color: #7A7F84;
+  font-size: 14px;
+  margin-top: 14px;
 }
 </style>

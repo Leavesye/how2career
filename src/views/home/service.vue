@@ -1,6 +1,6 @@
 <template>
   <div class="service">
-    <section class="service-top">
+    <section class="top-bar">
       <top-navbar />
     </section>
     <div class="service-banner">
@@ -127,7 +127,7 @@ export default {
 .service {
   background: #fff;
 }
-.service-top {
+.top-bar {
   background: #292e3d;
   position: sticky;
   top: 0px;

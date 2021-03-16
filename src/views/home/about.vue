@@ -1,6 +1,6 @@
 <template>
   <div class="about">
-    <section class="about-top">
+    <section class="top-bar">
       <top-navbar />
     </section>
     <div class="about-banner">
@@ -63,7 +63,7 @@ export default {
 .about {
   background: #fff;
 }
-.about-top {
+.top-bar {
   background: #292e3d;
   position: sticky;
   top: 0px;

@@ -29,7 +29,6 @@
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'navbar',
   data() {
     return {
       isShow: false,
