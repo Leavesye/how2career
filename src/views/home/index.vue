@@ -260,7 +260,7 @@ export default {
   margin: 0 auto;
 }
 .content {
-  margin-top: 90px;
+  margin-top: 120px;
 }
 .content p {
   font-weight: 600;
@@ -274,7 +274,7 @@ export default {
   font-weight: 300;
   color: #ffffff;
   line-height: 30px;
-  margin-top: 30px;
+  margin-top: 20px;
 }
 .right-now {
   width: 150px;

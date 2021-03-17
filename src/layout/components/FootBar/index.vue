@@ -16,7 +16,7 @@
               :key="i"><el-link class="link" :underline="false"><i :class="[o.code]"></i></el-link></li>
         </ul>
       </section>
-      <section class="copyright">Copyright © 2021 intocareer All rights reserved 好途网络科技（上海）有限公司 版权所有 沪ICP备2020029242号-2</section>
+      <a class="copyright" href="https://beian.miit.gov.cn/">Copyright © 2021 intocareer All rights reserved 好途网络科技（上海）有限公司 版权所有 沪ICP备2020029242号-2</a>
     </el-col>
   </el-row>
 </template>
@@ -75,6 +75,7 @@ export default {
       }
     }
     .copyright {
+      display: block;
       margin-top: 20px;
       font-size: 12px;
     }
