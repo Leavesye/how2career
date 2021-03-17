@@ -35,8 +35,7 @@ export default {
       menus :[
         {name: '首页', path: '/home'},
         {name: '我们的服务', path: '/service'},
-        {name: '关于我们', path: '/about'},
-        {name: '在线客服', path: ''},
+        {name: '关于我们', path: '/about'}
       ]
     }
   },

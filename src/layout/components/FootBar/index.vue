@@ -16,7 +16,7 @@
               :key="i"><el-link class="link" :underline="false"><i :class="[o.code]"></i></el-link></li>
         </ul>
       </section>
-      <section class="copyright">Copyright © 2020 howto careers All rights reserved 好途职场有限公司 版权所有 沪ICP备11011234号-1 沪公网安备3100020000号</section>
+      <section class="copyright">Copyright © 2021 intocareer All rights reserved 好途网络科技（上海）有限公司 版权所有 沪ICP备2020029242号-2</section>
     </el-col>
   </el-row>
 </template>
@@ -48,6 +48,7 @@ export default {
 
 <style lang="scss" scoped>
 .footer {
+  width: 100%;
   color: #fff;
   height: 150px;
   background: #292e3d;

@@ -93,8 +93,6 @@ export default {
   font-weight: 600;
   color: #292e3d;
   line-height: 50px;
-  padding-bottom: 25px;
-  border-bottom: 1px solid #292e3d;
   margin: 0 auto;
   margin-bottom: 44px;
 }

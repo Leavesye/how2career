@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <!-- 顶部导航 -->
-    <div class="top-bar" :class="[isBlack ? 'isscroll':'']">
+    <div class="top-bar" :class="[isBlack ? 'isscroll' : '']">
       <top-navbar :isBlack="false" :refer="refer" :sales="sales" />
     </div>
     <section class="home-top">
@@ -37,7 +37,9 @@
           <img class="fadeout-left" :src="homeN1" alt="" />
           <h1 class="fadeout-left">咨询服务</h1>
           <p class="fadeout-left">IntoCareer为你 pick目标行业资深职场达人，</p>
-          <p class="fadeout-left">亲授职场实战经验，行业动向、企业风格、岗位实际需求……</p>
+          <p class="fadeout-left">
+            亲授职场实战经验，行业动向、企业风格、岗位实际需求……
+          </p>
           <p class="fadeout-left">一网打尽，在分秒必争的求职路上不走弯路。</p>
         </div>
         <img class="s-img1 fadeout-right" :src="homeService1" alt="" />
@@ -47,8 +49,12 @@
         <div class="s-content fadeout-right">
           <img class="fadeout-right" :src="homeN2" alt="" />
           <h1 class="fadeout-right">咨询服务</h1>
-          <p class="fadeout-right">IntoCareer为你pick目标行业资深人力资源专家，</p>
-          <p class="fadeout-right">帮你制定最适合你的求职策略和职业发展道路，</p>
+          <p class="fadeout-right">
+            IntoCareer为你pick目标行业资深人力资源专家，
+          </p>
+          <p class="fadeout-right">
+            帮你制定最适合你的求职策略和职业发展道路，
+          </p>
           <p class="fadeout-right">助力你在职场中更好地实现自我 。</p>
         </div>
       </div>
@@ -69,7 +75,7 @@
             <el-rate
               style="text-align: center"
               disabled
-              :colors="['#fff','#fff','#fff']"
+              :colors="['#fff', '#fff', '#fff']"
               v-model="item.rate"
             ></el-rate>
             <div class="rate-count">
@@ -94,8 +100,8 @@
 </template>
 
 <script>
-import FootBar from "@/layout/components/FootBar"
-import TopNavbar from "@/components/TopNavbar"
+import FootBar from "@/layout/components/FootBar";
+import TopNavbar from "@/components/TopNavbar";
 
 export default {
   name: "home",
@@ -185,22 +191,23 @@ export default {
   },
   methods: {
     handleClickIndustry(i) {
-      this.cidx = i
+      this.cidx = i;
     },
     onScroll() {
-      const bodyHeight = document.documentElement.clientHeight || window.innerHeight
-      Array.from(document.querySelectorAll('.fadeout-left')).map(o => {
-        const top = o.getBoundingClientRect().top
-        if (top < bodyHeight && !o.className.includes('fadein-left')) {
-          o.className += ' fadein-left'
+      const bodyHeight =
+        document.documentElement.clientHeight || window.innerHeight;
+      Array.from(document.querySelectorAll(".fadeout-left")).map(o => {
+        const top = o.getBoundingClientRect().top;
+        if (top < bodyHeight && !o.className.includes("fadein-left")) {
+          o.className += " fadein-left";
         }
-      })
-      Array.from(document.querySelectorAll('.fadeout-right')).map(o => {
-        const top = o.getBoundingClientRect().top
-        if (top < bodyHeight && !o.className.includes('fadein-right')) {
-          o.className += ' fadein-right'
+      });
+      Array.from(document.querySelectorAll(".fadeout-right")).map(o => {
+        const top = o.getBoundingClientRect().top;
+        if (top < bodyHeight && !o.className.includes("fadein-right")) {
+          o.className += " fadein-right";
         }
-      })
+      });
       const scrollTop =
         document.documentElement.scrollTop ||
         window.pageYOffset ||
@@ -209,13 +216,13 @@ export default {
     }
   },
   destroyed() {
-    window.removeEventListener('scroll', this.onScroll)
+    window.removeEventListener("scroll", this.onScroll);
   },
   mounted() {
     this.refer = this.$route.query.refer;
     this.sales = this.$route.query.growth;
-    window.addEventListener('scroll', this.onScroll)
-  },
+    window.addEventListener("scroll", this.onScroll);
+  }
 };
 </script>
 
@@ -227,7 +234,7 @@ export default {
   top: 0px;
   display: flex;
   justify-content: center;
-  transition: all .5s;
+  transition: all 0.5s;
 }
 .top-bar:hover {
   background: #292e3d;
