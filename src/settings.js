@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: 'how2career',
+  title: 'intocareer',
 
   /**
    * @type {boolean} true | false

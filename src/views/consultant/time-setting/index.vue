@@ -133,7 +133,7 @@ export default {
     async querySlots() {
       const l = this.loading()
         const res = await getSlots().catch(e=> l.close())
-        if (res.result) {
+        if (res.result && res.msg) {
           this.slots = (res.msg.slots || []).map(o => {
             // active: 可用/不可用   occupied 被占用  
             const { _id: slotId, occupied, occupiedTime, cost, costLeft, expireTime, active } = o
