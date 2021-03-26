@@ -31,13 +31,13 @@ export default {
           props: {
             type: 'password'
           },
-          rules: [r.required(), r.length(6, 12)],
+          rules: [r.required(), r.length(8, 16), r.psd()],
           hide: false,
         },
         passWord: {
           value: '',
           label: '新密码',
-          rules: [r.required(), r.length(6, 12)],
+          rules: [r.required(), r.length(8, 16), r.psd()],
           props: {
             type: 'password'
           },
@@ -45,7 +45,7 @@ export default {
         confirmPwd: {
           value: '',
           label: '再次输入新密码',
-          rules: [r.required(), r.length(6, 12)],
+          rules: [r.required(), r.length(8, 16), r.psd()],
           props: {
             type: 'password'
           },

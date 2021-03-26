@@ -2,6 +2,7 @@
   <section>
     <div class="flex-vc page-title">
       <div>补充信息</div>
+      <p>当您与您选择的咨询师确定咨询订单时，您的简历信息会对您选择的咨询室开放，以便咨询师能够按照您的履历来进行服务的定制化。请您尽量详细的完成简历的填写，以保证您享受到IntoCareer优质的咨询服务</p>
     </div>
     <p class="form-title">其他学历信息</p>
     <section class="form-box">
@@ -528,6 +529,7 @@ export default {
   font-weight: 600;
   color: #36ae82;
   margin-right: 30px;
+  width: 120px;
 }
 .page-title > p {
   font-size: 14px;

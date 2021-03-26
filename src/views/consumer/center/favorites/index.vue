@@ -1,6 +1,6 @@
 <template>
   <section>
-    <h1 class="page-title">我的收藏</h1>
+    <h1 class="page-title">我收藏的咨询师</h1>
     <div class="container">
       <card-list v-if="list.length" :list="list"></card-list>
       <p v-else class="no-favorite">暂无收藏</p>

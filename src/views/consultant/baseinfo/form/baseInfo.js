@@ -9,18 +9,26 @@ export default {
     props: {
       type: 'password'
     },
-    rules: [r.required(), r.length(6, 12)],
+    rules: [r.required(), r.length(8, 16), r.psd()],
     hide: false,
   },
   name: {
     value: '',
     label: '姓名',
     rules: [r.required(), r.maxLength(20)],
+    props: {
+      placeholder: '真实姓名',
+      style: { width: '200px' },
+    }
   },
   nickName: {
     value: '',
     label: '昵称',
     rules: [r.required(), r.maxLength(10)],
+    props: {
+      placeholder: '专业的非真实姓名',
+      style: { width: '200px' },
+    }
   },
   gender: {
     label : '性别' ,
@@ -50,7 +58,6 @@ export default {
   },
   avatarImage: {
     label: '设置头像',
-    rules: [r.required()],
     type: "upload",
     value: '',
     props: {

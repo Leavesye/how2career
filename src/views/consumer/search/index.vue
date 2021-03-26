@@ -16,7 +16,10 @@
       <p class="no-data">暂无数据</p>
     </el-card>
     <p class="title" style="margin-top: 0">经常查看的咨询师</p>
-    <card-list :list="top4"></card-list>
+    <card-list v-if="top4 && top4.length" :list="top4"></card-list>
+    <el-card v-else style="margin-bottom: 20px">
+      <p class="no-data">暂无数据</p>
+    </el-card>
   </section>
 </template>
 
@@ -42,11 +45,11 @@ export default {
       form,
       datetime: '',
       isShow: false,
-      selPannel: { name: '向专业对象咨询', status: 'pro' },
+      selPannel: { name: '搜索在职精英', status: 'pro' },
       curTime: '',
       pannels: [
-        { name: '向专业对象咨询', status: 'pro' },
-        { name: '向人事咨询', status: 'hr' },
+        { name: '搜索在职精英', status: 'pro' },
+        { name: '搜索资深人力', status: 'hr' },
       ],
       list: [],
       top4: []

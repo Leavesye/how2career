@@ -2,32 +2,21 @@ import Vue from 'vue'
 
 const r = Vue.prototype.$rules
 export default {
-  phone: {
-    value: '',
-    label: '手机号码',
-    rules: [r.required(), r.mobile()],
-  },
   wechat: {
     value: '',
     label: '微信号',
-    rules: [r.maxLength(50)]
+    rules: [r.required(), r.maxLength(50)]
   },
   email: {
     value: '',
-    label: '私人邮箱',
-    rules: [r.maxLength(100), r.eMail()]
+    label: '联系邮箱',
+    rules: [r.required(), r.maxLength(100), r.eMail()]
   },
   selfIntroduction: {
     value: '',
     label: '自我介绍',
-    props: { type: 'textarea', rows: "3" },
-    events: {},
-    rules: [r.maxLength(300)]
-  },
-  detailedIntroduction: {
-    label: '奖励和荣誉',
-    value : '' ,
-    props: { type: 'textarea', rows: "6" },
+    props: { type: 'textarea', rows: "3",
+  placeholder: 'IntoCareer会匹配求职者的要求和简历并推荐数名最适合的咨询师，自我介绍对求职者咨询师的主动选择有着至关重要的作用，请认真填写' },
     events: {},
     rules: [r.maxLength(300)]
   }

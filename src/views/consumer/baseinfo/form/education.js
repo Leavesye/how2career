@@ -6,7 +6,7 @@ export default {
   country: {
     type: 'select',
     value: '',
-    label: '国家',
+    label: '地区',
     rules: [r.required()],
     props: { props: { label: 'text', value: 'value' } },
     options: [],
@@ -29,22 +29,20 @@ export default {
     options: []
   },
   GPA: {
-    type: 'select',
     value: '',
     label: 'GPA',
-    props: { props: { label: 'text', value: 'value' } },
-    options: []
+    rules: [r.float(2), r.range(0, 4, true)]
   },
   degree: {
     type: 'select',
     value: '',
     label: '学位',
     rules: [r.required()],
-    props: { props: { label: 'text', value: 'value' } },
+    props: { props: { label: 'text', value: 'value' },placeholder: '已获得/即将获得的最高学位' },
     options: []
   },
   graduationTime: {
-    label : '毕业时间' ,
+    label : '毕业时间/预计毕业时间' ,
     value : '' ,
     type : 'date',
     rules: [r.required()],
@@ -53,7 +51,8 @@ export default {
       // 毕业时间需小于当前时间
       'picker-options': {
         disabledDate(time) {
-          return time.getTime() > moment().valueOf()
+          const selTime = time.getTime()
+          return selTime > moment().subtract(-7, 'year').valueOf()
         }
       }
     }
@@ -61,7 +60,10 @@ export default {
   selfIntroduction: {
     value: '',
     label: '自我介绍',
-    rules: [r.maxLength(300)]
+    rules: [r.maxLength(300)],
+    props: {
+      placeholder: '自我介绍会帮助您获得更好的咨询服务体验，请认真填写'
+    },
   },
   detailedIntroduction: {
     value: '',

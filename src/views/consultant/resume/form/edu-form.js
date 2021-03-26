@@ -7,7 +7,7 @@ export default {
   country: {
     type: 'select',
     value: '',
-    label: '国家',
+    label: '地区',
     rules: [r.required()],
     props: { props: { label: 'text', value: 'value' } },
     options: [],
@@ -22,7 +22,7 @@ export default {
     value: '',
     label: '学校',
     rules: [r.required()],
-    props: { props: { label: 'text', value: 'value' } },
+    props: { props: { label: 'text', value: 'value' },filterable: true },
     options: []
   },
   discipline: {
@@ -30,16 +30,8 @@ export default {
     value: '',
     label: '专业',
     rules: [r.required()],
-    props: { props: { label: 'text', value: 'value' } },
+    props: { props: { label: 'text', value: 'value' },filterable: true },
     options: []
-  },
-  GPA: {
-    type: 'select',
-    value: '',
-    label: 'GPA',
-    props: { props: { label: 'text', value: 'value' },style: { width: '294px' }, },
-    options: [],
-    layout: { span: 14 }
   },
   degree: {
     type: 'select',
@@ -64,6 +56,12 @@ export default {
         }
       }
     }
+  },
+  GPA: {
+    value: '',
+    label: 'GPA',
+    props: { style: { width: '294px' } },
+    rules: [r.float(2), r.range(0, 4, true)],
   },
   studentOrganization: {
     type: 'single-checkbox',

@@ -1,10 +1,13 @@
 <template>
   <section>
     <div class="flex-vc page-title">
-      <div>编辑个人信息</div>
-      <p>成为咨询师需要认证简历信息,请先完成简历填写</p>
+      <div>完善咨询师信息</div>
+      <p>咨询师入驻平台需要平台审核，请按照要求完成咨询师信息的填写并提交审核</p>
     </div>
-    <p class="form-title">学历信息</p>
+    <div class="form-title flex-vc">
+      <p>学历信息</p>
+      <div>请先填写最高学历</div>
+    </div>
     <section class="form-box">
       <el-card class="form-card"
                v-for="(o, i) in education"
@@ -54,7 +57,7 @@
                 labelWidth="216px"
                 ref="socialEcurity"></quick-form>
     <p class="line"></p>
-    <p class="form-title">执照与证书</p>
+    <p class="form-title">其他信息</p>
     <section class="form-box">
       <el-card class="form-card"
                v-for="(license, i) in otherCertificates"
@@ -76,20 +79,19 @@
                    @click="handleAddLicense">+添加更多证书</el-button>
       </section>
     </section>
-    <quick-form :model="callup"
+    <!-- <quick-form :model="callup"
                 labelWidth="216px"
-                ref="callup"></quick-form>
-    <p class="line"></p>
+                ref="callup"></quick-form> -->
+    <!-- <p class="line"></p> -->
     <!-- 添加语言 -->
     <section>
-      <p class="form-title">语言</p>
-      <el-row>
-        <el-col :offset="7"
-                :span="16">
+      <el-row style="margin-top: 30px">
+        <el-col :span="2" :offset="2" style="line-height: 30px;color:#7C8EA5">语言</el-col>
+        <el-col :span="16">
           <div class="flex">
             <el-input style="flex:1;margin-right:20px"
                       v-model="lang"
-                      placeholder="请输入信息"
+                      placeholder="请输入语言"
                       size="small"
                       :maxlength="10"
                       @keyup.enter.native="handleAddLang"></el-input>
@@ -101,7 +103,7 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :offset="7"
+        <el-col :offset="4"
                 :span="14">
           <ul class="flex item-select">
             <li v-for="(o,i) in language"
@@ -115,9 +117,12 @@
     </section>
     <p class="line"></p>
     <section>
-      <p class="form-title">工作个人技能</p>
+      <div class="form-title flex-vc">
+      <p style="width: 120px">工作个人技能</p>
+      <div style="width: 50%">IntoCareer会匹配求职者的要求和简历并推荐数名最适合的咨询师，个人特点会对求职者咨询师的主动选择有着至关重要的作用，请认真填写</div>
+    </div>
       <el-row>
-        <el-col :offset="7"
+        <el-col :offset="4"
                 :span="16">
           <div class="flex">
             <el-input style="flex:1;margin-right:20px"
@@ -134,7 +139,7 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :offset="7"
+        <el-col :offset="4"
                 :span="14">
           <ul class="flex item-select">
             <li v-for="(o,i) in skills"
@@ -164,7 +169,7 @@ import _ from 'lodash'
 import QuickForm from '@/components/QuickForm'
 import SubmitFinish from './modal/submit-finish'
 import socialForm from './form/social-ecurity'
-import callupForm from './form/callup'
+// import callupForm from './form/callup'
 import eduForm from './form/edu-form'
 import expForm from './form/exp-form'
 import licenseForm from './form/license-form'
@@ -205,7 +210,7 @@ export default {
       workExperience: [expForm],
       otherCertificates:[licenseForm],
       socialEcurity: socialForm,
-      callup: callupForm
+      // callup: callupForm
     }
   },
   async created () {
@@ -257,9 +262,9 @@ export default {
         this.skills = skills
         this.socialEcurity.socialInsuranceImage.value = socialInsuranceImage
         this.bindThis(this.socialEcurity)
-        this.callup.gallupCertified.value = gallupCertified
-        this.callup.gallupCertifiedImage.value = gallupCertifiedImage
-        this.bindThis(this.callup)
+        // this.callup.gallupCertified.value = gallupCertified
+        // this.callup.gallupCertifiedImage.value = gallupCertifiedImage
+        // this.bindThis(this.callup)
         this.handleCheckboxChange(5, '', gallupCertified)
       } else { // 新增
         // 绑定form表单事件方法this到组件实例 便于后续调用实例方法
@@ -272,7 +277,7 @@ export default {
         this.education[0] = this.bindThis(this.education[0], 0)
         this.workExperience[0] = this.bindThis(this.workExperience[0], 0)
         this.otherCertificates[0] = this.bindThis(this.otherCertificates[0], 0)
-        this.callup = this.bindThis(this.callup)
+        // this.callup = this.bindThis(this.callup)
         this.socialEcurity = this.bindThis(this.socialEcurity)
       }
     }
@@ -308,10 +313,10 @@ export default {
         !v && (exp.teamMember.value = '')
         exp.teamManagement.layout.span = v ? 8 : 24
       }
-      if (type == 5) {
-        this.callup.gallupCertifiedImage.hide = !v
-        this.callup.gallupCertified.layout.span = v ? 6 : 24
-      }
+      // if (type == 5) {
+      //   this.callup.gallupCertifiedImage.hide = !v
+      //   this.callup.gallupCertified.layout.span = v ? 6 : 24
+      // }
       if (type == 6) {
         exp.resignationTime.hide = v
         !v && (exp.resignationTime.value = '')
@@ -320,7 +325,9 @@ export default {
     // 学历操作
     handleAddEducation () {
       if (this.education.length == 10) return false
-      this.education.push(this.bindThis(_.cloneDeep(eduForm), this.education.length))
+      let eduform = _.cloneDeep(eduForm)
+      eduform.degreeCertificate.rules = []
+      this.education.push(this.bindThis(eduform, this.education.length))
     },
     handleDelEducation (i) {
       if (this.education.length == 1) return false
@@ -418,7 +425,7 @@ export default {
         ...this.workExperience.map((o, i) => this.$refs['experience' + i][0].validate()),
         ...this.otherCertificates.map((o, i) => this.$refs['license' + i][0].validate()),
         this.$refs.socialEcurity.validate(),
-        this.$refs.callup.validate(),
+        // this.$refs.callup.validate(),
       ]).catch(e => isValid = false)
       if (isValid) {
         const l = this.loading()
@@ -428,7 +435,7 @@ export default {
           workExperience: this.workExperience.map((o, i) => this.$refs['experience' + i][0].getFormData()),
           otherCertificates: this.otherCertificates.map((o, i) => this.$refs['license' + i][0].getFormData()),
           ...this.$refs.socialEcurity.getFormData(),
-          ... this.$refs.callup.getFormData(),
+          // ... this.$refs.callup.getFormData(),
           language: this.language,
           skills: this.skills
         }
@@ -468,6 +475,7 @@ export default {
   font-weight: 600;
   color: #15479e;
   margin-right: 30px;
+  width: 120px;
 }
 .page-title > p {
   font-size: 14px;
@@ -484,6 +492,11 @@ export default {
   font-size: 16px;
   color: #15479e;
   margin: 30px;
+}
+.form-title div {
+  font-size: 14px;
+  color: #7c8ea5;
+  margin-left: 20px;
 }
 .add-btn {
   margin-top: 30px;

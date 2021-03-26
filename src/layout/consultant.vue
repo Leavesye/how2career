@@ -37,7 +37,7 @@ export default {
         {
           name: '个人中心', icon: 'icongerenzhongxin-01', children: [
             { name: '基本信息', path: '/consultant/baseinfo' },
-            { name: '资质信息', path: '/consultant/resume' },
+            { name: '详细信息', path: '/consultant/resume' },
             { name: '服务时间', path: '/consultant/setting/1' },
             { name: '消息通知', path: '/consultant/message' },
           ]

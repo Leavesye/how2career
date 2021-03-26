@@ -46,11 +46,8 @@
         </div>
         <div class="howto" v-if="user.role=='consumer'" @click="linkTo('/consumer/howto')">如何推荐好友</div>
       </section>
-      <div class="flex-hbc bottom-links"
+      <div class="flex-hc bottom-links"
           v-if="!isCollapse">
-        <el-link :underline="false"
-                style="color: #fff">在线客服</el-link>
-        <div>|</div>
         <el-link :underline="false"
                 style="color: #fff">常见问题</el-link>
       </div>

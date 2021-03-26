@@ -6,7 +6,7 @@ export default {
   passWord: {
     value: '',
     label: '密码',
-    rules: [r.required(), r.length(6, 12)],
+    rules: [r.required(), r.length(8, 16), r.psd()],
     props: {
       type: 'password'
     }
@@ -49,7 +49,7 @@ export default {
   },
   avatarImage: {
     label: '设置头像',
-    rules: [r.required()],
+    // rules: [r.required()],
     type: "upload",
     value: '',
     props: {

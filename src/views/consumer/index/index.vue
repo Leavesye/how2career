@@ -14,9 +14,8 @@
           <h1 v-else style="font-weight: 400"><i class="iconfont iconsousuo-01"></i>{{o.name}}</h1>
         </div>
       </div>
+      <p class="title">即将开始的咨询</p>
       <el-card class="order-card">
-        <p class="start-title"
-           style="font-size: 14px">即将开始的咨询</p>
         <div v-if="list.length">
           <ul class="list-item flex-hbc"
               v-for="(o, i) in list"
@@ -37,7 +36,7 @@
         </div>
         <p v-else class="no-data">暂无数据</p>
       </el-card>
-      <p class="title">我的收藏</p>
+      <p class="title">我收藏的咨询师</p>
       <card-list v-if="favorites.length" :list="favorites"></card-list>
       <el-card v-else style="margin-bottom: 20px">
         <p class="no-data">暂无数据</p>
@@ -176,6 +175,8 @@ $color: #36ae82;
 }
 .p-item:last-child {
   margin-right: 0;
+  background: #36ae82;
+  color: #fff;
 }
 .p-item > p {
   font-size: 14px;
@@ -186,8 +187,8 @@ $color: #36ae82;
   font-size: 26px;
   margin-top: 26px;
 }
-.p-item:hover,
-.p-item.active {
+.p-item:not(:last-child):hover,
+.p-item:not(:last-child).active {
   box-shadow: 0px 0px 4px 0px rgba(21, 71, 158, 0.5);
   border: 1px solid $color;
   color: $color;

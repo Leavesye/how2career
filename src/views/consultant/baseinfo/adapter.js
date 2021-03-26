@@ -44,10 +44,8 @@ export function unBoxing (from, to) {
   r.idCard.value = realVerify.idCard
   r.bankCard.value = realVerify.bankCard
   const c = to.contact
-  c.phone.value = basic.phone
   c.wechat.value = basic.wechat
   c.email.value = basic.email
   c.selfIntroduction.value = publicInfo.selfIntroduction
-  c.detailedIntroduction.value = publicInfo.detailedIntroduction
 
 }

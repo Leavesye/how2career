@@ -10,6 +10,7 @@ export function alert (message, type = 'success') {
   Vue.prototype.$notify({
     title: '提示',
     message,
-    type
+    type,
+    duration: 400000
   })
 }

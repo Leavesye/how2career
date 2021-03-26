@@ -36,7 +36,7 @@
                       label=""
                       prop="passWord">
           <el-input type="password"
-                    :maxlength="12"
+                    :maxlength="16"
                     class="phone"
                     size="large"
                     placeholder="请输入密码"

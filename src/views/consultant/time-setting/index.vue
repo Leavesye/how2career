@@ -28,7 +28,12 @@
             <div>{{countMap.total - countMap.usable}}</div>
           </li>
         </ul>
-        <p class="slot-desc">该数字代表在一个自然周内,你可同时接的预约,你可以通过购买更多的slot来增加每周的同时预约数</p>
+        <div class="slot-desc">
+          <div>*Slot（周预约时段）数指在一个自然周内，可以成功预约的咨询服务数量，每个Slot时间长度为1小时30分钟，以确保1小时的标准服务时间；</div>
+          <div>*为保证每次咨询服务的质量，咨询师需要按照自己的Slot数缴纳服务押金，每个Slot押金为人民币300元；</div>
+          <div>*为了保证正常接单，咨询师需要保证至少一个周预约时段有足够的押金；</div>
+          <div>*咨询师的服务押金管理，详见《异常流程处理办法》。</div>
+        </div>
       </el-card>
       <ul class="slot-box">
         <template v-for="(item, i) in list">
@@ -53,7 +58,7 @@
         </template>
       </ul>
       <div class="flex-he">
-        <el-button :loading="isLoading" type="primary" @click="handleBuySlot">购买更多slot</el-button>
+        <el-button :loading="isLoading" type="primary" @click="handleBuySlot">获取更多Slot</el-button>
       </div>
     </section>
     <!-- 支付 -->
@@ -265,9 +270,11 @@ export default {
   background: #f6f6f6;
   border-radius: 3px;
   margin: 0 auto;
-  text-align: center;
-  padding: 3px;
+  padding: 20px;
   margin-top: 10px;
+}
+.slot-desc div {
+  margin-bottom: 10px;
 }
 .slot-box {
   display: flex;

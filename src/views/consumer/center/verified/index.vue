@@ -1,6 +1,9 @@
 <template>
   <section>
-    <h1 class="page-title">实名认证（{{realVerified?'已认证':'未认证'}}）</h1>
+    <div class="flex-vc page-title">
+      <div>实名认证（{{realVerified?'已认证':'未认证'}}）</div>
+      <p>为保证服务质量，IntoCareer保证咨询师与求职者均为实名认证，请在服务开始前完成实名认证，以免影响服务正常进行</p>
+    </div>
     <div class="container">
       <quick-form :model="form"
                   labelWidth="140px"
@@ -85,11 +88,18 @@ export default {
 </script>
 <style lang="scss" scoped>
 .page-title {
+  padding: 20px 30px;
+  border-bottom: 1px solid #edeeef;
+}
+.page-title > div {
   font-size: 16px;
   font-weight: 600;
   color: #36ae82;
-  padding: 20px 30px;
-  border-bottom: 1px solid #edeeef;
+  margin-right: 30px;
+}
+.page-title > p {
+  font-size: 14px;
+  color: #7c8ea5;
 }
 .container {
   width: 600px;

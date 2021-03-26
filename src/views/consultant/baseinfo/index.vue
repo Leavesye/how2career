@@ -6,8 +6,11 @@
         <section class="form-box"
                 style="margin-top: 30px">
           <el-card class="form-card">
+            <quick-form :model="baseInfo"
+                        labelWidth="140px"
+                        ref="baseInfo"></quick-form>
             <div class="flex-vc form-name">
-              <label for="">手机号</label>
+              <label for="">注册手机号码</label>
               <p>{{user.userName}}</p>
             </div>
             <div class="flex-vc form-name" v-if="!isReg">
@@ -15,9 +18,6 @@
               <p style="margin-right: 30px">**********</p>
               <el-button plain @click="handleClickChangePwd">修改密码</el-button>
             </div>
-            <quick-form :model="baseInfo"
-                        labelWidth="140px"
-                        ref="baseInfo"></quick-form>
           </el-card>
         </section>
       </div>
@@ -43,6 +43,10 @@
       <div class="form-section">
         <section class="form-box">
           <el-card class="form-card">
+            <div class="flex-vc form-name">
+              <label for="">手机号</label>
+              <p>{{user.userName}}</p>
+            </div>
             <quick-form :model="contact"
                         labelWidth="140px"
                         ref="contact"></quick-form>

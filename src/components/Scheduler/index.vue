@@ -65,7 +65,7 @@ export default {
       eventSettings: {
         dataSource: this.events,
         fields: {
-          subject: { name: 'Subject', default: '咨询可预约时间' },
+          // subject: { name: 'Subject', default: '咨询可预约时间' },
           startTime: { name: 'StartTime', validation: { required: [true, '请选择开始时间'] } },
         },
       },
@@ -324,5 +324,8 @@ export default {
 }
 .e-schedule .e-month-view .e-work-cells.e-disable-dates {
   background-color: #fff;
+}
+.edit-row.el-row:first-child {
+  display: none;
 }
 </style>

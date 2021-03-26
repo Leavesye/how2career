@@ -8,7 +8,7 @@ export default {
     value: '',
     label: '行业',
     rules: [r.required()],
-    props: { props: { label: 'text', value: 'value' } },
+    props: { props: { label: 'text', value: 'value' }, filterable: true },
     options: []
   },
   company: {
@@ -16,7 +16,7 @@ export default {
     value: '',
     label: '企业',
     rules: [r.required()],
-    props: { props: { label: 'text', value: 'value' } },
+    props: { props: { label: 'text', value: 'value' },filterable: true },
     options: []
   },
   companySize: {
@@ -31,13 +31,14 @@ export default {
     value: '',
     label: '部门',
     rules: [r.required(), r.maxLength(20)],
+    props: { filterable: true },
   },
   position: {
     type: 'select',
     value: '',
     label: '职位',
     rules: [r.required()],
-    props: { props: { label: 'text', value: 'value' } },
+    props: { props: { label: 'text', value: 'value' },filterable: true },
     options: []
   },
   level: {

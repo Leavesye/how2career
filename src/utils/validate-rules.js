@@ -1,6 +1,10 @@
 // { required : true , message : '' , pattern : '' , validator( rule , value , callback ){ callback() ; callback(new Error(rule.message))} }
 
 export default {
+   // 校验密码
+  psd () {
+    return { pattern: /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[~!@#$%^&*()_+`\-={}:";'<>,.\/]).{8,16}/, message: `请输入正确的密码` }
+  },
   // 必填
   required () {
     return { required: true, message: `必填项` }
