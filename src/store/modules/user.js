@@ -15,6 +15,7 @@ const state = {
   userId: Cookies.get('userId'),
   sales: Cookies.get('sales'),
   refer: Cookies.get('refer'),
+  status: Cookies.get('status'),
 }
 
 const mutations = {
@@ -62,6 +63,10 @@ const mutations = {
     state.refer = refer
     Cookies.set('refer', refer)
   },
+  SET_STATUS: (state, status) => {
+    state.status = status
+    Cookies.set('status', status)
+  },
 }
 
 const actions = {
@@ -86,6 +91,7 @@ const actions = {
           commit('SET_NAME', data.name)
           commit('SET_IDCARD', data.idCard)
           commit('SET_COMPLETION', data.completion)
+          commit('SET_STATUS', data.backgroundVerifyStatus)
           if (data.refer) {
             commit('SET_REFER', data.refer)
           }
@@ -128,6 +134,7 @@ const actions = {
     commit('SET_AVATAR', '')
     commit('SET_USERID', '')
     commit('SET_SALES', '')
+    commit('SET_STATUS', '')
     removeToken()
     Cookies.remove('token')
     Cookies.remove('userName')
@@ -139,6 +146,7 @@ const actions = {
     Cookies.remove('userId')
     Cookies.remove('completion')
     Cookies.remove('sales')
+    Cookies.remove('status')
     location.href = '/'
   },
   // remove token
