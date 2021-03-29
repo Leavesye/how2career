@@ -444,7 +444,7 @@ export default {
           publicInfo: this.initPublicInfo
         }
         // 保存并提交审核 更新  backgroundVerifyStatus= 1 ,保存不更新这个字段
-        type == 1 && (p.backgroundVerifyStatus = 1)
+        type == 1 && (p.backgroundVerifyStatus = '1')
         const ret = await updateUserInfo(p).catch(e => l.close())
         if (ret.result) {
           if (type == 1) {
