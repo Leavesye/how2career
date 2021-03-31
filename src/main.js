@@ -18,6 +18,8 @@ import '@/utils/register-global'
 import { axTable, axTableColumn } from './components/table'
 import { axForm, axFormItem } from './components/form'
 import rules from './utils/validate-rules'
+import MetaInfo from 'vue-meta-info'
+Vue.use(MetaInfo)
 
 Vue.prototype.$rules = rules
 Vue.use(axForm)

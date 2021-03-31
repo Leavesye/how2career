@@ -47,6 +47,19 @@ import FootBar from "@/layout/components/FootBar";
 import TopNavbar from "@/components/TopNavbar";
 
 export default {
+  metaInfo: {
+    title: 'IntoCareerTM职前咨询平台',
+    meta: [
+      {
+        name: 'keywords',
+        content: 'intocareer,intocareer,...'
+      },
+      {
+        name: 'description',
+        content: 'IntoCareerTM职前咨询平台'
+      }
+    ]
+  },
   components: {
     FootBar,
     TopNavbar,
