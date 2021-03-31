@@ -5,7 +5,7 @@
 <script>
 import CostList from './list'
 import SignInfo from './sign'
-import { getSignStatus } from '@/api/consultant'
+// import { getSignStatus } from '@/api/consultant'
 
 export default {
   components: {
@@ -14,18 +14,18 @@ export default {
   },
   data () {
     return {
-      view: '',
+      view: 'cost-list',
       curStep: 0,
     }
   },
   async created() {
-    const l = this.loading()
-    const res = await getSignStatus().catch(e=> l.close())
-    if (res.result) {
-      this.view = !res.msg.contractSign ? 'sign-info': 'cost-list'
-      this.curStep = res.msg.contractSignStep - 1
-    }
-    l.close()
+    // const l = this.loading()
+    // const res = await getSignStatus().catch(e=> l.close())
+    // if (res.result) {
+    //   this.view = !res.msg.contractSign ? 'sign-info': 'cost-list'
+    //   this.curStep = res.msg.contractSignStep - 1
+    // }
+    // l.close()
   },
   methods: {
     handleFinishSign() {
