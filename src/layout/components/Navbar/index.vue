@@ -41,7 +41,8 @@ export default {
   },
   computed: {
     avatar: function() {
-      return this.user.avatar ? process.env.VUE_APP_HOST_NAME + this.user.avatar : require('../../../assets/default-avatar.png')
+      const logo = this.user.role == 'consumer' ? require('@/assets/g-logo.png') : require('@/assets/b-logo.png')
+      return this.user.avatar ? process.env.VUE_APP_HOST_NAME + this.user.avatar : logo
     },
     ...mapGetters([
       'user'

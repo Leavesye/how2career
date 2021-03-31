@@ -5,6 +5,8 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex"
+
 export default {
   name: 'avatar',
   props: ['imgUrl'],
@@ -15,11 +17,12 @@ export default {
   },
   computed: {
     url: function() {
-      return this.imgUrl ? process.env.VUE_APP_HOST_NAME + this.imgUrl : require('@/assets/default-avatar.png')
-    }
-  },
-  methods: {
-    
+      const logo = this.user.role == 'consumer' ? require('@/assets/g-logo.png') : require('@/assets/b-logo.png')
+      return this.imgUrl ? process.env.VUE_APP_HOST_NAME + this.imgUrl : logo
+    },
+    ...mapGetters([
+      'user'
+    ])
   }
 };
 </script>

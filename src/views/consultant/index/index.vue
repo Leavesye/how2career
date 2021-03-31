@@ -167,9 +167,6 @@ export default {
     },
     certFinish: function () {
       return require('../../../assets/cert-finish.png')
-    },
-    defaultAvatar: function () {
-      return require('@/assets/default-avatar.png')
     }
   },
   async created () {

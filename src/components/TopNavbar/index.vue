@@ -5,6 +5,7 @@
     <li v-for="(o, i) in menus" :key="i" @click="linkTo(o.path)">
       {{ o.name }}
     </li>
+    <li v-if="user.role" @click="linkTo(user.role=='consumer' ? '/consumer/index': 'consultant/index')">{{user.role=='consumer' ? '咨询者' : '咨询师'}}</li>
   </ul>
   <el-dropdown style="margin-top: 7px;cursor: pointer" v-if="user.nickName || user.sales" @visible-change="handleOnDropdownShow">
     <el-image class="avatar-img el-dropdown-link" :src="avatar"></el-image>
@@ -69,7 +70,8 @@ export default {
   },
   computed: {
     avatar: function() {
-      return this.user.avatar ? process.env.VUE_APP_HOST_NAME + this.user.avatar : require('@/assets/default-avatar.png')
+      const logo = this.user.role == 'consumer' ? require('@/assets/g-logo.png') : require('@/assets/b-logo.png')
+      return this.user.avatar ? process.env.VUE_APP_HOST_NAME + this.user.avatar : logo
     },
     ...mapGetters([
       'user'

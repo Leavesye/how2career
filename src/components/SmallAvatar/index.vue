@@ -5,20 +5,18 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex"
+
 export default {
   props: ['imgUrl'],
-  data () {
-    return {
-      
-    }
-  },
   computed: {
     url: function() {
-      return this.imgUrl || require('@/assets/default-avatar.png')
+      const logo = this.user.role == 'consumer' ? require('@/assets/g-logo.png') : require('@/assets/b-logo.png')
+      return this.imgUrl || logo
     },
-  },
-  methods: {
-    
+    ...mapGetters([
+      'user'
+    ])
   }
 };
 </script>
