@@ -5,6 +5,7 @@
       <top-navbar :isBlack="false" :refer="refer" :sales="sales" />
     </div>
     <section class="home-top">
+      <img class="top-img" :src="top" alt="" />
       <div class="inner-home">
         <div class="content">
           <p>求职难, 要问对人</p>
@@ -186,6 +187,9 @@ export default {
     };
   },
   computed: {
+    top: function() {
+      return require("@/assets/home-top.jpg");
+    },
     homeN1: function() {
       return require("@/assets/home-n1.png");
     },
@@ -259,18 +263,28 @@ export default {
   background: #fff;
 }
 .home-top {
+  position: relative;
   width: 100%;
   height: 500px;
-  background-image: url(../../assets/home-top.jpg);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 1920px 500px;
+  // background-image: url(../../assets/home-top.jpg);
+  // background-repeat: no-repeat;
+  // background-position: center;
+  // background-size: 1920px 500px;
   padding: 1px;
   min-width: 1180px;
 }
+.top-img {
+  width: 100%;
+  position: absolute;
+  z-index: 1;
+}
 .inner-home {
+  position: absolute;
+  z-index: 2;
   width: 1180px;
-  margin: 0 auto;
+  left: 0;
+  right: 0;
+  margin: auto;
 }
 .content {
   margin-top: 120px;
