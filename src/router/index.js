@@ -97,6 +97,7 @@ if (process.env.NODE_ENV == 'development') {
 }
 const createRouter = () => new Router({
   mode: 'history', 
+  base: '/',
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
 })

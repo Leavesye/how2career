@@ -16,6 +16,7 @@ const state = {
   sales: Cookies.get('sales'),
   refer: Cookies.get('refer'),
   status: Cookies.get('status'),
+  eSignUrl: Cookies.get('eSignUrl'),
 }
 
 const mutations = {
@@ -67,6 +68,10 @@ const mutations = {
     state.status = status
     Cookies.set('status', status)
   },
+  SET_ESIGN_URL: (state, eSignUrl) => {
+    state.eSignUrl = eSignUrl
+    Cookies.set('eSignUrl', eSignUrl)
+  },
 }
 
 const actions = {
@@ -92,6 +97,7 @@ const actions = {
           commit('SET_IDCARD', data.idCard)
           commit('SET_COMPLETION', data.completion)
           commit('SET_STATUS', data.backgroundVerifyStatus)
+          commit('SET_ESIGN_URL', data.eSignUrl)
           if (data.refer) {
             commit('SET_REFER', data.refer)
           }
@@ -135,6 +141,7 @@ const actions = {
     commit('SET_USERID', '')
     commit('SET_SALES', '')
     commit('SET_STATUS', '')
+    commit('SET_ESIGN_URL', '')
     removeToken()
     Cookies.remove('token')
     Cookies.remove('userName')
@@ -147,6 +154,7 @@ const actions = {
     Cookies.remove('completion')
     Cookies.remove('sales')
     Cookies.remove('status')
+    Cookies.remove('SET_ESIGN_URL')
     location.href = '/'
   },
   // remove token

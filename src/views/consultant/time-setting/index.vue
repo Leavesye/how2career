@@ -125,7 +125,7 @@ export default {
   methods: {
     handlePannelChange (item) {
       // 未完成审核
-      if (item.status == 2 && this.user.status!=3) {
+      if (item.status == 2 && this.user.status!=4) {
         this.$alert('请完成资料审核后再设置slot')
         return false
       }

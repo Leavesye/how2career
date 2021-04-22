@@ -20,6 +20,7 @@ export function boxing (from, to) {
   to.basic.phone = from.phone
   to.basic.wechat = from.wechat
   to.basic.email = from.email
+  to.basic.address = from.address
   to.publicInfo.detailedIntroduction = from.detailedIntroduction
   to.publicInfo.selfIntroduction = from.selfIntroduction
   // 认证信息
@@ -46,6 +47,7 @@ export function unBoxing (from, to) {
   const c = to.contact
   c.wechat.value = basic.wechat
   c.email.value = basic.email
+  c.address.value = basic.address
   c.selfIntroduction.value = publicInfo.selfIntroduction
 
 }

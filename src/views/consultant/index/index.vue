@@ -15,14 +15,17 @@
           <el-image class="step-num"
                     :src="step1"></el-image>
           <!-- 审核中 -->
-          <el-image v-if="isFillResume && !isFinishReview"
+          <el-image v-if="isFillResume && !isFinishReview && !isGoSign"
                     class="status-img"
                     :src="certApply"></el-image>
           <div class="step-review"
-               v-if="isFillResume && !isFinishReview">
+               v-if="isFillResume && !isFinishReview && !isGoSign">
             <p>审核中</p>
             <p>你也可以设置服务时间</p>
           </div>
+          <!-- 劳务合同签署 -->
+          <div class="step-btn" style="width: 230px" v-if="isGoSign"
+               @click="handleOpenWindow">点击进行劳务合同签署</div>
           <!-- 审核完成 -->
           <el-image v-if="isFinishReview"
                     class="status-img"
@@ -140,6 +143,7 @@ export default {
       isFillResume: false,
       isFinishReview: false,
       isSettingTime: false,
+      isGoSign: false,
       isActive: false,
       curStep: 1,
       pannels: [
@@ -170,7 +174,6 @@ export default {
     }
   },
   async created () {
-    console.log('hello world')
     const l = this.loading()
     const res = await getUserInfo().catch(e => l.close())
     if (res.result) {
@@ -179,14 +182,19 @@ export default {
       // backgroundVerifyStatus= 0  未审核
       // backgroundVerifyStatus= 1  待审核
       // backgroundVerifyStatus= 2  资料待修正
-      // backgroundVerifyStatus= 3  已审核
+      // backgroundVerifyStatus= 3  劳务合同签署
+      // backgroundVerifyStatus= 4  已审核
       const o = res.msg
       // 是否填写过简历
       this.isFillResume = !!(o.publicInfo && o.publicInfo.resume)
       // 是否审核完成
-      this.isFinishReview = o.backgroundVerifyStatus == 3
+      this.isFinishReview = o.backgroundVerifyStatus == 4
+      // 去劳务合同签署
+      this.isGoSign = o.backgroundVerifyStatus == 3
       // 是否设置过服务时间
       this.isSettingTime = !!(o.publicInfo && o.publicInfo.availableTime)
+      // 劳务合同签署地址
+      this.signUrl = o.eSignUrl
       const p = { from: "0", to: "2601444690", page: "1", limit: "3" }
       const ret = await Promise.all([
         getOrders({ ...p, condition: "status==4:status==5" }),
@@ -218,6 +226,9 @@ export default {
     l.close()
   },
   methods: {
+    handleOpenWindow() {
+      window.open(this.signUrl, '_blank')
+    },
     async handleOpenDetail(order){
       const res = await getDicts()
       this.order = order

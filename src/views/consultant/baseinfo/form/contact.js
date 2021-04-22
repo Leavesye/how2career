@@ -12,6 +12,11 @@ export default {
     label: '联系邮箱',
     rules: [r.required(), r.maxLength(100), r.eMail()]
   },
+  address: {
+    value: '',
+    label: '联系地址',
+    rules: [r.required(), r.maxLength(200)]
+  },
   selfIntroduction: {
     value: '',
     label: '自我介绍',
