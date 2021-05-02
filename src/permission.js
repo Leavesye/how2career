@@ -11,7 +11,7 @@ NProgress.configure({ showSpinner: false }) // NProgress Configuration
 // 登录咨询师跳咨询者链接处理
 
 // 跳转白名单
-const whiteList = ['/home', '/service', '/about', '/register', '/sales-login', '/sales/qylogin']
+const whiteList = ['/home', '/service', '/about', '/plan', '/register', '/sales-login', '/sales/qylogin']
 
 router.beforeEach(async(to, from, next) => {
   // start progress bar

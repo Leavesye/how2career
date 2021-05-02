@@ -56,6 +56,10 @@ export let constantRoutes = [
     component: () => import('@/views/home/about'),
   },
   {
+    path: '/plan',
+    component: () => import('@/views/home/plan'),
+  },
+  {
     path: '/sales-login',
     component: () => import('@/views/home/sales'),
   },

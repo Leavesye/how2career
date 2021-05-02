@@ -8,18 +8,18 @@
       <img class="top-img" :src="top" alt="" />
       <div class="inner-home">
         <div class="content">
-          <p>求职难, 要问对人</p>
-          <p>海量资深职场人, 带你了解真实职场</p>
-          <div>IntoCareer汇聚全行业职场实战经验，为你的求职填坑铺路</div>
+          <p>你和职场，</p>
+          <p>只有一个intoCareer<sup>TM</sup>的距离</p>
+          <div>两种1V1咨询服务，IntoCareer<sup>TM</sup> 帮你洞见真实职场，让信息差无处躲藏</div>
         </div>
-        <div class="right-now">立刻体验</div>
+        <div class="right-now">了解更多</div>
       </div>
     </section>
     <section class="home-center">
       <div class="why-sel">
-        <h1>为何选择我们</h1>
+        <h1>消除求职信息差，我们是专业的！</h1>
         <p>
-          求职信息咨询领域的开拓者和引领者，致力于打造一个专业的职场知识咨询平台
+          IntoCareer<sup>TM</sup> 致力于打造专业职前咨询平台，力求帮助求职者不走弯路
         </p>
       </div>
       <ul class="center-cards flex-hbc">
@@ -30,14 +30,14 @@
         </li>
       </ul>
       <div class="service">
-        <h1>服务与支持</h1>
-        <p>最真实的职场经验出发，为求职者打造属于自己的职业发展策略</p>
+        <h1>两种专业服务，全方位看职场</h1>
+        <p>精准匹配职场达人或资深人力，为你答疑解惑填坑铺路，求职路上不再迷茫</p>
       </div>
       <div class="service-items flex-hbc">
         <div class="s-content fadeout-left">
           <img class="fadeout-left" :src="homeN1" alt="" />
-          <h1 class="fadeout-left">咨询服务</h1>
-          <p class="fadeout-left">IntoCareer为你 pick目标行业资深职场达人，</p>
+          <h1 class="fadeout-left">60min职场达人1V1咨询</h1>
+          <p class="fadeout-left">IntoCareer<sup>TM</sup>为你 pick目标行业资深职场达人，</p>
           <p class="fadeout-left">
             亲授职场实战经验，行业动向、企业风格、岗位实际需求……
           </p>
@@ -49,9 +49,9 @@
         <img class="s-img2 fadeout-left" :src="homeService2" alt="" />
         <div class="s-content fadeout-right">
           <img class="fadeout-right" :src="homeN2" alt="" />
-          <h1 class="fadeout-right">咨询服务</h1>
+          <h1 class="fadeout-right">60min资深人力1V1咨询</h1>
           <p class="fadeout-right">
-            IntoCareer为你pick目标行业资深人力资源专家，
+            IntoCareer<sup>TM</sup>为你pick目标行业资深人力资源专家，
           </p>
           <p class="fadeout-right">
             帮你制定最适合你的求职策略和职业发展道路，
@@ -62,32 +62,32 @@
     </section>
     <section class="home-bottom">
       <div class="consultants-part">
-        <h1>专业咨询师</h1>
-        <p>
-          由众多顶级大学教育专家、国内优秀标杆企业人才，以及国内外知名咨询专家等顶级精英资源组成
-        </p>
+        <h1>IntoCareer<sup>TM</sup> 咨询师团队</h1>
+        <div>
+          <p>在IntoCareer 平台，每天都有来自各个行业领域的职场达人和资深HR成为咨询师，</p>
+          <p>他们共同构建成IntoCareer 职场达人网络与职场知识矩阵。</p>
+        </div>
+        <div>
+          <p>每一位入驻IntoCareer 的咨询师，都经过了平台严格的把关和筛选，他们在行业领域具备领先的工作经验，</p>
+          <p>以最贴近真实职场的经验和建议为你解答个性化求职问题，快来这里找到你的专属职场咨询师吧！</p>
+        </div>
       </div>
-      <ul class="consultants-list flex-hbc">
-        <li class="consultant-item" v-for="(item, i) in consultants" :key="i">
-          <img :src="item.img" alt="" />
-          <h1>{{ item.name }}</h1>
-          <h2>{{ item.position }}</h2>
-          <div class="flex-hbc">
-            <el-rate
-              style="text-align: center"
-              disabled
-              :colors="['#fff', '#fff', '#fff']"
-              v-model="item.rate"
-            ></el-rate>
-            <div class="rate-count">
-              <i class="iconfont icondianping-01"></i>
-              <span> {{ item.count }}</span>
-            </div>
-          </div>
-          <p>{{ item.desc }}</p>
-          <div class="book-btn">预约咨询</div>
-        </li>
-      </ul>
+      <section class="tongji flex-hc">
+      <div class="tj-item" v-for="(item, i) in countList" :key="i">
+        <div class="count-box">
+          <count-to
+            separator=""
+            class="count"
+            :startVal="0"
+            :endVal="item.count"
+            :duration="2000"
+          />
+          <p v-show="item.unit == 'percent'" :style="{ right: item.right + 'px' }">%</p>
+          <i class="plus" :style="{ right: item.right + 'px' }">+</i>
+        </div>
+        <p class="tj-desc">{{ item.text }}</p>
+      </div>
+    </section>
     </section>
     <!-- <section class="industrys">
       <h1>覆盖行业</h1>
@@ -103,6 +103,7 @@
 <script>
 import FootBar from "@/layout/components/FootBar";
 import TopNavbar from "@/components/TopNavbar";
+import CountTo from "vue-count-to";
 
 export default {
   name: "home",
@@ -121,10 +122,16 @@ export default {
   },
   components: {
     FootBar,
-    TopNavbar
+    TopNavbar,
+    CountTo
   },
   data() {
     return {
+      countList: [
+        { count: 2000, text: '咨询师入驻', right: -30 },
+        { count: 60, text: '覆盖企业数量', right: -20 },
+        { count: 1500, text: '覆盖职位', right: -30 },
+      ],
       refer: "",
       sales: "",
       cidx: 0,
@@ -244,6 +251,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.home {
+  width: 100%;
+}
 .top-bar {
   position: fixed;
   z-index: 3200;
@@ -264,7 +274,6 @@ export default {
 }
 .home-top {
   position: relative;
-  width: 100%;
   height: 500px;
   // background-image: url(../../assets/home-top.jpg);
   // background-repeat: no-repeat;
@@ -423,12 +432,12 @@ export default {
 }
 .home-bottom {
   margin-top: 140px;
-  width: 100%;
-  height: 800px;
+  min-width: 1180px;
+  height: 600px;
   background-image: url(../../assets/home-bottom.jpg);
   background-repeat: no-repeat;
-  background-position: center;
-  background-size: 1920px 800px;
+  background-position: center top;
+  background-size: cover;
   padding: 1px;
 }
 .consultants-part {
@@ -441,54 +450,55 @@ export default {
   color: #ffffff;
   line-height: 56px;
 }
-.consultants-part p {
+.consultants-part div {
+  margin-top: 20px;
+}
+.consultants-part div p {
   font-size: 18px;
   font-weight: 400;
   color: #ffffff;
   line-height: 26px;
-  margin-top: 20px;
 }
-.consultants-list {
-  width: 930px;
+.tongji {
   margin: 0 auto;
-  margin-top: 80px;
-}
-.consultant-item {
-  width: 250px;
-}
-.consultant-item img {
-  width: 250px;
-  height: 170px;
-  display: block;
-}
-.consultant-item h1 {
-  font-size: 22px;
-  font-weight: bold;
-  color: #ffffff;
-  line-height: 30px;
-  margin-top: 20px;
-}
-.consultant-item h2 {
-  font-size: 14px;
-  font-weight: 300;
-  color: #ffffff;
-  line-height: 22px;
-  margin-top: 6px;
-}
-.rate-count {
-  font-size: 14px;
+  color: #fff;
+  height: 200px;
+  font-size: 70px;
   font-weight: 400;
-  color: #ffffff;
-  line-height: 19px;
-  margin: 6px 0;
+  margin-top: 60px;
 }
-.consultant-item p {
-  font-size: 14px;
+.tj-item {
+  margin-top: 35px;
+  margin-right: 180px;
+}
+.tj-item:last-child {
+  margin-right: 0;
+}
+
+.count-box {
+  position: relative;
+}
+.count-box i {
+  position: absolute;
+  top: -6px;
+  right: -20px;
+  font-size: 42px;
+}
+.count-box p {
+  position: absolute;
+  bottom: -6px;
+  right: -20px;
+  font-size: 42px;
+}
+.tj-desc {
+  font-size: 18px;
   font-weight: 300;
-  color: #ffffff;
-  line-height: 22px;
-  margin-top: 20px;
+  color: #fff;
+  line-height: 25px;
+  margin-top: 17px;
+  text-align: center;
 }
+
 .book-btn {
   width: 150px;
   height: 46px;

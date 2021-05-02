@@ -34,8 +34,9 @@ export default {
       isShow: false,
       menus :[
         {name: '首页', path: '/home'},
-        {name: '我们的服务', path: '/service'},
-        {name: '关于我们', path: '/about'}
+        {name: '咨询服务', path: '/service'},
+        {name: '关于我们', path: '/about'},
+        { name: "校园计划", path: "/plan" },
       ]
     }
   },

@@ -27,7 +27,7 @@ export default {
   data () {
     return {
       links: [
-        { name: '我们的服务', path: '/service' },
+        { name: '咨询服务', path: '/service' },
         { name: '关于我们', path: '/about' }
       ],
       icons: [
@@ -47,7 +47,7 @@ export default {
 
 <style lang="scss" scoped>
 .footer {
-  width: 100%;
+  min-width: 1180px;
   color: #fff;
   height: 150px;
   background: #292e3d;
