@@ -37,7 +37,7 @@
           <span>联系邮箱：info@h2career.com</span>
         </p>
         <p class="flex">
-          <svg-icon icon-class="phone-call" class="svg-i"></svg-icon>
+          <i class="iconfont iconweixin2"></i>
           <span>微信公众号：XXXXXX</span>
         </p>
       </div>

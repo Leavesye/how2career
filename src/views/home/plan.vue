@@ -23,7 +23,7 @@
         <h1>你将收获…</h1>
         <div class="get-list">
           <div v-for="(item, i) in list" :key="i">
-            <i class="iconfont"></i>
+            <i class="iconfont" :class="[item.icon]"></i>
             <p>{{ item.p1 }}</p>
             <p>{{ item.p2 }}</p>
           </div>
@@ -61,12 +61,12 @@ export default {
   data() {
     return {
       list: [
-        { icon: "", p1: "一个发挥你个人实力", p2: "和影响力的平台" },
-        { icon: "", p1: "助力你打造更广阔的", p2: "校内外人脉网络" },
-        { icon: "", p1: "属于你的从0到1", p2: "创业项目实战经验" },
-        { icon: "", p1: "结识各个行业", p2: "职场达人的宝贵经历" },
-        { icon: "", p1: "深入了解职场，", p2: "引领你探索职业发展" },
-        { icon: "", p1: "还有实习工资、实习证明… ", p2: "及更多福利！" }
+        { icon: "iconzan-01", p1: "一个发挥你个人实力", p2: "和影响力的平台" },
+        { icon: "iconrenmai-01", p1: "助力你打造更广阔的", p2: "校内外人脉网络" },
+        { icon: "icon1-01", p1: "属于你的从0到1", p2: "创业项目实战经验" },
+        { icon: "icon0-1-01", p1: "结识各个行业", p2: "职场达人的宝贵经历" },
+        { icon: "iconzhiye-01", p1: "深入了解职场，", p2: "引领你探索职业发展" },
+        { icon: "iconfuli-01", p1: "还有实习工资、实习证明… ", p2: "及更多福利！" }
       ]
     };
   }
@@ -85,7 +85,7 @@ export default {
 .about-banner {
   min-width: 1180px;
   height: 380px;
-  background-image: url(../../assets/about-banner.jpg);
+  background-image: url(../../assets/school.png);
   background-repeat: no-repeat;
   background-position: center top;
   background-size: cover;
@@ -177,8 +177,12 @@ export default {
   font-weight: 300;
   color: #434d57;
   line-height: 26px;
-  margin-bottom: 16px;
+  margin-bottom: 30px;
   text-align: left;
+}
+.get-list i {
+  color: #15479E;
+  font-size: 44px;
 }
 .submit-btn {
   width: 180px;

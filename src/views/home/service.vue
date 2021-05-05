@@ -63,7 +63,14 @@
       <p>想要了解自己和目标职位的实际匹配程度吗？</p>
       <p>想要在求职前明确努力的方向，在职场中充分发挥自我价值吗？</p>
       <p>Follow以下步骤，找到你的职场领路人！</p>
-      <img :src="serviceBottom" alt="" />
+      <div class="steps-list"> 
+        <div class="step-item" v-for="(item, i) in steps" :key="i">
+          <div>STEP 0{{ i + 1 }}</div>
+          <h1 class="step-title">{{ item.title }}</h1>
+          <p class="step-p">{{ item.p1 }}</p>
+          <p class="step-p">{{ item.p2 }}</p>
+        </div>
+      </div>
     </section>
     <div class="submit-btn">立即注册</div>
     <foot-bar />
@@ -101,12 +108,20 @@ export default {
         { count: 2000, text: "已帮助求职应届生", right: -20 },
         { count: 60, text: "已帮助海归求职者", right: 20 },
         { count: 90, unit: "percent", text: "用户认为很有帮助", right: 20 }
+      ], 
+      steps: [
+        { title: '快速注册，填写基本信息', p1: '在个人信息页填写你的详细简历，让我们更好地了解你的教育经历和求职兴趣。', p2: '简历资料的完成度越高，越能为你匹配到适合的咨询师。' },
+        { title: '搜索咨询师', p1: '在咨询师搜索页面，选择“向专业人士咨询”或“向人力资源咨询”。', p2: '输入搜索条件，结合你的个人简历，我们将为你匹配出所有符合条件的咨询师。' },
+        { title: '预约咨询师时间，确认订单', p1: '选择咨询师，查看可预约时间表，从中选择（最多）三个候选时间段。', p2: '确认订单并完成付款，即可向咨询师直接发出预约邀请！' },
+        { title: '评价服务', p1: '通话结束后，为你的咨询师打个分数，并留下你的真实评价吧！', p2: '' },
+        { title: '开始服务', p1: '按照预约确认的时间准时进入咨询房间，与你的咨询师完成线上语音通话。', p2: '' },
+        { title: '咨询师确认预约，完善信息', p1: '待咨询师确认时间后，请登录个人中心填写补充信息。', p2: '并在待服务订单中添加你想要得到针对性解答的个人求职问题。' },
       ]
     };
   },
   computed: {
     serviceBottom: function() {
-      return require("@/assets/service-bottom.png");
+      return require("@/assets/steps.png");
     },
     homeN1: function() {
       return require("@/assets/home-n1.png");
@@ -217,7 +232,7 @@ export default {
   text-align: center;
   padding-bottom: 140px;
 }
-.use-step h1 {
+.use-step > h1 {
   font-size: 36px;
   font-weight: 600;
   color: #292e3d;
@@ -225,20 +240,51 @@ export default {
   margin-top: 70px;
   margin-bottom: 40px;
 }
-.use-step p {
+.use-step > p {
   font-size: 16px;
   font-weight: 300;
   color: #434d57;
   line-height: 36px;
 }
-.use-step img {
-  width: 1033px;
-  height: 650px;
-  display: block;
+.steps-list{
+  width: 1034px;
+  height: 635px;
+  background-image: url(../../assets/steps.png);
+  background-size: cover;
+  background-position: center;
   margin: 0 auto;
   margin-top: 70px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 20px;
 }
-
+.step-item {
+  width: 320px;
+  height: 290px;
+  padding: 40px 30px;
+  box-sizing: border-box;
+  text-align: left;
+}
+.step-item > div {
+  font-size: 26px;
+  color: #36AE82;
+  line-height: 31px;
+  margin-bottom: 20px;
+}
+.step-item .step-title {
+  font-size: 20px;
+  font-weight: 400;
+  color: #292E3D;
+  line-height: 28px;
+  margin-bottom: 34px;
+}
+.step-item .step-p {
+  font-weight: 300;
+  color: #434D57;
+  line-height: 26px;
+  font-size: 14px;
+}
 .service-items {
   width: 1180px;
   margin: 0 auto;

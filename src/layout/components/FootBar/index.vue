@@ -34,6 +34,8 @@ export default {
         { code: 'iconfont iconweixin' },
         { code: 'iconfont iconweibo' },
         { code: 'iconfont iconTwitter' },
+        { code: 'iconfont iconin-01' },
+        { code: 'iconfont iconf' },
       ],
     }
   },
