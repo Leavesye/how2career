@@ -31,7 +31,7 @@ module.exports = {
   lintOnSave: false,
   productionSourceMap: false,
   devServer: {
-    host: '192.168.2.114',
+    host: '0.0.0.0',
     port: port,
     open: true,
     overlay: {

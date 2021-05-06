@@ -17,7 +17,7 @@
         <p>
           如果优秀的你想要变得更优秀
         </p>
-        <p>快来加入IntoCareer 校园团队吧</p>
+        <p>快来加入IntoCareer<sup>TM</sup> 校园团队吧</p>
       </div>
       <div class="you-will">
         <h1>你将收获…</h1>
@@ -81,6 +81,7 @@ export default {
   background: #292e3d;
   position: sticky;
   top: 0px;
+  z-index: 10000;
 }
 .about-banner {
   min-width: 1180px;
@@ -120,7 +121,7 @@ export default {
 }
 .contact-us p {
   margin: 0 auto;
-  width: 700px;
+  width: 710px;
   font-size: 18px;
   font-weight: 300;
   color: #434d57;

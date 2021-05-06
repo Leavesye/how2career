@@ -24,8 +24,8 @@
     </el-dropdown-menu>
   </el-dropdown>
   <div class="top-btns flex-hbc" v-else>
-    <div class="sign-in" @click="action(1)">登录</div>
-    <div class="sign-up" @click="action(2)">免费注册</div>
+    <div class="sign-in" @click="action(1)">登录 / 注册</div>
+    <!-- <div class="sign-up" @click="action(2)">免费注册</div> -->
   </div>
   <login
     id="login"

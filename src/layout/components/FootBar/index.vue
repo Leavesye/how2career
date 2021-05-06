@@ -28,7 +28,8 @@ export default {
     return {
       links: [
         { name: '咨询服务', path: '/service' },
-        { name: '关于我们', path: '/about' }
+        { name: '关于我们', path: '/about' },
+        { name: '校园计划', path: '/plan' },
       ],
       icons: [
         { code: 'iconfont iconweixin' },

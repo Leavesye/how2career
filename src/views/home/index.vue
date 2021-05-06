@@ -64,11 +64,11 @@
       <div class="consultants-part">
         <h1>IntoCareer<sup>TM</sup> 咨询师团队</h1>
         <div>
-          <p>在IntoCareer 平台，每天都有来自各个行业领域的职场达人和资深HR成为咨询师，</p>
-          <p>他们共同构建成IntoCareer 职场达人网络与职场知识矩阵。</p>
+          <p>在IntoCareer<sup>TM</sup> 平台，每天都有来自各个行业领域的职场达人和资深HR成为咨询师，</p>
+          <p>他们共同构建成IntoCareer<sup>TM</sup> 职场达人网络与职场知识矩阵。</p>
         </div>
         <div>
-          <p>每一位入驻IntoCareer 的咨询师，都经过了平台严格的把关和筛选，他们在行业领域具备领先的工作经验，</p>
+          <p>每一位入驻IntoCareer<sup>TM</sup> 的咨询师，都经过了平台严格的把关和筛选，他们在行业领域具备领先的工作经验，</p>
           <p>以最贴近真实职场的经验和建议为你解答个性化求职问题，快来这里找到你的专属职场咨询师吧！</p>
         </div>
       </div>
@@ -405,7 +405,7 @@ export default {
   margin-top: 100px;
 }
 .s-content img {
-  width: 296px;
+  width: 310px;
   height: 83px;
 }
 .s-content h1 {

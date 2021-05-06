@@ -72,7 +72,7 @@
         </div>
       </div>
     </section>
-    <div class="submit-btn">立即注册</div>
+    <div class="submit-btn" @click="goReg">立即注册</div>
     <foot-bar />
   </div>
 </template>
@@ -140,6 +140,9 @@ export default {
     window.removeEventListener("scroll", this.onScroll);
   },
   methods: {
+    goReg() {
+      this.$router.push('/register/consumer')
+    },
     onScroll() {
       const bodyHeight =
         document.documentElement.clientHeight || window.innerHeight;
@@ -161,6 +164,7 @@ export default {
   background: #292e3d;
   position: sticky;
   top: 0px;
+  z-index: 10000;
 }
 .service-banner {
   min-width: 1180px;
@@ -290,7 +294,7 @@ export default {
   margin: 0 auto;
 }
 .s-content img {
-  width: 296px;
+  width: 310px;
   height: 83px;
 }
 .s-content h1 {
