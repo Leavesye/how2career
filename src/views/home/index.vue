@@ -2,7 +2,7 @@
   <div class="home">
     <!-- 顶部导航 -->
     <div class="top-bar" :class="[isBlack ? 'isscroll' : '']">
-      <top-navbar :isBlack="false" :refer="refer" :sales="sales" />
+      <top-navbar :isBlack="false" :refer="refer" :sales="sales" :sign="sign" />
     </div>
     <section class="home-top">
       <img class="top-img" :src="top" alt="" />
@@ -134,6 +134,7 @@ export default {
       ],
       refer: "",
       sales: "",
+      sign: "",
       cidx: 0,
       isBlack: false,
       list: [
@@ -245,6 +246,7 @@ export default {
   mounted() {
     this.refer = this.$route.query.refer;
     this.sales = this.$route.query.growth;
+    this.sign = this.$route.query.sign;
     window.addEventListener("scroll", this.onScroll);
   }
 };

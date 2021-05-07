@@ -141,7 +141,7 @@ export default {
   },
   methods: {
     goReg() {
-      this.$router.push('/register/consumer')
+      this.$router.push('/home?sign=true')
     },
     onScroll() {
       const bodyHeight =

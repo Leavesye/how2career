@@ -56,11 +56,13 @@ export default {
     sales: {
       type: String
     },
+    sign: String
   },
   data () {
+    console.log(111111111, this.sign)
     return {
       isShow: false,
-      type: 1,
+      type: Number(this.sign) || 1,
       menus: [
         { name: "首页", path: "/home" },
         { name: "咨询服务", path: "/service" },
@@ -79,15 +81,21 @@ export default {
     ])
   },
   watch: {
+    'sign': function(n, o) {
+      this.$nextTick(() => {
+        this.isShow = !!n || !!this.sales || !!this.refer
+        this.type = 2
+      })
+    },
     'refer': function(n, o) {
       this.$nextTick(() => {
-        this.isShow = !!n || this.sales
+        this.isShow = !!n || !!this.sales || !!this.sign
         this.type = 2
       })
     },
     'sales': function(n, o) {
       this.$nextTick(() => {
-        this.isShow = !!n || this.refer
+        this.isShow = !!n || !!this.refer || !!this.sign
         this.type = 2
       })
     },

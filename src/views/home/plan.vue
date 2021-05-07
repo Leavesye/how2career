@@ -6,9 +6,10 @@
     <div class="about-banner">
       IntoCareer<sup>TM</sup>校园计划
     </div>
+    
     <section class="bottom">
       <div class="about-us">
-        <h1 style="width: 700px">
+        <h1 style="width: 710px;text-align: center">
           IntoCareer<sup>TM</sup> 邀请海内外优秀在校生的加入
         </h1>
         <p>
@@ -29,7 +30,7 @@
           </div>
         </div>
       </div>
-      <div class="submit-btn">点击这里 提交申请</div>
+      <div class="submit-btn" @click="goReg">点击这里 提交申请</div>
     </section>
 
     <foot-bar />
@@ -69,6 +70,11 @@ export default {
         { icon: "iconfuli-01", p1: "还有实习工资、实习证明… ", p2: "及更多福利！" }
       ]
     };
+  },
+  methods: {
+    goReg() {
+      this.$router.push('/home?sign=true')
+    },
   }
 };
 </script>
