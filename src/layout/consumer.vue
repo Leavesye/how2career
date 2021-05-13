@@ -45,6 +45,11 @@ export default {
             { name: '消息通知', path: '/consumer/message' },
           ]
         },
+        {
+          name: '平台条款', icon: 'icontiaokuan', children: [
+            { name: '异常流程管理条例', url: '/pdf/IntoCareer异常流程管理条例-客户.pdf' }
+          ]
+        },
       ]
     }
   },

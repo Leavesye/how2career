@@ -28,7 +28,7 @@
                         :key="sindex"
                         class="sub-item"
                         :index="(index+1)+ '-'+ (sindex+1)"
-                        @click="linkTo(subItem.path)">{{subItem.name}}</el-menu-item>
+                        @click="linkTo(subItem.path, subItem.url)">{{subItem.name}}</el-menu-item>
         </el-submenu>
       </template>
     </el-menu>
@@ -52,6 +52,7 @@
                 style="color: #fff">常见问题</el-link>
       </div>
     </section>
+    <terms :isShow="isShowTerms" @close="handleCloseTerms" :url="url" :isShowBtn="false" />
   </div>
 </template>
 
@@ -59,14 +60,19 @@
 import { mapGetters } from 'vuex'
 import QRCode from 'qrcodejs2'
 import tool from '@/utils/tool'
+import Terms from "@/components/Terms";
 
 export default {
-  name: 'sidebar',
+  components: {
+    Terms
+  },
   props: ['menus'],
   data () {
     return {
+      isShowTerms: false,
       activeMenu: '1',
       isCollapse: false,
+      url: ''
     }
   },
   computed: {
@@ -87,8 +93,16 @@ export default {
     }
   },
   methods: {
-    linkTo (path) {
-      this.$router.push(path)
+    handleCloseTerms() {
+       this.isShowTerms = false
+    },
+    linkTo (path, url) {
+      if (url) {
+        this.isShowTerms = true
+        this.url = url
+      } else {
+        this.$router.push(path)
+      }
     },
     getStyle (type) {
       const cfg = {

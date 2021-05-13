@@ -5,9 +5,9 @@
         <div class="flex-hbc left">
           <svg-icon @click="linkTo('/home')" icon-class="logo" class="logo"></svg-icon>
           <ul class="flex-hb">
-            <li v-for="(o,i) in links" @click="linkTo(o.path)"
+            <li v-for="(o,i) in links" @click="handleClickLink(o)"
                 :key="i">
-              <el-link class="link" :underline="false">{{o.name}}</el-link>
+              <el-link class="link" :underline="false">{{o.name}}</el-link> 
             </li>
           </ul>
         </div>
@@ -18,18 +18,24 @@
       </section>
       <a class="copyright" href="https://beian.miit.gov.cn/">Copyright © 2021 intocareer All rights reserved 好途网络科技（上海）有限公司 版权所有 沪ICP备2020029242号-2</a>
     </el-col>
+    <terms :isShow="isShow" @close="handleClose" :url="url" :isShowBtn="false" />
   </el-row>
 </template>
 
 <script>
+import Terms from "@/components/Terms";
 export default {
-  name: 'footbar',
+  components: { Terms },
   data () {
     return {
+      isShow: false,
+      url: '/pdf/cookies-terms.pdf',
       links: [
         { name: '咨询服务', path: '/service' },
         { name: '关于我们', path: '/about' },
         { name: '校园计划', path: '/plan' },
+        { name: 'IntoCareer Cookies政策', url: '/pdf/cookies-terms.pdf'},
+        { name: 'IntoCareer 隐私政策', url: '/pdf/IntoCareer 隐私政策.pdf'},
       ],
       icons: [
         { code: 'iconfont iconweixin' },
@@ -41,9 +47,20 @@ export default {
     }
   },
   methods: {
+    handleClose() {
+      this.isShow = false
+    },
     linkTo(path) {
       this.$router.push(path)
     },
+    handleClickLink(item) {
+      if (item.url) {
+        this.isShow = true
+        this.url = item.url
+      } else {
+        this.linkTo(item.path)
+      }
+    }
   }
 };
 </script>
@@ -68,8 +85,9 @@ export default {
       .left {
         font-size: 14px;
         ul {
-          width: 200px;
-      
+          li {
+            margin-right: 30px;
+          }
         }
       }
       .right > li {

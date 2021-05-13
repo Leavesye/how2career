@@ -18,7 +18,7 @@
           <el-image v-if="isFillResume && !isFinishReview && !isGoSign"
                     class="status-img"
                     :src="certApply"></el-image>
-          <div class="step-review"
+          <div class="step-review" @click="showTerms"
                v-if="isFillResume && !isFinishReview && !isGoSign">
             <p>审核中</p>
             <p>你也可以设置服务时间</p>
@@ -120,6 +120,7 @@
       </section>
     </div>
     <detail-modal :isShow="isShow" :order="order" @close="handleClose"></detail-modal>
+    <terms :isShow="isShowTerms" @close="handleCloseTerms" :url="url" />
   </section>
 </template>
 
@@ -129,15 +130,19 @@ import { getUserInfo, getDicts } from '@/api/user'
 import tool from '@/utils/tool'
 import SmallAvatar from '@/components/SmallAvatar'
 import DetailModal from './modal/detail'
+import Terms from "@/components/Terms";
 
 export default {
   components: { 
     SmallAvatar,
-    DetailModal
+    DetailModal,
+    Terms
   },
   data () {
     return {
       isShow: false,
+      isShowTerms: false,
+      url: '',
       order: {},
       isLoaded: false,
       isFillResume: false,
@@ -185,6 +190,7 @@ export default {
       // backgroundVerifyStatus= 3  劳务合同签署
       // backgroundVerifyStatus= 4  已审核
       const o = res.msg
+      // o.backgroundVerifyStatus = 1
       // 是否填写过简历
       this.isFillResume = !!(o.publicInfo && o.publicInfo.resume)
       // 是否审核完成
@@ -226,6 +232,17 @@ export default {
     l.close()
   },
   methods: {
+    showTerms() {
+      this.isShowTerms = true
+      this.url = "/pdf/IntoCareer 咨询师管理条例.pdf"
+    },
+    handleCloseTerms(isAgree) {
+      if (this.url == '/pdf/IntoCareer 异常流程管理条例 - 咨询师.pdf' || !isAgree) {
+        this.isShowTerms = false
+      } else if (this.url == '/pdf/IntoCareer 咨询师管理条例.pdf' && isAgree) {
+        this.url = '/pdf/IntoCareer 异常流程管理条例 - 咨询师.pdf'
+      }
+    },
     handleOpenWindow() {
       window.open(this.signUrl, '_blank')
     },

@@ -42,6 +42,12 @@ export default {
             { name: '消息通知', path: '/consultant/message' },
           ]
         },
+        {
+          name: '平台条款', icon: 'icontiaokuan', children: [
+            { name: '咨询师管理条例', url: '/pdf/IntoCareer 咨询师管理条例.pdf' },
+            { name: '异常流程管理条例', url: '/pdf/IntoCareer 异常流程管理条例 - 咨询师.pdf' },
+          ]
+        },
       ]
     }
   }

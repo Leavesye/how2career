@@ -64,6 +64,12 @@
                    :loading="isLoading"
                    :type="curTab == 0? 'success' : 'primary'"
                    @click="handleRegOrLogin">{{pageType==2? '注册': '登录'}}</el-button>
+        <div v-if="pageType==2" class="flex-hs" style="margin-top: 20px">
+          <el-checkbox v-model="isAgree">同意</el-checkbox>
+          <el-link  style="margin-left: 20px;"
+                 :type="curTab == 0? 'success' : 'primary'"
+                 @click="showTerms">网站隐私条款</el-link>
+        </div>
         <p class="tips"
            v-if="pageType==2">未注册手机验证后自动登录，注册即同意注册协议</p>
         <el-link class="to-login"
@@ -71,11 +77,13 @@
                  @click="handleLink">{{pageType==2? '登录已有账号': '注册'}}</el-link>
       </div>
     </section>
+    <terms :isShow="isShowTerms" @close="handleCloseTerms" url="/pdf/IntoCareer 隐私政策.pdf" :isShowBtn="false" />
   </el-dialog>
 </template>
 
 <script>
 import { sendCode, checkUser } from '@/api/user'
+import Terms from "@/components/Terms";
 
 const tabsCfg = {
   '1': [
@@ -90,10 +98,16 @@ const tabsCfg = {
 export default {
   name: 'login-modal',
   props: ['isShow', 'type', 'refer', 'sales'],
+  components: {
+    Terms
+  },
   data () {
     const r = this.$rules
     this.role = 'consumer'
     return {
+      isShowTerms: false,
+      isAgree: false,
+      isShowTerms: false,
       isLoading: false,
       pageType: this.type, // 1 登入  2. 验证手机注册
       seconds: 0,
@@ -123,6 +137,12 @@ export default {
     }
   },
   methods: {
+    handleCloseTerms() {
+       this.isShowTerms = false
+    },
+    handleShowTerms() {
+       this.isShowTerms = true
+    },
     handleClose () {
       this.$emit('close')
     },
@@ -248,8 +268,18 @@ export default {
       if (this.pageType == 1) {
         this.loginFn()
       } else { //跳转注册
+        if (!this.isAgree) {
+          this.alert('请先同意网站隐私条款！', 'warning')
+          return false
+        }
         this.checkMobile()
       }
+    },
+    handleCloseTerms() {
+      this.isShowTerms = false
+    },
+    showTerms() {
+      this.isShowTerms = true
     }
   },
   mounted () {

@@ -45,7 +45,7 @@
         </div>
         <div class="flex-hec terms">
           <el-checkbox class="check-box"
-                       v-model="checked">我已阅读条款 点击 <el-link type="success">了解规则</el-link>
+                       v-model="checked">我已阅读条款 点击 <el-link @click.stop="handleShowTerms" type="success">了解规则</el-link>
           </el-checkbox>
           <el-button type="success"
                      @click="handleClickPay">确认付款</el-button>
@@ -56,6 +56,7 @@
     <pay :isShow="isShowPay"
          @close="handleClosePay"
          @confirm="handleConfirmPay" :payInfo="payInfo"></pay>
+    <terms :isShow="isShowTerms" @close="handleCloseTerms" url="/pdf/IntoCareer异常流程管理条例-客户.pdf" :isShowBtn="false" />
   </div>
 </template>
 
@@ -66,15 +67,17 @@ import Pay from '@/components/Pay'
 import moment from 'moment'
 import { mapGetters } from 'vuex'
 import { getOrderById, updateTime } from '@/api/order'
-import { getDicts } from '@/api/user'
+import Terms from "@/components/Terms";
 
 export default {
   components: {
     Avatar,
-    Pay
+    Pay,
+    Terms
   },
   data () {
     return {
+      isShowTerms: false,
       info: {},
       isShow: false,
       checked: false,
@@ -111,6 +114,12 @@ export default {
     l.close()
   },
   methods: {
+    handleCloseTerms() {
+       this.isShowTerms = false
+    },
+    handleShowTerms() {
+       this.isShowTerms = true
+    },
     handleDelTime(i) {
       if (this.info.times.length == 1) return false
       this.info.times.splice(i, 1)
