@@ -11,6 +11,6 @@ export function alert (message, type = 'success') {
     title: '提示',
     message,
     type,
-    duration: 400000
+    duration: 5000
   })
 }

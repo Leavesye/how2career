@@ -120,7 +120,7 @@
       </section>
     </div>
     <detail-modal :isShow="isShow" :order="order" @close="handleClose"></detail-modal>
-    <terms :isShow="isShowTerms" @close="handleCloseTerms" :url="url" />
+    <terms :isShow="isShowTerms" @close="handleCloseTerms" :url="url" :pageCount="pageCount" />
   </section>
 </template>
 
@@ -142,6 +142,7 @@ export default {
     return {
       isShow: false,
       isShowTerms: false,
+      pageCount: 1,
       url: '',
       order: {},
       isLoaded: false,
@@ -235,12 +236,14 @@ export default {
     showTerms() {
       this.isShowTerms = true
       this.url = "/pdf/IntoCareer 咨询师管理条例.pdf"
+      this.pageCount = 9
     },
-    handleCloseTerms(isAgree) {
-      if (this.url == '/pdf/IntoCareer 异常流程管理条例 - 咨询师.pdf' || !isAgree) {
+    handleCloseTerms(isAgree, isClose) {
+      if ((this.url == '/pdf/IntoCareer 异常流程管理条例 - 咨询师.pdf' || !isAgree) || isClose) {
         this.isShowTerms = false
       } else if (this.url == '/pdf/IntoCareer 咨询师管理条例.pdf' && isAgree) {
         this.url = '/pdf/IntoCareer 异常流程管理条例 - 咨询师.pdf'
+        this.pageCount = 3
       }
     },
     handleOpenWindow() {

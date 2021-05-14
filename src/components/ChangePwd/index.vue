@@ -29,7 +29,7 @@ export default {
           value: '',
           label: '输入旧密码',
           props: {
-            type: 'password'
+            type: 'password',
           },
           rules: [r.required(), r.length(8, 16), r.psd()],
           hide: false,
@@ -39,7 +39,8 @@ export default {
           label: '新密码',
           rules: [r.required(), r.length(8, 16), r.psd()],
           props: {
-            type: 'password'
+            type: 'password',
+            placeholder: '请使用8-16位大小写字母加数字加符号组合'
           },
         },
         confirmPwd: {
@@ -47,7 +48,8 @@ export default {
           label: '再次输入新密码',
           rules: [r.required(), r.length(8, 16), r.psd()],
           props: {
-            type: 'password'
+            type: 'password',
+            placeholder: '请使用8-16位大小写字母加数字加符号组合'
           },
         },
       }

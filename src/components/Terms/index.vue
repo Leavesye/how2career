@@ -5,10 +5,12 @@
   width="60%"
   custom-class="terms-zindex"
   center>
-  <section class="modal-main">
+  <section class="modal-main" ref="main">
     <pdf 
       ref="pdf"
       :src="url"
+      v-for="i in pageCount"
+			:key="i"
     >
     </pdf>
   </section>
@@ -28,6 +30,8 @@ export default {
   props: {
     url: String,
     isShow: Boolean,
+    pageCount: Number,
+    isApply: Boolean,
     isShowBtn: {
       type: Boolean,
       default: true
@@ -41,16 +45,30 @@ export default {
       checked: false
     }
   },
+  watch: {
+    'url': function(n, o) {
+      this.checked = false
+      // 切换url  回到顶部
+      this.$nextTick(() => {
+        Array.from(document.querySelectorAll('.el-dialog__wrapper')).map(o => {
+          o.scrollTop = 0
+        })
+      })
+    },
+    'isShow': function(n, o) {
+      this.checked = false
+    }
+  },
   methods: {
     handleClose() {
-      this.$emit('close', this.checked)
+      this.$emit('close', this.checked, true)
     },
     handleAgree() {
       if (!this.checked) {
         this.alert('请先同意条款', 'warning')
         return false
       }
-      this.$emit('close', this.checked)
+      this.$emit('close', this.checked, false)
     }
   }
 };

@@ -28,7 +28,7 @@
                         :key="sindex"
                         class="sub-item"
                         :index="(index+1)+ '-'+ (sindex+1)"
-                        @click="linkTo(subItem.path, subItem.url)">{{subItem.name}}</el-menu-item>
+                        @click="linkTo(subItem.path, subItem.url, subItem.pageCount)">{{subItem.name}}</el-menu-item>
         </el-submenu>
       </template>
     </el-menu>
@@ -52,7 +52,7 @@
                 style="color: #fff">常见问题</el-link>
       </div>
     </section>
-    <terms :isShow="isShowTerms" @close="handleCloseTerms" :url="url" :isShowBtn="false" />
+    <terms :isShow="isShowTerms" @close="handleCloseTerms" :url="url" :isShowBtn="false" :pageCount="pageCount" />
   </div>
 </template>
 
@@ -69,6 +69,7 @@ export default {
   props: ['menus'],
   data () {
     return {
+      pageCount: 1,
       isShowTerms: false,
       activeMenu: '1',
       isCollapse: false,
@@ -96,10 +97,11 @@ export default {
     handleCloseTerms() {
        this.isShowTerms = false
     },
-    linkTo (path, url) {
+    linkTo (path, url, count) {
       if (url) {
         this.isShowTerms = true
         this.url = url
+        this.pageCount = count
       } else {
         this.$router.push(path)
       }

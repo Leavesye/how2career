@@ -18,7 +18,7 @@
       </section>
       <a class="copyright" href="https://beian.miit.gov.cn/">Copyright © 2021 intocareer All rights reserved 好途网络科技（上海）有限公司 版权所有 沪ICP备2020029242号-2</a>
     </el-col>
-    <terms :isShow="isShow" @close="handleClose" :url="url" :isShowBtn="false" />
+    <terms :isShow="isShow" @close="handleClose" :url="url" :isShowBtn="false" :pageCount="pageCount" />
   </el-row>
 </template>
 
@@ -29,13 +29,14 @@ export default {
   data () {
     return {
       isShow: false,
+      pageCount: 1,
       url: '/pdf/cookies-terms.pdf',
       links: [
         { name: '咨询服务', path: '/service' },
         { name: '关于我们', path: '/about' },
         { name: '校园计划', path: '/plan' },
-        { name: 'IntoCareer Cookies政策', url: '/pdf/cookies-terms.pdf'},
-        { name: 'IntoCareer 隐私政策', url: '/pdf/IntoCareer 隐私政策.pdf'},
+        { name: 'IntoCareer Cookies政策', url: '/pdf/cookies-terms.pdf', pageCount: 1},
+        { name: 'IntoCareer 隐私政策', url: '/pdf/IntoCareer 隐私政策.pdf', pageCount: 17},
       ],
       icons: [
         { code: 'iconfont iconweixin' },
@@ -57,6 +58,7 @@ export default {
       if (item.url) {
         this.isShow = true
         this.url = item.url
+        this.pageCount = item.pageCount
       } else {
         this.linkTo(item.path)
       }
