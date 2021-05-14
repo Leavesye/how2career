@@ -18,13 +18,13 @@
           <el-image v-if="isFillResume && !isFinishReview && !isGoSign"
                     class="status-img"
                     :src="certApply"></el-image>
-          <div class="step-review" @click="showTerms"
+          <div class="step-review"
                v-if="isFillResume && !isFinishReview && !isGoSign">
             <p>审核中</p>
             <p>你也可以设置服务时间</p>
           </div>
           <!-- 劳务合同签署 -->
-          <div class="step-btn" style="width: 230px" v-if="isGoSign"
+          <div class="step-btn" style="width: 230px" v-if="isGoSign" 
                @click="handleOpenWindow">点击进行劳务合同签署</div>
           <!-- 审核完成 -->
           <el-image v-if="isFinishReview"
@@ -233,12 +233,10 @@ export default {
     l.close()
   },
   methods: {
-    showTerms() {
-      this.isShowTerms = true
-      this.url = "/html/manage-consultant.html"
-      this.pageCount = 9
-    },
     handleCloseTerms(isAgree, isClose) {
+      if (isAgree && this.url == '/html/err-manage-consultant.html' ) {
+        window.open(this.signUrl, '_blank')
+      }
       if ((this.url == '/html/err-manage-consultant.html' || !isAgree) || isClose) {
         this.isShowTerms = false
       } else if (this.url == '/html/manage-consultant.html' && isAgree) {
@@ -247,7 +245,8 @@ export default {
       }
     },
     handleOpenWindow() {
-      window.open(this.signUrl, '_blank')
+      this.isShowTerms = true
+      this.url = "/html/manage-consultant.html"
     },
     async handleOpenDetail(order){
       const res = await getDicts()

@@ -2,8 +2,7 @@
 <el-dialog
   :visible.sync="isShow"
   :before-close="handleClose"
-  width="60%"
-  custom-class="terms-zindex"
+  width="970px"
   center>
   <section class="modal-main" ref="main">
     <!-- <pdf 
