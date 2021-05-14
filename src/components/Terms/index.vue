@@ -6,13 +6,15 @@
   custom-class="terms-zindex"
   center>
   <section class="modal-main" ref="main">
-    <pdf 
+    <!-- <pdf 
       ref="pdf"
       :src="url"
       v-for="i in pageCount"
 			:key="i"
+      :page="i"
     >
-    </pdf>
+    </pdf> -->
+    <iframe class="ife" :src="url" />
   </section>
   <div class="flex-hb" v-show="isShowBtn">
      <el-checkbox v-model="checked">我已阅读条款</el-checkbox>
@@ -79,6 +81,11 @@ export default {
   font-size: 14px;
   color: #7C8EA5;
   margin-bottom: 50px;
+  height: 500px;
 }
-
+.ife {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
 </style>

@@ -56,7 +56,7 @@
     <pay :isShow="isShowPay"
          @close="handleClosePay"
          @confirm="handleConfirmPay" :payInfo="payInfo"></pay>
-    <terms :isShow="isShowTerms" @close="handleCloseTerms" url="/pdf/IntoCareer异常流程管理条例-客户.pdf" :isShowBtn="false" />
+    <terms :isShow="isShowTerms" @close="handleCloseTerms" url="/html/err-manage.html" :isShowBtn="false" />
   </div>
 </template>
 

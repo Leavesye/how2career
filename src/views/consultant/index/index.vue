@@ -235,14 +235,14 @@ export default {
   methods: {
     showTerms() {
       this.isShowTerms = true
-      this.url = "/pdf/IntoCareer 咨询师管理条例.pdf"
+      this.url = "/html/manage-consultant.html"
       this.pageCount = 9
     },
     handleCloseTerms(isAgree, isClose) {
-      if ((this.url == '/pdf/IntoCareer 异常流程管理条例 - 咨询师.pdf' || !isAgree) || isClose) {
+      if ((this.url == '/html/err-manage-consultant.html' || !isAgree) || isClose) {
         this.isShowTerms = false
-      } else if (this.url == '/pdf/IntoCareer 咨询师管理条例.pdf' && isAgree) {
-        this.url = '/pdf/IntoCareer 异常流程管理条例 - 咨询师.pdf'
+      } else if (this.url == '/html/manage-consultant.html' && isAgree) {
+        this.url = '/html/err-manage-consultant.html'
         this.pageCount = 3
       }
     },

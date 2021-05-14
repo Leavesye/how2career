@@ -35,8 +35,8 @@ export default {
         { name: '咨询服务', path: '/service' },
         { name: '关于我们', path: '/about' },
         { name: '校园计划', path: '/plan' },
-        { name: 'IntoCareer Cookies政策', url: '/pdf/cookies-terms.pdf', pageCount: 1},
-        { name: 'IntoCareer 隐私政策', url: '/pdf/IntoCareer 隐私政策.pdf', pageCount: 17},
+        { name: 'IntoCareer Cookies政策', url: '/html/cookies.html', pageCount: 1},
+        { name: 'IntoCareer 隐私政策', url: '/html/yinsi.html', pageCount: 17},
       ],
       icons: [
         { code: 'iconfont iconweixin' },

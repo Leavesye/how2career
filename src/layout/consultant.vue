@@ -44,8 +44,8 @@ export default {
         },
         {
           name: '平台条款', icon: 'icontiaokuan', children: [
-            { name: '咨询师管理条例', url: '/pdf/IntoCareer 咨询师管理条例.pdf', pageCount: 9 },
-            { name: '异常流程管理条例', url: '/pdf/IntoCareer 异常流程管理条例 - 咨询师.pdf', pageCount: 3 },
+            { name: '咨询师管理条例', url: '/html/manage-consultant.html', pageCount: 9 },
+            { name: '异常流程管理条例', url: '/html/err-manage-consultant.html', pageCount: 3 },
           ]
         },
       ]

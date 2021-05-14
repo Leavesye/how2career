@@ -77,7 +77,7 @@
                  @click="handleLink">{{pageType==2? '登录已有账号': '注册'}}</el-link>
       </div>
     </section>
-    <terms :isShow="isShowTerms" @close="handleCloseTerms" url="/pdf/IntoCareer 隐私政策.pdf" :isShowBtn="false" :pageCount="17" />
+    <terms :isShow="isShowTerms" @close="handleCloseTerms" url="/html/yinsi.html" :isShowBtn="false" :pageCount="17" />
   </el-dialog>
 </template>
 
@@ -120,7 +120,7 @@ export default {
       },
       rules: {
         userName: [r.required(), r.mobile()],
-        passWord: [r.required(), r.psd()],
+        passWord: [r.required()],
         vCode: [r.required()],
       }
     }
@@ -149,6 +149,7 @@ export default {
     handleLink () {
       this.pageType = this.pageType == 1 ? 2 : 1
       this.tabs = tabsCfg[this.pageType]
+      this.$refs.form.resetFields()
     },
     handleTabClick (item, index) {
       this.curTab = index
