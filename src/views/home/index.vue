@@ -5,7 +5,7 @@
       <top-navbar :isBlack="false" :refer="refer" :sales="sales" :sign="sign" />
     </div>
     <section class="home-top">
-      <img class="top-img" :src="top" alt="" />
+      <!-- <img class="top-img" :src="top" alt="" /> -->
       <div class="inner-home">
         <div class="content">
           <p>你和职场，</p>
@@ -277,10 +277,10 @@ export default {
 .home-top {
   position: relative;
   height: 500px;
-  // background-image: url(../../assets/home-top.jpg);
-  // background-repeat: no-repeat;
-  // background-position: center;
-  // background-size: 1920px 500px;
+  background-image: url(../../assets/home-top.jpg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 1920px 500px;
   padding: 1px;
   min-width: 1180px;
 }
