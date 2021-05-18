@@ -91,12 +91,12 @@ export default {
 }
 .about-banner {
   min-width: 1180px;
-  height: 380px;
-  background-image: url(../../assets/school.png);
+  height: 440px;
+  background-image: url(../../assets/school-i.png);
   background-repeat: no-repeat;
   background-position: center top;
   background-size: cover;
-  line-height: 380px;
+  line-height: 440px;
   text-align: center;
   font-size: 40px;
   font-weight: 600;

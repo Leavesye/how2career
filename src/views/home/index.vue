@@ -439,7 +439,7 @@ export default {
   background-image: url(../../assets/home-bottom.jpg);
   background-repeat: no-repeat;
   background-position: center top;
-  background-size: cover;
+  background-size: 1920px 600px;
   padding: 1px;
 }
 .consultants-part {
