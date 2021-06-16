@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: 'intocareer',
+  title: 'IntoCareer职前咨询平台',
 
   /**
    * @type {boolean} true | false

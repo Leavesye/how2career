@@ -53,7 +53,7 @@ import TopNavbar from "@/components/TopNavbar";
 
 export default {
   metaInfo: {
-    title: 'IntoCareerTM职前咨询平台',
+    title: 'IntoCareer职前咨询平台',
     meta: [
       {
         name: 'keywords',
@@ -61,7 +61,7 @@ export default {
       },
       {
         name: 'description',
-        content: 'IntoCareerTM职前咨询平台'
+        content: 'IntoCareer职前咨询平台'
       }
     ]
   },
