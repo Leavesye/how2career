@@ -8,5 +8,13 @@ export function getAlipayUrl(params) {
     params
   })
 }
+// 获取微信支付url
+export function getWechatUrl(params) {
+  return request({
+    url: '/order/platform/orders/payment/wechat/payUrl',
+    method: 'get',
+    params
+  })
+}
 
 

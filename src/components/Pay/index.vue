@@ -5,6 +5,7 @@
              width="430px"
              center>
     <confirm-modal :isShow="isShowInner" @close="handleCloseConfirm" @finish="handleFinish" @pay="handlePay"></confirm-modal>
+    <wechat-pay :isShow="isShowWechatpay" :url="wechatPayUrl" @close="handleCloseWechatPay"></wechat-pay>
     <slot></slot>
     <section class="modal-main">
       <ul class="flex-hb pay-list">
@@ -31,18 +32,21 @@
 </template>
 <script>
 import { mapGetters }from 'vuex'
-import { getAlipayUrl } from '@/api/pay'
+import { getAlipayUrl, getWechatUrl } from '@/api/pay'
 import { getPayStatus } from '@/api/order'
 import ConfirmModal from './modal/confirm'
+import WechatPay from './modal/wechat-pay'
 
 export default {
   name: 'pays',
   props: ['isShow', 'payInfo'],
-  components:{ ConfirmModal },
+  components:{ ConfirmModal, WechatPay },
   data () {
     return {
       curPay: '',
       isShowInner: false,
+      isShowWechatpay: false,
+      wechatPayUrl: '',
       pays: [
         { type: 'wechat', img: require('@/assets/weixin.png') },
         { type: 'alipay', img: require('@/assets/zhifubao.png') },
@@ -68,18 +72,23 @@ export default {
           this.alipayReturnUrl = res.msg.payUrl
           this.serialNumber = res.msg.serialNumber
         }
-      }
-    },
-    toPay () {
-      // 支付宝支付
-      if (this.curPay.type == 'alipay') {
-        window.open(this.alipayReturnUrl, '_blank')
+      } else if (item.type == 'wechat') {
+        const res = await getWechatUrl(this.payInfo)
+        if (res.result) {
+          console.log(decodeURIComponent(res.msg.payUrl))
+          this.wechatPayUrl = res.msg.payUrl
+          this.serialNumber = res.msg.serialNumber
+        }
       }
     },
     handleConfirm () {
-      // 跳转支付
-      this.toPay()
-      this.isShowInner = true
+      // 支付宝支付
+      if (this.curPay.type == 'alipay') {
+        window.open(this.alipayReturnUrl, '_blank')
+        this.isShowInner = true
+      } else if (this.curPay.type == 'wechat') {// 微信支付
+        this.isShowWechatpay = true
+      }
     },
     // 点击已完成支付
     async handleFinish() {
@@ -102,6 +111,9 @@ export default {
     },
     handleCloseConfirm () {
       this.isShowInner = false
+    },
+    handleCloseWechatPay () {
+      this.isShowWechatpay = false
     },
     handleClose () {
       this.$emit('close')
