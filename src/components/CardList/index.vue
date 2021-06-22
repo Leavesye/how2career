@@ -15,9 +15,9 @@
             <div style="margin-left: 4px">{{item.evaluationCount || 0}}</div>
           </h1>
           <div>
-            <el-button plain v-if="item.btnBook"
+            <el-button plain v-if="item.btnBook" size="mini"
                       @click="handleClick(item.btnBook.cb)">{{item.btnBook.name}}</el-button>
-            <el-button plain style="margin-left:10px"
+            <el-button plain style="margin-left: 10px;width: 70px;padding: 7px 10px" size="mini"
                       @click="handleClick(item.btn.cb)">{{item.btn.name}}</el-button>
           </div>
         </div>

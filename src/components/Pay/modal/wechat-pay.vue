@@ -1,18 +1,18 @@
 <template>
 <el-dialog
+  custom-class="wechatpay-dialog"
   title="微信扫码支付"
   :visible.sync="isShow"
   :before-close="handleClose"
   append-to-body
-  width="400px"
+  width="300px"
   center>
   <section class="modal-main">
-    <div class="qrcode" ref="qrCodeUrl"></div>
+    <div class="qrcode-box flex-cc">
+      <div class="qrcode" ref="qrCodeUrl"></div>
+    </div>
+    <p class="tips">完成支付后请关闭此弹框</p>
   </section>
-  <!-- <span slot="footer" class="dialog-footer">
-    <el-button :type="user.role=='consultant'? 'primary': 'success'" @click="handlePay">立即支付</el-button>
-    <el-button plain @click="handleFinish">已完成支付</el-button>
-  </span> -->
 </el-dialog>
 </template>
 
@@ -36,7 +36,6 @@ export default {
         return false
       }
       if (n) {
-        console.log(n, 6666, this.url)
         this.$nextTick(() => {
           let q = new QRCode(this.$refs.qrCodeUrl, {
             text: this.url,
@@ -57,6 +56,15 @@ export default {
 };
 </script>
 
+<style>
+.wechatpay-dialog {
+  background: #2a8f3f;
+}
+.wechatpay-dialog .el-dialog__title,
+.wechatpay-dialog .el-dialog__close {
+  color: #fff;
+}
+</style>
 <style lang="scss" scoped>
 .modal-main  {
   font-size: 14px;
@@ -64,9 +72,21 @@ export default {
   text-align: center;
   line-height: 20px;
 }
+.qrcode-box {
+  width: 210px;
+  height: 210px;
+  background: #fff;
+  margin: 0 auto;
+}
 .qrcode {
   width: 200px;
   height: 200px;
   margin: 0 auto;
+}
+.tips {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 14px;
+  color: #fff;
 }
 </style>

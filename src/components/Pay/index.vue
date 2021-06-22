@@ -8,7 +8,7 @@
     <wechat-pay :isShow="isShowWechatpay" :url="wechatPayUrl" @close="handleCloseWechatPay"></wechat-pay>
     <slot></slot>
     <section class="modal-main">
-      <ul class="flex-hb pay-list">
+      <ul class="flex-hc pay-list">
         <li class="flex-cc"
             :class="{active: curPay.type === item.type}"
             v-for="(item, i) in pays"
@@ -50,7 +50,7 @@ export default {
       pays: [
         { type: 'wechat', img: require('@/assets/weixin.png') },
         { type: 'alipay', img: require('@/assets/zhifubao.png') },
-        { type: 'paypal', img: require('@/assets/paypal.png') },
+        // { type: 'paypal', img: require('@/assets/paypal.png') },
       ]
     }
   },
@@ -81,13 +81,19 @@ export default {
         }
       }
     },
+    toAliPay() {
+      window.open(this.alipayReturnUrl, '_blank')
+      this.isShowInner = true
+    },
+    toWechatPay() {
+      this.isShowWechatpay = true
+    },
     handleConfirm () {
       // 支付宝支付
       if (this.curPay.type == 'alipay') {
-        window.open(this.alipayReturnUrl, '_blank')
-        this.isShowInner = true
+        this.toAliPay()
       } else if (this.curPay.type == 'wechat') {// 微信支付
-        this.isShowWechatpay = true
+        this.toWechatPay()
       }
     },
     // 点击已完成支付
@@ -107,13 +113,15 @@ export default {
     // 点击立即支付
     handlePay() {
       // 跳转支付
-      this.toPay()
+      this.handleConfirm()
     },
     handleCloseConfirm () {
       this.isShowInner = false
     },
     handleCloseWechatPay () {
       this.isShowWechatpay = false
+      // 弹出确认是否支付完成
+      this.isShowInner = true
     },
     handleClose () {
       this.$emit('close')
