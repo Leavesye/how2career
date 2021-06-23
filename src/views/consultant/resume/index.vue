@@ -206,9 +206,9 @@ export default {
       skills: [],
       isShow: false,
       labelWidth: '140px',
-      education: [eduForm],
-      workExperience: [expForm],
-      otherCertificates:[licenseForm],
+      education: [_.cloneDeep(eduForm)],
+      workExperience: [_.cloneDeep(expForm)],
+      otherCertificates: [_.cloneDeep(licenseForm)],
       socialEcurity: socialForm,
       // callup: callupForm
     }
@@ -273,7 +273,9 @@ export default {
         this.education[0].GPA.options = dicts.gpa
         this.education[0].degree.options = dicts.degrees
         this.workExperience[0].industry.options = dicts.industry
+        this.workExperience[0].company.options = dicts.company
         this.workExperience[0].companySize.options = dicts.companySize
+        this.workExperience[0].position.options = dicts.position
         this.education[0] = this.bindThis(this.education[0], 0)
         this.workExperience[0] = this.bindThis(this.workExperience[0], 0)
         this.otherCertificates[0] = this.bindThis(this.otherCertificates[0], 0)
