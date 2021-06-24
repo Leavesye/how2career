@@ -11,6 +11,22 @@ export function sendCode(data) {
     data
   })
 }
+// 密码重置验证码
+export function sendResetCode(data) {
+  return request({
+    url: '/user/platform/mobile/vCode/reset',
+    method: 'post',
+    data
+  })
+}
+// 密码重置
+export function resetPwd(data) {
+  return request({
+    url: '/user/platform/pwd/reset',
+    method: 'post',
+    data
+  })
+}
 // 验证手机
 export function checkUser(data) {
   return request({

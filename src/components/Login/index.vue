@@ -7,7 +7,8 @@
     <section class="modal-main">
       <el-image class="logo"
                 :src="logo"></el-image>
-      <ul class="flex tabs">
+      <div class="reset-title" v-if="pageType == 3">密码重置</div>
+      <ul class="flex tabs" v-else>
         <li class="tab"
             @click="handleTabClick(item, i)"
             :style="{color: curTab == i ? item.color : ''}"
@@ -43,7 +44,7 @@
                     v-model="info.passWord"
                     @keyup.enter.native="handleRegOrLogin"></el-input>
         </el-form-item>
-        <el-form-item v-if="pageType==2"
+        <el-form-item v-if="pageType==2 || pageType==3"
                       label=""
                       prop="vCode">
           <div class="flex-hb">
@@ -54,24 +55,33 @@
                       v-model="info.vCode"></el-input>
             <el-button class="send-code"
                        plain
-                       @click="handleSendCode">{{ seconds > 0 ? seconds + 's' : '获取验证码'}}</el-button>
+                       @click="handleSendCode()">{{ seconds > 0 ? seconds + 's' : '获取验证码'}}</el-button>
           </div>
         </el-form-item>
       </el-form>
       <div class="login-bottom">
-        <el-button class="reg-btn"
-                    size="large"
-                   :loading="isLoading"
-                   :type="curTab == 0? 'success' : 'primary'"
-                   @click="handleRegOrLogin">{{pageType==2? '注册': '登录'}}</el-button>
-        <div v-if="pageType==2" class="flex-hs" style="margin-top: 20px">
-          <el-checkbox v-model="isAgree">同意</el-checkbox>
-          <el-link  style="margin-left: 20px;"
-                 :type="curTab == 0? 'success' : 'primary'"
-                 @click="showTerms">网站隐私条款</el-link>
-        </div>
-        <p class="tips"
-           v-if="pageType==2">未注册手机验证后自动登录，注册即同意注册协议</p>
+        <el-row v-if="pageType==1">
+          <el-button plain style="width: 120px" size="large" round @click="toResetPwd">密码重置</el-button>
+          <el-button plain style="width: 120px" size="large" round :loading="isLoading" @click="handleRegOrLogin">登录</el-button>
+        </el-row>
+        <el-row v-if="pageType==2">
+          <el-button class="reg-btn"
+                      size="large"
+                    :loading="isLoading"
+                    :type="curTab == 0? 'success' : 'primary'"
+                    @click="handleRegOrLogin">注册</el-button>
+          <div class="flex-hs" style="margin-top: 20px">
+            <el-checkbox v-model="isAgree">同意</el-checkbox>
+            <el-link  style="margin-left: 20px;"
+                  :type="curTab == 0? 'success' : 'primary'"
+                  @click="showTerms">网站隐私条款</el-link>
+          </div>
+          <p class="tips">未注册手机验证后自动登录，注册即同意注册协议</p>
+        </el-row>
+        <el-row v-if="pageType==3">
+          <el-button plain style="width: 120px" size="large" round @click="handleCancelReset">取消</el-button>
+          <el-button plain style="width: 120px" size="large" round :loading="isLoading" @click="handleResetPwd()">确定</el-button>
+        </el-row>
         <el-link class="to-login"
                  :type="curTab == 0? 'success' : 'primary'"
                  @click="handleLink">{{pageType==2? '登录已有账号': '注册'}}</el-link>
@@ -82,7 +92,7 @@
 </template>
 
 <script>
-import { sendCode, checkUser } from '@/api/user'
+import { sendCode, checkUser, sendResetCode, resetPwd } from '@/api/user'
 import Terms from "@/components/Terms";
 
 const tabsCfg = {
@@ -137,6 +147,29 @@ export default {
     }
   },
   methods: {
+    handleCancelReset() {
+      this.pageType = 1
+      this.$refs.form.resetFields()
+    },
+    toResetPwd() {
+      this.pageType = 3
+    },
+    handleResetPwd() {
+      this.$refs.form.validate((valid) => {
+        if (valid) {
+          this.isLoading = true
+          resetPwd({
+            userName: this.info.userName,
+            vCode: this.info.vCode
+          }).then(res => {
+            this.isLoading = false
+            this.alert(res.msg)
+          }).catch(e => this.isLoading = false)
+        } else {
+          // this.alert('请填写正确的信息', 'error')
+        }
+      })
+    },
     handleCloseTerms() {
        this.isShowTerms = false
     },
@@ -163,7 +196,8 @@ export default {
       }
       this.$refs.form.validateField('userName', (errMsg) => {
         if (!errMsg) {
-          sendCode({ userName: this.info.userName }).then(res => {
+          const fn = this.pageType == 2 ? sendCode : sendResetCode
+          fn({ userName: this.info.userName }).then(res => {
             this.seconds = 60
             const sid = setInterval(() => {
               if (this.seconds == 0) {
@@ -344,5 +378,10 @@ export default {
 }
 .login-bottom {
   text-align: center;
+}
+.reset-title {
+  font-size: 20px;
+  text-align: center;
+  margin-bottom: 40px;
 }
 </style>
