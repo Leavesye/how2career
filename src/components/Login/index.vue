@@ -61,8 +61,8 @@
       </el-form>
       <div class="login-bottom">
         <el-row v-if="pageType==1">
-          <el-button plain style="width: 120px" size="large" round @click="toResetPwd">密码重置</el-button>
-          <el-button plain style="width: 120px" size="large" round :loading="isLoading" @click="handleRegOrLogin">登录</el-button>
+          <el-button :type="curTab == 0? 'success' : 'primary'" plain style="width: 120px" size="large" round @click="toResetPwd">密码重置</el-button>
+          <el-button :type="curTab == 0? 'success' : 'primary'" plain style="width: 120px" size="large" round :loading="isLoading" @click="handleRegOrLogin">登录</el-button>
         </el-row>
         <el-row v-if="pageType==2">
           <el-button class="reg-btn"
@@ -78,11 +78,11 @@
           </div>
           <p class="tips">未注册手机验证后自动登录，注册即同意注册协议</p>
         </el-row>
-        <el-row v-if="pageType==3">
-          <el-button plain style="width: 120px" size="large" round @click="handleCancelReset">取消</el-button>
-          <el-button plain style="width: 120px" size="large" round :loading="isLoading" @click="handleResetPwd()">确定</el-button>
+        <el-row v-if="pageType==3" style="padding-bottom: 80px">
+          <el-button :type="curTab == 0? 'success' : 'primary'"  plain style="width: 120px" size="large" round @click="handleCancelReset">取消</el-button>
+          <el-button :type="curTab == 0? 'success' : 'primary'"  plain style="width: 120px" size="large" round :loading="isLoading" @click="handleResetPwd()">确定</el-button>
         </el-row>
-        <el-link class="to-login"
+        <el-link class="to-login" v-if="pageType != 3"
                  :type="curTab == 0? 'success' : 'primary'"
                  @click="handleLink">{{pageType==2? '登录已有账号': '注册'}}</el-link>
       </div>
@@ -164,6 +164,8 @@ export default {
           }).then(res => {
             this.isLoading = false
             this.alert(res.msg)
+            this.pageType = 1
+            this.$refs.form.resetFields()
           }).catch(e => this.isLoading = false)
         } else {
           // this.alert('请填写正确的信息', 'error')
