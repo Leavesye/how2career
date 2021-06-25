@@ -175,6 +175,7 @@ const actions = {
     info.role && commit('SET_ROLE', info.role)
     info.completion && commit('SET_COMPLETION', info.completion)
     info.idCard && commit('SET_IDCARD', info.idCard)
+    info.status && commit('SET_STATUS', info.status)
   },
   setQyuser({ commit }, info) {
     info.sales && commit('SET_SALES', info.sales)

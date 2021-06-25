@@ -5,7 +5,7 @@
     <li v-for="(o, i) in menus" :key="i" @click="linkTo(o.path)">
       {{ o.name }}
     </li>
-    <li v-if="user.role" @click="linkTo(user.role=='consumer' ? '/consumer/index': 'consultant/index')">{{user.role=='consumer' ? '咨询者' : '咨询师'}}</li>
+    <li v-if="user.role" @click="linkTo(user.role=='consumer' ? '/consumer/index': 'consultant/index')">{{user.role=='consumer' ? '咨询者中心' : '咨询师中心'}}</li>
   </ul>
   <el-dropdown style="margin-top: 7px;cursor: pointer" v-if="user.nickName || user.sales" @visible-change="handleOnDropdownShow">
     <el-image class="avatar-img el-dropdown-link" :src="avatar"></el-image>

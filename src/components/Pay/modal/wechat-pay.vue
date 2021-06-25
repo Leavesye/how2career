@@ -37,13 +37,12 @@ export default {
       }
       if (n) {
         this.$nextTick(() => {
-          let q = new QRCode(this.$refs.qrCodeUrl, {
+          new QRCode(this.$refs.qrCodeUrl, {
             text: this.url,
             colorDark: '#000000',
             colorLight: '#ffffff',
             correctLevel: QRCode.CorrectLevel.H
           })
-          console.log(this.$refs.qrCodeUrl, 555)
         })
       }
     }

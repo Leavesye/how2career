@@ -153,7 +153,7 @@
     </section>
     <div class="flex-he"
          style="margin: 60px 60px 70px 0">
-      <el-button type="primary"
+      <el-button type="primary" v-if="bgStatus == '0' || bgStatus == '2'"
                  size="mini"
                  @click="handleSave(1)">保存并提交审核</el-button>
       <el-button size="mini"
@@ -200,6 +200,7 @@ export default {
   mixins: [mixin],
   data () {
     return {
+      bgStatus: '',
       lang: '',
       language: [],
       skill: '',
@@ -231,6 +232,7 @@ export default {
       // 简历信息
       const resume = res.msg.publicInfo.resume
       this.initPublicInfo = res.msg.publicInfo || {}
+      this.bgStatus = res.msg.backgroundVerifyStatus
       // 编辑
       if (resume) {
         const { socialInsuranceImage, gallupCertified, gallupCertifiedImage, language, skills } = resume
@@ -244,8 +246,10 @@ export default {
               Object.keys(copy).forEach(k => {
                 // 国家
                 if (k == 'country') {
+                  console.log(o[k], o, 9999)
                   // 联动学校处理
-                  copy.school.options = dicts.countries.find(f => f.value == o[k]).schools
+                  const find = dicts.countries.find(f => f.value == o[k])
+                  copy.school.options = find ? find.schools : []
                 }
                 // 联动设置
                 if (k in fieldCfg) {

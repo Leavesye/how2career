@@ -116,6 +116,10 @@ export default {
       return cfg[role]
     },
     createQrcode() {
+      // 防止重复生成二维码
+      if (this.q) {
+        return false
+      }
       const { refer, sales, userId, role } = this.user
       if (role == 'consumer' || sales) {
         let url = `${process.env.VUE_APP_HOST_NAME}/register/consumer?`
@@ -126,7 +130,7 @@ export default {
           query = `growth=${sales}`
         }
         url = `${url}${query}`
-        new QRCode(this.$refs.qrCodeUrl, {
+        this.q = new QRCode(this.$refs.qrCodeUrl, {
           text: url,
           colorDark: '#000000',
           colorLight: '#ffffff',

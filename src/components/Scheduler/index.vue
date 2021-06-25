@@ -100,7 +100,7 @@ export default {
         this.alert('该时间段已设置', 'warning')
         return false
       }
-      this.endTimePicker.value = new Date(moment(v.value).subtract(-90, 'minutes').valueOf())
+      this.endTimePicker.value = new Date(moment(v.value).subtract(-30, 'minutes').valueOf())
     },
     async onPopupOpen (args) {
       console.log(args, 'onPopupOpen')
@@ -116,7 +116,7 @@ export default {
           let startTime = new Date(moment(args.data.StartTime).startOf('day').subtract('-9', 'hours').valueOf())
           event = {
             startTime,
-            endTime: new Date(moment(startTime).subtract('-90', 'minutes').valueOf()),
+            endTime: new Date(moment(startTime).subtract('-30', 'minutes').valueOf()),
             isAllDay: false,
           }
         }
@@ -129,7 +129,7 @@ export default {
           this.startTimePicker = new DateTimePicker(
             {
               value: args.data.StartTime,
-              step: 90,// 间隔90分钟
+              step: 30,// 间隔30分钟
               allowEdit: false,// 禁用输入
               showClearButton: false,// 隐藏清空按钮
               change: this.handleStartChange
@@ -152,6 +152,10 @@ export default {
         console.log(scheduleObj, 'scheduleObj', scheduleObj.openEditor)
         let recurElement = args.element.querySelector('#RecurrenceEditor')
         if (!recurElement.classList.contains('e-recurrenceeditor')) {
+          this.$nextTick(() => {
+             let recurrenceEditorObj = args.element.querySelector('.e-recurrenceeditor').ej2_instances[0];
+             recurrenceEditorObj.frequencies = ['none', 'daily', 'weekly'];
+          })
           let recurrObject = new RecurrenceEditor({})
           recurrObject.appendTo(recurElement)
           scheduleObj.eventWindow.recurrenceEditor = recurrObject
@@ -326,6 +330,9 @@ export default {
   background-color: #fff;
 }
 .edit-row.el-row:first-child {
+  display: none;
+}
+.e-interval, .e-end-on {
   display: none;
 }
 </style>

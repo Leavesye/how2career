@@ -77,7 +77,7 @@ import Pannel from '@/components/Pannel'
 import Scheduler from '@/components/Scheduler'
 import PayModal from '@/components/Pay'
 import { getUserInfo } from '@/api/user'
-import { getSlots, closeSlot, getSlotPrice } from '@/api/consultant'
+import { getSlots, closeSlot, getSlotPrice, getSignStatus } from '@/api/consultant'
 
 export default {
   name: 'time-setting',
@@ -238,6 +238,9 @@ export default {
     }
   },
   async created () {
+    // 获取最新审核状态
+    let res = await getSignStatus()
+    this.$store.dispatch('user/setUser', { status: res.msg.backgroundVerifyStatus })
     // 处理带参跳转
     let status = this.$route.params.status
     this.selPannel = this.pannels.find(o => o.status == status)
