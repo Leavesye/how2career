@@ -139,6 +139,7 @@ const actions = {
     commit('SET_COMPLETION', '')
     commit('SET_AVATAR', '')
     commit('SET_USERID', '')
+    commit('SET_REFER', '')
     commit('SET_SALES', '')
     commit('SET_STATUS', '')
     commit('SET_ESIGN_URL', '')
@@ -154,7 +155,8 @@ const actions = {
     Cookies.remove('completion')
     Cookies.remove('sales')
     Cookies.remove('status')
-    Cookies.remove('SET_ESIGN_URL')
+    Cookies.remove('refer')
+    Cookies.remove('eSignUrl')
     location.href = '/'
   },
   // remove token
