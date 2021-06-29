@@ -31,11 +31,12 @@ export default {
   },
   watch: {
     isShow: function(n, o) {
-      // 防重复生成
+      // 防止重复生成
       if (this.$refs.qrCodeUrl) {
-        return false
+        this.$refs.qrCodeUrl.innerHTML = "";
       }
       if (n) {
+        console.log(this.url, 'fdfhdjfh')
         this.$nextTick(() => {
           new QRCode(this.$refs.qrCodeUrl, {
             text: this.url,

@@ -100,7 +100,7 @@ export default {
           this.$emit('end')
           // 隐藏进房间按钮
           this.$store.dispatch('room/setRoom', '')
-          this.alert(res.msg == 'orderExpire'?'咨询时间结束,请给此次服务评价':'咨询超过20分钟未开始,已自动取消', 'warning')
+          this.alert(res.msg == 'orderExpire'?'咨询服务已结束':'咨询超过20分钟未开始,已自动取消', 'warning')
           this.$router.push(this.user.role == 'consumer'?'/consumer/order/6': '/consultant/order/0,7,8')
         }
         // 对方是否在线
