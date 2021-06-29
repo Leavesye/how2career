@@ -20,7 +20,7 @@ export default {
     labelWidth: '0',
     props: {
       "value-format": 'timestamp',
-      placeholder: '有效日期'
+      placeholder: '获奖的日期'
     }
   },
   comments: {
@@ -31,7 +31,7 @@ export default {
     labelWidth: '0',
     rules: [r.maxLength(100)],
     props: {
-      placeholder: '请输入补充信息'
+      placeholder: '补充信息'
     }
   },
 }

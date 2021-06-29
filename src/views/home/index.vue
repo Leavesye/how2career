@@ -9,7 +9,7 @@
       <div class="inner-home">
         <div class="content">
           <p>你和职场，</p>
-          <p>只有一个intoCareer<sup>TM</sup>的距离</p>
+          <p>只有一个IntoCareer<sup>TM</sup>的距离</p>
           <div>两种1V1咨询服务，IntoCareer<sup>TM</sup> 帮你洞见真实职场，让信息差无处躲藏</div>
         </div>
         <div class="right-now">了解更多</div>

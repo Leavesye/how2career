@@ -45,7 +45,8 @@
         </div>
         <div class="flex-hec terms">
           <el-checkbox class="check-box"
-                       v-model="checked">我已阅读条款 点击 <el-link @click.stop="handleShowTerms" type="success">了解规则</el-link>
+                       v-model="checked">我已阅读条款 <el-link @click.stop="handleShowTerms('/html/err-manage.html')" type="success">异常流程管理条例</el-link> 和 
+                       <el-link @click.stop="handleShowTerms('/html/yinsi.html')" type="success">IntoCareer 隐私政策</el-link>  
           </el-checkbox>
           <el-button type="success"
                      @click="handleClickPay">确认付款</el-button>
@@ -56,7 +57,7 @@
     <pay :isShow="isShowPay"
          @close="handleClosePay"
          @confirm="handleConfirmPay" :payInfo="payInfo"></pay>
-    <terms :isShow="isShowTerms" @close="handleCloseTerms" url="/html/err-manage.html" :isShowBtn="false" />
+    <terms :isShow="isShowTerms" @close="handleCloseTerms" :url="filename" :isShowBtn="false" />
   </div>
 </template>
 
@@ -77,6 +78,7 @@ export default {
   },
   data () {
     return {
+      filename: '',
       isShowTerms: false,
       info: {},
       isShow: false,
@@ -117,8 +119,9 @@ export default {
     handleCloseTerms() {
        this.isShowTerms = false
     },
-    handleShowTerms() {
+    handleShowTerms(filename) {
        this.isShowTerms = true
+       this.filename = filename
     },
     handleDelTime(i) {
       if (this.info.times.length == 1) return false
