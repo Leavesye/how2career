@@ -15,4 +15,7 @@ export default {
 #app {
   background: #EDEEEF;
 }
+sup {
+  font-size: .6em;
+}
 </style>

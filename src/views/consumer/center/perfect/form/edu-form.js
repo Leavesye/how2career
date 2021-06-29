@@ -21,7 +21,10 @@ export default {
     value: '',
     label: '学校',
     rules: [r.required()],
-    props: { props: { label: 'text', value: 'value' } },
+    props: { 
+      props: { label: 'text', value: 'value' },
+      filterable: true,
+    },
     options: []
   },
   discipline: {
@@ -29,16 +32,17 @@ export default {
     value: '',
     label: '专业',
     rules: [r.required()],
-    props: { props: { label: 'text', value: 'value' } },
+    props: { 
+      props: { label: 'text', value: 'value' },
+      filterable: true,
+    },
     options: []
   },
   GPA: {
-    type: 'select',
     value: '',
     label: 'GPA',
-    props: { props: { label: 'text', value: 'value' } },
-    options: [],
     layout: { span: 14 },
+    rules: [r.float(2), r.range(0, 4, true)],
   },
   degree: {
     type: 'select',

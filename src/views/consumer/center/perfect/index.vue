@@ -6,99 +6,103 @@
     </div>
     <p class="form-title">其他学历信息</p>
     <section class="form-box">
-      <el-card class="form-card"
-               v-for="(o, i) in education"
-               :key="i">
-        <quick-form :model="o"
-                    :labelWidth="labelWidth"
-                    :ref="'education' + i"></quick-form>
-        <!-- 社团 -->
-        <student-org v-if="o.studentOrganization.value"
-                     :initData="oriEduData[i]||{}"
-                     :authorlevel="authorlevel"
-                     :studentOrganization="o.studentOrganization.value"
-                     :ref="'org' + i"></student-org>
-        <el-button class="del-btn"
-                   plain
-                   @click="handleDelEducation(i)"
-                   v-if="education.length > 1">删除</el-button>
-      </el-card>
-      <section class="flex-he">
-        <el-button class="add-btn"
-                   type="success"
-                   plain
-                   @click="handleAddEducation">+添加更多学历</el-button>
-      </section>
+      <el-checkbox style="margin-bottom: 20px;" v-model="noOtherEdu">无其他学历信息</el-checkbox>
+      <div v-if="!noOtherEdu">
+        <el-card class="form-card"
+                v-for="(o, i) in education"
+                :key="i">
+          <quick-form :model="o"
+                      :labelWidth="labelWidth"
+                      :ref="'education' + i"></quick-form>
+          <!-- 社团 -->
+          <student-org v-if="o.studentOrganization.value"
+                      :initData="oriEduData[i]||{}"
+                      :authorlevel="authorlevel"
+                      :studentOrganization="o.studentOrganization.value"
+                      :ref="'org' + i"></student-org>
+          <el-button class="del-btn"
+                    plain
+                    @click="handleDelEducation(i)"
+                    v-if="education.length > 1">删除</el-button>
+        </el-card>
+        <section class="flex-he">
+          <el-button class="add-btn"
+                    type="success"
+                    plain
+                    @click="handleAddEducation">+添加更多学历</el-button>
+        </section>
+      </div>
     </section>
     <p class="line"></p>
     <p class="form-title">社会实践经历</p>
     <section class="form-box">
-      <el-card class="form-card"
-               v-for="(experience, i) in workExperience"
-               :key="i">
-        <quick-form :model="experience"
-                    :labelWidth="labelWidth"
-                    :ref="'experience'+i"></quick-form>
-        <el-button class="del-btn"
-                   size="small"
-                   @click="handleDelExperience(i)"
-                   plain
-                   v-if="workExperience.length > 1">删除</el-button>
-      </el-card>
-      <section class="flex-he" style="margin-bottom: 30px">
-        <el-button class="add-btn"
-                   type="success"
-                   plain
-                   @click="handleAddExperience">+添加社会实践</el-button>
-      </section>
-    </section>
-    <div class="common-check">
-      <el-checkbox v-model="getRewarded" @change="handleRewardCheck">是否曾经获奖</el-checkbox>
-    </div>
-    <section class="form-box"
-             v-if="getRewarded">
-      <div class="form-div"
-           v-for="(reward, i) in rewards"
-           :key="i">
-        <quick-form :model="reward"
-                    :labelWidth="labelWidth"
-                    :ref="'reward'+i"></quick-form>
-        <div class="flex-he">
+      <el-checkbox style="margin-bottom: 20px;" v-model="noExp">无社会实践经历</el-checkbox>
+      <template v-if="!noExp">
+        <el-card class="form-card"
+                v-for="(experience, i) in workExperience"
+                :key="i">
+          <quick-form :model="experience"
+                      :labelWidth="labelWidth"
+                      :ref="'experience'+i"></quick-form>
           <el-button class="del-btn"
-                     @click="handleDelReward(i)"
-                     plain>删除</el-button>
-        </div>
-      </div>
-      <section class="flex-he" style="margin-bottom: 30px">
-        <el-button class="add-btn"
-                   type="success"
-                   plain
-                   @click="handleAddReward">+添加更多奖项</el-button>
-      </section>
+                    size="small"
+                    @click="handleDelExperience(i)"
+                    plain
+                    v-if="workExperience.length > 1">删除</el-button>
+        </el-card>
+        <section class="flex-he" style="margin-bottom: 30px">
+          <el-button class="add-btn"
+                    type="success"
+                    plain
+                    @click="handleAddExperience">+添加社会实践</el-button>
+        </section>
+      </template>
     </section>
-    <div class="common-check">
-      <el-checkbox v-model="hasCertificates" @change="handleCertCheck">是否有执照或者证书</el-checkbox>
-    </div>
-    <section class="form-box"
-             v-if="hasCertificates">
-      <div class="form-div"
-           v-for="(license, i) in otherCertificates"
-           :key="i">
-        <quick-form :model="license"
-                    :labelWidth="labelWidth"
-                    :ref="'license'+i"></quick-form>
-        <div class="flex-he">
-          <el-button class="del-btn"
-                     @click="handleDelLicense(i)"
-                     plain>删除</el-button>
+    <section class="form-box">
+      <el-checkbox style="margin-bottom: 20px;" v-model="getRewarded" @change="handleRewardCheck">是否曾经获奖</el-checkbox>
+      <template v-if="getRewarded">
+        <div class="form-div"
+            v-for="(reward, i) in rewards"
+            :key="i">
+          <quick-form :model="reward"
+                      :labelWidth="labelWidth"
+                      :ref="'reward'+i"></quick-form>
+          <div class="flex-he">
+            <el-button class="del-btn"
+                      @click="handleDelReward(i)"
+                      plain>删除</el-button>
+          </div>
         </div>
-      </div>
-      <section class="flex-he">
-        <el-button class="add-btn"
-                   type="success"
-                   plain
-                   @click="handleAddLicense">+添加更多执照</el-button>
-      </section>
+        <section class="flex-he" style="margin-bottom: 30px">
+          <el-button class="add-btn"
+                    type="success"
+                    plain
+                    @click="handleAddReward">+添加更多奖项</el-button>
+        </section>
+      </template>
+    </section>
+    <section class="form-box">
+      <el-checkbox style="margin-bottom: 20px;" v-model="hasCertificates" @change="handleCertCheck">是否有执照或者证书</el-checkbox>
+      <template v-if="hasCertificates">
+        <div class="form-div"
+            v-for="(license, i) in otherCertificates"
+            :key="i">
+          <quick-form :model="license"
+                      :labelWidth="labelWidth"
+                      :ref="'license'+i"></quick-form>
+          <div class="flex-he">
+            <el-button class="del-btn"
+                      @click="handleDelLicense(i)"
+                      plain>删除</el-button>
+          </div>
+        </div>
+        <section class="flex-he">
+          <el-button class="add-btn"
+                    type="success"
+                    plain
+                    @click="handleAddLicense">+添加更多执照</el-button>
+        </section>
+      </template>
     </section>
     <p class="line"></p>
     <!-- 添加语言 -->
@@ -197,6 +201,8 @@ export default {
   mixins: [mixin],
   data () {
     return {
+      noOtherEdu: true,
+      noExp: true,
       hasCertificates: false,
       getRewarded: false,
       lang: '',
@@ -411,35 +417,42 @@ export default {
       }
     },
     async handleSave (type) {
-      // 社团校验
+      // 无其他学历信息不做校验
       let eduv = []
       let expv = []
       let prjv = []
       let artv = []
-      eduv = this.education.map((o, i) => {
-        if (this.education[i].studentOrganization.value) {
-          let org = this.$refs['org' + i][0]
-          org.exps = org.exps || []
-          expv = org.exps.map((v, i) => {
-            const ref = org.$refs['exp' + i]
-            let p = ref ? ref[0].validate() : Promise.resolve(true)
-            return p
-          })
-          org.projects = org.projects || []
-          prjv = org.projects.map((v, i) => {
-            const ref = org.$refs['project' + i]
-            let p = ref ? ref[0].validate() : Promise.resolve(true)
-            return p
-          })
-          org.articles = org.articles || []
-          artv = org.articles.map((v, i) => {
-            const ref = org.$refs['article' + i]
-            let p = ref ? ref[0].validate() : Promise.resolve(true)
-            return p
-          })
-        }
-        return this.$refs['education' + i][0].validate()
-      })
+      if (!this.noOtherEdu) {
+        // 社团校验
+        eduv = this.education.map((o, i) => {
+          if (this.education[i].studentOrganization.value) {
+            let org = this.$refs['org' + i][0]
+            org.exps = org.exps || []
+            expv = org.exps.map((v, i) => {
+              const ref = org.$refs['exp' + i]
+              let p = ref ? ref[0].validate() : Promise.resolve(true)
+              return p
+            })
+            org.projects = org.projects || []
+            prjv = org.projects.map((v, i) => {
+              const ref = org.$refs['project' + i]
+              let p = ref ? ref[0].validate() : Promise.resolve(true)
+              return p
+            })
+            org.articles = org.articles || []
+            artv = org.articles.map((v, i) => {
+              const ref = org.$refs['article' + i]
+              let p = ref ? ref[0].validate() : Promise.resolve(true)
+              return p
+            })
+          }
+          return this.$refs['education' + i][0].validate()
+        })
+      }
+      let workExperienceV = []
+      if (!this.noExp) {
+        workExperienceV = this.workExperience.map((o, i) => this.$refs['experience' + i][0].validate())
+      }
       // 表单校验
       let isValid = true
       let certV = this.hasCertificates ? this.otherCertificates.map((o, i) => this.$refs['license' + i][0].validate()):[]
@@ -449,12 +462,12 @@ export default {
         ...expv,
         ...prjv,
         ...artv,
-        ...this.workExperience.map((o, i) => this.$refs['experience' + i][0].validate()),
+        ...workExperienceV,
         ...certV,
         ...rewardV,
       ]).catch(e => isValid = false)
       if (isValid) {
-        const education = this.education.map((o, i) => {
+        const education = this.noOtherEdu ? [] : this.education.map((o, i) => {
           let main = this.$refs['education' + i][0].getFormData()
           if (main.studentOrganization) {
             const org = this.$refs['org' + i][0]
@@ -489,11 +502,12 @@ export default {
           return main
         })
         // 组装数据
+        let workExperience = this.noExp ? [] : this.workExperience.map((o, i) => this.$refs['experience' + i][0].getFormData())
         let certificatesHistory = this.hasCertificates ? this.otherCertificates.map((o, i) => this.$refs['license' + i][0].getFormData()):[]
         let rewardHistory = this.getRewarded ? this.rewards.map((o, i) => this.$refs['reward' + i][0].getFormData()):[]
         const formData = {
           education,
-          workExperience: this.workExperience.map((o, i) => this.$refs['experience' + i][0].getFormData()),
+          workExperience,
           other: {
             hasCertificates: this.hasCertificates,
             certificatesHistory,
@@ -529,7 +543,7 @@ export default {
   font-weight: 600;
   color: #36ae82;
   margin-right: 30px;
-  width: 120px;
+  width: 140px;
 }
 .page-title > p {
   font-size: 14px;
