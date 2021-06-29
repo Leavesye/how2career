@@ -65,7 +65,7 @@ export default {
       eventSettings: {
         dataSource: this.events,
         fields: {
-          // subject: { name: 'Subject', default: '咨询可预约时间' },
+          subject: { name: 'Subject', default: 'Slot' },
           startTime: { name: 'StartTime', validation: { required: [true, '请选择开始时间'] } },
         },
       },
