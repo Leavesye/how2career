@@ -36,7 +36,6 @@ export default {
         this.$refs.qrCodeUrl.innerHTML = "";
       }
       if (n) {
-        console.log(this.url, 'fdfhdjfh')
         this.$nextTick(() => {
           new QRCode(this.$refs.qrCodeUrl, {
             text: this.url,
