@@ -38,7 +38,8 @@
         </p>
         <p class="flex">
           <i class="iconfont iconweixin2"></i>
-          <span>微信公众号：XXXXXX</span>
+          <span style="width: 110px">微信公众号：</span>
+          <img :src="wxgzhImg" style="width: 200px; height: 200px;" />
         </p>
       </div>
     </section>
@@ -68,6 +69,11 @@ export default {
   components: {
     FootBar,
     TopNavbar,
+  },
+  computed: {
+    wxgzhImg: function() {
+      return require('@/assets/wxgzh.jpg')
+    }
   },
   data() {
     return {
