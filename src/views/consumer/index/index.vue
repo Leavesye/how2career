@@ -46,8 +46,8 @@
       <el-card v-else style="margin-bottom: 20px">
         <p class="no-data">暂无数据</p>
       </el-card>
-      <p class="title" style="margin-top: 0">更多职业选择</p>
-      <career-list></career-list>
+      <!-- <p class="title" style="margin-top: 0">更多职业选择</p>
+      <career-list></career-list> -->
     </div>
     <detail-modal :isShow="isShow" :order="order" @close="handleClose"></detail-modal>
   </section>

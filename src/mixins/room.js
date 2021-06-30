@@ -34,7 +34,7 @@ export default {
     },
     //加入房间
     joinRoom (client, roomId, userId) {
-      client.join({ roomId })
+      client.join({ roomId: parseInt(roomId) })
         .catch(error => {
           console.error('进房失败 ' + error);
         })

@@ -107,7 +107,8 @@ export default {
         const {basic: { highestEducation: { country }}, account } = res.msg
         this.account = account
         if (country) {
-          this.education.school.options = dicts.countries.find(o => o.value == country).schools
+          const f = dicts.countries.find(o => o.value == country)
+          this.education.school.options = f ? f.schools : []
         }
         adapter.unBoxing(res.msg, this._data)
       }
