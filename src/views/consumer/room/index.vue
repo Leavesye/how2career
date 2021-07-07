@@ -151,7 +151,7 @@ export default {
       const { consultant: { avatar, name, _id }, consumer, startTime, question, roomId, slotId } = res[0].msg
       const { countries, majors, degrees, industry: industrys, gender: genders, company: companys, position: positions } = res[1].msg
       // 初始化语音聊天
-      this.roomInfo = { roomId, userId: consumer, sign: res[2].msg, orderId: this.orderId }
+      this.roomInfo = { roomId, userId: consumer, sign: res[2].msg, oriOrderId: this.orderId, orderId: `${this.orderId}_1`, consultantId: _id, isConsumer: true }
       // 查询咨询师公共信息
       const ret = await getPublicInfo({ userId: _id }).catch(e => l.close())
       if (ret.result) {

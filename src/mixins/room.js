@@ -44,6 +44,12 @@ export default {
           this.createStream(userId)
           //播放远端流
           this.playStream(this.client)
+          // 咨询者端开启混流
+          if (this.roomInfo.isConsumer) {
+            setTimeout(() => {
+              this.startMixTranscode()
+            }, 1000)
+          }
       });
     },
     
@@ -109,7 +115,34 @@ export default {
         })
       });
     },
-
+    // 启用混合流模式
+    async startMixTranscode() {
+      // 全手动模式 自 v4.8.0 版本开始支持
+      try {
+        const config = {
+          mode: 'manual',
+          streamId: this.roomInfo.oriOrderId,
+          videoBitrate: 1500,
+          mixUsers: [
+            {
+              userId: this.roomInfo.userId,
+              pureAudio: true,
+              streamType: 'main', // 指明该配置为远端主流
+              zOrder: 1
+            },
+            {
+              userId: this.roomInfo.consultantId,
+              pureAudio: true,
+              streamType: 'auxiliary', // 指明该配置为远端辅流
+              zOrder: 1
+            },
+          ]
+        }
+        await this.client.startMixTranscode(config);
+      } catch (error) {
+        console.error('startMixTranscode failed: ', error);
+      }
+    },
     //退出音视频
     leaveRoom () {
       this.client

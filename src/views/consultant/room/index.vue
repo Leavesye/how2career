@@ -230,7 +230,7 @@ export default {
     if (res[1].result) {
       // 订单信息
       const { slotId, roomId, consultant: { _id, }, consumer, consumerAvatar: avatar, consumerNickName: name, startTime, question } = res[1].msg
-      this.roomInfo = { roomId, userId: _id, sign: res[3].msg, orderId }
+      this.roomInfo = { roomId, userId: _id, sign: res[3].msg, orderId: `${orderId}_2` }
       if (res[2].result) {
         const { countries, majors, degrees, gender: genders, industry: industrys, workCategory } = res[0].msg
         // 咨询者信息
