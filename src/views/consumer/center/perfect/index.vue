@@ -294,10 +294,13 @@ export default {
   methods: {
     // 国家联动学校
     handleCountryChange (z, i, h) {
-      const f = dicts.countries.find(o => o.value == h)
-      console.log(z, i, h, dicts.countries)
-      this.education[i].school.options = f.schools
-      // this.education[i].school.options = []
+      if (h) {
+        const f = dicts.countries.find(o => o.value == h)
+        console.log(z, i, h, dicts.countries)
+        this.education[i].school.options = f.schools
+      } else {
+        this.education[i].school.options = []
+      }
       this.education[i].school.value = ''
       // if (v) {
       //   const f = dicts.countries.find(o => o.value == v)
