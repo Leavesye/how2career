@@ -11,8 +11,8 @@ export default {
     props: { props: { label: 'text', value: 'value' } },
     options: [],
     events: {
-      change: function (i, v) {
-        this.handleCountryChange(i, v)
+      change: function (i, v, h) {
+        this.handleCountryChange(i, v, h)
       }
     }
   },

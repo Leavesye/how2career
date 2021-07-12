@@ -240,6 +240,8 @@ export default {
         const { education, workExperience,other: { language, skills,
         certificatesHistory: otherCertificates, rewardHistory: rewards,
         getRewarded, hasCertificates } } = resume
+        this.noOtherEdu = !(education && education.length)
+        this.noExp = !(workExperience && workExperience.length)
         this.oriEduData = education
         this.getRewarded = getRewarded
         this.hasCertificates = hasCertificates
@@ -270,6 +272,13 @@ export default {
             })
           }
         })
+        // if (education && education.length == 0) {
+        //   this.education.push(this.bindThis(_.cloneDeep(eduForm), 0))
+        //   console.log(this.education, 8888)
+        // }
+        // if (workExperience && workExperience.length == 0) {
+        //   this.workExperience.push(this.bindThis(_.cloneDeep(expForm), 0))
+        // }
         this.language = language
         this.skills = skills
       } else { // 新增
@@ -284,14 +293,20 @@ export default {
   },
   methods: {
     // 国家联动学校
-    handleCountryChange (i, v) {
-      if (v) {
-        const f = dicts.countries.find(o => o.value == v)
-        this.education[i].school.options = f.schools
-      } else {
-        this.education[i].school.options = []
-      }
+    handleCountryChange (z, i, h) {
+      const f = dicts.countries.find(o => o.value == h)
+      console.log(z, i, h, dicts.countries)
+      this.education[i].school.options = f.schools
+      // this.education[i].school.options = []
       this.education[i].school.value = ''
+      // if (v) {
+      //   const f = dicts.countries.find(o => o.value == v)
+      //   console.log(i, v, h, dicts.countries)
+      //   this.education[i].school.options = f.schools
+      // } else {
+      //   this.education[i].school.options = []
+      // }
+      // this.education[i].school.value = ''
     },
     // 表单联动操作
     handleCheckboxChange (type, index, v) {

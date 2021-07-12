@@ -192,7 +192,7 @@ export default {
         avatarImg = process.env.VUE_APP_HOST_NAME + this.baseInfo.avatarImage.value
       }
       return (
-        <el-Image style="border-radius: 50%;width: 90px; height: 90px;overflow: hidden" src={avatarImg || defaultImg}></el-Image>
+        <el-Image fit={'cover'} style="border-radius: 50%;width: 90px; height: 90px;overflow: hidden" src={avatarImg || defaultImg}></el-Image>
       )
     },
     checkFile(file) {
