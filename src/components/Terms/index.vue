@@ -7,8 +7,8 @@
   <section class="modal-main" ref="main">
     <!-- <pdf 
       ref="pdf"
-      :src="url"
-      v-for="i in pageCount"
+      src="/pdf/1.pdf"
+      v-for="i in 10"
 			:key="i"
       :page="i"
     >

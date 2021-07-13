@@ -12,7 +12,7 @@
           <p>只有一个IntoCareer<sup>TM</sup>的距离</p>
           <div>两种1V1咨询服务，IntoCareer<sup>TM</sup> 帮你洞见真实职场，让信息差无处躲藏</div>
         </div>
-        <div class="right-now">了解更多</div>
+        <a class="right-now" href="/service">了解更多</a>
       </div>
     </section>
     <section class="home-center">
@@ -315,6 +315,7 @@ export default {
   margin-top: 20px;
 }
 .right-now {
+  display: block;
   width: 150px;
   height: 46px;
   line-height: 46px;
