@@ -6,7 +6,7 @@
         <section class="form-box"
                 style="margin-top: 30px">
           <el-card class="form-card">
-            <div class="flex-vc form-name">
+            <div class="flex-vc form-name" v-if="!isReg">
               <label for="">手机号</label>
               <p>{{user.userName}}</p>
             </div>
@@ -31,6 +31,12 @@
           </el-card>
         </section>
       </div>
+      <div class="flex-hs" style="margin-top: 20px; margin-left: 20px;" v-if="isReg">
+            <el-checkbox v-model="isAgree">同意</el-checkbox>
+            <el-link  style="margin-left: 20px;"
+                  type="success" 
+                  @click="showTerms">网站隐私条款</el-link>
+          </div>
       <div class="flex-he"
           style="margin: 60px 60px 70px 0">
         <el-button type="success" @click="handleSave">确定</el-button>
@@ -49,7 +55,7 @@ import * as adapter from './adapter'
 import { register } from '@/api/user'
 import defaultImg from '@/assets/avatar-upload.png'
 import { setToken } from '@/utils/auth'
-import { getUserInfo, updateUserInfo, getDicts }  from '@/api/user'
+import { sendCode, checkUser, getUserInfo, updateUserInfo, getDicts }  from '@/api/user'
 import ChangePwd from '@/components/ChangePwd'
 
 // 数据字典
@@ -58,10 +64,13 @@ export default {
   mixins: [mixin],
   components: {
     QuickForm,
-    ChangePwd
+    ChangePwd,
   },
   data () {
     return {
+      isAgree: false,
+      isShowTerms: false,
+      seconds: 0,
       account: {},
       isShow: false,
       layout: {
@@ -85,7 +94,10 @@ export default {
     this.isReg = this.$route.path.includes('/register/consumer')
      if (this.isReg) {
       this.layout = { xs: 24, sm:24, md: 20, lg:15, xl:12}
+      this.baseInfo.vcode.renderAppend = this.renderVcode
     } else {
+      this.baseInfo.userName.hide = true
+      this.baseInfo.vcode.hide = true
       this.baseInfo.passWord.hide = true
     }
     // 给上传组件绑定回调
@@ -116,6 +128,9 @@ export default {
     }
   },
   methods: {
+    showTerms() {
+      this.$router.push(`/register/terms?url=${encodeURIComponent('/pdf/IntoCareerPrivatePolice.pdf')}`)
+    },
     handleClickChangePwd() {
       this.isShow = true
     },
@@ -139,6 +154,19 @@ export default {
         isValid = false
       })
       if (isValid) {
+        // 如果是注册  需验证手机号且同意隐私条款
+        if (this.isReg) {
+          const b = this.baseInfo
+          const ret = await checkUser({ userName: b.userName.value, vCode: b.vcode.value})
+          if (!ret.result) {
+            this.alert('手机号验证失败')
+            return false
+          }
+          if (!this.isAgree) {
+            this.alert('请先同意隐私条款')
+            return false
+          }
+        }
         const formData = { 
           userName: this.user.userName,
           ...this.$refs.baseInfo.getFormData(),
@@ -165,6 +193,13 @@ export default {
         const ret = await fn(p).catch(e => l.close())
         if (ret.result) {
           this.alert(this.isReg ? '注册成功' : '保存成功')
+          // 手机端注册不做处理
+          if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+              setTimeout(() => {
+                window.location.href = "https://m.intocareer.cn/";
+              }, 1000)
+              return false
+          }
           if (this.isReg ) {
             // 缓存token
             setToken(ret.msg.token)
@@ -185,6 +220,31 @@ export default {
         }
         l.close()
       }
+    },
+    sendCode() {
+      if (this.seconds > 0) {
+        return false
+      }
+      console.log(this.$refs.baseInfo)
+      if (!/^1[345789]\d{9}$/.test(this.baseInfo.userName.value)) {
+        this.alert('f')
+        return false
+      }
+      sendCode({ userName: this.baseInfo.userName.value }).then(res => {
+        this.seconds = 60
+        const sid = setInterval(() => {
+          if (this.seconds == 0) {
+            clearInterval(sid)
+            return
+          }
+          this.seconds--
+        }, 1000)
+      })
+    },
+    renderVcode(h) {
+      return (
+        <div onClick={() => this.sendCode()}>{this.seconds > 0 ? this.seconds + 's' : '获取验证码'}</div>
+      )
     },
     renderUpload(h) {
       let avatarImg = ''

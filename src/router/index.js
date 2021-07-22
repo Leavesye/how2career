@@ -84,6 +84,10 @@ export let constantRoutes = [
         path: '/register/consultant',
         component: () => import('@/views/consultant/baseinfo')
       },
+      {
+        path: '/register/terms',
+        component: () => import('@/views/terms')
+      },
     ]
   },
   // 404 page must be placed at the end !!!

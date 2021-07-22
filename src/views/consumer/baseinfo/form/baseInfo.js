@@ -3,6 +3,19 @@ import moment from 'moment'
 
 const r = Vue.prototype.$rules
 export default {
+  userName: {
+    value: '',
+    label: '手机号',
+    rules: [r.required(), r.mobile()],
+  },
+  vcode: {
+    value: '',
+    label: '',
+    rules: [r.required()],
+    props: {
+      placeholder: '验证码'
+    }
+  },
   passWord: {
     value: '',
     label: '密码',
