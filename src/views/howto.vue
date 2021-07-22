@@ -24,7 +24,7 @@
     <el-card style="padding-bottom: 40px;">
       <p class="copy-desc">将此链接复制发送给你好友进行注册</p>
       <div class="flex-hvc">
-        <input class="copy-input" id="copyInput" :value="url" readonly="readonly"/>
+        <input class="copy-input" id="copyInput" :value="pcUrl" readonly="readonly"/>
         <el-button style="width: 90px;" type="success" @click="handleCopy">复制</el-button>
       </div>
     </el-card>
@@ -37,19 +37,12 @@ import QRCode from 'qrcodejs2'
 import tool from '@/utils/tool'
 
 export default {
+   data () {
+     return {
+       pcUrl: ''
+     }
+   },
    computed: {
-     url: function() {
-      let query = ''
-      const { path } = this.$route
-      const { refer, sales, userId } = this.user
-      // 咨询者分享
-      if (path == '/consumer/howto') {
-          query = tool.getShareQuery(refer, sales, userId)
-       } else { // 销售分享
-         query = `growth=${sales}`
-       }
-       return `${process.env.VUE_APP_HOST_NAME}/home?${query}`
-     },
      pcIcon: function() {
        return require('@/assets/pc-icon.png')
      },
@@ -61,8 +54,19 @@ export default {
     ])
   },
   mounted() {
+    let query = ''
+    const { path } = this.$route
+    const { refer, sales, userId } = this.user
+    // 咨询者分享
+    if (path == '/consumer/howto') {
+      query = tool.getShareQuery(refer, sales, userId)
+    } else { // 销售分享
+      query = `growth=${sales}`
+    }
+    this.pcUrl =  `${process.env.VUE_APP_HOST_NAME}/home?${query}`
+    const mobileUrl = `${process.env.VUE_APP_HOST_NAME}/register/consumer?${query}`
     const qrcode = new QRCode(this.$refs.qrCodeUrl, {
-      text: this.url,
+      text: mobileUrl,
       colorDark: '#000000',
       colorLight: '#ffffff',
       correctLevel: QRCode.CorrectLevel.H
