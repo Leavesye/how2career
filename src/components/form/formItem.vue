@@ -382,14 +382,19 @@
                        v-model="model.value"
                        :ref="model.type">
     </el-checkbox-group>
-    <el-upload v-if="model.type == 'upload'"
-               v-model="model.value"
-               v-bind="model.props"
-               v-on="model.events"
-               class="form-item-input"
-               :ref="model.type">
-      <ax-template :template="model.render"></ax-template>
-    </el-upload>
+    <div v-if="model.type == 'upload'">
+      <el-upload 
+                v-model="model.value"
+                v-bind="model.props"
+                v-on="model.events"
+                class="form-item-input"
+                :ref="model.type">
+        <ax-template :template="model.render"></ax-template>
+      </el-upload>
+      <div v-if="model.slotRender">
+        <ax-template :template="model.slotRender"></ax-template>
+      </div>
+    </div>
 
   </el-form-item>
 </template>

@@ -23,6 +23,11 @@ export default {
     },
     render: (h) => {
       return upload(h)
+    },
+    slotRender: (h) => {
+      return (
+        <a style="color: #15479E" href="/pdf/通过支付宝获取社保信息步骤.pdf" target="_blank">如何获取</a>
+      )
     }
   },
 }
