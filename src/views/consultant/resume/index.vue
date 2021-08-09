@@ -470,7 +470,14 @@ export default {
   }
 }
 </script>
-
+<style>
+.el-form-item__content {
+  line-height: 0!important;
+}
+.el-upload-list__item {
+  margin-bottom: 0;
+}
+</style>
 <style lang="scss" scoped>
 .page-title {
   padding: 20px 30px;

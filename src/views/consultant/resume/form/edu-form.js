@@ -150,7 +150,7 @@ export default {
     },
     slotRender: (h) => {
       return (
-        <a style="color: #15479E" href="/pdf/通过学信网获得中国学位认证步骤.pdf" target="_blank">如何获取</a>
+        <a style="color: #15479E; margin-top: 15px;display:block" href="/pdf/通过学信网获得中国学位认证步骤.pdf" target="_blank">如何获取</a>
       )
     }
   },
