@@ -28,7 +28,7 @@ export default {
     type: "input",
     value: "",
     label: "公司名称",
-    rules: [r.maxLength(100)],
+    rules: [r.required(), r.maxLength(100)],
     hide: true
   },
   companySize: {
