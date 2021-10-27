@@ -6,7 +6,7 @@ export default {
   country: {
     type: 'select',
     value: '',
-    label: '国家',
+    label: '地区',
     rules: [r.required()],
     props: { props: { label: 'text', value: 'value' } },
     options: [],

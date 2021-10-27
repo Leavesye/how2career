@@ -22,7 +22,8 @@ export default {
       change: function(i, v) {
         this.handleCompanyChange(i, v);
       }
-    }
+    },
+    note: "*如果没有搜索到企业，请选择“其他”并填写公司名称"
   },
   companyName: {
     type: "input",
