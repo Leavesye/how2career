@@ -55,7 +55,8 @@
 import QuickForm from "@/components/QuickForm";
 import Pannel from "@/components/Pannel";
 import CardList from "@/components/CardList";
-import form from "./form";
+import proform from "./pro-form";
+import hrform from "./hr-form";
 import { getDicts, getTop4Consultant } from "@/api/user";
 import { queryConsultant } from "@/api/consultant";
 import tool from "@/utils/tool";
@@ -70,7 +71,7 @@ export default {
   data() {
     return {
       isLoading: false,
-      form,
+      form: proform,
       datetime: "",
       isShow: false,
       selPannel: { name: "搜索在职精英", status: "pro" },
@@ -111,12 +112,12 @@ export default {
   },
   methods: {
     getRemoteCompany(query) {
-      if (query) {
+      if (query !== "") {
         this.form.company.options = this.dicts.company.filter((item) => {
           return item.text.toLowerCase().indexOf(query.toLowerCase()) > -1;
         });
       } else {
-        this.form.company.options = this.dicts.company;
+        this.form.company.options = [];
       }
     },
     handleOpenDetail(id) {
@@ -130,10 +131,16 @@ export default {
       if (item.status == this.selPannel.status) {
         return false;
       }
+      this.form = item.status == "pro" ? proform : hrform;
       this.selPannel = item;
+      const { industry, position, company } = this.dicts;
+      this.form.industry.options = industry;
+      this.form.position.options = position;
+      this.form.company.options = company;
       this.form.industry.value = [];
       this.form.position.value = [];
       this.form.company.value = [];
+      this.$refs.form.clearValidate();
     },
     async handleSearch() {
       this.$refs.form.validate((valid) => {
