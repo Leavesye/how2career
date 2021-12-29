@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { Navbar, SideBar, FootBar } from './components'
 
 export default {
@@ -48,7 +49,18 @@ export default {
             { name: '异常流程管理条例', url: '/html/err-manage-consultant.html', pageCount: 3 },
           ]
         },
+        // { name: '咨询师手册', icon: 'icontiaokuan', path: '/pdf/IntoCareer咨询师手册-20211215.pdf', isOpenNew: true }
       ]
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'user'
+    ])
+  },
+  mounted() {
+    if (this.user.status == '4') {
+      this.menus.push({ name: '咨询师手册', icon: 'icontiaokuan', path: '/pdf/IntoCareer咨询师手册-20211215.pdf', isOpenNew: true },)
     }
   }
 }

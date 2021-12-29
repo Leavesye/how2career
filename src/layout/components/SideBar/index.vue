@@ -11,7 +11,7 @@
         <el-menu-item :key="index"
                       v-if="!item.children"
                       :index="(index+1) + ''"
-                      @click="linkTo(item.path)">
+                      @click="linkTo(item)">
           <i class="iconfont"
              :class="[item.icon]"></i>
           <span slot="title">{{item.name}}</span>
@@ -28,14 +28,14 @@
                         :key="sindex"
                         class="sub-item"
                         :index="(index+1)+ '-'+ (sindex+1)"
-                        @click="linkTo(subItem.path, subItem.url, subItem.pageCount)">{{subItem.name}}</el-menu-item>
+                        @click="linkTo(subItem)">{{subItem.name}}</el-menu-item>
         </el-submenu>
       </template>
     </el-menu>
     <div class="flex-hc" v-if="!isCollapse" style="margin-top: 100px">
       <el-image v-if="room.orderId" class="room-btn"
                 :src="user.role=='consumer'?roomGreen:roomBlue"
-                @click="linkTo('/'+user.role+'/room/'+ room.orderId)"></el-image>
+                @click="handleLinkTo('/'+user.role+'/room/'+ room.orderId)"></el-image>
     </div>
     <section class="bottom-content">
       <section v-show="user.role=='consumer' || user.sales">
@@ -44,7 +44,7 @@
           <div class="qrcode"
               ref="qrCodeUrl"></div>
         </div>
-        <div class="howto" v-if="user.role=='consumer'" @click="linkTo('/consumer/howto')">如何推荐好友</div>
+        <div class="howto" v-if="user.role=='consumer'" @click="handleLinkTo('/consumer/howto')">如何推荐好友</div>
       </section>
       <div class="flex-hc bottom-links"
           v-if="!isCollapse">
@@ -97,13 +97,20 @@ export default {
     handleCloseTerms() {
        this.isShowTerms = false
     },
-    linkTo (path, url, count) {
-      if (url) {
+    handleLinkTo(path) {
+      this.$router.push(path)
+    },
+    linkTo (item) {
+      if (item.url) {
         this.isShowTerms = true
-        this.url = url
-        this.pageCount = count
+        this.url = item.url
+        this.pageCount = item.count
       } else {
-        this.$router.push(path)
+        if (item.isOpenNew) {
+          window.open(item.path, '_blank')
+        } else {
+          this.$router.push(item.path)
+        }
       }
     },
     getStyle (type) {
