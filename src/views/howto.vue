@@ -65,6 +65,7 @@ export default {
     }
     this.pcUrl =  `${process.env.VUE_APP_HOST_NAME}/home?${query}`
     const mobileUrl = `${process.env.VUE_APP_HOST_NAME}/register/consumer?${query}`
+    console.log(mobileUrl, 'mobileUrl')
     const qrcode = new QRCode(this.$refs.qrCodeUrl, {
       text: mobileUrl,
       colorDark: '#000000',

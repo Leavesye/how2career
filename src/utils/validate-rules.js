@@ -176,10 +176,10 @@ export default {
   },
   // 手机号
   mobile () {
-    return { pattern: /^1[345789]\d{9}$/, message: '请正确输入手机号码', trigger: 'blur' }
+    return { pattern: /^1[3456789]\d{9}$/, message: '请正确输入手机号码', trigger: 'blur' }
   },
   mobileName () {
-    return { pattern: /^1[345789]\d{8,49}$/, message: '请正确输入手机号码', trigger: 'blur' }
+    return { pattern: /^1[3456789]\d{8,49}$/, message: '请正确输入手机号码', trigger: 'blur' }
   },
   // 电话
   telephone () {
