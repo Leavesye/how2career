@@ -45,8 +45,9 @@ export function login(data) {
 }
 // 咨询者/ 咨询师 注册
 export function register(data) {
+  const role = store.state.user.role || 'consumer'
   return request({
-    url: `/user/platform/${store.state.user.role}/user`,
+    url: `/user/platform/${role}/user`,
     method: 'post',
     data
   })

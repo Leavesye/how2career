@@ -1,7 +1,7 @@
 <template>
 <el-image
     class="avatar"
-    :src="url"></el-image>
+    :src="url" fit="cover"></el-image>
 </template>
 
 <script>
