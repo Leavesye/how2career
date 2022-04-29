@@ -73,7 +73,8 @@ export default {
   },
   methods: {
     goReg() {
-      this.$router.push('/home?sign=true')
+      // this.$router.push('/home?sign=true')
+      window.open('https://wj.qq.com/s2/9975307/9a4f/', '_blank')
     },
   }
 };
