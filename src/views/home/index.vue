@@ -129,7 +129,7 @@ export default {
     return {
       countList: [
         { count: 2000, text: '咨询师入驻', right: -30 },
-        { count: 60, text: '覆盖企业数量', right: -20 },
+        { count: 500, text: '覆盖企业数量', right: -20 },
         { count: 1500, text: '覆盖职位', right: -30 },
       ],
       refer: "",
